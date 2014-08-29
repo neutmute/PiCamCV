@@ -4,10 +4,11 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Emgu.CV
+namespace PiCamCV
 {
     /// <summary>
     /// Wrapper for https://github.com/robidouille/robidouille/tree/master/raspicam_cv
+    /// Follow's EmguCV conventions
     /// </summary>
     public class CvInvokeRaspiCamCV
     {

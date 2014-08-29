@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using Emgu.CV;
 
-namespace Console
+namespace PiCamCV.Console
 {
     public class SimpleCv
     {
+        /// <summary>
+        /// c# implementation of https://github.com/robidouille/robidouille/blob/master/raspicam_cv/RaspiCamTest.c
+        /// </summary>
         public void Run()
         {
             CvInvoke.cvNamedWindow("RaspiCamTest"); //Create the window using the specific name
