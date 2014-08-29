@@ -9,6 +9,8 @@ namespace Console
     {
         static void Main(string[] args)
         {
+            var runner = new SimpleCv();
+            runner.Run();
         }
     }
 }
