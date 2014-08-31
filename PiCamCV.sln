@@ -8,6 +8,19 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console", "source\Console\Console.csproj", "{B699FF77-A5F6-41AA-A97A-2ADB1808F951}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3963D42F-FE25-4B92-9F1E-543C79814344}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{F2DE9AA7-AFEC-4C62-A8C1-62D0E2FC2F9D}"
+	ProjectSection(SolutionItems) = preProject
+		build\post_build_get_unmanaged.cmd = build\post_build_get_unmanaged.cmd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Properties", "Properties", "{FC14FC6E-6B7E-4B22-99CA-C76DA212CDEF}"
+	ProjectSection(SolutionItems) = preProject
+		Solution Items\Properties\AssemblyInfo.cs = Solution Items\Properties\AssemblyInfo.cs
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,5 +44,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FC14FC6E-6B7E-4B22-99CA-C76DA212CDEF} = {3963D42F-FE25-4B92-9F1E-543C79814344}
 	EndGlobalSection
 EndGlobal
