@@ -6,6 +6,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
+using Common.Logging;
 using Emgu.CV;
 using Emgu.Util;
 using Emgu.CV.Structure;
@@ -19,6 +20,8 @@ namespace PiCamCV
     public class CapturePi :
         UnmanagedObject
     {
+
+        protected static ILog Log = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// the type of flipping
@@ -188,8 +191,9 @@ namespace PiCamCV
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Log.Error(e);
             }
             finally
             {
@@ -307,23 +311,26 @@ namespace PiCamCV
         /// <returns> A Bgr image frame</returns>
         public virtual Image<Bgr, Byte> RetrieveBgrFrame()
         {
-            IntPtr img = CvInvokeRaspiCamCV.cvQueryFrame(Ptr);
+            IntPtr img = CvInvokeRaspiCamCV.cvQueryFrame(_ptr);
 
             if (img == IntPtr.Zero)
+            {
                 return null;
+            }
 
             MIplImage iplImage = (MIplImage)Marshal.PtrToStructure(img, typeof(MIplImage));
 
             Image<Bgr, Byte> res;
             if (iplImage.NChannels == 1)
             {  //if the image captured is Grayscale, convert it to BGR
-                res = new Image<Bgr, Byte>(iplImage.Width, iplImage.Height);
                 throw new NotImplementedException("Not sure how to supply a Mat here");
+                res = new Image<Bgr, Byte>(iplImage.Width, iplImage.Height);
                 CvInvoke.CvtColor(null, res, Emgu.CV.CvEnum.ColorConversion.Gray2Bgr);
             }
             else
             {
-                res = new Image<Bgr, byte>(iplImage.Width, iplImage.Height, iplImage.WidthStep, iplImage.ImageData);
+                //res = Image<Bgr, Byte>.FromIplImagePtr(img);
+               res = new Image<Bgr, byte>(iplImage.Width, iplImage.Height, iplImage.WidthStep, iplImage.ImageData);
             }
 
             //inplace flip the image if necessary

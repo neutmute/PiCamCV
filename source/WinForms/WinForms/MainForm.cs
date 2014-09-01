@@ -11,6 +11,7 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using PiCamCV;
 using PiCamCV.WinForms;
+using PiCamCV.WinForms.UserControls;
 
 namespace WinForms
 {
@@ -31,10 +32,14 @@ namespace WinForms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            var camCapture = new CameraCapture();
-            camCapture.Dock = DockStyle.Fill;
-            tabPageCameraCapture.Controls.Add(camCapture);
+            //var camCapture = new CameraCapture();
+            //camCapture.Dock = DockStyle.Fill;
 
+            var faceDetection = new FaceDetectionControl();
+            faceDetection.Dock = DockStyle.Fill;
+
+            //tabPageCameraCapture.Controls.Add(camCapture);
+            tabPageFaceDetection.Controls.Add(faceDetection);
         }
     }
 }

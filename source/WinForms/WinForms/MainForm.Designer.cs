@@ -31,6 +31,7 @@
             this.panelTop = new System.Windows.Forms.Panel();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageCameraCapture = new System.Windows.Forms.TabPage();
+            this.tabPageFaceDetection = new System.Windows.Forms.TabPage();
             this.tabControlMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,6 +46,7 @@
             // tabControlMain
             // 
             this.tabControlMain.Controls.Add(this.tabPageCameraCapture);
+            this.tabControlMain.Controls.Add(this.tabPageFaceDetection);
             this.tabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlMain.Location = new System.Drawing.Point(0, 26);
             this.tabControlMain.Name = "tabControlMain";
@@ -62,6 +64,15 @@
             this.tabPageCameraCapture.Text = "Camera Capture";
             this.tabPageCameraCapture.UseVisualStyleBackColor = true;
             this.tabPageCameraCapture.Click += new System.EventHandler(this.tabPageCameraCapture_Click);
+            // 
+            // tabPageFaceDetection
+            // 
+            this.tabPageFaceDetection.Location = new System.Drawing.Point(4, 22);
+            this.tabPageFaceDetection.Name = "tabPageFaceDetection";
+            this.tabPageFaceDetection.Size = new System.Drawing.Size(865, 488);
+            this.tabPageFaceDetection.TabIndex = 1;
+            this.tabPageFaceDetection.Text = "Face Detection";
+            this.tabPageFaceDetection.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -83,6 +94,7 @@
         private System.Windows.Forms.Panel panelTop;
         private System.Windows.Forms.TabControl tabControlMain;
         private System.Windows.Forms.TabPage tabPageCameraCapture;
+        private System.Windows.Forms.TabPage tabPageFaceDetection;
 
     }
 }
