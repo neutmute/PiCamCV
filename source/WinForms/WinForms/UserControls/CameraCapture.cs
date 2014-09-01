@@ -14,13 +14,22 @@ namespace PiCamCV.WinForms
     public partial class CameraCapture : UserControl
     {
         private CapturePi _capture;
+        private bool _captureInProgress;
         public CameraCapture()
         {
             InitializeComponent();
 
-            CvInvoke.CheckLibraryLoaded();
-            _capture = new CapturePi();
-            _capture.ImageGrabbed += _capture_ImageGrabbed;
+            CvInvoke.UseOpenCL = false;
+            try
+            {
+                CvInvoke.CheckLibraryLoaded();
+                _capture = new CapturePi();
+                _capture.ImageGrabbed += _capture_ImageGrabbed;
+            }
+            catch (NullReferenceException excpt)
+            {
+                MessageBox.Show(excpt.Message);
+            }
         }
 
 
@@ -47,18 +56,32 @@ namespace PiCamCV.WinForms
 
         private void btnStartStop_Click(object sender, EventArgs e)
         {
+            if (_capture != null)
+            {
+                if (_captureInProgress)
+                {  //stop the capture
+                    btnStartStop.Text = "Start Capture";
+                    _capture.Pause();
+                }
+                else
+                {
+                    //start the capture
+                    btnStartStop.Text = "Stop";
+                    _capture.Start();
+                }
 
-            _capture.Start();
+                _captureInProgress = !_captureInProgress;
+            }
         }
 
         private void btnFlipVertical_Click(object sender, EventArgs e)
         {
-
+            if (_capture != null) _capture.FlipVertical = !_capture.FlipVertical;
         }
 
         private void btnFlipHorizontal_Click(object sender, EventArgs e)
         {
-
+            if (_capture != null) _capture.FlipHorizontal = !_capture.FlipHorizontal;
         }
     }
 }

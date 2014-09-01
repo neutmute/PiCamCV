@@ -39,17 +39,17 @@
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(0, 0);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(873, 100);
+            this.panelTop.Size = new System.Drawing.Size(873, 26);
             this.panelTop.TabIndex = 1;
             // 
             // tabControlMain
             // 
             this.tabControlMain.Controls.Add(this.tabPageCameraCapture);
             this.tabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControlMain.Location = new System.Drawing.Point(0, 100);
+            this.tabControlMain.Location = new System.Drawing.Point(0, 26);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
-            this.tabControlMain.Size = new System.Drawing.Size(873, 440);
+            this.tabControlMain.Size = new System.Drawing.Size(873, 514);
             this.tabControlMain.TabIndex = 2;
             // 
             // tabPageCameraCapture
@@ -57,7 +57,7 @@
             this.tabPageCameraCapture.Location = new System.Drawing.Point(4, 22);
             this.tabPageCameraCapture.Name = "tabPageCameraCapture";
             this.tabPageCameraCapture.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageCameraCapture.Size = new System.Drawing.Size(865, 414);
+            this.tabPageCameraCapture.Size = new System.Drawing.Size(865, 488);
             this.tabPageCameraCapture.TabIndex = 0;
             this.tabPageCameraCapture.Text = "Camera Capture";
             this.tabPageCameraCapture.UseVisualStyleBackColor = true;
