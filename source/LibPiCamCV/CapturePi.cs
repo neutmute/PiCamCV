@@ -105,8 +105,7 @@ namespace PiCamCV
 
         #region constructors
         ///<summary> Create a capture using the default camera </summary>
-        public CapturePi()
-            : this(0)
+        public CapturePi() : this(0)
         {
         }
 
@@ -246,13 +245,15 @@ namespace PiCamCV
         }
         #endregion
 
-        public virtual bool Retrieve(IOutputArray image)
+        public virtual bool Retrieve(IOutputArray outputArray)
         {
             if (FlipType == FlipType.None)
             {
-                using (OutputArray oaImage = image.GetOutputArray())
+                using (OutputArray oaImage = outputArray.GetOutputArray())
                 {
-                    CvInvokeRaspiCamCV.cvQueryFrame(image.GetOutputArray().Ptr);
+                    var img = CvInvokeRaspiCamCV.cvQueryFrame(_ptr);
+                    var image = Image<Bgr, Byte>.FromIplImagePtr(img);
+                    image.Mat.CopyTo(outputArray);
                 }
                 return true;
             }
@@ -262,7 +263,7 @@ namespace PiCamCV
                 using (OutputArray oaTmp = tmp.GetOutputArray())
                 {
                     var framePtr = CvInvokeRaspiCamCV.cvQueryFrame(Ptr);
-                    CvInvoke.Flip(tmp, image, FlipType);
+                    CvInvoke.Flip(tmp, outputArray, FlipType);
                     return true;
                 }
             }

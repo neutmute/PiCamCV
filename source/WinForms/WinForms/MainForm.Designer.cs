@@ -28,63 +28,62 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.groupBoxImage = new System.Windows.Forms.GroupBox();
-            this.imageBox = new Emgu.CV.UI.ImageBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.groupBoxImage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.imageBox)).BeginInit();
+            this.panelTop = new System.Windows.Forms.Panel();
+            this.tabControlMain = new System.Windows.Forms.TabControl();
+            this.tabPageCameraCapture = new System.Windows.Forms.TabPage();
+            this.tabControlMain.SuspendLayout();
             this.SuspendLayout();
             // 
-            // groupBoxImage
+            // panelTop
             // 
-            this.groupBoxImage.Controls.Add(this.imageBox);
-            this.groupBoxImage.Location = new System.Drawing.Point(38, 45);
-            this.groupBoxImage.Name = "groupBoxImage";
-            this.groupBoxImage.Size = new System.Drawing.Size(347, 262);
-            this.groupBoxImage.TabIndex = 3;
-            this.groupBoxImage.TabStop = false;
-            this.groupBoxImage.Text = "Image";
+            this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelTop.Location = new System.Drawing.Point(0, 0);
+            this.panelTop.Name = "panelTop";
+            this.panelTop.Size = new System.Drawing.Size(873, 100);
+            this.panelTop.TabIndex = 1;
             // 
-            // imageBox
+            // tabControlMain
             // 
-            this.imageBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.imageBox.Location = new System.Drawing.Point(3, 16);
-            this.imageBox.Name = "imageBox";
-            this.imageBox.Size = new System.Drawing.Size(341, 243);
-            this.imageBox.TabIndex = 4;
-            this.imageBox.TabStop = false;
+            this.tabControlMain.Controls.Add(this.tabPageCameraCapture);
+            this.tabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControlMain.Location = new System.Drawing.Point(0, 100);
+            this.tabControlMain.Name = "tabControlMain";
+            this.tabControlMain.SelectedIndex = 0;
+            this.tabControlMain.Size = new System.Drawing.Size(873, 440);
+            this.tabControlMain.TabIndex = 2;
             // 
-            // button1
+            // tabPageCameraCapture
             // 
-            this.button1.Location = new System.Drawing.Point(38, 345);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.tabPageCameraCapture.Location = new System.Drawing.Point(4, 22);
+            this.tabPageCameraCapture.Name = "tabPageCameraCapture";
+            this.tabPageCameraCapture.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageCameraCapture.Size = new System.Drawing.Size(865, 414);
+            this.tabPageCameraCapture.TabIndex = 0;
+            this.tabPageCameraCapture.Text = "Camera Capture";
+            this.tabPageCameraCapture.UseVisualStyleBackColor = true;
+            this.tabPageCameraCapture.Click += new System.EventHandler(this.tabPageCameraCapture_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(585, 420);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.groupBoxImage);
+            this.ClientSize = new System.Drawing.Size(873, 540);
+            this.Controls.Add(this.tabControlMain);
+            this.Controls.Add(this.panelTop);
             this.Name = "MainForm";
             this.Text = "PiCamCV WinForms";
-            this.groupBoxImage.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.imageBox)).EndInit();
+            this.Load += new System.EventHandler(this.MainForm_Load);
+            this.tabControlMain.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBoxImage;
-        private Emgu.CV.UI.ImageBox imageBox;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Panel panelTop;
+        private System.Windows.Forms.TabControl tabControlMain;
+        private System.Windows.Forms.TabPage tabPageCameraCapture;
+
     }
 }
 
