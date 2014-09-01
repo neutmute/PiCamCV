@@ -251,9 +251,9 @@ namespace PiCamCV
             {
                 using (OutputArray oaImage = outputArray.GetOutputArray())
                 {
-                    var img = CvInvokeRaspiCamCV.cvQueryFrame(_ptr);
-                    var image = Image<Bgr, Byte>.FromIplImagePtr(img);
-                    image.Mat.CopyTo(outputArray);
+                    var iplImage = CvInvokeRaspiCamCV.cvQueryFrame(_ptr);
+                    var managedImage = Image<Bgr, Byte>.FromIplImagePtr(iplImage);
+                    managedImage.Mat.CopyTo(outputArray);
                 }
                 return true;
             }
@@ -262,7 +262,9 @@ namespace PiCamCV
                 using (Mat tmp = new Mat())
                 using (OutputArray oaTmp = tmp.GetOutputArray())
                 {
-                    var framePtr = CvInvokeRaspiCamCV.cvQueryFrame(Ptr);
+                    var iplImage = CvInvokeRaspiCamCV.cvQueryFrame(Ptr);
+                    var managedImage = Image<Bgr, Byte>.FromIplImagePtr(iplImage);
+                    managedImage.Mat.CopyTo(tmp);
                     CvInvoke.Flip(tmp, outputArray, FlipType);
                     return true;
                 }
