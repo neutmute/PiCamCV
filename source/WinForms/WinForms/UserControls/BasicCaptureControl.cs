@@ -21,17 +21,19 @@ namespace PiCamCV.WinForms
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
-            Mat frame = new Mat();
+            var frame = new Mat();
             CameraCapture.Retrieve(frame);
 
-            Mat grayFrame = new Mat();
+            var grayFrame = new Mat();
             CvInvoke.CvtColor(frame, grayFrame, ColorConversion.Bgr2Gray);
-            Mat smallGrayFrame = new Mat();
+            
+            var smallGrayFrame = new Mat();
             CvInvoke.PyrDown(grayFrame, smallGrayFrame);
-            Mat smoothedGrayFrame = new Mat();
+            
+            var smoothedGrayFrame = new Mat();
             CvInvoke.PyrUp(smallGrayFrame, smoothedGrayFrame);
 
-            Mat cannyFrame = new Mat();
+            var cannyFrame = new Mat();
             CvInvoke.Canny(smoothedGrayFrame, cannyFrame, 100, 60);
 
             imageBoxCaptured.Image = frame;

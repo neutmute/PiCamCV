@@ -44,14 +44,10 @@ namespace WinForms
             var consumers = new List<CameraConsumerUserControl>();
             consumers.Add(basicCapture);
             consumers.Add(faceDetection);
-
-
-            tabControlMain.SelectedIndexChanged+=tabControlMain_SelectedIndexChanged;
             
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageCameraCapture, basicCapture));
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageFaceDetection, faceDetection));
             
-
             foreach (var consumer in consumers)
             {
                 consumer.CameraCapture = _capture;
@@ -61,6 +57,7 @@ namespace WinForms
                 consumer.StatusUpdated += consumer_StatusUpdated;
             }
 
+            tabControlMain.SelectedIndexChanged += tabControlMain_SelectedIndexChanged;
             tabControlMain_SelectedIndexChanged(null, null);
         }
 
