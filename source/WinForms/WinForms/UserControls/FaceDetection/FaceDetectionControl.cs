@@ -35,7 +35,9 @@ namespace PiCamCV.WinForms.UserControls
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
-            var image = CameraCapture.RetrieveBgrFrame();
+            var frame = new Mat();
+            CameraCapture.Retrieve(frame);
+            var image = frame.ToImage<Bgr, byte>();
 
             var result = DetectFace.Detect(image, haarFaceFile.FullName, haarEyeFile.FullName);
 

@@ -62,6 +62,8 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="CapturePi.cs" />
+    <Compile Include="CaptureUsb.cs" />
+    <Compile Include="Interfaces\ICaptureGrab.cs" />
     <Compile Include="PInvoke\CvInvokeRaspiCamCV.cs" />
     <Compile Include="Properties\AssemblyInfoUnique.cs" />
   </ItemGroup>

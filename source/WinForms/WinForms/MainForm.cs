@@ -10,6 +10,7 @@ using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using PiCamCV;
+using PiCamCV.Interfaces;
 using PiCamCV.WinForms;
 using PiCamCV.WinForms.UserControls;
 
@@ -17,7 +18,7 @@ namespace WinForms
 {
     public partial class MainForm : Form
     {
-        private CapturePi _capture;
+        private ICaptureGrab _capture;
         readonly List<KeyValuePair<TabPage, CameraConsumerUserControl>> _tabPageLinks;
         public bool CameraCaptureInProgress { get; set; }
         public MainForm()
@@ -25,8 +26,6 @@ namespace WinForms
             InitializeComponent();
             _tabPageLinks = new List<KeyValuePair<TabPage, CameraConsumerUserControl>>();
         }
-
-
 
         private void tabPageCameraCapture_Click(object sender, EventArgs e)
         {
@@ -36,7 +35,7 @@ namespace WinForms
         {
             CvInvoke.UseOpenCL = false;
             CvInvoke.CheckLibraryLoaded();
-            _capture = new CapturePi();
+            _capture = new CaptureUsb();
             
             var basicCapture = new BasicCaptureControl();
             var faceDetection = new FaceDetectionControl();;
@@ -77,6 +76,7 @@ namespace WinForms
             }
             var selectedControl = _tabPageLinks.First(kvp => kvp.Key == tabControlMain.SelectedTab).Value;
             selectedControl.Subscribe();
+            consumer_StatusUpdated(this, new StatusEventArgs(null));
         }
 
 

@@ -18,7 +18,7 @@ namespace PiCamCV
     /// Capture images from either camera or video file. 
     /// </summary>
     public class CapturePi :
-        UnmanagedObject
+        UnmanagedObject, ICapture
     {
 
         protected static ILog Log = LogManager.GetCurrentClassLogger();
@@ -263,93 +263,106 @@ namespace PiCamCV
             }
         }
 
-        /// <summary> 
-        /// Retrieve a Gray image frame after Grab()
-        /// </summary>
-        /// <param name="streamIndex">Stream index. Use 0 for default.</param>
-        /// <returns> A Gray image frame</returns>
-        public virtual Image<Gray, Byte> RetrieveGrayFrame()
-        {
-            IntPtr img = CvInvokeRaspiCamCV.cvQueryFrame(Ptr);
-            if (img == IntPtr.Zero)
-                return null;
+        ///// <summary> 
+        ///// Retrieve a Gray image frame after Grab()
+        ///// </summary>
+        ///// <param name="streamIndex">Stream index. Use 0 for default.</param>
+        ///// <returns> A Gray image frame</returns>
+        //public virtual Image<Gray, Byte> RetrieveGrayFrame()
+        //{
+        //    IntPtr img = CvInvokeRaspiCamCV.cvQueryFrame(Ptr);
+        //    if (img == IntPtr.Zero)
+        //        return null;
 
-           // var mat = new Mat(img, false);
-            MIplImage iplImage = (MIplImage)Marshal.PtrToStructure(img, typeof(MIplImage));
+        //   // var mat = new Mat(img, false);
+        //    MIplImage iplImage = (MIplImage)Marshal.PtrToStructure(img, typeof(MIplImage));
 
-            Image<Gray, Byte> res;
-            if (iplImage.NChannels == 3)
-            {  //if the image captured is Bgr, convert it to Grayscale
-                res = new Image<Gray, Byte>(iplImage.Width, iplImage.Height);
+        //    Image<Gray, Byte> res;
+        //    if (iplImage.NChannels == 3)
+        //    {  //if the image captured is Bgr, convert it to Grayscale
+        //        res = new Image<Gray, Byte>(iplImage.Width, iplImage.Height);
 
-                // Not sure how to give this a Mat
-                CvInvoke.CvtColor(null, res, ColorConversion.Bgr2Gray);
-            }
-            else
-            {
-                res = new Image<Gray, byte>(iplImage.Width, iplImage.Height, iplImage.WidthStep, iplImage.ImageData);
-            }
+        //        // Not sure how to give this a Mat
+        //        CvInvoke.CvtColor(null, res, ColorConversion.Bgr2Gray);
+        //    }
+        //    else
+        //    {
+        //        res = new Image<Gray, byte>(iplImage.Width, iplImage.Height, iplImage.WidthStep, iplImage.ImageData);
+        //    }
 
-            //inplace flip the image if necessary
-            res._Flip(FlipType);
+        //    //inplace flip the image if necessary
+        //    res._Flip(FlipType);
 
-            return res;
-        }
+        //    return res;
+        //}
 
-        /// <summary> 
-        /// Retrieve a Bgr image frame after Grab()
-        /// </summary>
-        /// <param name="streamIndex">Stream index</param>
-        /// <returns> A Bgr image frame</returns>
-        public virtual Image<Bgr, Byte> RetrieveBgrFrame()
-        {
-            IntPtr img = CvInvokeRaspiCamCV.cvQueryFrame(_ptr);
+        ///// <summary> 
+        ///// Retrieve a Bgr image frame after Grab()
+        ///// </summary>
+        ///// <param name="streamIndex">Stream index</param>
+        ///// <returns> A Bgr image frame</returns>
+        //public virtual Image<Bgr, Byte> RetrieveBgrFrame()
+        //{
+        //    IntPtr img = CvInvokeRaspiCamCV.cvQueryFrame(_ptr);
 
-            if (img == IntPtr.Zero)
-            {
-                return null;
-            }
+        //    if (img == IntPtr.Zero)
+        //    {
+        //        return null;
+        //    }
 
-            MIplImage iplImage = (MIplImage)Marshal.PtrToStructure(img, typeof(MIplImage));
+        //    MIplImage iplImage = (MIplImage)Marshal.PtrToStructure(img, typeof(MIplImage));
 
-            Image<Bgr, Byte> res;
-            if (iplImage.NChannels == 1)
-            {  //if the image captured is Grayscale, convert it to BGR
-                throw new NotImplementedException("Not sure how to supply a Mat here");
-                res = new Image<Bgr, Byte>(iplImage.Width, iplImage.Height);
-                CvInvoke.CvtColor(null, res, Emgu.CV.CvEnum.ColorConversion.Gray2Bgr);
-            }
-            else
-            {
-                //res = Image<Bgr, Byte>.FromIplImagePtr(img);
-               res = new Image<Bgr, byte>(iplImage.Width, iplImage.Height, iplImage.WidthStep, iplImage.ImageData);
-            }
+        //    Image<Bgr, Byte> res;
+        //    if (iplImage.NChannels == 1)
+        //    {  //if the image captured is Grayscale, convert it to BGR
+        //        throw new NotImplementedException("Not sure how to supply a Mat here");
+        //        res = new Image<Bgr, Byte>(iplImage.Width, iplImage.Height);
+        //        CvInvoke.CvtColor(null, res, Emgu.CV.CvEnum.ColorConversion.Gray2Bgr);
+        //    }
+        //    else
+        //    {
+        //        //res = Image<Bgr, Byte>.FromIplImagePtr(img);
+        //       res = new Image<Bgr, byte>(iplImage.Width, iplImage.Height, iplImage.WidthStep, iplImage.ImageData);
+        //    }
 
-            //inplace flip the image if necessary
-            res._Flip(FlipType);
+        //    //inplace flip the image if necessary
+        //    res._Flip(FlipType);
 
-            return res;
-        }
+        //    return res;
+        //}
 
-        /// <summary> 
-        /// Capture a Gray image frame
-        /// </summary>
-        /// <returns> A Gray image frame</returns>
-        public virtual Image<Gray, Byte> QueryGrayFrame()
-        {
-            return Grab() ? RetrieveGrayFrame() : null;
-        }
+        ///// <summary> 
+        ///// Capture a Gray image frame
+        ///// </summary>
+        ///// <returns> A Gray image frame</returns>
+        //public virtual Image<Gray, Byte> QueryGrayFrame()
+        //{
+        //    return Grab() ? RetrieveGrayFrame() : null;
+        //}
 
         #region implement ICapture
         /// <summary> 
         /// Capture a Bgr image frame
         /// </summary>
         /// <returns> A Bgr image frame</returns>
-        public virtual Image<Bgr, Byte> QueryFrame()
+        public virtual Mat QueryFrame()
         {
-            return Grab() ? RetrieveBgrFrame() : null;
+            if (Grab())
+            {
+                var image = new Mat();
+                Retrieve(image);
+                return image;
+            }
+            else
+            {
+                return null;
+            }
         }
 
+        public Mat QuerySmallFrame()
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

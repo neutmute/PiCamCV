@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
+using Emgu.CV;
+using PiCamCV.Interfaces;
 
 namespace PiCamCV.WinForms
 {
@@ -8,13 +10,20 @@ namespace PiCamCV.WinForms
         public string Message { get; set; }
         public StatusEventArgs(string messageFormat, params object[] args)
         {
-            Message = string.Format(messageFormat, args);
+            if (messageFormat == null)
+            {
+                Message = null;
+            }
+            else
+            {
+                Message = string.Format(messageFormat, args);
+            }
         }
     }
     public class CameraConsumerUserControl : UserControl, ICameraConsumer
     {
         public event EventHandler<StatusEventArgs> StatusUpdated;
-        public CapturePi CameraCapture {get;set;}
+        public ICaptureGrab CameraCapture { get; set; }
 
         public virtual void ImageGrabbedHandler(object sender, EventArgs e){}
 
@@ -26,7 +35,6 @@ namespace PiCamCV.WinForms
         public void Unsubscribe()
         {
             CameraCapture.ImageGrabbed -= ImageGrabbedHandler;
-            NotifyStatus(string.Empty);
         }
 
         public void NotifyStatus(string messageFormat, params object[] args)

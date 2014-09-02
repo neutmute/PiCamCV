@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using PiCamCV.Interfaces;
 
 namespace PiCamCV.WinForms
 {
     public interface ICameraConsumer
     {
-        CapturePi CameraCapture { get; set; }
+        ICaptureGrab CameraCapture { get; set; }
 
         void ImageGrabbedHandler(object sender, EventArgs e);
     }
-
 }

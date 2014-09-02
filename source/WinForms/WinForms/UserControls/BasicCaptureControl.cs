@@ -40,6 +40,8 @@ namespace PiCamCV.WinForms
             imageBoxGray.Image = grayFrame;
             imageBoxSmoothedGray.Image = smoothedGrayFrame;
             imageBoxCanny.Image = cannyFrame;
+
+            NotifyStatus(string.Empty);
         }
 
 
