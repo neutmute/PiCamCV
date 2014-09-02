@@ -16,42 +16,26 @@ using Kraken.Core;
 
 namespace PiCamCV.WinForms.UserControls
 {
-    public partial class FaceDetectionControl : UserControl
+    public partial class FaceDetectionControl : CameraConsumerUserControl
     {
-        private CapturePi _capture;
-        private bool _captureInProgress;
         private FileInfo haarEyeFile;
         private FileInfo haarFaceFile;
-
+        
         public FaceDetectionControl()
         {
             InitializeComponent();
         }
-        private void FaceDetectionControl_Load(object sender, EventArgs e)
+        public void ControlLoad(object sender, EventArgs e)
         {
-            CvInvoke.UseOpenCL = false;
-            try
-            {
-                CvInvoke.CheckLibraryLoaded();
-                _capture = new CapturePi();
-                _capture.ImageGrabbed += _capture_ImageGrabbed;
-            }
-            catch (NullReferenceException excpt)
-            {
-                MessageBox.Show(excpt.Message);
-            }
-
             var assemblyPath = Assembly.GetExecutingAssembly().Location;
             var haarCascadePath = Path.Combine(new FileInfo(assemblyPath).DirectoryName, "UserControls/FaceDetection");
             haarEyeFile = new FileInfo(Path.Combine(haarCascadePath, "haarcascade_eye.xml"));
             haarFaceFile = new FileInfo(Path.Combine(haarCascadePath, "haarcascade_frontalface_default.xml"));
-
-            
         }
 
-        void _capture_ImageGrabbed(object sender, EventArgs e)
+        public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
-            var image = _capture.RetrieveBgrFrame();
+            var image = CameraCapture.RetrieveBgrFrame();
 
             var result = DetectFace.Detect(image, haarFaceFile.FullName, haarEyeFile.FullName);
 
@@ -65,24 +49,9 @@ namespace PiCamCV.WinForms.UserControls
             }
 
             imageBox.Image = image;
-            labelDetectionTime.Invoke((MethodInvoker)delegate
-            {
-                labelDetectionTime.Text = string.Format("Detected in {0}", result.DetectionTime.ToHumanReadable());
-                
-            });
+            NotifyStatus("Face detection took {0}", result.DetectionTime.ToHumanReadable());
         }
-
-        private void buttonStart_Click(object sender, EventArgs e)
-        {
-            _capture.Start();
-        }
-
-        private void btnStop_Click(object sender, EventArgs e)
-        {
-            _capture.Stop();
-            labelDetectionTime.Text = string.Empty;
-        }
-
+        
     }
 }
 

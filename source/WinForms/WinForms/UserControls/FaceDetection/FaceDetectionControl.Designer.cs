@@ -29,35 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.panelTop = new System.Windows.Forms.Panel();
-            this.buttonStart = new System.Windows.Forms.Button();
             this.imageBox = new Emgu.CV.UI.ImageBox();
-            this.btnStop = new System.Windows.Forms.Button();
             this.labelDetectionTime = new System.Windows.Forms.Label();
-            this.panelTop.SuspendLayout();
+            this.panelTop = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox)).BeginInit();
+            this.panelTop.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // panelTop
-            // 
-            this.panelTop.Controls.Add(this.labelDetectionTime);
-            this.panelTop.Controls.Add(this.btnStop);
-            this.panelTop.Controls.Add(this.buttonStart);
-            this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelTop.Location = new System.Drawing.Point(0, 0);
-            this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(597, 35);
-            this.panelTop.TabIndex = 3;
-            // 
-            // buttonStart
-            // 
-            this.buttonStart.Location = new System.Drawing.Point(53, 6);
-            this.buttonStart.Name = "buttonStart";
-            this.buttonStart.Size = new System.Drawing.Size(75, 23);
-            this.buttonStart.TabIndex = 0;
-            this.buttonStart.Text = "Start";
-            this.buttonStart.UseVisualStyleBackColor = true;
-            this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
             // 
             // imageBox
             // 
@@ -68,23 +45,23 @@
             this.imageBox.TabIndex = 4;
             this.imageBox.TabStop = false;
             // 
-            // btnStop
-            // 
-            this.btnStop.Location = new System.Drawing.Point(134, 6);
-            this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(75, 23);
-            this.btnStop.TabIndex = 1;
-            this.btnStop.Text = "Stop";
-            this.btnStop.UseVisualStyleBackColor = true;
-            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
-            // 
             // labelDetectionTime
             // 
             this.labelDetectionTime.AutoSize = true;
-            this.labelDetectionTime.Location = new System.Drawing.Point(242, 11);
+            this.labelDetectionTime.Location = new System.Drawing.Point(3, 10);
             this.labelDetectionTime.Name = "labelDetectionTime";
-            this.labelDetectionTime.Size = new System.Drawing.Size(0, 13);
+            this.labelDetectionTime.Size = new System.Drawing.Size(79, 13);
             this.labelDetectionTime.TabIndex = 2;
+            this.labelDetectionTime.Text = "Detection Time";
+            // 
+            // panelTop
+            // 
+            this.panelTop.Controls.Add(this.labelDetectionTime);
+            this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelTop.Location = new System.Drawing.Point(0, 0);
+            this.panelTop.Name = "panelTop";
+            this.panelTop.Size = new System.Drawing.Size(597, 35);
+            this.panelTop.TabIndex = 3;
             // 
             // FaceDetectionControl
             // 
@@ -94,21 +71,19 @@
             this.Controls.Add(this.panelTop);
             this.Name = "FaceDetectionControl";
             this.Size = new System.Drawing.Size(597, 464);
-            this.Load += new System.EventHandler(this.FaceDetectionControl_Load);
+            this.Load += new System.EventHandler(this.ControlLoad);
+            ((System.ComponentModel.ISupportInitialize)(this.imageBox)).EndInit();
             this.panelTop.ResumeLayout(false);
             this.panelTop.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.imageBox)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel panelTop;
-        private System.Windows.Forms.Button buttonStart;
         private Emgu.CV.UI.ImageBox imageBox;
-        private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.Label labelDetectionTime;
+        private System.Windows.Forms.Panel panelTop;
 
     }
 }
