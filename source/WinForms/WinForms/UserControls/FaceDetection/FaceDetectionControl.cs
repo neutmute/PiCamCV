@@ -42,9 +42,11 @@ namespace PiCamCV.WinForms.UserControls
             }
 
             var assemblyPath = Assembly.GetExecutingAssembly().Location;
-            var haarCascadePath = Path.Combine(new FileInfo(assemblyPath).DirectoryName, "UserControls\\FaceDetection");
+            var haarCascadePath = Path.Combine(new FileInfo(assemblyPath).DirectoryName, "UserControls/FaceDetection");
             haarEyeFile = new FileInfo(Path.Combine(haarCascadePath, "haarcascade_eye.xml"));
             haarFaceFile = new FileInfo(Path.Combine(haarCascadePath, "haarcascade_frontalface_default.xml"));
+
+            
         }
 
         void _capture_ImageGrabbed(object sender, EventArgs e)

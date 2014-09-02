@@ -194,6 +194,7 @@ namespace PiCamCV
             catch (Exception e)
             {
                 Log.Error(e);
+                throw;
             }
             finally
             {
@@ -203,12 +204,7 @@ namespace PiCamCV
 
         private static void Wait(int millisecond)
         {
-#if NETFX_CORE
-         Task t = Task.Delay(millisecond);
-         t.Wait();
-#else
             Thread.Sleep(millisecond);
-#endif
         }
 
         /// <summary>
@@ -219,11 +215,7 @@ namespace PiCamCV
             if (_grabState != GrabState.Running)
             {
                 _grabState = GrabState.Running;
-#if NETFX_CORE
-            ThreadPool.RunAsync(delegate { Run(); });
-#else
                 ThreadPool.QueueUserWorkItem(delegate { Run(); });
-#endif
             }
         }
 
