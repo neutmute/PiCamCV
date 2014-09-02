@@ -118,14 +118,11 @@ namespace PiCamCV
         {
             _captureModuleType = CaptureModuleType.Camera;
 
-#if TEST_CAPTURE
-#else
             _ptr = CvInvokeRaspiCamCV.cvCreateCameraCapture(camIndex);
             if (_ptr == IntPtr.Zero)
             {
                 throw new NullReferenceException(String.Format("Error: Unable to create capture from camera {0}", camIndex));
             }
-#endif
         }
         #endregion
 
@@ -135,11 +132,8 @@ namespace PiCamCV
         /// </summary>
         protected override void DisposeObject()
         {
-#if TEST_CAPTURE
-#else
             Stop();
             CvInvokeRaspiCamCV.cvReleaseCapture(ref _ptr);
-#endif
         }
         #endregion
 
@@ -154,7 +148,9 @@ namespace PiCamCV
 
             CvInvokeRaspiCamCV.cvQueryFrame(_ptr);
             if (ImageGrabbed != null)
+            {
                 ImageGrabbed(this, new EventArgs());
+            }
             return true;
         }
 
@@ -245,8 +241,8 @@ namespace PiCamCV
         {
             if (FlipType == FlipType.None)
             {
-                var iplImage = CvInvokeRaspiCamCV.cvQueryFrame(_ptr);
-                var managedImage = Image<Bgr, Byte>.FromIplImagePtr(iplImage);
+                var ptr = CvInvokeRaspiCamCV.cvQueryFrame(_ptr);
+                var managedImage = Image<Bgr, Byte>.FromIplImagePtr(ptr);
                 managedImage.Mat.CopyTo(outputArray);
                 return true;
             }
@@ -254,8 +250,8 @@ namespace PiCamCV
             {
                 using (Mat tmp = new Mat())
                 {
-                    var iplImage = CvInvokeRaspiCamCV.cvQueryFrame(Ptr);
-                    var managedImage = Image<Bgr, Byte>.FromIplImagePtr(iplImage);
+                    var ptr = CvInvokeRaspiCamCV.cvQueryFrame(Ptr);
+                    var managedImage = Image<Bgr, Byte>.FromIplImagePtr(ptr);
                     managedImage.Mat.CopyTo(tmp);
                     CvInvoke.Flip(tmp, outputArray, FlipType);
                     return true;

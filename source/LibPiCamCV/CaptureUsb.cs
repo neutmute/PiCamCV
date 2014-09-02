@@ -5,7 +5,8 @@ using PiCamCV.Interfaces;
 namespace PiCamCV
 {
     /// <summary>
-    /// Easier side by side testing in Windows
+    /// Provides a facade around Emgu capture
+    /// Help compare CapturePi against Emgu Capture
     /// </summary>
     public class CaptureUsb : ICaptureGrab
     {
