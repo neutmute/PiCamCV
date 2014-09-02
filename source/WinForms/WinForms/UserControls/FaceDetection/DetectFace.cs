@@ -32,16 +32,10 @@ namespace FaceDetection
         {
                 Stopwatch watch;
                 var result = new FaceDetectResult();
-
-                bool tryUseOpenCL = true;
-                if (CvInvoke.HaveOpenCL)
-                {
-                    CvInvoke.UseOpenCL = tryUseOpenCL;
-                }
-
+            
                 //Read the HaarCascade objects
-                using (CascadeClassifier face = new CascadeClassifier(faceFileName))
-                using (CascadeClassifier eye = new CascadeClassifier(eyeFileName))
+                using (var faceClassifier = new CascadeClassifier(faceFileName))
+                using (var eyeClassifier = new CascadeClassifier(eyeFileName))
                 {
                     watch = Stopwatch.StartNew();
                     using (UMat ugray = new UMat())
@@ -54,7 +48,7 @@ namespace FaceDetection
                         //Detect the faces  from the gray scale image and store the locations as rectangle
                         //The first dimensional is the channel
                         //The second dimension is the index of the rectangle in the specific channel
-                        Rectangle[] facesDetected = face.DetectMultiScale(
+                        Rectangle[] facesDetected = faceClassifier.DetectMultiScale(
                            ugray,
                            1.1,
                            10,
@@ -67,7 +61,7 @@ namespace FaceDetection
                             //Get the region of interest on the faces
                             using (UMat faceRegion = new UMat(ugray, f))
                             {
-                                Rectangle[] eyesDetected = eye.DetectMultiScale(
+                                Rectangle[] eyesDetected = eyeClassifier.DetectMultiScale(
                                    faceRegion,
                                    1.1,
                                    10,
