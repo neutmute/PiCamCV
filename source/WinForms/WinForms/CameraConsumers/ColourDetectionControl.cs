@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using System.Diagnostics;
 
 namespace PiCamCV.WinForms.CameraConsumers
 {
@@ -59,9 +60,50 @@ namespace PiCamCV.WinForms.CameraConsumers
             //morphological closing (fill small holes in the foreground)
             thresholdImage.Dilate(erodeDilateIterations);
             thresholdImage.Erode(erodeDilateIterations);
-      
 
-            imageBoxCaptured.Image = matCaptured;
+            var capturedImage = matCaptured.ToImage<Bgr, byte>();
+            var moments = thresholdImage.GetMoments(true);
+            moments.GetCentralMoment(0, 0);
+
+            var area = moments.M00;
+            if (area > 200)
+            {
+                int posX = Convert.ToInt32(moments.M10/area);
+                int posY = Convert.ToInt32(moments.M01/area);
+                var circleCenter = new PointF(posX, posY);
+                var radius = 50;
+                var circle = new CircleF( circleCenter, radius);
+                var color = new Bgr(Color.Yellow);
+                capturedImage.Draw(circle, color, 3);
+                capturedImage.Draw("ball", new Point(posX + radius, posY), FontFace.HersheyPlain,3, color);
+            }
+
+            //#region circle detection
+            //var watch = Stopwatch.StartNew();
+            //double cannyThreshold = 180.0;
+            //double circleAccumulatorThreshold = 120;
+            //CircleF[] circles = CvInvoke.HoughCircles(
+            //    thresholdImage
+            //    , HoughType.Gradient
+            //    , 2.0
+            //    , 20.0
+            //    , cannyThreshold
+            //    , circleAccumulatorThreshold
+            //    , 5);
+
+            //watch.Stop();
+            //NotifyStatus("Hough circles - {0} ms; ", watch.ElapsedMilliseconds);
+            //#endregion
+
+            //#region draw circles
+            //var circleImage = matCaptured.ToImage<Bgr, byte>();
+            //foreach (CircleF circle in circles)
+            //{
+            //    circleImage.Draw(circle, new Bgr(Color.Brown), 2);
+            //}
+            //#endregion
+
+            imageBoxCaptured.Image = capturedImage;
             imageBoxFiltered.Image = thresholdImage;
         }
 
@@ -74,6 +116,15 @@ namespace PiCamCV.WinForms.CameraConsumers
             sliderHueMax.Value = 255;
             sliderSaturationMax.Value = 255;
             sliderValueMax.Value = 255;
+
+
+            sliderHueMin.Value = 140;
+            sliderSaturationMin.Value = 57;
+            sliderValueMin.Value = 25;
+
+            sliderHueMax.Value = 187;
+            sliderSaturationMax.Value = 153;
+            sliderValueMax.Value = 82;
         }
     }
 }

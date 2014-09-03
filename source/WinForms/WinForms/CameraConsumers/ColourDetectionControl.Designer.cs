@@ -58,7 +58,7 @@
             this.panelLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelLeft.Location = new System.Drawing.Point(0, 0);
             this.panelLeft.Name = "panelLeft";
-            this.panelLeft.Size = new System.Drawing.Size(216, 465);
+            this.panelLeft.Size = new System.Drawing.Size(216, 600);
             this.panelLeft.TabIndex = 5;
             // 
             // sliderValueMin
@@ -127,7 +127,7 @@
             this.groupBoxCaptured.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBoxCaptured.Location = new System.Drawing.Point(216, 0);
             this.groupBoxCaptured.Name = "groupBoxCaptured";
-            this.groupBoxCaptured.Size = new System.Drawing.Size(490, 262);
+            this.groupBoxCaptured.Size = new System.Drawing.Size(591, 403);
             this.groupBoxCaptured.TabIndex = 6;
             this.groupBoxCaptured.TabStop = false;
             this.groupBoxCaptured.Text = "Captured";
@@ -137,7 +137,7 @@
             this.imageBoxCaptured.Dock = System.Windows.Forms.DockStyle.Fill;
             this.imageBoxCaptured.Location = new System.Drawing.Point(3, 16);
             this.imageBoxCaptured.Name = "imageBoxCaptured";
-            this.imageBoxCaptured.Size = new System.Drawing.Size(484, 243);
+            this.imageBoxCaptured.Size = new System.Drawing.Size(585, 384);
             this.imageBoxCaptured.TabIndex = 5;
             this.imageBoxCaptured.TabStop = false;
             // 
@@ -145,9 +145,9 @@
             // 
             this.groupBoxFiltered.Controls.Add(this.imageBoxFiltered);
             this.groupBoxFiltered.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxFiltered.Location = new System.Drawing.Point(216, 262);
+            this.groupBoxFiltered.Location = new System.Drawing.Point(216, 403);
             this.groupBoxFiltered.Name = "groupBoxFiltered";
-            this.groupBoxFiltered.Size = new System.Drawing.Size(490, 203);
+            this.groupBoxFiltered.Size = new System.Drawing.Size(591, 197);
             this.groupBoxFiltered.TabIndex = 7;
             this.groupBoxFiltered.TabStop = false;
             this.groupBoxFiltered.Text = "Filtered";
@@ -157,7 +157,7 @@
             this.imageBoxFiltered.Dock = System.Windows.Forms.DockStyle.Fill;
             this.imageBoxFiltered.Location = new System.Drawing.Point(3, 16);
             this.imageBoxFiltered.Name = "imageBoxFiltered";
-            this.imageBoxFiltered.Size = new System.Drawing.Size(484, 184);
+            this.imageBoxFiltered.Size = new System.Drawing.Size(585, 178);
             this.imageBoxFiltered.TabIndex = 6;
             this.imageBoxFiltered.TabStop = false;
             // 
@@ -169,7 +169,7 @@
             this.Controls.Add(this.groupBoxCaptured);
             this.Controls.Add(this.panelLeft);
             this.Name = "ColourDetectionControl";
-            this.Size = new System.Drawing.Size(706, 465);
+            this.Size = new System.Drawing.Size(807, 600);
             this.Load += new System.EventHandler(this.ColourDetectionControl_Load);
             this.panelLeft.ResumeLayout(false);
             this.groupBoxCaptured.ResumeLayout(false);
