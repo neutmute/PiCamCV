@@ -17,8 +17,7 @@ namespace PiCamCV.WinForms
         {
             InitializeComponent();
         }
-
-
+        
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
             var frame = new Mat();
@@ -42,12 +41,6 @@ namespace PiCamCV.WinForms
             imageBoxCanny.Image = cannyFrame;
 
             NotifyStatus(string.Empty);
-        }
-
-
-
-        private void CameraCapture_Load(object sender, EventArgs e)
-        {
         }
     }
 }

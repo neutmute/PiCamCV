@@ -12,6 +12,7 @@ using Emgu.CV.Structure;
 using PiCamCV;
 using PiCamCV.Interfaces;
 using PiCamCV.WinForms;
+using PiCamCV.WinForms.CameraConsumers;
 using PiCamCV.WinForms.UserControls;
 
 namespace WinForms
@@ -38,14 +39,17 @@ namespace WinForms
             _capture = new CaptureUsb();
             
             var basicCapture = new BasicCaptureControl();
-            var faceDetection = new FaceDetectionControl();;
+            var faceDetection = new FaceDetectionControl();
+            var colourDetection = new ColourDetectionControl();
 
             var consumers = new List<CameraConsumerUserControl>();
             consumers.Add(basicCapture);
             consumers.Add(faceDetection);
+            consumers.Add(colourDetection);
             
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageCameraCapture, basicCapture));
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageFaceDetection, faceDetection));
+            _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageColourDetect, colourDetection));
             
             foreach (var consumer in consumers)
             {

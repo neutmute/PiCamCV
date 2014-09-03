@@ -68,14 +68,20 @@
     <Compile Include="..\..\..\Solution Items\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="CameraConsumers\ColourDetectionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CameraConsumers\ColourDetectionControl.Designer.cs">
+      <DependentUpon>ColourDetectionControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="ICameraConsumer.cs" />
-    <Compile Include="UserControls\CameraConsumerUserControl.cs">
+    <Compile Include="CameraConsumers\Base\CameraConsumerUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\BasicCaptureControl.cs">
+    <Compile Include="CameraConsumers\BasicCaptureControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\BasicCaptureControl.Designer.cs">
+    <Compile Include="CameraConsumers\BasicCaptureControl.Designer.cs">
       <DependentUpon>BasicCaptureControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfoUnique.cs" />
@@ -86,15 +92,24 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="UserControls\FaceDetection\DetectFace.cs" />
-    <Compile Include="UserControls\FaceDetection\FaceDetectionControl.cs">
+    <Compile Include="CameraConsumers\FaceDetection\DetectFace.cs" />
+    <Compile Include="CameraConsumers\FaceDetection\FaceDetectionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\FaceDetection\FaceDetectionControl.Designer.cs">
+    <Compile Include="CameraConsumers\FaceDetection\FaceDetectionControl.Designer.cs">
       <DependentUpon>FaceDetectionControl.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="UserControls\BasicCaptureControl.resx">
+    <Compile Include="UserControls\SliderControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\SliderControl.Designer.cs">
+      <DependentUpon>SliderControl.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="CameraConsumers\BasicCaptureControl.resx">
       <DependentUpon>BasicCaptureControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CameraConsumers\ColourDetectionControl.resx">
+      <DependentUpon>ColourDetectionControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -109,8 +124,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="UserControls\FaceDetection\FaceDetectionControl.resx">
+    <EmbeddedResource Include="CameraConsumers\FaceDetection\FaceDetectionControl.resx">
       <DependentUpon>FaceDetectionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\SliderControl.resx">
+      <DependentUpon>SliderControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="App.config" />
     <None Include="packages.config" />
@@ -131,10 +149,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="UserControls\FaceDetection\haarcascade_eye.xml">
+    <Content Include="CameraConsumers\FaceDetection\haarcascade_eye.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="UserControls\FaceDetection\haarcascade_frontalface_default.xml">
+    <Content Include="CameraConsumers\FaceDetection\haarcascade_frontalface_default.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

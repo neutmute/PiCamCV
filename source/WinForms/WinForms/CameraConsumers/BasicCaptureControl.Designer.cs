@@ -155,7 +155,6 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "BasicCaptureControl";
             this.Size = new System.Drawing.Size(843, 603);
-            this.Load += new System.EventHandler(this.CameraCapture_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.groupBoxCanny.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCanny)).EndInit();
