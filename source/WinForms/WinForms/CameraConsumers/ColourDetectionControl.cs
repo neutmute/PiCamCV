@@ -24,46 +24,45 @@ namespace PiCamCV.WinForms.CameraConsumers
         /// </summary>
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
-
             var matCaptured = new Mat();
             CameraCapture.Retrieve(matCaptured);
 
             var hsvFrame = new Mat();
-            CvInvoke.CvtColor(matCaptured, hsvFrame, ColorConversion.Bgr2Gray);
+            CvInvoke.CvtColor(matCaptured, hsvFrame, ColorConversion.Bgr2Hsv);
 
-            //var matThresholded = new Mat();
-            //var lowH = sliderHueMin.Value;
-            //var lowS = sliderSaturationMin.Value;
-            //var lowV = sliderValueMin.Value;
+            var matThresholded = new Mat();
+            var lowH = sliderHueMin.Value;
+            var lowS = sliderSaturationMin.Value;
+            var lowV = sliderValueMin.Value;
 
-            //var highH = sliderHueMax.Value;
-            //var highS = sliderSaturationMax.Value;
-            //var highV = sliderValueMax.Value;
-                
-            //var lowMScalar = new MCvScalar(lowH, lowS, lowV);
-            //var highMScalar = new MCvScalar(highH, highS, highV);
+            var highH = sliderHueMax.Value;
+            var highS = sliderSaturationMax.Value;
+            var highV = sliderValueMax.Value;
 
+            var lowMScalar = new MCvScalar(lowH, lowS, lowV);
+            var highMScalar = new MCvScalar(highH, highS, highV);
 
-        
-            //using (var lowerScalar = new ScalarArray(lowMScalar))
-            //{
-            //    using (var upperScalar = new ScalarArray(highMScalar))
-            //    {
-            //     //   CvInvoke.InRange(hsvFrame, lowerScalar, upperScalar, matThresholded); //Threshold the image
-            //    }
-            //}
+            using (var lowerScalar = new ScalarArray(lowMScalar))
+            {
+                using (var upperScalar = new ScalarArray(highMScalar))
+                {
+                       CvInvoke.InRange(hsvFrame, lowerScalar, upperScalar, matThresholded); //Threshold the image
+                }
+            }
 
+            var thresholdImage = matThresholded.ToImage<Gray, byte>();
+            const int erodeDilateIterations = 10;
             //morphological opening (remove small objects from the foreground)
-            //CvInvoke.Erode(matThresholded, matThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
-            //dilate(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
+            thresholdImage.Erode(erodeDilateIterations);
+            thresholdImage.Dilate(erodeDilateIterations);
 
-            ////morphological closing (fill small holes in the foreground)
-            //dilate(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
-            //erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
-
+            //morphological closing (fill small holes in the foreground)
+            thresholdImage.Dilate(erodeDilateIterations);
+            thresholdImage.Erode(erodeDilateIterations);
+      
 
             imageBoxCaptured.Image = matCaptured;
-            imageBoxFiltered.Image = matThresholded;
+            imageBoxFiltered.Image = thresholdImage;
         }
 
         private void ColourDetectionControl_Load(object sender, EventArgs e)

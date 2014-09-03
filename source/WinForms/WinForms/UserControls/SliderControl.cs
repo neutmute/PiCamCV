@@ -28,7 +28,11 @@ namespace PiCamCV.WinForms.UserControls
         public int Value
         {
             get { return _value; }  // cross thread from image grabbed event fix
-            set { trackBar.Value = value; }
+            set
+            {
+                trackBar.Value = value;
+                _value = value;
+            }
         }
 
         public SliderControl()
@@ -44,9 +48,9 @@ namespace PiCamCV.WinForms.UserControls
         private void trackBar_ValueChanged(object sender, EventArgs e)
         {
             SetLabel();
+            _value = trackBar.Value;
             if (ValueChanged != null)
             {
-                _value = trackBar.Value;
                 ValueChanged(this, e);
             }
         }
