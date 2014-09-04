@@ -61,6 +61,7 @@
     <Compile Include="..\..\Solution Items\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="CaptureFactory.cs" />
     <Compile Include="CapturePi.cs" />
     <Compile Include="CaptureUsb.cs" />
     <Compile Include="Interfaces\ICaptureGrab.cs" />

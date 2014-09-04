@@ -22,13 +22,8 @@ namespace PiCamCV.WinForms.CameraConsumers
             InitializeComponent();
         }
 
-        /// <summary>
-        /// Based off http://opencv-srf.blogspot.com.au/2010/09/object-detection-using-color-seperation.html
-        /// </summary>
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
-            var matCaptured = new Mat();
-            CameraCapture.Retrieve(matCaptured);
 
             var lowH = sliderHueMin.Value;
             var lowS = sliderSaturationMin.Value;
@@ -39,6 +34,9 @@ namespace PiCamCV.WinForms.CameraConsumers
             var highV = sliderValueMax.Value;
 
             var colorDetector = new ColourDetector();
+
+            var matCaptured = new Mat();
+            CameraCapture.Retrieve(matCaptured);
             var input = new ColourDetectorInput
             {
                Captured = matCaptured

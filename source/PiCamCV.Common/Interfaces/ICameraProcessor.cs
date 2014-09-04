@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Common.Logging;
@@ -22,8 +23,17 @@ namespace PiCamCV.Common.Interfaces
         where TInput:CameraProcessInput 
         where TResult:CameraProcessOutput
     {
-        private readonly static ILog _Log = LogManager.GetCurrentClassLogger();
-        protected ILog Log { get { return _Log; } }
-        public abstract TResult Process(TInput input);
+        private readonly static ILog _log = LogManager.GetCurrentClassLogger();
+        protected ILog Log { get { return _log; } }
+
+        public TResult Process(TInput input)
+        {
+            var stopWatch = Stopwatch.StartNew();
+            var result = DoProcess(input);
+            var elapsed = stopWatch.Elapsed;
+            Log.Trace(m => result.ToString());
+            return result;
+        }
+        protected abstract TResult DoProcess(TInput input);
     }
 }

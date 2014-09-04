@@ -28,12 +28,19 @@ namespace PiCamCV.Common
         public PointF CentralPoint { get; set; }
         public bool IsDetected { get; set; }
 
+        public override string ToString()
+        {
+            return string.Format("IsDetected={0}, CentralPoint={1}", IsDetected, CentralPoint);
+        }
     }
 
+    /// <summary>
+    /// Based off http://opencv-srf.blogspot.com.au/2010/09/object-detection-using-color-seperation.html
+    /// </summary>
     public class ColourDetector : CameraProcessor<ColourDetectorInput, ColourDetectorProcessOutput>
     {
 
-        public override ColourDetectorProcessOutput Process(ColourDetectorInput input)
+        protected override ColourDetectorProcessOutput DoProcess(ColourDetectorInput input)
         {
             var output = new ColourDetectorProcessOutput();
             var hsvFrame = new Mat();

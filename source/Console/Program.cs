@@ -5,8 +5,9 @@ using System.Text;
 using Common.Logging;
 using Emgu.CV;
 using Kraken.Core;
+using PiCamCV.ConsoleApp.Runners;
 
-namespace PiCamCV.Console
+namespace PiCamCV.ConsoleApp
 {
     class Program
     {
@@ -15,8 +16,33 @@ namespace PiCamCV.Console
         static void Main(string[] args)
         {
             Log.Info(ExecutionEnvironment.GetApplicationMetadata());
-            Log.Info(m => m("OpencvRaspiCamCVLibrary={0}", CvInvokeRaspiCamCV.OpencvRaspiCamCVLibrary));
-            var runner = new SimpleCv();
+            Log.Info(m => m("CVLibrary={0}", CvInvokeRaspiCamCV.CVLibrary));
+
+            var options = new ConsoleOptions(args);
+
+            if (options.ShowHelp)
+            {
+                Console.WriteLine("Options:");
+                options.OptionSet.WriteOptionDescriptions(Console.Out);
+                return;
+            }
+
+            IRunner runner;
+            
+            switch (options.Mode)
+            {
+                case Mode.simple:runner = new SimpleCv(); 
+                    break;
+
+                case Mode.colourdetect:
+                    var capture = CaptureFactory.GetCapture(CaptureDevice.Usb);
+                    runner = new ColorDetectRunner(capture); 
+                    break;
+
+                default:
+                    throw KrakenException.Create("Option mode {0} needs wiring up", options.Mode);
+            }
+
             runner.Run();
         }
     }

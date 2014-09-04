@@ -19,12 +19,12 @@ namespace PiCamCV
         public const CallingConvention CvCallingConvention = CallingConvention.Cdecl;
 
 #if (UNIX)
-        public const string OpencvRaspiCamCVLibrary = "raspicamcv";
+        public const string CVLibrary = "raspicamcv";
         public const string EntryPointCapture = "raspiCamCvCreateCameraCapture";
         public const string EntryPointQuery = "raspiCamCvQueryFrame";
         public const string EntryPointRelease = "raspiCamCvReleaseCapture";
 #else
-        public const string OpencvRaspiCamCVLibrary = "opencv_videoio300";
+        public const string CVLibrary = "opencv_videoio300";
         public const string EntryPointCapture = "cvCreateCameraCapture";
         public const string EntryPointQuery = "cvQueryFrame";
         public const string EntryPointRelease = "cvReleaseCapture";
@@ -36,7 +36,7 @@ namespace PiCamCV
         /// </summary>
         /// <param name="index">Index of the camera to be used. If there is only one camera or it does not matter what camera to use -1 may be passed</param>
         /// <returns>Pointer to the capture structure</returns>
-        [DllImport(OpencvRaspiCamCVLibrary, EntryPoint=EntryPointCapture, CallingConvention = CvCallingConvention)]
+        [DllImport(CVLibrary, EntryPoint=EntryPointCapture, CallingConvention = CvCallingConvention)]
         public static extern IntPtr cvCreateCameraCapture(int index);
 
         
@@ -46,7 +46,7 @@ namespace PiCamCV
         /// <param name="capture">Video capturing structure</param>
         /// <returns>Pointer to the queryed frame</returns>
         /// <remarks>The returned image should not be released or modified by user. </remarks>
-        [DllImport(OpencvRaspiCamCVLibrary, EntryPoint=EntryPointQuery, CallingConvention = CvCallingConvention)]
+        [DllImport(CVLibrary, EntryPoint=EntryPointQuery, CallingConvention = CvCallingConvention)]
         public static extern IntPtr cvQueryFrame(IntPtr capture);
 
         
@@ -54,7 +54,7 @@ namespace PiCamCV
         /// The function cvReleaseCapture releases the CvCapture structure allocated by cvCreateFileCapture or cvCreateCameraCapture
         /// </summary>
         /// <param name="capture">pointer to video capturing structure.</param>
-        [DllImport(OpencvRaspiCamCVLibrary, EntryPoint=EntryPointRelease, CallingConvention = CvCallingConvention)]
+        [DllImport(CVLibrary, EntryPoint=EntryPointRelease, CallingConvention = CvCallingConvention)]
         public static extern void cvReleaseCapture(ref IntPtr capture);
 
     }

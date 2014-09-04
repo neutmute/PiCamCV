@@ -7,8 +7,8 @@
     <ProjectGuid>{B699FF77-A5F6-41AA-A97A-2ADB1808F951}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PiCamCV.Console</RootNamespace>
-    <AssemblyName>picamvc</AssemblyName>
+    <RootNamespace>PiCamCV.ConsoleApp</RootNamespace>
+    <AssemblyName>picamcv.con</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -50,6 +50,10 @@
     <Reference Include="Emgu.CV">
       <HintPath>..\..\..\emgu-source\bin\Emgu.CV.dll</HintPath>
     </Reference>
+    <Reference Include="Emgu.Util, Version=3.0.0.0, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\emgu-source\bin\Emgu.Util.dll</HintPath>
+    </Reference>
     <Reference Include="Kraken.Core, Version=4.0.5.22, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Kraken.Core.4.5.0.22\lib\net40\Kraken.Core.dll</HintPath>
@@ -66,9 +70,13 @@
     <Compile Include="..\..\Solution Items\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AppOptions.cs" />
+    <Compile Include="IRunner.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfoUnique.cs" />
-    <Compile Include="SimpleCv.cs" />
+    <Compile Include="Runners\BaseRunner.cs" />
+    <Compile Include="Runners\ColorDetectRunner.cs" />
+    <Compile Include="Runners\SimpleCv.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

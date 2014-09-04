@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using Emgu.CV;
 
-namespace PiCamCV.Console
+namespace PiCamCV.ConsoleApp
 {
-    public class SimpleCv
+    public class SimpleCv : IRunner
     {
         /// <summary>
         /// c# implementation of https://github.com/robidouille/robidouille/blob/master/raspicam_cv/RaspiCamTest.c

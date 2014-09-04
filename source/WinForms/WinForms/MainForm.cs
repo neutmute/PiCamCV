@@ -34,10 +34,7 @@ namespace WinForms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            CvInvoke.UseOpenCL = false;
-            CvInvoke.CheckLibraryLoaded();
-            _capture = new CaptureUsb(); // EmguCV. Windows or Pi but usb
-            //_capture = new CapturePi(); // Pi only, Pi camera module
+            _capture = CaptureFactory.GetCapture(CaptureDevice.Pi);
             
             var basicCapture = new BasicCaptureControl();
             var faceDetection = new FaceDetectionControl();
