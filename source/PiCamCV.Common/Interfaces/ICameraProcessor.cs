@@ -28,10 +28,10 @@ namespace PiCamCV.Common.Interfaces
 
         public TResult Process(TInput input)
         {
-            var stopWatch = Stopwatch.StartNew();
+          //  var stopWatch = Stopwatch.StartNew();
             var result = DoProcess(input);
-            var elapsed = stopWatch.Elapsed;
-            Log.Trace(m => result.ToString());
+         //   var elapsed = stopWatch.Elapsed;
+           // Log.Trace(m => result.ToString());
             return result;
         }
         protected abstract TResult DoProcess(TInput input);

@@ -57,6 +57,7 @@ namespace PiCamCV.Common
 
             output.ThresholdImage = matThresholded.ToImage<Gray, byte>();
             const int erodeDilateIterations = 10;
+
             //morphological opening (remove small objects from the foreground)
             output.ThresholdImage.Erode(erodeDilateIterations);
             output.ThresholdImage.Dilate(erodeDilateIterations);

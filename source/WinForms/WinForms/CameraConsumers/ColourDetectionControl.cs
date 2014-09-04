@@ -17,14 +17,15 @@ namespace PiCamCV.WinForms.CameraConsumers
 {
     public partial class ColourDetectionControl : CameraConsumerUserControl
     {
+        private ColourDetector _colorDetector;
         public ColourDetectionControl()
         {
             InitializeComponent();
+            _colorDetector = new ColourDetector();
         }
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
-
             var lowH = sliderHueMin.Value;
             var lowS = sliderSaturationMin.Value;
             var lowV = sliderValueMin.Value;
@@ -33,7 +34,6 @@ namespace PiCamCV.WinForms.CameraConsumers
             var highS = sliderSaturationMax.Value;
             var highV = sliderValueMax.Value;
 
-            var colorDetector = new ColourDetector();
 
             var matCaptured = new Mat();
             CameraCapture.Retrieve(matCaptured);
@@ -43,7 +43,7 @@ namespace PiCamCV.WinForms.CameraConsumers
                ,LowThreshold =new MCvScalar(lowH, lowS, lowV)
                ,HighThreshold = new MCvScalar(highH, highS, highV)
             };
-            var output = colorDetector.Process(input);
+            var output = _colorDetector.Process(input);
 
             if (output.IsDetected)
             {
@@ -95,7 +95,7 @@ namespace PiCamCV.WinForms.CameraConsumers
             sliderSaturationMax.Value = 255;
             sliderValueMax.Value = 255;
 
-
+            // red ball preset
             sliderHueMin.Value = 140;
             sliderSaturationMin.Value = 57;
             sliderValueMin.Value = 25;
