@@ -10,6 +10,7 @@ using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using System.Diagnostics;
+using Kraken.Core;
 using PiCamCV.Common;
 using PiCamCV.Common.ExtensionMethods;
 
@@ -36,7 +37,12 @@ namespace PiCamCV.WinForms.CameraConsumers
 
 
             var matCaptured = new Mat();
+
+            var w = Stopwatch.StartNew();
             CameraCapture.Retrieve(matCaptured);
+            NotifyStatus("Retrieved in {0}", w.Elapsed.ToHumanReadable());
+
+
             var input = new ColourDetectorInput
             {
                Captured = matCaptured

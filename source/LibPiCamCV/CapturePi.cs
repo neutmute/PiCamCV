@@ -245,8 +245,10 @@ namespace PiCamCV
             if (FlipType == FlipType.None)
             {
                 var ptr = CvInvokeRaspiCamCV.cvQueryFrame(_ptr);
-                var managedImage = Image<Bgr, Byte>.FromIplImagePtr(ptr);
-                managedImage.Mat.CopyTo(outputArray);
+                using (Mat m = CvInvoke.CvArrToMat(ptr))
+                {
+                    m.CopyTo(outputArray);
+                }
                 return true;
             }
             else

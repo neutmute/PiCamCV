@@ -34,7 +34,7 @@ namespace WinForms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            _capture = CaptureFactory.GetCapture(CaptureDevice.Usb);
+            _capture = CaptureFactory.GetCapture(CaptureDevice.Pi);
             
             var basicCapture = new BasicCaptureControl();
             var faceDetection = new FaceDetectionControl();
