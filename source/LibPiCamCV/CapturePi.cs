@@ -147,9 +147,11 @@ namespace PiCamCV
         public virtual bool Grab()
         {
             if (_ptr == IntPtr.Zero)
+            {
                 return false;
+            }
 
-            CvInvokeRaspiCamCV.cvQueryFrame(_ptr);
+            //CvInvokeRaspiCamCV.cvQueryFrame(_ptr);
             if (ImageGrabbed != null)
             {
                 ImageGrabbed(this, new EventArgs());
