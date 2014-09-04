@@ -11,6 +11,7 @@ using Emgu.CV;
 using Emgu.Util;
 using Emgu.CV.Structure;
 using Emgu.CV.CvEnum;
+using PiCamCV.Interfaces;
 
 namespace PiCamCV
 {
@@ -18,7 +19,7 @@ namespace PiCamCV
     /// Capture images from either camera or video file. 
     /// </summary>
     public class CapturePi :
-        UnmanagedObject, ICapture
+        UnmanagedObject, ICaptureGrab
     {
 
         protected static ILog Log = LogManager.GetCurrentClassLogger();

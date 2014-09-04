@@ -114,7 +114,7 @@
             // sliderHueMax
             // 
             this.sliderHueMax.Dock = System.Windows.Forms.DockStyle.Top;
-            this.sliderHueMax.Label = "HueMax";
+            this.sliderHueMax.Label = "Hue Max";
             this.sliderHueMax.Location = new System.Drawing.Point(0, 0);
             this.sliderHueMax.Name = "sliderHueMax";
             this.sliderHueMax.Size = new System.Drawing.Size(216, 54);
