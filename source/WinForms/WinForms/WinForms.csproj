@@ -74,7 +74,6 @@
     <Compile Include="CameraConsumers\ColourDetectionControl.Designer.cs">
       <DependentUpon>ColourDetectionControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="ICameraConsumer.cs" />
     <Compile Include="CameraConsumers\Base\CameraConsumerUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -146,6 +145,10 @@
     <ProjectReference Include="..\..\LibPiCamCV\LibPiCamCV.csproj">
       <Project>{9c3c3278-805b-43b2-9741-fd8a47575462}</Project>
       <Name>LibPiCamCV</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PiCamCV.Common\PiCamCV.Common.csproj">
+      <Project>{233c04e5-2565-4e9c-ac8b-eec462268cf8}</Project>
+      <Name>PiCamCV.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

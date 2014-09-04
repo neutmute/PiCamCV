@@ -1,7 +1,7 @@
 ﻿using System;
 using PiCamCV.Interfaces;
 
-namespace PiCamCV.WinForms
+namespace PiCamCV.Common
 {
     public interface ICameraConsumer
     {

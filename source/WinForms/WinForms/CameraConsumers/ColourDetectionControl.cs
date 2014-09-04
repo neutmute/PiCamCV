@@ -10,6 +10,8 @@ using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using System.Diagnostics;
+using PiCamCV.Common;
+using PiCamCV.Common.ExtensionMethods;
 
 namespace PiCamCV.WinForms.CameraConsumers
 {
@@ -28,10 +30,6 @@ namespace PiCamCV.WinForms.CameraConsumers
             var matCaptured = new Mat();
             CameraCapture.Retrieve(matCaptured);
 
-            var hsvFrame = new Mat();
-            CvInvoke.CvtColor(matCaptured, hsvFrame, ColorConversion.Bgr2Hsv);
-
-            var matThresholded = new Mat();
             var lowH = sliderHueMin.Value;
             var lowS = sliderSaturationMin.Value;
             var lowV = sliderValueMin.Value;
@@ -40,42 +38,24 @@ namespace PiCamCV.WinForms.CameraConsumers
             var highS = sliderSaturationMax.Value;
             var highV = sliderValueMax.Value;
 
-            var lowMScalar = new MCvScalar(lowH, lowS, lowV);
-            var highMScalar = new MCvScalar(highH, highS, highV);
-
-            using (var lowerScalar = new ScalarArray(lowMScalar))
+            var colorDetector = new ColourDetector();
+            var input = new ColourDetectorInput
             {
-                using (var upperScalar = new ScalarArray(highMScalar))
-                {
-                       CvInvoke.InRange(hsvFrame, lowerScalar, upperScalar, matThresholded); //Threshold the image
-                }
-            }
+               Captured = matCaptured
+               ,LowThreshold =new MCvScalar(lowH, lowS, lowV)
+               ,HighThreshold = new MCvScalar(highH, highS, highV)
+            };
+            var output = colorDetector.Process(input);
 
-            var thresholdImage = matThresholded.ToImage<Gray, byte>();
-            const int erodeDilateIterations = 10;
-            //morphological opening (remove small objects from the foreground)
-            thresholdImage.Erode(erodeDilateIterations);
-            thresholdImage.Dilate(erodeDilateIterations);
-
-            //morphological closing (fill small holes in the foreground)
-            thresholdImage.Dilate(erodeDilateIterations);
-            thresholdImage.Erode(erodeDilateIterations);
-
-            var capturedImage = matCaptured.ToImage<Bgr, byte>();
-            var moments = thresholdImage.GetMoments(true);
-            moments.GetCentralMoment(0, 0);
-
-            var area = moments.M00;
-            if (area > 200)
+            if (output.IsDetected)
             {
-                int posX = Convert.ToInt32(moments.M10/area);
-                int posY = Convert.ToInt32(moments.M01/area);
-                var circleCenter = new PointF(posX, posY);
                 var radius = 50;
-                var circle = new CircleF( circleCenter, radius);
+                var circle = new CircleF(output.CentralPoint, radius);
                 var color = new Bgr(Color.Yellow);
-                capturedImage.Draw(circle, color, 3);
-                capturedImage.Draw("ball", new Point(posX + radius, posY), FontFace.HersheyPlain,3, color);
+                output.CapturedImage.Draw(circle, color, 3);
+                var ballTextLocation = output.CentralPoint.ToPoint();
+                ballTextLocation.X += radius;
+                output.CapturedImage.Draw("ball", ballTextLocation, FontFace.HersheyPlain, 3, color);
             }
 
             //#region circle detection
@@ -103,8 +83,8 @@ namespace PiCamCV.WinForms.CameraConsumers
             //}
             //#endregion
 
-            imageBoxCaptured.Image = capturedImage;
-            imageBoxFiltered.Image = thresholdImage;
+            imageBoxCaptured.Image = output.CapturedImage;
+            imageBoxFiltered.Image = output.ThresholdImage;
         }
 
         private void ColourDetectionControl_Load(object sender, EventArgs e)

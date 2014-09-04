@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using Emgu.CV;
+using PiCamCV.Common;
 using PiCamCV.Interfaces;
 
 namespace PiCamCV.WinForms
