@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Common.Logging;
 using PiCamCV.Interfaces;
 
 namespace PiCamCV
@@ -23,8 +24,11 @@ namespace PiCamCV
 
     public static class CaptureFactory
     {
+        static readonly ILog Log = LogManager.GetCurrentClassLogger();
         public static ICaptureGrab GetCapture(CaptureDevice device)
         {
+
+            Log.Info(m => m("Getting {0} device", device));
             if (device == CaptureDevice.Pi)
             {
                 return new CapturePi();
