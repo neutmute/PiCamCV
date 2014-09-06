@@ -78,6 +78,11 @@
   <ItemGroup>
     <EmbeddedResource Include="haarcascades\haarcascade_lego_batman2.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="haarcascades\haarcascade_castrillon_mouth.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

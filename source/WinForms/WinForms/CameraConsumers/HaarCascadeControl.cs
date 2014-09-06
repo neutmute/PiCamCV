@@ -23,8 +23,9 @@ namespace PiCamCV.WinForms.CameraConsumers
         {
             InitializeComponent();
 
-            var xmlContent = Resource.GetStringFromEmbedded(typeof(CascadeDetector).Assembly, "PiCamCV.Common.haarcascades.haarcascade_lego_batman2.xml");
+            //var xmlContent = Resource.GetStringFromEmbedded(typeof(CascadeDetector).Assembly, "PiCamCV.Common.haarcascades.haarcascade_lego_batman2.xml");
             //var xmlContent =File.ReadAllText(@"C:\CodeOther\PiCamCV\source\WinForms\WinForms\CameraConsumers\FaceDetection\haarcascade_frontalface_default.xml");
+            var xmlContent = File.ReadAllText(@"C:\CodeOther\PiCamCV\source\PiCamCV.Common\haarcascades\haarcascade_castrillon_mouth.xml");
             _detector = new CascadeDetector(xmlContent);
         }
 
