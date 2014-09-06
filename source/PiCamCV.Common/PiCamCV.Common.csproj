@@ -79,6 +79,7 @@
     <EmbeddedResource Include="haarcascades\haarcascade_lego_batman2.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="haarcascades\haarcascade_lego_batman4.xml" />
     <Content Include="haarcascades\haarcascade_castrillon_mouth.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

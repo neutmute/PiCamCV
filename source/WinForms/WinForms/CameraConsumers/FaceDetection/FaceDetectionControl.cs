@@ -47,7 +47,7 @@ namespace PiCamCV.WinForms.UserControls
                 image.Draw(face, new Bgr(Color.Red), 2);
             }
 
-            image = WearSunnies(image, result.Eyes);
+            var imageSunnies = WearSunnies(image, result.Eyes);
             var eyeCount = 0;
             foreach (Rectangle eye in result.Eyes)
             {
@@ -56,7 +56,8 @@ namespace PiCamCV.WinForms.UserControls
                 image.Draw(eyeCount.ToString(), eye.Location, FontFace.HersheyComplexSmall, 2, new Bgr(Color.Blue));
             }
 
-            imageBox.Image = image;// new Image<Bgra, byte>(300, 300, new Bgra(255, 0, 0, 255)); 
+            imageBox.Image = imageSunnies;
+            
             NotifyStatus("Face detection took {0}", result.DetectionTime.ToHumanReadable());
         }
 
@@ -67,18 +68,15 @@ namespace PiCamCV.WinForms.UserControls
             return background.AddWeighted(foreground, 0.5, 0.5, 0.5);
         }
 
-        public Image<Bgr, byte> WearSunnies(Image<Bgr,byte> inputBgr, List<Rectangle> eyes)
+        public Image<Bgra, byte> WearSunnies(Image<Bgr,byte> inputBgr, List<Rectangle> eyes)
         {
+            var inputBgra = inputBgr.Mat.ToImage<Bgra, byte>();
             if (eyes.Count == 2)
             {
                 var sunnyFile = @"D:\Downloads\sunnies\sunglasses.png";
-             //   var overlayMat = new Mat(sunnyFile, LoadImageType.);
+             
                 var overlayBgra = new Image<Bgra, byte>(sunnyFile);// overlayMat.ToImage<Bgra, byte>();
-                var overlayBgr = overlayBgra.Mat.ToImage<Bgr, byte>();
-                
-                var inputBgra = inputBgr.Mat.ToImage<Bgra, byte>();
-
-
+             
                 eyes.Sort((e1, e2) => e1.Left.CompareTo(e2.Left));
                 var leftEye = eyes[0];
                 var rightEye = eyes[1];
@@ -88,23 +86,20 @@ namespace PiCamCV.WinForms.UserControls
 
                 var sunglassRect = new Rectangle(leftEye.X, leftEye.Y, width, height);
                 
-                //inputBgra.ROI = sunglassRect;
                 var resizeOverlayBgra = overlayBgra.Resize(sunglassRect.Width, sunglassRect.Height, Inter.Linear);
 
-                var overlayTargetBgra = new Image<Bgra, byte>(inputBgr.Width, inputBgr.Height, new Bgra(255, 0, 0, 255));
+                var overlayTargetBgra = new Image<Bgra, byte>(inputBgr.Width, inputBgr.Height, new Bgra(0, 0, 0, 0));
                 overlayTargetBgra.ROI = sunglassRect;
                 resizeOverlayBgra.CopyTo(overlayTargetBgra);
                 overlayTargetBgra.ROI = Rectangle.Empty;
 
-                //var outputBgra = inputBgra.AddWeighted(overlayTargetBgra, 0.5, 0.5, 0.5);
-                //inputBgra.ROI = Rectangle.Empty;
-                //outputBgra.ROI = Rectangle.Empty;
+                var outputBgra = inputBgra.AddWeighted(overlayTargetBgra, 0.9, 1, -0.5);
+                inputBgra.ROI = Rectangle.Empty;
+                outputBgra.ROI = Rectangle.Empty;
 
-                var outputBgr = overlayTargetBgra.Mat.ToImage<Bgr, byte>();
-                //var overlayBgr = resizeOverlayBgra.Mat.ToImage<Bgr, byte>();
-                return overlayBgr;
+                return outputBgra;
             }
-            return inputBgr;
+            return inputBgra;
 
             //// detect which pixels in the overlay have something in them
             //// and make a binary mask out of it
