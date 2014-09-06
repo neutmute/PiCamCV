@@ -39,15 +39,18 @@ namespace WinForms
             var basicCapture = new BasicCaptureControl();
             var faceDetection = new FaceDetectionControl();
             var colourDetection = new ColourDetectionControl();
+            var haarDetection = new HaarCascadeControl();
 
             var consumers = new List<CameraConsumerUserControl>();
             consumers.Add(basicCapture);
             consumers.Add(faceDetection);
             consumers.Add(colourDetection);
+            consumers.Add(haarDetection);
             
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageCameraCapture, basicCapture));
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageFaceDetection, faceDetection));
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageColourDetect, colourDetection));
+            _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageHaarCascade, haarDetection));
             
             foreach (var consumer in consumers)
             {

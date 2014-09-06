@@ -56,6 +56,7 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="CameraConsumerBase.cs" />
+    <Compile Include="CascadeDetector.cs" />
     <Compile Include="ColourDetector.cs" />
     <Compile Include="ExtensionMethods\PointFExtensions.cs" />
     <Compile Include="Interfaces\ICameraConsumer.cs" />
@@ -70,6 +71,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="haarcascades\haarcascade_lego_batman3.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="haarcascades\haarcascade_lego_batman2.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

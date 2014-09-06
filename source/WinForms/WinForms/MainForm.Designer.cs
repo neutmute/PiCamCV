@@ -37,6 +37,7 @@
             this.tabPageCameraCapture = new System.Windows.Forms.TabPage();
             this.tabPageFaceDetection = new System.Windows.Forms.TabPage();
             this.tabPageColourDetect = new System.Windows.Forms.TabPage();
+            this.tabPageHaarCascade = new System.Windows.Forms.TabPage();
             this.panelTop.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.SuspendLayout();
@@ -97,6 +98,7 @@
             this.tabControlMain.Controls.Add(this.tabPageCameraCapture);
             this.tabControlMain.Controls.Add(this.tabPageFaceDetection);
             this.tabControlMain.Controls.Add(this.tabPageColourDetect);
+            this.tabControlMain.Controls.Add(this.tabPageHaarCascade);
             this.tabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlMain.Location = new System.Drawing.Point(0, 47);
             this.tabControlMain.Name = "tabControlMain";
@@ -133,6 +135,15 @@
             this.tabPageColourDetect.Text = "Colour Detection";
             this.tabPageColourDetect.UseVisualStyleBackColor = true;
             // 
+            // tabPageHaarCascade
+            // 
+            this.tabPageHaarCascade.Location = new System.Drawing.Point(4, 22);
+            this.tabPageHaarCascade.Name = "tabPageHaarCascade";
+            this.tabPageHaarCascade.Size = new System.Drawing.Size(865, 467);
+            this.tabPageHaarCascade.TabIndex = 3;
+            this.tabPageHaarCascade.Text = "Haar Cascade Detection";
+            this.tabPageHaarCascade.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -161,6 +172,7 @@
         private System.Windows.Forms.Button btnStartStop;
         private System.Windows.Forms.Label labelStatus;
         private System.Windows.Forms.TabPage tabPageColourDetect;
+        private System.Windows.Forms.TabPage tabPageHaarCascade;
 
     }
 }

@@ -83,6 +83,12 @@
     <Compile Include="CameraConsumers\BasicCaptureControl.Designer.cs">
       <DependentUpon>BasicCaptureControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="CameraConsumers\HaarCascadeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CameraConsumers\HaarCascadeControl.Designer.cs">
+      <DependentUpon>HaarCascadeControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfoUnique.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -109,6 +115,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CameraConsumers\ColourDetectionControl.resx">
       <DependentUpon>ColourDetectionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CameraConsumers\HaarCascadeControl.resx">
+      <DependentUpon>HaarCascadeControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
