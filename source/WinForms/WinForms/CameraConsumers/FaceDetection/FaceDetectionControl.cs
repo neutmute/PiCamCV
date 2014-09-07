@@ -68,6 +68,48 @@ namespace PiCamCV.WinForms.UserControls
             return background.AddWeighted(foreground, 0.5, 0.5, 0.5);
         }
 
+        //public Image<Bgra, byte> WearSunniesMaskMethod(Image<Bgr, byte> inputBgr, List<Rectangle> eyes)
+        //{
+        //    // detect which pixels in the overlay have something in them
+        //    // and make a binary mask out of it
+            
+        //        var sunnyFile = @"D:\Downloads\sunnies\sunglasses.png";
+        //        var overlayBgra = new Image<Bgra, byte>(sunnyFile);// overlayMat.ToImage<Bgra, byte>();
+        //     var overlayMask = new Image<Gray, Byte>(overlayBgra.Width, overlayBgra.Height);
+        //    CvInvoke.CvtColor(overlayBgra, overlayMask, ColorConversion.Bgr2Gray);
+
+        //    overlayMask = overlayMask.ThresholdBinaryInv(new Gray(1), new Gray(10));
+
+        //    // expand the mask from 1-channel to 3-channel
+        //    overlayMask.Mat.Reshape(2);
+        //    //overlayMask.Mat.CopyTo(overlay);
+        //    var overlayMaskBgr  = overlayMask.Mat.ToImage<Bgr, byte>();
+
+        //    //inputBgr *= overlayMaskBgr;
+
+        //    ////var resizedMask = overlayMask.Resize(background.Width, background.Height, Inter.Linear);
+
+
+        //    ////var bgraOverlay = resizedMask.Mat.ToImage<Bgra, byte>();
+        //    ////var bgraBackground = background.ToImage<Bgra, byte>();
+
+
+            
+
+        //    // background = overlay.Log
+        //    // backgroundbackground.Cross(overlayMask);
+        //    //// # here's where the work gets done :
+
+        //    // # mask out the pixels that you want to overlay
+        //    // img *= overlayMask
+
+        //    // # put the overlay on
+        //    // img += overlay
+
+        //    // # Show the image.
+        //    // cv2.imshow(WINDOW_NAME, img)
+        //}
+
         public Image<Bgra, byte> WearSunnies(Image<Bgr,byte> inputBgr, List<Rectangle> eyes)
         {
             var inputBgra = inputBgr.Mat.ToImage<Bgra, byte>();
@@ -101,38 +143,7 @@ namespace PiCamCV.WinForms.UserControls
             }
             return inputBgra;
 
-            //// detect which pixels in the overlay have something in them
-            //// and make a binary mask out of it
-            // var overlayMask = new Image<Gray, Byte>(overlay.Width, overlay.Height);
-            //CvInvoke.CvtColor(overlay, overlayMask, ColorConversion.Bgr2Gray);
-
-            //// expand the mask from 1-channel to 3-channel
-            //overlayMask.Mat.Reshape(2);
-            //overlayMask.Mat.CopyTo(overlay);
-
-            //var resizedMask = overlayMask.Resize(background.Width, background.Height, Inter.Linear);
-
-
-            //var bgraOverlay = resizedMask.Mat.ToImage<Bgra, byte>();
-            //var bgraBackground = background.ToImage<Bgra, byte>();
-
-            //return bgraBackground.AddWeighted(bgraOverlay, 0.5, 0.5, 0.5);
-
-
-            //overlayMask.
-
-            // background = overlay.Log
-            // backgroundbackground.Cross(overlayMask);
-            //// # here's where the work gets done :
-
-            // # mask out the pixels that you want to overlay
-            // img *= overlayMask
-
-            // # put the overlay on
-            // img += overlay
-
-            // # Show the image.
-            // cv2.imshow(WINDOW_NAME, img)
+           
         }
 
         /// <summary>

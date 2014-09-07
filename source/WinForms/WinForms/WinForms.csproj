@@ -17,8 +17,8 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\UnixDebug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;UNIX</DefineConstants>
+    <OutputPath>bin\debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -89,6 +89,7 @@
     <Compile Include="CameraConsumers\HaarCascadeControl.Designer.cs">
       <DependentUpon>HaarCascadeControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="FpsTracker.cs" />
     <Compile Include="Properties\AssemblyInfoUnique.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

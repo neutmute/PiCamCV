@@ -21,6 +21,7 @@ namespace WinForms
     {
         private ICaptureGrab _capture;
         readonly List<KeyValuePair<TabPage, CameraConsumerUserControl>> _tabPageLinks;
+        private FpsTracker _fpsTracker;
         public bool CameraCaptureInProgress { get; set; }
         public MainForm()
         {
@@ -34,8 +35,21 @@ namespace WinForms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            _capture = CaptureFactory.GetCapture(CaptureDevice.Pi);
-            
+            _capture = CaptureFactory.GetCapture(CaptureDevice.Usb);
+
+            SetupCameraConsumers(_capture);
+            SetupFramerateTracking(_capture);
+        }
+
+        private void SetupFramerateTracking(ICaptureGrab capture)
+        {
+            _fpsTracker = new FpsTracker();
+            capture.ImageGrabbed += _fpsTracker.NotifyImageGrabbed;
+            _fpsTracker.ReportFrames = s => Invoke((MethodInvoker) delegate { labelFrameRate.Text = s; });
+        }
+
+        private void SetupCameraConsumers(ICaptureGrab capture)
+        {
             var basicCapture = new BasicCaptureControl();
             var faceDetection = new FaceDetectionControl();
             var colourDetection = new ColourDetectionControl();
@@ -46,15 +60,15 @@ namespace WinForms
             consumers.Add(faceDetection);
             consumers.Add(colourDetection);
             consumers.Add(haarDetection);
-            
+
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageCameraCapture, basicCapture));
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageFaceDetection, faceDetection));
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageColourDetect, colourDetection));
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageHaarCascade, haarDetection));
-            
+
             foreach (var consumer in consumers)
             {
-                consumer.CameraCapture = _capture;
+                consumer.CameraCapture = capture;
                 var tabPage = _tabPageLinks.Find(kvp => kvp.Value == consumer).Key;
                 tabPage.Controls.Add(consumer);
                 consumer.Dock = DockStyle.Fill;

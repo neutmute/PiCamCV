@@ -58,7 +58,7 @@ namespace PiCamCV.Common
                        ugray,
                        1.1,
                        10,
-                       new Size(20, 20));
+                       Size.Empty);
 
                     result.Objects = objectsDetected.ToList();
                 }

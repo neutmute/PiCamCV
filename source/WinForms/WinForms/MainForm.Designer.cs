@@ -38,12 +38,14 @@
             this.tabPageFaceDetection = new System.Windows.Forms.TabPage();
             this.tabPageColourDetect = new System.Windows.Forms.TabPage();
             this.tabPageHaarCascade = new System.Windows.Forms.TabPage();
+            this.labelFrameRate = new System.Windows.Forms.Label();
             this.panelTop.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelTop
             // 
+            this.panelTop.Controls.Add(this.labelFrameRate);
             this.panelTop.Controls.Add(this.labelStatus);
             this.panelTop.Controls.Add(this.btnFlipHorizontal);
             this.panelTop.Controls.Add(this.btnFlipVertical);
@@ -144,6 +146,15 @@
             this.tabPageHaarCascade.Text = "Haar Cascade Detection";
             this.tabPageHaarCascade.UseVisualStyleBackColor = true;
             // 
+            // labelFrameRate
+            // 
+            this.labelFrameRate.AutoSize = true;
+            this.labelFrameRate.Location = new System.Drawing.Point(425, 17);
+            this.labelFrameRate.Name = "labelFrameRate";
+            this.labelFrameRate.Size = new System.Drawing.Size(62, 13);
+            this.labelFrameRate.TabIndex = 7;
+            this.labelFrameRate.Text = "Frame Rate";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -173,6 +184,7 @@
         private System.Windows.Forms.Label labelStatus;
         private System.Windows.Forms.TabPage tabPageColourDetect;
         private System.Windows.Forms.TabPage tabPageHaarCascade;
+        private System.Windows.Forms.Label labelFrameRate;
 
     }
 }
