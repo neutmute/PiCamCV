@@ -18,36 +18,33 @@ namespace PiCamCV.WinForms.CameraConsumers
 {
     public partial class ColourDetectionControl : CameraConsumerUserControl
     {
-        private ColourDetector _colorDetector;
+        private readonly ColourDetector _colorDetector;
+        private MCvScalar _lowThreshold;
+        private MCvScalar _highThreshold;
+        private bool _suppressUpdates;
+
         public ColourDetectionControl()
         {
             InitializeComponent();
             _colorDetector = new ColourDetector();
+            _lowThreshold = new MCvScalar();
+            _highThreshold = new MCvScalar();
+            
         }
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
-            var lowH = sliderHueMin.Value;
-            var lowS = sliderSaturationMin.Value;
-            var lowV = sliderValueMin.Value;
-
-            var highH = sliderHueMax.Value;
-            var highS = sliderSaturationMax.Value;
-            var highV = sliderValueMax.Value;
-
-
             var matCaptured = new Mat();
 
             var w = Stopwatch.StartNew();
             CameraCapture.Retrieve(matCaptured);
-            NotifyStatus("Retrieved in {0}", w.Elapsed.ToHumanReadable());
-
+            NotifyStatus("Retrieved frame in {0}", w.Elapsed.ToHumanReadable());
 
             var input = new ColourDetectorInput
             {
                Captured = matCaptured
-               ,LowThreshold =new MCvScalar(lowH, lowS, lowV)
-               ,HighThreshold = new MCvScalar(highH, highS, highV)
+               ,LowThreshold =_lowThreshold
+               ,HighThreshold = _highThreshold
             };
             var output = _colorDetector.Process(input);
 
@@ -93,22 +90,85 @@ namespace PiCamCV.WinForms.CameraConsumers
 
         private void ColourDetectionControl_Load(object sender, EventArgs e)
         {
-            sliderHueMin.Value = 0;
-            sliderSaturationMin.Value = 0;
-            sliderValueMin.Value = 0;
+            sliderHueMin.ValueChanged += HsvSlider_ValueChanged;
+            sliderHueMax.ValueChanged += HsvSlider_ValueChanged;
+            sliderSaturationMin.ValueChanged += HsvSlider_ValueChanged;
+            sliderSaturationMax.ValueChanged += HsvSlider_ValueChanged;
+            sliderValueMin.ValueChanged += HsvSlider_ValueChanged;
+            sliderValueMin.ValueChanged += HsvSlider_ValueChanged;
 
-            sliderHueMax.Value = 255;
-            sliderSaturationMax.Value = 255;
-            sliderValueMax.Value = 255;
+            btnReset_Click(null, null);
+        }
 
-            // red ball preset
-            sliderHueMin.Value = 140;
-            sliderSaturationMin.Value = 57;
-            sliderValueMin.Value = 25;
+        void HsvSlider_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateScalarFromControls();
+        }
 
-            sliderHueMax.Value = 187;
-            sliderSaturationMax.Value = 153;
-            sliderValueMax.Value = 82;
+        private void SetLowScalar(int hue, int sat, int value)
+        {
+            _lowThreshold.V0 = hue;
+            _lowThreshold.V1 = sat;
+            _lowThreshold.V2 = value;
+            UpdateControlsFromScalar();
+        }
+        private void SetHighScalar(int hue, int sat, int value)
+        {
+            _highThreshold.V0 = hue;
+            _highThreshold.V1 = sat;
+            _highThreshold.V2 = value;
+            UpdateControlsFromScalar();
+        }
+
+        private void UpdateControlsFromScalar()
+        {
+            _suppressUpdates = true;
+            sliderHueMin.Value = (int) _lowThreshold.V0;
+            sliderSaturationMin.Value = (int)_lowThreshold.V1;
+            sliderValueMin.Value = (int)_lowThreshold.V2;
+
+            sliderHueMax.Value = (int)_highThreshold.V0;
+            sliderSaturationMax.Value = (int)_highThreshold.V1;
+            sliderValueMax.Value = (int)_highThreshold.V0;
+            _suppressUpdates = false;
+        }
+
+        private void UpdateScalarFromControls()
+        {
+            if (!_suppressUpdates)
+            {
+                var lowH = sliderHueMin.Value;
+                var lowS = sliderSaturationMin.Value;
+                var lowV = sliderValueMin.Value;
+
+                var highH = sliderHueMax.Value;
+                var highS = sliderSaturationMax.Value;
+                var highV = sliderValueMax.Value;
+
+                SetLowScalar(lowH, lowS, lowV);
+                SetHighScalar(highH, highS, highV);
+            }
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            SetLowScalar(0, 0, 0);
+            SetHighScalar(255, 255, 255);
+        }
+
+        /// <summary>
+        /// Under CFL lights
+        /// </summary>
+        private void btnRedLights_Click(object sender, EventArgs e)
+        {
+            SetLowScalar(140, 57, 25);
+            SetHighScalar(187,153,182);
+        }
+
+        private void btnRedDaylight_Click(object sender, EventArgs e)
+        {
+            SetLowScalar(155, 128, 44);
+            SetHighScalar(182, 214, 105);
         }
     }
 }

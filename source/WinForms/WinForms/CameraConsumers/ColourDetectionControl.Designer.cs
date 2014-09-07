@@ -40,25 +40,37 @@
             this.imageBoxCaptured = new Emgu.CV.UI.ImageBox();
             this.groupBoxFiltered = new System.Windows.Forms.GroupBox();
             this.imageBoxFiltered = new Emgu.CV.UI.ImageBox();
+            this.groupBoxPresets = new System.Windows.Forms.GroupBox();
+            this.btnReset = new System.Windows.Forms.Button();
+            this.btnRedLights = new System.Windows.Forms.Button();
+            this.btnRedDaylight = new System.Windows.Forms.Button();
             this.panelLeft.SuspendLayout();
             this.groupBoxCaptured.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).BeginInit();
             this.groupBoxFiltered.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxFiltered)).BeginInit();
+            this.groupBoxPresets.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelLeft
             // 
-            this.panelLeft.Controls.Add(this.sliderValueMin);
+            this.panelLeft.Controls.Add(this.groupBoxPresets);
+
+
+
             this.panelLeft.Controls.Add(this.sliderValueMax);
-            this.panelLeft.Controls.Add(this.sliderSaturationMin);
+            this.panelLeft.Controls.Add(this.sliderValueMin);
+
             this.panelLeft.Controls.Add(this.sliderSaturationMax);
-            this.panelLeft.Controls.Add(this.sliderHueMin);
+            this.panelLeft.Controls.Add(this.sliderSaturationMin);
+
             this.panelLeft.Controls.Add(this.sliderHueMax);
+            this.panelLeft.Controls.Add(this.sliderHueMin);
+            
             this.panelLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelLeft.Location = new System.Drawing.Point(0, 0);
             this.panelLeft.Name = "panelLeft";
-            this.panelLeft.Size = new System.Drawing.Size(216, 600);
+            this.panelLeft.Size = new System.Drawing.Size(194, 600);
             this.panelLeft.TabIndex = 5;
             // 
             // sliderValueMin
@@ -67,7 +79,7 @@
             this.sliderValueMin.Label = "Value Min";
             this.sliderValueMin.Location = new System.Drawing.Point(0, 278);
             this.sliderValueMin.Name = "sliderValueMin";
-            this.sliderValueMin.Size = new System.Drawing.Size(216, 56);
+            this.sliderValueMin.Size = new System.Drawing.Size(194, 56);
             this.sliderValueMin.TabIndex = 5;
             this.sliderValueMin.Value = 0;
             // 
@@ -77,7 +89,7 @@
             this.sliderValueMax.Label = "Value Max";
             this.sliderValueMax.Location = new System.Drawing.Point(0, 222);
             this.sliderValueMax.Name = "sliderValueMax";
-            this.sliderValueMax.Size = new System.Drawing.Size(216, 56);
+            this.sliderValueMax.Size = new System.Drawing.Size(194, 56);
             this.sliderValueMax.TabIndex = 4;
             this.sliderValueMax.Value = 0;
             // 
@@ -87,7 +99,7 @@
             this.sliderSaturationMin.Label = "Saturation Min";
             this.sliderSaturationMin.Location = new System.Drawing.Point(0, 166);
             this.sliderSaturationMin.Name = "sliderSaturationMin";
-            this.sliderSaturationMin.Size = new System.Drawing.Size(216, 56);
+            this.sliderSaturationMin.Size = new System.Drawing.Size(194, 56);
             this.sliderSaturationMin.TabIndex = 3;
             this.sliderSaturationMin.Value = 0;
             // 
@@ -97,7 +109,7 @@
             this.sliderSaturationMax.Label = "Saturation Max";
             this.sliderSaturationMax.Location = new System.Drawing.Point(0, 110);
             this.sliderSaturationMax.Name = "sliderSaturationMax";
-            this.sliderSaturationMax.Size = new System.Drawing.Size(216, 56);
+            this.sliderSaturationMax.Size = new System.Drawing.Size(194, 56);
             this.sliderSaturationMax.TabIndex = 2;
             this.sliderSaturationMax.Value = 0;
             // 
@@ -107,7 +119,7 @@
             this.sliderHueMin.Label = "Hue Min";
             this.sliderHueMin.Location = new System.Drawing.Point(0, 54);
             this.sliderHueMin.Name = "sliderHueMin";
-            this.sliderHueMin.Size = new System.Drawing.Size(216, 56);
+            this.sliderHueMin.Size = new System.Drawing.Size(194, 56);
             this.sliderHueMin.TabIndex = 1;
             this.sliderHueMin.Value = 0;
             // 
@@ -117,7 +129,7 @@
             this.sliderHueMax.Label = "Hue Max";
             this.sliderHueMax.Location = new System.Drawing.Point(0, 0);
             this.sliderHueMax.Name = "sliderHueMax";
-            this.sliderHueMax.Size = new System.Drawing.Size(216, 54);
+            this.sliderHueMax.Size = new System.Drawing.Size(194, 54);
             this.sliderHueMax.TabIndex = 0;
             this.sliderHueMax.Value = 0;
             // 
@@ -125,9 +137,9 @@
             // 
             this.groupBoxCaptured.Controls.Add(this.imageBoxCaptured);
             this.groupBoxCaptured.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBoxCaptured.Location = new System.Drawing.Point(216, 0);
+            this.groupBoxCaptured.Location = new System.Drawing.Point(194, 0);
             this.groupBoxCaptured.Name = "groupBoxCaptured";
-            this.groupBoxCaptured.Size = new System.Drawing.Size(591, 403);
+            this.groupBoxCaptured.Size = new System.Drawing.Size(613, 403);
             this.groupBoxCaptured.TabIndex = 6;
             this.groupBoxCaptured.TabStop = false;
             this.groupBoxCaptured.Text = "Captured";
@@ -137,7 +149,7 @@
             this.imageBoxCaptured.Dock = System.Windows.Forms.DockStyle.Fill;
             this.imageBoxCaptured.Location = new System.Drawing.Point(3, 16);
             this.imageBoxCaptured.Name = "imageBoxCaptured";
-            this.imageBoxCaptured.Size = new System.Drawing.Size(585, 384);
+            this.imageBoxCaptured.Size = new System.Drawing.Size(607, 384);
             this.imageBoxCaptured.TabIndex = 5;
             this.imageBoxCaptured.TabStop = false;
             // 
@@ -145,9 +157,9 @@
             // 
             this.groupBoxFiltered.Controls.Add(this.imageBoxFiltered);
             this.groupBoxFiltered.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxFiltered.Location = new System.Drawing.Point(216, 403);
+            this.groupBoxFiltered.Location = new System.Drawing.Point(194, 403);
             this.groupBoxFiltered.Name = "groupBoxFiltered";
-            this.groupBoxFiltered.Size = new System.Drawing.Size(591, 197);
+            this.groupBoxFiltered.Size = new System.Drawing.Size(613, 197);
             this.groupBoxFiltered.TabIndex = 7;
             this.groupBoxFiltered.TabStop = false;
             this.groupBoxFiltered.Text = "Filtered";
@@ -157,9 +169,52 @@
             this.imageBoxFiltered.Dock = System.Windows.Forms.DockStyle.Fill;
             this.imageBoxFiltered.Location = new System.Drawing.Point(3, 16);
             this.imageBoxFiltered.Name = "imageBoxFiltered";
-            this.imageBoxFiltered.Size = new System.Drawing.Size(585, 178);
+            this.imageBoxFiltered.Size = new System.Drawing.Size(607, 178);
             this.imageBoxFiltered.TabIndex = 6;
             this.imageBoxFiltered.TabStop = false;
+            // 
+            // groupBoxPresets
+            // 
+            this.groupBoxPresets.Controls.Add(this.btnRedDaylight);
+            this.groupBoxPresets.Controls.Add(this.btnRedLights);
+            this.groupBoxPresets.Controls.Add(this.btnReset);
+            this.groupBoxPresets.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBoxPresets.Location = new System.Drawing.Point(0, 334);
+            this.groupBoxPresets.Name = "groupBoxPresets";
+            this.groupBoxPresets.Size = new System.Drawing.Size(194, 121);
+            this.groupBoxPresets.TabIndex = 8;
+            this.groupBoxPresets.TabStop = false;
+            this.groupBoxPresets.Text = "Presets";
+            // 
+            // btnReset
+            // 
+            this.btnReset.Location = new System.Drawing.Point(6, 19);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(114, 23);
+            this.btnReset.TabIndex = 7;
+            this.btnReset.Text = "Reset";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            // 
+            // btnRedLights
+            // 
+            this.btnRedLights.Location = new System.Drawing.Point(6, 48);
+            this.btnRedLights.Name = "btnRedLights";
+            this.btnRedLights.Size = new System.Drawing.Size(114, 23);
+            this.btnRedLights.TabIndex = 8;
+            this.btnRedLights.Text = "Red under Lights";
+            this.btnRedLights.UseVisualStyleBackColor = true;
+            this.btnRedLights.Click += new System.EventHandler(this.btnRedLights_Click);
+            // 
+            // btnRedDaylight
+            // 
+            this.btnRedDaylight.Location = new System.Drawing.Point(6, 77);
+            this.btnRedDaylight.Name = "btnRedDaylight";
+            this.btnRedDaylight.Size = new System.Drawing.Size(114, 23);
+            this.btnRedDaylight.TabIndex = 9;
+            this.btnRedDaylight.Text = "Red in Daylight";
+            this.btnRedDaylight.UseVisualStyleBackColor = true;
+            this.btnRedDaylight.Click += new System.EventHandler(this.btnRedDaylight_Click);
             // 
             // ColourDetectionControl
             // 
@@ -176,6 +231,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).EndInit();
             this.groupBoxFiltered.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxFiltered)).EndInit();
+            this.groupBoxPresets.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -193,5 +249,9 @@
         private UserControls.SliderControl sliderValueMax;
         private UserControls.SliderControl sliderSaturationMin;
         private UserControls.SliderControl sliderSaturationMax;
+        private System.Windows.Forms.GroupBox groupBoxPresets;
+        private System.Windows.Forms.Button btnRedDaylight;
+        private System.Windows.Forms.Button btnRedLights;
+        private System.Windows.Forms.Button btnReset;
     }
 }
