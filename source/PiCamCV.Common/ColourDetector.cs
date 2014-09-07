@@ -17,6 +17,16 @@ namespace PiCamCV.Common
         public MCvScalar HighThreshold { get; set; }
 
         public int MinimumDetectionArea { get; set; }
+
+        /// <summary>
+        /// Turn off for console perf tweak
+        /// </summary>
+        public bool SetCapturedImage { get; set; }
+
+        public ColourDetectorInput()
+        {
+            SetCapturedImage = true;
+        }
     }
 
     public class ColourDetectorProcessOutput : CameraProcessOutput
@@ -44,20 +54,18 @@ namespace PiCamCV.Common
         {
             var output = new ColourDetectorProcessOutput();
             using(var hsvFrame = new Mat())
-            using (var matThresholded = new Mat())
+            using(var matThresholded = new Mat())
             {
                 CvInvoke.CvtColor(input.Captured, hsvFrame, ColorConversion.Bgr2Hsv);
 
                 using (var lowerScalar = new ScalarArray(input.LowThreshold))
+                using (var upperScalar = new ScalarArray(input.HighThreshold))
                 {
-                    using (var upperScalar = new ScalarArray(input.HighThreshold))
-                    {
-                        CvInvoke.InRange(hsvFrame, lowerScalar, upperScalar, matThresholded); //Threshold the image
-                    }
+                    CvInvoke.InRange(hsvFrame, lowerScalar, upperScalar, matThresholded); //Threshold the image
                 }
 
                 output.ThresholdImage = matThresholded.ToImage<Gray, byte>();
-                const int erodeDilateIterations = 10;
+                const int erodeDilateIterations = 1;
 
                 //morphological opening (remove small objects from the foreground)
                 output.ThresholdImage.Erode(erodeDilateIterations);
@@ -66,18 +74,22 @@ namespace PiCamCV.Common
                 //morphological closing (fill small holes in the foreground)
                 output.ThresholdImage.Dilate(erodeDilateIterations);
                 output.ThresholdImage.Erode(erodeDilateIterations);
-
-                output.CapturedImage = input.Captured.ToImage<Bgr, byte>();
+                
                 var moments = output.ThresholdImage.GetMoments(true);
                 moments.GetCentralMoment(0, 0);
 
                 var area = moments.M00;
                 if (area > input.MinimumDetectionArea)
                 {
-                    var posX = Convert.ToInt32(moments.M10/area);
-                    var posY = Convert.ToInt32(moments.M01/area);
+                    var posX = Convert.ToSingle(moments.M10/area);
+                    var posY = Convert.ToSingle(moments.M01/area);
                     output.IsDetected = true;
                     output.CentralPoint = new PointF(posX, posY);
+                }
+
+                if (input.SetCapturedImage)
+                {
+                    output.CapturedImage = input.Captured.ToImage<Bgr, byte>();
                 }
             }
             return output;

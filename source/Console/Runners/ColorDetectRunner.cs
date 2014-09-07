@@ -50,6 +50,7 @@ namespace PiCamCV.ConsoleApp.Runners
                     Captured = matCaptured
                    ,LowThreshold = LowThreshold
                    ,HighThreshold = HighThreshold
+                   ,SetCapturedImage = false
                 };
 
                 var result = detector.Process(input);
