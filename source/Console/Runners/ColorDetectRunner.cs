@@ -41,20 +41,23 @@ namespace PiCamCV.ConsoleApp.Runners
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
-            var matCaptured = new Mat();
-            CameraCapture.Retrieve(matCaptured);
-            var detector = new ColourDetector();
-            var input = new ColourDetectorInput
+            using (var matCaptured = new Mat())
             {
-               Captured = matCaptured
-               ,LowThreshold = LowThreshold
-               ,HighThreshold = HighThreshold
-            };
-            var result = detector.Process(input);
+                CameraCapture.Retrieve(matCaptured);
+                var detector = new ColourDetector();
+                var input = new ColourDetectorInput
+                {
+                    Captured = matCaptured
+                   ,LowThreshold = LowThreshold
+                   ,HighThreshold = HighThreshold
+                };
 
-            if (result.IsDetected)
-            {
-                Log.Info(result);
+                var result = detector.Process(input);
+
+                if (result.IsDetected)
+                {
+                    Log.Info(result);
+                }
             }
         }
     }

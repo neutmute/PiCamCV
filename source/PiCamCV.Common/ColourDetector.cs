@@ -43,40 +43,42 @@ namespace PiCamCV.Common
         protected override ColourDetectorProcessOutput DoProcess(ColourDetectorInput input)
         {
             var output = new ColourDetectorProcessOutput();
-            var hsvFrame = new Mat();
-            var matThresholded = new Mat();
-            CvInvoke.CvtColor(input.Captured, hsvFrame, ColorConversion.Bgr2Hsv);
-
-            using (var lowerScalar = new ScalarArray(input.LowThreshold))
+            using(var hsvFrame = new Mat())
+            using (var matThresholded = new Mat())
             {
-                using (var upperScalar = new ScalarArray(input.HighThreshold))
+                CvInvoke.CvtColor(input.Captured, hsvFrame, ColorConversion.Bgr2Hsv);
+
+                using (var lowerScalar = new ScalarArray(input.LowThreshold))
                 {
-                    CvInvoke.InRange(hsvFrame, lowerScalar, upperScalar, matThresholded); //Threshold the image
+                    using (var upperScalar = new ScalarArray(input.HighThreshold))
+                    {
+                        CvInvoke.InRange(hsvFrame, lowerScalar, upperScalar, matThresholded); //Threshold the image
+                    }
                 }
-            }
 
-            output.ThresholdImage = matThresholded.ToImage<Gray, byte>();
-            const int erodeDilateIterations = 10;
+                output.ThresholdImage = matThresholded.ToImage<Gray, byte>();
+                const int erodeDilateIterations = 10;
 
-            //morphological opening (remove small objects from the foreground)
-            output.ThresholdImage.Erode(erodeDilateIterations);
-            output.ThresholdImage.Dilate(erodeDilateIterations);
+                //morphological opening (remove small objects from the foreground)
+                output.ThresholdImage.Erode(erodeDilateIterations);
+                output.ThresholdImage.Dilate(erodeDilateIterations);
 
-            //morphological closing (fill small holes in the foreground)
-            output.ThresholdImage.Dilate(erodeDilateIterations);
-            output.ThresholdImage.Erode(erodeDilateIterations);
+                //morphological closing (fill small holes in the foreground)
+                output.ThresholdImage.Dilate(erodeDilateIterations);
+                output.ThresholdImage.Erode(erodeDilateIterations);
 
-            output.CapturedImage = input.Captured.ToImage<Bgr, byte>();
-            var moments = output.ThresholdImage.GetMoments(true);
-            moments.GetCentralMoment(0, 0);
+                output.CapturedImage = input.Captured.ToImage<Bgr, byte>();
+                var moments = output.ThresholdImage.GetMoments(true);
+                moments.GetCentralMoment(0, 0);
 
-            var area = moments.M00;
-            if (area > input.MinimumDetectionArea)
-            {
-                var posX = Convert.ToInt32(moments.M10 / area);
-                var posY = Convert.ToInt32(moments.M01 / area);
-                output.IsDetected = true;
-                output.CentralPoint = new PointF(posX, posY);
+                var area = moments.M00;
+                if (area > input.MinimumDetectionArea)
+                {
+                    var posX = Convert.ToInt32(moments.M10/area);
+                    var posY = Convert.ToInt32(moments.M01/area);
+                    output.IsDetected = true;
+                    output.CentralPoint = new PointF(posX, posY);
+                }
             }
             return output;
         }
