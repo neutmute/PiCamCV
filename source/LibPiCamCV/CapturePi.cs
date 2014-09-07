@@ -367,5 +367,18 @@ namespace PiCamCV
             throw new NotImplementedException();
         }
         #endregion
+
+
+        public double GetCaptureProperty(CapProp index)
+        {
+            return 0;
+        }
+
+        public bool SetCaptureProperty(CapProp property, double value)
+        {
+            return true;
+        }
+
+
     }
 }

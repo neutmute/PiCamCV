@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.panelTop = new System.Windows.Forms.Panel();
+            this.labelFrameRate = new System.Windows.Forms.Label();
             this.labelStatus = new System.Windows.Forms.Label();
             this.btnFlipHorizontal = new System.Windows.Forms.Button();
             this.btnFlipVertical = new System.Windows.Forms.Button();
@@ -38,9 +39,12 @@
             this.tabPageFaceDetection = new System.Windows.Forms.TabPage();
             this.tabPageColourDetect = new System.Windows.Forms.TabPage();
             this.tabPageHaarCascade = new System.Windows.Forms.TabPage();
-            this.labelFrameRate = new System.Windows.Forms.Label();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripLabelSettings = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelTop.SuspendLayout();
             this.tabControlMain.SuspendLayout();
+            this.tabPageCameraCapture.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelTop
@@ -55,6 +59,15 @@
             this.panelTop.Name = "panelTop";
             this.panelTop.Size = new System.Drawing.Size(873, 47);
             this.panelTop.TabIndex = 1;
+            // 
+            // labelFrameRate
+            // 
+            this.labelFrameRate.AutoSize = true;
+            this.labelFrameRate.Location = new System.Drawing.Point(425, 17);
+            this.labelFrameRate.Name = "labelFrameRate";
+            this.labelFrameRate.Size = new System.Drawing.Size(62, 13);
+            this.labelFrameRate.TabIndex = 7;
+            this.labelFrameRate.Text = "Frame Rate";
             // 
             // labelStatus
             // 
@@ -110,6 +123,7 @@
             // 
             // tabPageCameraCapture
             // 
+            this.tabPageCameraCapture.Controls.Add(this.statusStrip1);
             this.tabPageCameraCapture.Location = new System.Drawing.Point(4, 22);
             this.tabPageCameraCapture.Name = "tabPageCameraCapture";
             this.tabPageCameraCapture.Padding = new System.Windows.Forms.Padding(3);
@@ -146,14 +160,20 @@
             this.tabPageHaarCascade.Text = "Haar Cascade Detection";
             this.tabPageHaarCascade.UseVisualStyleBackColor = true;
             // 
-            // labelFrameRate
+            // statusStrip1
             // 
-            this.labelFrameRate.AutoSize = true;
-            this.labelFrameRate.Location = new System.Drawing.Point(425, 17);
-            this.labelFrameRate.Name = "labelFrameRate";
-            this.labelFrameRate.Size = new System.Drawing.Size(62, 13);
-            this.labelFrameRate.TabIndex = 7;
-            this.labelFrameRate.Text = "Frame Rate";
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripLabelSettings});
+            this.statusStrip1.Location = new System.Drawing.Point(3, 442);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(859, 22);
+            this.statusStrip1.TabIndex = 0;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripLabelSettings
+            // 
+            this.toolStripLabelSettings.Name = "toolStripLabelSettings";
+            this.toolStripLabelSettings.Size = new System.Drawing.Size(0, 17);
             // 
             // MainForm
             // 
@@ -168,6 +188,10 @@
             this.panelTop.ResumeLayout(false);
             this.panelTop.PerformLayout();
             this.tabControlMain.ResumeLayout(false);
+            this.tabPageCameraCapture.ResumeLayout(false);
+            this.tabPageCameraCapture.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -185,6 +209,8 @@
         private System.Windows.Forms.TabPage tabPageColourDetect;
         private System.Windows.Forms.TabPage tabPageHaarCascade;
         private System.Windows.Forms.Label labelFrameRate;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripLabelSettings;
 
     }
 }

@@ -40,6 +40,11 @@ namespace WinForms
 
             SetupCameraConsumers(_capture);
             SetupFramerateTracking(_capture);
+
+            var capSettings = new CaptureProperties();
+            capSettings.FrameWidth = 320;
+            capSettings.FrameHeight = 240;
+          //  _capture.SetCaptureProperties(capSettings); access violation
         }
 
         private void SetupFramerateTracking(ICaptureGrab capture)
@@ -124,6 +129,7 @@ namespace WinForms
                     //start the capture
                     btnStartStop.Text = "Stop";
                     _capture.Start();
+                    toolStripLabelSettings.Text = _capture.GetCaptureProperties().ToString();
                 }
 
                 CameraCaptureInProgress = !CameraCaptureInProgress;

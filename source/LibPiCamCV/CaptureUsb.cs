@@ -1,5 +1,6 @@
 ﻿using System;
 using Emgu.CV;
+using Emgu.CV.CvEnum;
 using PiCamCV.Interfaces;
 
 namespace PiCamCV
@@ -64,6 +65,16 @@ namespace PiCamCV
         public bool Retrieve(IOutputArray image)
         {
             return _capture.Retrieve(image);
+        }
+
+        public double GetCaptureProperty(CapProp index)
+        {
+            return _capture.GetCaptureProperty(index);
+        }
+
+        public bool SetCaptureProperty(Emgu.CV.CvEnum.CapProp property, double value)
+        {
+            return _capture.SetCaptureProperty(property, value);
         }
     }
 }
