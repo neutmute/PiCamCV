@@ -32,7 +32,7 @@ namespace PiCamCV.ConsoleApp
         public ConsoleOptions(string[] args)
         {
             OptionSet = new OptionSet {
-                { "m|mode=", "Name of the mode to execute. Legal values are: " + Enumeration.GetAll<Mode>().ToCsv(",", m => m.ToString()), v =>
+                { "m|mode=", "Name of the mode to execute. [" + Enumeration.GetAll<Mode>().ToCsv(",", m => m.ToString()) + "]", v =>
                 {
                     Mode outMode;
                     if (Enum.TryParse(v, out outMode))
@@ -44,10 +44,10 @@ namespace PiCamCV.ConsoleApp
                         ShowHelp = true;
                     }
                 }},
-                { "t|threshold=", "Color thresholds for colour detection [Hl,Sl,Vl|Hh,Sh,Vh]. eg: -t=140,57,25|187,153,82 or -t=155,128,44|182,214,105"
+                { "t|threshold=", "Color thresholds for colour detection [Hl,Sl,Vl+Hh,Sh,Vh]. eg: -t=140,57,25+187,153,82 or -t=155,128,44+182,214,105"
                     , v =>
                     {
-                        var lowHigh = v.Split('|');
+                        var lowHigh = v.Split('+');
                         var low =  lowHigh[0].Split(',').ToList().ConvertAll(Convert.ToInt32);
                         var high = lowHigh[1].Split(',').ToList().ConvertAll(Convert.ToInt32);
 
@@ -72,10 +72,13 @@ namespace PiCamCV.ConsoleApp
 
             s.AppendFormat("Mode={0}", Mode);
 
-            //if (Mode == Mode.AlarmClock)
-            //{
-            //    s.AppendFormat(", AlarmDate={1:yyyy-MM-dd HH:mm:ss}", Environment.NewLine, AlarmDate);
-            //}
+            if (HasThresholds)
+            {
+                s.AppendFormat(
+                    ", LowThreshold={0}, HighThreshold={1}"
+                    , LowThreshold.ToArray().ToCsv(',', d=>d.ToString())
+                    , HighThreshold.ToArray().ToCsv(',', d => d.ToString()));
+            }
 
             //if (UseFakeDevice)
             //{

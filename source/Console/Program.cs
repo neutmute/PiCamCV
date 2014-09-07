@@ -28,14 +28,14 @@ namespace PiCamCV.ConsoleApp
             }
 
             IRunner runner;
-            
+            Log.Info(options);
             switch (options.Mode)
             {
                 case Mode.simple:runner = new SimpleCv(); 
                     break;
 
                 case Mode.colourdetect:
-                    var capture = CaptureFactory.GetCapture(CaptureDevice.Usb);
+                    var capture = CaptureFactory.GetCapture(CaptureDevice.Pi);
                     var colorDetector = new ColorDetectRunner(capture);
                     if (options.HasThresholds)
                     {

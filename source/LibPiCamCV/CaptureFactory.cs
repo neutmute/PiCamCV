@@ -35,6 +35,10 @@ namespace PiCamCV
             }
             else
             {
+                if (Environment.OSVersion.Platform == PlatformID.Unix)
+                {
+                    Log.Warn("You are in Unix but aren't requesting a Pi camera? Whatever you say boss...");
+                }
                 return new CaptureUsb();
             }
         }
