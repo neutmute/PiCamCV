@@ -59,7 +59,9 @@ namespace PiCamCV.ConsoleApp
                     break;
 
                 case Mode.haar:
-                    var cascadeFilename = Path.Combine(appData.ExeFolder, @"haarcascades\haarcascade_frontalface_default.xml");
+                    
+                    var relativePath = string.Format(@"haarcascades{0}haarcascade_frontalface_default.xml", Path.DirectorySeparatorChar);
+                    var cascadeFilename = Path.Combine(appData.ExeFolder, relativePath);
                     var cascadeContent = File.ReadAllText(cascadeFilename);
                     runner = new CascadeRunner(capture, cascadeContent);
                     break;
