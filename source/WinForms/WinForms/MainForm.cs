@@ -10,6 +10,7 @@ using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using PiCamCV;
+using PiCamCV.Common;
 using PiCamCV.Interfaces;
 using PiCamCV.WinForms;
 using PiCamCV.WinForms.CameraConsumers;

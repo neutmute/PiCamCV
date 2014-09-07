@@ -5,15 +5,20 @@ using System.Linq;
 using System.Text;
 using Kraken.Core;
 
-namespace PiCamCV.WinForms
+namespace PiCamCV.Common
 {
     public  class FpsTracker
     {
         private int _frameCount;
         private Stopwatch _stopWatch;
-        private const int ReportEveryNthFrame = 10;
+        public  int ReportEveryNthFrame {get;set;}
 
         public Action<string> ReportFrames { get; set; }
+
+        public FpsTracker()
+        {
+            ReportEveryNthFrame = 10;
+        }
 
         public void NotifyImageGrabbed(object sender, EventArgs e)
         {

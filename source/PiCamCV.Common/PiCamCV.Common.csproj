@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Common.Logging">
+      <HintPath>..\..\packages\Common.Logging.2.2.0\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
     <Reference Include="Common.Logging.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
@@ -41,6 +44,9 @@
     <Reference Include="Emgu.Util, Version=3.0.0.0, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\emgu-source\bin\Emgu.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="Kraken.Core">
+      <HintPath>..\..\packages\Kraken.Core.4.5.0.22\lib\net40\Kraken.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -59,6 +65,7 @@
     <Compile Include="CascadeDetector.cs" />
     <Compile Include="ColourDetector.cs" />
     <Compile Include="ExtensionMethods\PointFExtensions.cs" />
+    <Compile Include="FpsTracker.cs" />
     <Compile Include="Interfaces\ICameraConsumer.cs" />
     <Compile Include="Interfaces\ICameraProcessor.cs" />
     <Compile Include="Properties\AssemblyInfoUnique.cs" />

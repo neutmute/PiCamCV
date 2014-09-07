@@ -77,7 +77,7 @@
             this.groupBoxCanny.Size = new System.Drawing.Size(416, 296);
             this.groupBoxCanny.TabIndex = 6;
             this.groupBoxCanny.TabStop = false;
-            this.groupBoxCanny.Text = "Captured Image";
+            this.groupBoxCanny.Text = "Canny Edges";
             // 
             // imageBoxCanny
             // 

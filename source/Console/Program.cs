@@ -36,7 +36,13 @@ namespace PiCamCV.ConsoleApp
 
                 case Mode.colourdetect:
                     var capture = CaptureFactory.GetCapture(CaptureDevice.Usb);
-                    runner = new ColorDetectRunner(capture); 
+                    var colorDetector = new ColorDetectRunner(capture);
+                    if (options.HasThresholds)
+                    {
+                        colorDetector.LowThreshold = options.LowThreshold;
+                        colorDetector.HighThreshold = options.HighThreshold;
+                    }
+                    runner=colorDetector;
                     break;
 
                 default:

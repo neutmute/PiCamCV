@@ -89,7 +89,6 @@
     <Compile Include="CameraConsumers\HaarCascadeControl.Designer.cs">
       <DependentUpon>HaarCascadeControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="FpsTracker.cs" />
     <Compile Include="Properties\AssemblyInfoUnique.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

@@ -165,6 +165,9 @@ namespace PiCamCV.WinForms.CameraConsumers
             SetHighScalar(187,153,182);
         }
 
+        /// <summary>
+        /// -t=155,128,44|182,214,105
+        /// </summary>
         private void btnRedDaylight_Click(object sender, EventArgs e)
         {
             SetLowScalar(155, 128, 44);
