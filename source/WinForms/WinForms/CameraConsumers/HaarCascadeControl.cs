@@ -33,19 +33,20 @@ namespace PiCamCV.WinForms.CameraConsumers
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
-            
-            var matCaptured = new Mat();
-            CameraCapture.Retrieve(matCaptured);
-            var input = new CascadeDetectorInput{Captured = matCaptured};
-            var result = _detector.Process(input);
-            var image = matCaptured.ToImage<Bgr, byte>();
-
-            foreach (Rectangle item in result.Objects)
+            using (var matCaptured = new Mat())
             {
-                image.Draw(item, new Bgr(Color.Blue), 2);
-            }
+                CameraCapture.Retrieve(matCaptured);
+                var input = new CascadeDetectorInput {Captured = matCaptured};
+                var result = _detector.Process(input);
+                var image = matCaptured.ToImage<Bgr, byte>();
 
-            imageBoxCaptured.Image = image;
+                foreach (Rectangle item in result.Objects)
+                {
+                    image.Draw(item, new Bgr(Color.Blue), 2);
+                }
+
+                imageBoxCaptured.Image = image;
+            }
         }
     }
 }

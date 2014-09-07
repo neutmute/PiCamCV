@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Common.Logging;
+using Emgu.CV;
 using PiCamCV.Common;
 using PiCamCV.Interfaces;
 
@@ -33,5 +34,17 @@ namespace PiCamCV.ConsoleApp.Runners
         public ICaptureGrab CameraCapture { get; set; }
 
         public abstract void ImageGrabbedHandler(object sender, EventArgs e);
+
+
+        public override void Run()
+        {
+            CameraCapture.Start();
+
+            do
+            {
+            } while (CvInvoke.cvWaitKey(1000) < 0);
+
+            Log.Info("Finishing");
+        }
     }
 }

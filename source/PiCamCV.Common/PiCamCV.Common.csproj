@@ -80,12 +80,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="haarcascades\haarcascade_lego_batman3.xml" />
+    <Content Include="haarcascades\haarcascade_lego_batman3.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="haarcascades\haarcascade_lego_batman2.xml" />
+    <Content Include="haarcascades\haarcascade_lego_batman2.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="haarcascades\haarcascade_eye.xml" />
+    <Content Include="haarcascades\haarcascade_frontalface_default.xml" />
     <Content Include="haarcascades\haarcascade_lego_batman4.xml" />
     <Content Include="haarcascades\haarcascade_castrillon_mouth.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

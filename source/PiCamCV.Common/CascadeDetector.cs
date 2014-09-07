@@ -42,27 +42,24 @@ namespace PiCamCV.Common
         protected override CascadeDetectorProcessOutput DoProcess(CascadeDetectorInput input)
         {
             var result = new CascadeDetectorProcessOutput();
+
             using (var objectClassifier = new CascadeClassifier(_cascadeFilename))
+            using (var ugray = new UMat())
             {
-                using (UMat ugray = new UMat())
-                {
-                    CvInvoke.CvtColor(input.Captured, ugray, Emgu.CV.CvEnum.ColorConversion.Bgr2Gray);
+                CvInvoke.CvtColor(input.Captured, ugray, Emgu.CV.CvEnum.ColorConversion.Bgr2Gray);
 
-                    //normalizes brightness and increases contrast of the image
-                    CvInvoke.EqualizeHist(ugray, ugray);
+                //normalizes brightness and increases contrast of the image
+                CvInvoke.EqualizeHist(ugray, ugray);
 
-                    //Detect the faces  from the gray scale image and store the locations as rectangle
-                    //The first dimensional is the channel
-                    //The second dimension is the index of the rectangle in the specific channel
-                    Rectangle[] objectsDetected = objectClassifier.DetectMultiScale(
-                       ugray,
-                       1.1,
-                       10,
-                       Size.Empty);
+                Rectangle[] objectsDetected = objectClassifier.DetectMultiScale(
+                   ugray,
+                   1.1,
+                   10,
+                   Size.Empty);
 
-                    result.Objects = objectsDetected.ToList();
-                }
+                result.Objects = objectsDetected.ToList();
             }
+
             return result;  
         }
     }

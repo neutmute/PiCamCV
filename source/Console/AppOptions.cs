@@ -12,7 +12,8 @@ namespace PiCamCV.ConsoleApp
     {
         Help = 0,
         simple,
-        colourdetect
+        colourdetect,
+        haar
     }
 
     public class ConsoleOptions

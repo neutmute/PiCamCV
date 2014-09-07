@@ -161,11 +161,29 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CameraConsumers\FaceDetection\haarcascade_eye.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Include="..\..\PiCamCV.Common\haarcascades\haarcascade_castrillon_mouth.xml">
+      <Link>haarcascades\haarcascade_castrillon_mouth.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="CameraConsumers\FaceDetection\haarcascade_frontalface_default.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Include="..\..\PiCamCV.Common\haarcascades\haarcascade_eye.xml">
+      <Link>haarcascades\haarcascade_eye.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\PiCamCV.Common\haarcascades\haarcascade_frontalface_default.xml">
+      <Link>haarcascades\haarcascade_frontalface_default.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\PiCamCV.Common\haarcascades\haarcascade_lego_batman2.xml">
+      <Link>haarcascades\haarcascade_lego_batman2.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\PiCamCV.Common\haarcascades\haarcascade_lego_batman3.xml">
+      <Link>haarcascades\haarcascade_lego_batman3.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\PiCamCV.Common\haarcascades\haarcascade_lego_batman4.xml">
+      <Link>haarcascades\haarcascade_lego_batman4.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

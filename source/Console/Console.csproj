@@ -75,7 +75,8 @@
     <Compile Include="IRunner.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfoUnique.cs" />
-    <Compile Include="Runners\BaseRunner.cs" />
+    <Compile Include="Runners\CameraConsumerRunner.cs" />
+    <Compile Include="Runners\CascadeRunner.cs" />
     <Compile Include="Runners\ColorDetectRunner.cs" />
     <Compile Include="Runners\EightBitConverter.cs" />
     <Compile Include="Runners\SimpleCv.cs" />
@@ -93,6 +94,32 @@
       <Project>{233c04e5-2565-4e9c-ac8b-eec462268cf8}</Project>
       <Name>PiCamCV.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\PiCamCV.Common\haarcascades\haarcascade_castrillon_mouth.xml">
+      <Link>haarcascades\haarcascade_castrillon_mouth.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\PiCamCV.Common\haarcascades\haarcascade_eye.xml">
+      <Link>haarcascades\haarcascade_eye.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\PiCamCV.Common\haarcascades\haarcascade_frontalface_default.xml">
+      <Link>haarcascades\haarcascade_frontalface_default.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\PiCamCV.Common\haarcascades\haarcascade_lego_batman2.xml">
+      <Link>haarcascades\haarcascade_lego_batman2.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\PiCamCV.Common\haarcascades\haarcascade_lego_batman3.xml">
+      <Link>haarcascades\haarcascade_lego_batman3.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\PiCamCV.Common\haarcascades\haarcascade_lego_batman4.xml">
+      <Link>haarcascades\haarcascade_lego_batman4.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

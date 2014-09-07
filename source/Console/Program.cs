@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Common.Logging;
 using Emgu.CV;
 using Kraken.Core;
 using PiCamCV.ConsoleApp.Runners;
+using PiCamCV.Interfaces;
 
 namespace PiCamCV.ConsoleApp
 {
@@ -15,7 +17,8 @@ namespace PiCamCV.ConsoleApp
         protected static ILog Log = LogManager.GetCurrentClassLogger();
         static void Main(string[] args)
         {
-            Log.Info(ExecutionEnvironment.GetApplicationMetadata());
+            var appData = ExecutionEnvironment.GetApplicationMetadata();
+            Log.Info(appData);
             Log.Info(m => m("CVLibrary={0}", CvInvokeRaspiCamCV.CVLibrary));
 
             var options = new ConsoleOptions(args);
@@ -27,6 +30,17 @@ namespace PiCamCV.ConsoleApp
                 return;
             }
 
+            ICaptureGrab capture = null;
+            if (options.Mode != Mode.simple)
+            {
+                var captureDevice = CaptureDevice.Usb;
+                if (Environment.OSVersion.Platform == PlatformID.Unix)
+                {
+                    captureDevice = CaptureDevice.Pi;
+                }
+                capture = CaptureFactory.GetCapture(captureDevice);
+            }
+
             IRunner runner;
             Log.Info(options);
             switch (options.Mode)
@@ -35,7 +49,6 @@ namespace PiCamCV.ConsoleApp
                     break;
 
                 case Mode.colourdetect:
-                    var capture = CaptureFactory.GetCapture(CaptureDevice.Pi);
                     var colorDetector = new ColorDetectRunner(capture);
                     if (options.HasThresholds)
                     {
@@ -43,6 +56,12 @@ namespace PiCamCV.ConsoleApp
                         colorDetector.HighThreshold = options.HighThreshold;
                     }
                     runner=colorDetector;
+                    break;
+
+                case Mode.haar:
+                    var cascadeFilename = Path.Combine(appData.ExeFolder, @"haarcascades\haarcascade_frontalface_default.xml");
+                    var cascadeContent = File.ReadAllText(cascadeFilename);
+                    runner = new CascadeRunner(capture, cascadeContent);
                     break;
 
                 default:

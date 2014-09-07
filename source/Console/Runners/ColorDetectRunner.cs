@@ -29,15 +29,6 @@ namespace PiCamCV.ConsoleApp.Runners
             HighThreshold = new MCvScalar(187, 153, 82);
         }
 
-        public override void Run()
-        {
-            CameraCapture.Start();
-
-            do
-            {
-            } while (CvInvoke.cvWaitKey(1000) < 0);
-
-        }
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
