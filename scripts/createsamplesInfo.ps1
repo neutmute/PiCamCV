@@ -1,28 +1,56 @@
+<#
+Assumes 
+ -ps1 script in folder with positive samples
+ -opencv executables in PATH envrionment variable
+
+#>
 [void][reflection.assembly]::LoadWithPartialName("System.Windows.Forms")
- cd D:\Data\Documents\Pictures\!Temp\batman\positive2
- D:
- $scriptpath = $MyInvocation.MyCommand.Path
 
- # create the samples
- $i = 0
-foreach ($file in Get-ChildItem -filter *.jpg) {
-    $img = [System.Drawing.Image]::FromFile($file.FullName)
-    $scale = $img.Width/80;
-    $outWidth = [Convert]::ToInt32($img.Width/$scale)
-    $outHeight = [Convert]::ToInt32($img.Height/$scale)
-    $i++
+$scriptDir = Split-Path $script:MyInvocation.MyCommand.Path
+Set-Location -Path $scriptDir
 
-    if ($i % 10 -eq 0)
-    {
-        Write-Host "$($img.Height)"
-        #Write-Host $file
-        #& opencv_createsamples.exe -vec $scriptpath$file.vec -img $file -num 1 -bgcolor 0 -bgthresh 0 -maxxangle 0 -maxyangle 0 -maxzangle 0 -maxidev 40 -w 20 -h 40 -bg ..\negative\negatives.txt
-        Write-Host " opencv_createsamples.exe -vec $scriptpath$file.vec -img $file -num 1 -bgcolor 255 -bgthresh 0 -maxxangle 0 -maxyangle 0 -maxzangle 0 -maxidev 40 -w 40 -h 80 -bg ..\negative\negatives.txt"
+$classifierDir="classifier"
+$positiveImageListFilename = "zPosImages.txt" 
+$vectorFileName = "zVectors.vec"
+$outWidth = 20
+$outHeight= 40
+$bgColorEightBit=255 #white
+
+ 
+# clean old vecs up
+Remove-Item *.* -filter *.vec
+
+# clean old lists up
+Remove-Item *.* -filter *.txt
+
+# create classifier folder
+Remove-Item $classifierDir -Force -Recurse
+New-Item -ItemType Directory -Force -Path $classifierDir
+
+# create sample input info file and count how many +ve files we have
+$positiveFileCounter = 0
+$positiveFileContent = ""
+$fileCounter = 0
+foreach ($file in Get-ChildItem -filter *.jpg) 
+{
+    $fileCounter++
+    if ($fileCounter % 3 -eq 0)  # modulus three to count down file count
+    {    
+        $positiveFileCounter++    
+        Add-Content $positiveImageListFilename "$($file.Name) 1 20 20 40 80"
     }
 }
 
-# clean our vecs up
-Remove-Item $scriptpath\*.vec -include .vec
+#create samples
+$sampleCmd = "& opencv_createsamples.exe -vec $vectorFileName -info $positiveImageListFilename -num $positiveFileCounter -bgcolor $bgColorEightBit -maxxangle 0 -maxyangle 0 -maxzangle 0 -maxidev 40 -w $outWidth -h $outHeight -bg ..\negative\negatives.txt"
+Write-Host "$sampleCmd"
+Invoke-Expression $sampleCmd
 
-# create master vec
-& dir /b *.vec >vectors.vec
+#view samples
+$viewCmd = "opencv_createsamples.exe -vec $vectorFileName -w $outWidth -h $outHeight"
+Write-Host "$viewCmd"
+
+# train that app
+$trainCmd = "opencv_traincascade -data $classifierDir -vec $vectorFileName -bg ..\negative\negatives.txt -numStages 24 -minHitRate 0.999 -maxFalseAlarmRate 0.5 -numPos $sampleCount -numNeg 15 -w $outWidth -h $outHeight -mode ALL -precalcValBufSize 4024 -precalcIdxBufSize 6024"
+Write-Host $trainCmd 
+#& $trainCmd 
