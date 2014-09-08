@@ -37,7 +37,7 @@ foreach ($file in Get-ChildItem -filter *.jpg)
     if ($fileCounter % 3 -eq 0)  # modulus three to count down file count
     {    
         $positiveFileCounter++    
-        Add-Content $positiveImageListFilename "$($file.Name) 1 20 20 40 80"
+        Add-Content $positiveImageListFilename "$($file.Name) 1 0 0 40 80"
     }
 }
 
@@ -51,6 +51,6 @@ $viewCmd = "opencv_createsamples.exe -vec $vectorFileName -w $outWidth -h $outHe
 Write-Host "$viewCmd"
 
 # train that app
-$trainCmd = "opencv_traincascade -data $classifierDir -vec $vectorFileName -bg ..\negative\negatives.txt -numStages 24 -minHitRate 0.999 -maxFalseAlarmRate 0.5 -numPos $sampleCount -numNeg 15 -w $outWidth -h $outHeight -mode ALL -precalcValBufSize 4024 -precalcIdxBufSize 6024"
+$trainCmd = "opencv_traincascade -data $classifierDir -vec $vectorFileName -bg ..\negative\negatives.txt -numStages 24 -minHitRate 0.999 -maxFalseAlarmRate 0.5 -numPos $positiveFileCounter -numNeg 93 -w $outWidth -h $outHeight -mode ALL -precalcValBufSize 4024 -precalcIdxBufSize 6024"
 Write-Host $trainCmd 
 #& $trainCmd 
