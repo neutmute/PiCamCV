@@ -185,6 +185,9 @@
       <Link>haarcascades\haarcascade_lego_batman4.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\..\PiCamCV.Common\haarcascades\haarcascade_lego_batman5.xml">
+      <Link>haarcascades\haarcascade_lego_batman5.xml</Link>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
