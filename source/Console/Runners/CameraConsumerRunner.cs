@@ -19,6 +19,7 @@ namespace PiCamCV.ConsoleApp.Runners
 
     public abstract class CameraConsumerRunner : BaseRunner, ICameraConsumer
     {
+        protected static ILog Log = LogManager.GetCurrentClassLogger();
         private FpsTracker _fpsTracker;
         protected CameraConsumerRunner(ICaptureGrab captureGrabber)
         {
@@ -35,16 +36,23 @@ namespace PiCamCV.ConsoleApp.Runners
 
         public abstract void ImageGrabbedHandler(object sender, EventArgs e);
 
+        public virtual void HandleKey(ConsoleKeyInfo keyInfo)
+        {
+            Log.Info(m => m("Ignoring key {0}", keyInfo.Key));
+        }
 
-        public override void Run()
+        public async override void Run()
         {
             CameraCapture.Start();
 
-            do
-            {
-            } while (CvInvoke.cvWaitKey(1000) < 0);
+            var keyHandler = new KeyHandler();
+            keyHandler.KeyEvent += keyHandler_KeyEvent;
+            await keyHandler.WaitForExit();
+        }
 
-            Log.Info("Finishing");
+        private void keyHandler_KeyEvent(object sender, ConsoleKeyEventArgs e)
+        {
+            HandleKey(e.KeyInfo);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace PiCamCV.ConsoleApp.Runners
 {
     public class CascadeRunner : CameraConsumerRunner
     {
-        private CascadeDetector _detector;
+        private readonly CascadeDetector _detector;
         public CascadeRunner(ICaptureGrab capture, string casacdeXmlContent)
             : base(capture)
         {

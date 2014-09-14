@@ -66,6 +66,12 @@ namespace PiCamCV.ConsoleApp
                     runner = new CascadeRunner(capture, cascadeContent);
                     break;
 
+
+                case Mode.servosort:
+
+                    runner = new ServoSorter(capture);
+                    break;
+
                 default:
                     throw KrakenException.Create("Option mode {0} needs wiring up", options.Mode);
             }
