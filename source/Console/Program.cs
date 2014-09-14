@@ -68,8 +68,7 @@ namespace PiCamCV.ConsoleApp
 
 
                 case Mode.servosort:
-
-                    runner = new ServoSorter(capture);
+                    runner = new ServoSorter(capture, options);
                     break;
 
                 default:

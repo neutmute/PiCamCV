@@ -20,7 +20,7 @@ namespace PiCamCV.ConsoleApp
 
         public event EventHandler<ConsoleKeyEventArgs> KeyEvent;
     
-        public async Task WaitForExit()
+        public void WaitForExit()
         {
             bool exit = false;
             do

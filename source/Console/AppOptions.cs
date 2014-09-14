@@ -31,6 +31,8 @@ namespace PiCamCV.ConsoleApp
 
         public bool HasThresholds { get; private set; }
 
+        public bool UseFakeDevice { get; set; }
+
         public ConsoleOptions(string[] args)
         {
             OptionSet = new OptionSet {
@@ -46,6 +48,7 @@ namespace PiCamCV.ConsoleApp
                         ShowHelp = true;
                     }
                 }},
+                { "nopwm", "Do not try and connect to a real PWM device", v => UseFakeDevice=true},
                 { "t|threshold=", "Color thresholds for colour detection [Hl,Sl,Vl+Hh,Sh,Vh]. eg: -t=140,57,25+187,153,82 or -t=155,128,44+182,214,105"
                     , v =>
                     {
@@ -82,10 +85,10 @@ namespace PiCamCV.ConsoleApp
                     , HighThreshold.ToArray().ToCsv(',', d => d.ToString()));
             }
 
-            //if (UseFakeDevice)
-            //{
-            //    s.AppendFormat(", UseFakeDevice=true", Environment.NewLine);
-            //}
+            if (UseFakeDevice)
+            {
+                s.AppendFormat(", UseFakeDevice=true", Environment.NewLine);
+            }
             return s.ToString();
         }
 
