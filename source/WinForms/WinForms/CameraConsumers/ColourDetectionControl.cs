@@ -39,10 +39,10 @@ namespace PiCamCV.WinForms.CameraConsumers
             {
                 var roiRectangle = Rectangle.Empty;
 
-                var w = Stopwatch.StartNew();
+                var retrieveElapsed = Stopwatch.StartNew();
                 CameraCapture.Retrieve(matCaptured);
-                NotifyStatus("Retrieved frame in {0}", w.Elapsed.ToHumanReadable());
-
+                retrieveElapsed.Stop();
+                
                 ResizeImageControls(matCaptured);
 
                 if (checkBoxRoi.Checked)
@@ -68,7 +68,7 @@ namespace PiCamCV.WinForms.CameraConsumers
                     Captured = matCaptured
                     ,LowThreshold = _lowThreshold
                     ,HighThreshold = _highThreshold
-                    ,RegionOfInterest = roiRectangle
+                    ,Roi = roiRectangle
                 };
                 var output = _colorDetector.Process(input);
 
@@ -115,6 +115,11 @@ namespace PiCamCV.WinForms.CameraConsumers
 
                 imageBoxCaptured.Image = output.CapturedImage;
                 imageBoxFiltered.Image = output.ThresholdImage;
+
+                NotifyStatus(
+                    "Retrieved frame in {0}, processed colour in {1}"
+                    , retrieveElapsed.Elapsed.ToHumanReadable()
+                    , output.Elapsed.ToHumanReadable());
             }
         }
 

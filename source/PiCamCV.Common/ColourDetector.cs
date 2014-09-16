@@ -15,7 +15,11 @@ namespace PiCamCV.Common
     {
         public MCvScalar LowThreshold { get; set; }
         public MCvScalar HighThreshold { get; set; }
-        public Rectangle RegionOfInterest { get; set; }
+
+        /// <summary>
+        /// Region of interest
+        /// </summary>
+        public Rectangle Roi { get; set; }
 
         public int MinimumDetectionArea { get; set; }
 
@@ -58,9 +62,9 @@ namespace PiCamCV.Common
             {
                 var inputMat = input.Captured;
 
-                if (!input.RegionOfInterest.IsEmpty)
+                if (!input.Roi.IsEmpty)
                 {
-                    inputMat = new Mat(inputMat, input.RegionOfInterest);
+                    inputMat = new Mat(inputMat, input.Roi);
                 }
 
                 CvInvoke.CvtColor(inputMat, hsvFrame, ColorConversion.Bgr2Hsv);
@@ -92,10 +96,11 @@ namespace PiCamCV.Common
                     var posY = Convert.ToSingle(moments.M01/area);
                     output.IsDetected = true;
 
-                    if (!input.RegionOfInterest.IsEmpty)
+                    if (!input.Roi.IsEmpty)
                     {
-                        posX += input.RegionOfInterest.X;
-                        posY += input.RegionOfInterest.Y;
+                        // transpose the detected coordinates to non ROI space
+                        posX += input.Roi.X;
+                        posY += input.Roi.Y;
                     }
 
                     output.CentralPoint = new PointF(posX, posY);
