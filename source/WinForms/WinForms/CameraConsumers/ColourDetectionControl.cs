@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -37,39 +38,20 @@ namespace PiCamCV.WinForms.CameraConsumers
         {
             using (var matCaptured = new Mat())
             {
-                var roiRectangle = Rectangle.Empty;
-
                 var retrieveElapsed = Stopwatch.StartNew();
                 CameraCapture.Retrieve(matCaptured);
                 retrieveElapsed.Stop();
                 
                 ResizeImageControls(matCaptured);
 
-                if (checkBoxRoi.Checked)
-                {
-                    // transpose top/bottom to make ui up/down more intuitive
-                    var imageHeight = matCaptured.Height;
-                    var top = imageHeight - sliderRoiTop.Value;
-                    var bottom = imageHeight - sliderRoiBottom.Value;
-
-                    var width = (sliderRoiRight.Value - sliderRoiLeft.Value);
-                    var height = bottom - top;
-
-                    roiRectangle = new Rectangle(
-                        sliderRoiLeft.Value
-                        , top
-                        , width
-                        , height
-                        );
-                }
+                var settings = GetColourDetectSettings();
 
                 var input = new ColourDetectorInput
                 {
                     Captured = matCaptured
-                    ,LowThreshold = _lowThreshold
-                    ,HighThreshold = _highThreshold
-                    ,Roi = roiRectangle
+                    ,Settings = settings
                 };
+
                 var output = _colorDetector.Process(input);
 
                 if (output.IsDetected)
@@ -85,7 +67,7 @@ namespace PiCamCV.WinForms.CameraConsumers
 
                 if (checkBoxRoi.Checked)
                 {
-                    output.CapturedImage.Draw(roiRectangle, Color.Green.ToBgr());
+                    output.CapturedImage.Draw(settings.Roi, Color.Green.ToBgr());
                 }
 
                 //#region circle detection
@@ -121,6 +103,41 @@ namespace PiCamCV.WinForms.CameraConsumers
                     , retrieveElapsed.Elapsed.ToHumanReadable()
                     , output.Elapsed.ToHumanReadable());
             }
+        }
+
+        private ColourDetectSettings GetColourDetectSettings()
+        {
+            var settings = new ColourDetectSettings();
+            settings.Roi = GetRegionOfInterestFromControls();
+            settings.HighThreshold = _highThreshold;
+            settings.LowThreshold = _lowThreshold;
+            settings.MinimumDetectionArea = 200;
+            return settings;
+        }
+
+        private Rectangle GetRegionOfInterestFromControls()
+        {
+             var roiRectangle = Rectangle.Empty;
+
+            if (checkBoxRoi.Checked)
+            {
+                // transpose top/bottom to make ui up/down more intuitive
+                var imageHeight = sliderRoiTop.Maximum;
+                var top = imageHeight - sliderRoiTop.Value;
+                var bottom = imageHeight - sliderRoiBottom.Value;
+
+                var width = (sliderRoiRight.Value - sliderRoiLeft.Value);
+                var height = bottom - top;
+
+                roiRectangle = new Rectangle(
+                    sliderRoiLeft.Value
+                    , top
+                    , width
+                    , height
+                    );
+            }
+
+            return roiRectangle;
         }
 
         private void ResizeImageControls(Mat matCaptured)
@@ -236,6 +253,15 @@ namespace PiCamCV.WinForms.CameraConsumers
         private void checkBoxRoiEnabled_CheckedChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnWriteSettingsForConsole_Click(object sender, EventArgs e)
+        {
+            var appData = ExecutionEnvironment.GetApplicationMetadata();
+            var fileName = Path.Combine(appData.ExeFolder, "colordetectsettings.xml");
+
+            Kelvin<ColourDetectSettings>.ToXmlFile(GetColourDetectSettings(), fileName);
+            NotifyStatus("Wrote settings to {0}", fileName);
         }
     }
 }

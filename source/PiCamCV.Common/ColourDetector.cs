@@ -11,17 +11,29 @@ using PiCamCV.Interfaces;
 
 namespace PiCamCV.Common
 {
-    public class ColourDetectorInput : CameraProcessInput
+    /// <summary>
+    /// Easier to serialise
+    /// </summary>
+    public class ColourDetectSettings
     {
         public MCvScalar LowThreshold { get; set; }
         public MCvScalar HighThreshold { get; set; }
 
+        public int MinimumDetectionArea { get; set; }
         /// <summary>
         /// Region of interest
         /// </summary>
         public Rectangle Roi { get; set; }
 
-        public int MinimumDetectionArea { get; set; }
+        public override string ToString()
+        {
+            return string.Format("Low={0}, High={1}, MinimumDetectionArea={2}, Roi={3}", LowThreshold, HighThreshold, MinimumDetectionArea, Roi);
+        }
+    }
+
+    public class ColourDetectorInput : CameraProcessInput
+    {
+        public ColourDetectSettings Settings { get; set; }
 
         /// <summary>
         /// Turn off for console perf tweak
@@ -62,15 +74,17 @@ namespace PiCamCV.Common
             {
                 var inputMat = input.Captured;
 
-                if (!input.Roi.IsEmpty)
+                var settings = input.Settings;
+
+                if (!settings.Roi.IsEmpty)
                 {
-                    inputMat = new Mat(inputMat, input.Roi);
+                    inputMat = new Mat(inputMat, settings.Roi);
                 }
 
                 CvInvoke.CvtColor(inputMat, hsvFrame, ColorConversion.Bgr2Hsv);
 
-                using (var lowerScalar = new ScalarArray(input.LowThreshold))
-                using (var upperScalar = new ScalarArray(input.HighThreshold))
+                using (var lowerScalar = new ScalarArray(settings.LowThreshold))
+                using (var upperScalar = new ScalarArray(settings.HighThreshold))
                 {
                     CvInvoke.InRange(hsvFrame, lowerScalar, upperScalar, matThresholded); //Threshold the image
                 }
@@ -90,17 +104,17 @@ namespace PiCamCV.Common
                 moments.GetCentralMoment(0, 0);
 
                 var area = moments.M00;
-                if (area > input.MinimumDetectionArea)
+                if (area > settings.MinimumDetectionArea)
                 {
                     var posX = Convert.ToSingle(moments.M10/area);
                     var posY = Convert.ToSingle(moments.M01/area);
                     output.IsDetected = true;
 
-                    if (!input.Roi.IsEmpty)
+                    if (!settings.Roi.IsEmpty)
                     {
                         // transpose the detected coordinates to non ROI space
-                        posX += input.Roi.X;
-                        posY += input.Roi.Y;
+                        posX += settings.Roi.X;
+                        posY += settings.Roi.Y;
                     }
 
                     output.CentralPoint = new PointF(posX, posY);

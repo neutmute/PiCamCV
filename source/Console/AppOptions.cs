@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using Common.Logging;
 using Emgu.CV.Structure;
 using Kraken.Core;
 using NDesk.Options;
+using PiCamCV.Common;
 
 namespace PiCamCV.ConsoleApp
 {
@@ -19,6 +22,7 @@ namespace PiCamCV.ConsoleApp
 
     public class ConsoleOptions
     {
+        protected static ILog Log = LogManager.GetCurrentClassLogger();
         public Mode Mode { get; set; }
 
         public bool ShowHelp;
@@ -29,12 +33,16 @@ namespace PiCamCV.ConsoleApp
 
         public OptionSet OptionSet { get; private set; }
 
-        public bool HasThresholds { get; private set; }
+        public bool HasColourSettings { get; private set; }
 
         public bool UseFakeDevice { get; set; }
 
+        public ColourDetectSettings ColourSettings { get; set; }
+
         public ConsoleOptions(string[] args)
         {
+            ReadColorSettings();
+
             OptionSet = new OptionSet {
                 { "m|mode=", "Name of the mode to execute. [" + Enumeration.GetAll<Mode>().ToCsv(",", m => m.ToString()) + "]", v =>
                 {
@@ -49,19 +57,17 @@ namespace PiCamCV.ConsoleApp
                     }
                 }},
                 { "nopwm", "Do not try and connect to a real PWM device", v => UseFakeDevice=true},
-                { "t|threshold=", "Color thresholds for colour detection [Hl,Sl,Vl+Hh,Sh,Vh]. eg: -t=140,57,25+187,153,82 or -t=155,128,44+182,214,105"
-                    , v =>
-                    {
-                        var lowHigh = v.Split('+');
-                        var low =  lowHigh[0].Split(',').ToList().ConvertAll(Convert.ToInt32);
-                        var high = lowHigh[1].Split(',').ToList().ConvertAll(Convert.ToInt32);
+                //{ "t|threshold=", "Color thresholds for colour detection [Hl,Sl,Vl+Hh,Sh,Vh]. eg: -t=140,57,25+187,153,82 or -t=155,128,44+182,214,105"
+                //    , v =>
+                //    {
+                //        var lowHigh = v.Split('+');
+                //        var low =  lowHigh[0].Split(',').ToList().ConvertAll(Convert.ToInt32);
+                //        var high = lowHigh[1].Split(',').ToList().ConvertAll(Convert.ToInt32);
 
-                        LowThreshold = new MCvScalar(low[0], low[1], low[2]);
-                        HighThreshold = new MCvScalar(high[0], high[1], high[2]);
-                        HasThresholds = true;
-                    }},
-                //{ "a|alarmdate=", "Set alarm for future datetime", v => {AlarmDate =  DateTime.Parse(v); Mode = Mode.AlarmClock;}},
-                //{ "t|alarmtime=", "Set alarm for a future timespan - eg: a few seconds away", v => {AlarmDate =  DateTime.Now + TimeSpan.Parse(v); Mode = Mode.AlarmClock;}},
+                //        LowThreshold = new MCvScalar(low[0], low[1], low[2]);
+                //        HighThreshold = new MCvScalar(high[0], high[1], high[2]);
+                //        HasColourSettings = true;
+                //    }},
                 { "h|?", "Show this help", v => ShowHelp = true }
             };
             OptionSet.Parse(args);
@@ -71,13 +77,29 @@ namespace PiCamCV.ConsoleApp
             }
         }
 
+        private void ReadColorSettings()
+        {
+            var appData = ExecutionEnvironment.GetApplicationMetadata();
+            var settingsFilename = Path.Combine(appData.ExeFolder, "colordetectsettings.xml");
+            var colorSettingsFile = new FileInfo(settingsFilename);
+            if (colorSettingsFile.Exists)
+            {
+                Log.Info(m => m("Color settings found: {0}", ColourSettings));
+                ColourSettings = Kelvin<ColourDetectSettings>.FromXmlFile(settingsFilename);
+            }
+            else
+            {
+                Log.Info(m => m("No color settings found at '{0}'", settingsFilename));
+            }
+        }
+
         public override string ToString()
         {
             var s = new StringBuilder();
 
             s.AppendFormat("Mode={0}", Mode);
 
-            if (HasThresholds)
+            if (HasColourSettings)
             {
                 s.AppendFormat(
                     ", LowThreshold={0}, HighThreshold={1}"

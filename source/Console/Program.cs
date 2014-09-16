@@ -50,12 +50,11 @@ namespace PiCamCV.ConsoleApp
 
                 case Mode.colourdetect:
                     var colorDetector = new ColorDetectRunner(capture);
-                    if (options.HasThresholds)
+                    if (options.HasColourSettings)
                     {
-                        colorDetector.LowThreshold = options.LowThreshold;
-                        colorDetector.HighThreshold = options.HighThreshold;
+                        colorDetector.Settings = options.ColourSettings;
                     }
-                    runner=colorDetector;
+                    runner = colorDetector;
                     break;
 
                 case Mode.haar:

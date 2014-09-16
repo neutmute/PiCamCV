@@ -36,11 +36,11 @@
             this.btnStartStop = new System.Windows.Forms.Button();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageCameraCapture = new System.Windows.Forms.TabPage();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripLabelSettings = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabPageFaceDetection = new System.Windows.Forms.TabPage();
             this.tabPageColourDetect = new System.Windows.Forms.TabPage();
             this.tabPageHaarCascade = new System.Windows.Forms.TabPage();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripLabelSettings = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelTop.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tabPageCameraCapture.SuspendLayout();
@@ -63,7 +63,7 @@
             // labelFrameRate
             // 
             this.labelFrameRate.AutoSize = true;
-            this.labelFrameRate.Location = new System.Drawing.Point(425, 17);
+            this.labelFrameRate.Location = new System.Drawing.Point(403, 17);
             this.labelFrameRate.Name = "labelFrameRate";
             this.labelFrameRate.Size = new System.Drawing.Size(62, 13);
             this.labelFrameRate.TabIndex = 7;
@@ -72,7 +72,7 @@
             // labelStatus
             // 
             this.labelStatus.AutoSize = true;
-            this.labelStatus.Location = new System.Drawing.Point(643, 19);
+            this.labelStatus.Location = new System.Drawing.Point(641, 17);
             this.labelStatus.Name = "labelStatus";
             this.labelStatus.Size = new System.Drawing.Size(37, 13);
             this.labelStatus.TabIndex = 6;
@@ -80,7 +80,7 @@
             // 
             // btnFlipHorizontal
             // 
-            this.btnFlipHorizontal.Location = new System.Drawing.Point(188, 12);
+            this.btnFlipHorizontal.Location = new System.Drawing.Point(131, 12);
             this.btnFlipHorizontal.Name = "btnFlipHorizontal";
             this.btnFlipHorizontal.Size = new System.Drawing.Size(118, 23);
             this.btnFlipHorizontal.TabIndex = 5;
@@ -90,9 +90,9 @@
             // 
             // btnFlipVertical
             // 
-            this.btnFlipVertical.Location = new System.Drawing.Point(93, 15);
+            this.btnFlipVertical.Location = new System.Drawing.Point(255, 12);
             this.btnFlipVertical.Name = "btnFlipVertical";
-            this.btnFlipVertical.Size = new System.Drawing.Size(80, 20);
+            this.btnFlipVertical.Size = new System.Drawing.Size(118, 23);
             this.btnFlipVertical.TabIndex = 4;
             this.btnFlipVertical.Text = "Flip Vertical";
             this.btnFlipVertical.UseVisualStyleBackColor = true;
@@ -100,9 +100,9 @@
             // 
             // btnStartStop
             // 
-            this.btnStartStop.Location = new System.Drawing.Point(12, 12);
+            this.btnStartStop.Location = new System.Drawing.Point(7, 12);
             this.btnStartStop.Name = "btnStartStop";
-            this.btnStartStop.Size = new System.Drawing.Size(75, 23);
+            this.btnStartStop.Size = new System.Drawing.Size(118, 23);
             this.btnStartStop.TabIndex = 3;
             this.btnStartStop.Text = "Start Capture";
             this.btnStartStop.UseVisualStyleBackColor = true;
@@ -112,8 +112,8 @@
             // 
             this.tabControlMain.Controls.Add(this.tabPageCameraCapture);
             this.tabControlMain.Controls.Add(this.tabPageFaceDetection);
-            this.tabControlMain.Controls.Add(this.tabPageColourDetect);
             this.tabControlMain.Controls.Add(this.tabPageHaarCascade);
+            this.tabControlMain.Controls.Add(this.tabPageColourDetect);
             this.tabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlMain.Location = new System.Drawing.Point(0, 47);
             this.tabControlMain.Name = "tabControlMain";
@@ -132,6 +132,21 @@
             this.tabPageCameraCapture.Text = "Camera Capture";
             this.tabPageCameraCapture.UseVisualStyleBackColor = true;
             this.tabPageCameraCapture.Click += new System.EventHandler(this.tabPageCameraCapture_Click);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripLabelSettings});
+            this.statusStrip1.Location = new System.Drawing.Point(3, 442);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(859, 22);
+            this.statusStrip1.TabIndex = 0;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripLabelSettings
+            // 
+            this.toolStripLabelSettings.Name = "toolStripLabelSettings";
+            this.toolStripLabelSettings.Size = new System.Drawing.Size(0, 17);
             // 
             // tabPageFaceDetection
             // 
@@ -159,21 +174,6 @@
             this.tabPageHaarCascade.TabIndex = 3;
             this.tabPageHaarCascade.Text = "Haar Cascade Detection";
             this.tabPageHaarCascade.UseVisualStyleBackColor = true;
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripLabelSettings});
-            this.statusStrip1.Location = new System.Drawing.Point(3, 442);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(859, 22);
-            this.statusStrip1.TabIndex = 0;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // toolStripLabelSettings
-            // 
-            this.toolStripLabelSettings.Name = "toolStripLabelSettings";
-            this.toolStripLabelSettings.Size = new System.Drawing.Size(0, 17);
             // 
             // MainForm
             // 

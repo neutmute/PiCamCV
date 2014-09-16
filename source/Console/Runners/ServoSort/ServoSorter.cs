@@ -22,9 +22,7 @@ namespace PiCamCV.ConsoleApp.Runners
 
         bool _objectCurrentlyDetected;
 
-        public MCvScalar LowThreshold { get; set; }
-
-        public MCvScalar HighThreshold { get; set; }
+        public ColourDetectSettings Settings { get; set; }
         
         public ServoSorter(
             ICaptureGrab capture
@@ -33,8 +31,7 @@ namespace PiCamCV.ConsoleApp.Runners
             _waitTimeMs = 100;
 
 
-            LowThreshold = options.LowThreshold;
-            HighThreshold = options.HighThreshold;
+            Settings = options.ColourSettings;
 
             var deviceFactory = new Pca9685DeviceFactory();
             var device = deviceFactory.GetDevice(options.UseFakeDevice);
@@ -58,8 +55,7 @@ namespace PiCamCV.ConsoleApp.Runners
                 var input = new ColourDetectorInput
                 {
                     Captured = matCaptured
-                   ,LowThreshold = LowThreshold
-                   ,HighThreshold = HighThreshold
+                   ,Settings = Settings
                    ,SetCapturedImage = false
                 };
 

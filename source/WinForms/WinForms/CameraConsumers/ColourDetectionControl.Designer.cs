@@ -51,6 +51,8 @@
             this.imageBoxCaptured = new Emgu.CV.UI.ImageBox();
             this.groupBoxFiltered = new System.Windows.Forms.GroupBox();
             this.imageBoxFiltered = new Emgu.CV.UI.ImageBox();
+            this.panelButtons = new System.Windows.Forms.Panel();
+            this.btnWriteSettingsForConsole = new System.Windows.Forms.Button();
             this.panelLeft.SuspendLayout();
             this.groupBoxRoi.SuspendLayout();
             this.groupBoxPresets.SuspendLayout();
@@ -59,10 +61,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).BeginInit();
             this.groupBoxFiltered.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxFiltered)).BeginInit();
+            this.panelButtons.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelLeft
             // 
+            this.panelLeft.Controls.Add(this.panelButtons);
             this.panelLeft.Controls.Add(this.groupBoxRoi);
             this.panelLeft.Controls.Add(this.groupBoxPresets);
             this.panelLeft.Controls.Add(this.sliderValueMax);
@@ -325,6 +329,25 @@
             this.imageBoxFiltered.TabIndex = 6;
             this.imageBoxFiltered.TabStop = false;
             // 
+            // panelButtons
+            // 
+            this.panelButtons.Controls.Add(this.btnWriteSettingsForConsole);
+            this.panelButtons.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelButtons.Location = new System.Drawing.Point(0, 656);
+            this.panelButtons.Name = "panelButtons";
+            this.panelButtons.Size = new System.Drawing.Size(194, 75);
+            this.panelButtons.TabIndex = 10;
+            // 
+            // btnWriteSettingsForConsole
+            // 
+            this.btnWriteSettingsForConsole.Location = new System.Drawing.Point(6, 6);
+            this.btnWriteSettingsForConsole.Name = "btnWriteSettingsForConsole";
+            this.btnWriteSettingsForConsole.Size = new System.Drawing.Size(179, 23);
+            this.btnWriteSettingsForConsole.TabIndex = 0;
+            this.btnWriteSettingsForConsole.Text = "Write settings for Console";
+            this.btnWriteSettingsForConsole.UseVisualStyleBackColor = true;
+            this.btnWriteSettingsForConsole.Click += new System.EventHandler(this.btnWriteSettingsForConsole_Click);
+            // 
             // ColourDetectionControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -343,6 +366,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).EndInit();
             this.groupBoxFiltered.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxFiltered)).EndInit();
+            this.panelButtons.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -371,5 +395,7 @@
         private UserControls.SliderControl sliderRoiLeft;
         private UserControls.SliderControl sliderRoiBottom;
         private System.Windows.Forms.CheckBox checkBoxRoi;
+        private System.Windows.Forms.Panel panelButtons;
+        private System.Windows.Forms.Button btnWriteSettingsForConsole;
     }
 }

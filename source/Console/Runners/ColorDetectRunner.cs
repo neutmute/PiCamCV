@@ -11,22 +11,21 @@ namespace PiCamCV.ConsoleApp.Runners
 {
     class ColorDetectRunner : CameraConsumerRunner
     {
-        public MCvScalar LowThreshold { get; set; }
+        public ColourDetectSettings Settings { get; set; }
 
-        public MCvScalar HighThreshold { get; set; }
-
-        public ColorDetectRunner(ICaptureGrab capture, MCvScalar lowThreshold, MCvScalar highThreshold)
+        public ColorDetectRunner(ICaptureGrab capture, ColourDetectSettings settings)
             : base(capture)
         {
-            LowThreshold = lowThreshold;
-            HighThreshold = highThreshold;
+            Settings = settings;
         }
 
         public ColorDetectRunner(ICaptureGrab capture) : base(capture)
         {
+            Settings = new ColourDetectSettings();
             // useful defaults - red under lights
-            LowThreshold = new MCvScalar(140, 57, 25);
-            HighThreshold = new MCvScalar(187, 153, 82);
+            Settings.LowThreshold = new MCvScalar(140, 57, 25);
+            Settings.HighThreshold = new MCvScalar(187, 153, 82);
+            Settings.MinimumDetectionArea = 200;
         }
 
 
@@ -39,8 +38,7 @@ namespace PiCamCV.ConsoleApp.Runners
                 var input = new ColourDetectorInput
                 {
                     Captured = matCaptured
-                   ,LowThreshold = LowThreshold
-                   ,HighThreshold = HighThreshold
+                   ,Settings= Settings
                    ,SetCapturedImage = false
                 };
 
