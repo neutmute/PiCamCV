@@ -13,6 +13,7 @@ using System.Diagnostics;
 using Kraken.Core;
 using PiCamCV.Common;
 using PiCamCV.Common.ExtensionMethods;
+using PiCamCV.WinForms.ExtensionMethods;
 
 namespace PiCamCV.WinForms.CameraConsumers
 {
@@ -22,6 +23,7 @@ namespace PiCamCV.WinForms.CameraConsumers
         private MCvScalar _lowThreshold;
         private MCvScalar _highThreshold;
         private bool _suppressUpdates;
+        private bool _captureResized;
 
         public ColourDetectionControl()
         {
@@ -29,63 +31,115 @@ namespace PiCamCV.WinForms.CameraConsumers
             _colorDetector = new ColourDetector();
             _lowThreshold = new MCvScalar();
             _highThreshold = new MCvScalar();
-            
         }
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
-            var matCaptured = new Mat();
-
-            var w = Stopwatch.StartNew();
-            CameraCapture.Retrieve(matCaptured);
-            NotifyStatus("Retrieved frame in {0}", w.Elapsed.ToHumanReadable());
-
-            var input = new ColourDetectorInput
+            using (var matCaptured = new Mat())
             {
-               Captured = matCaptured
-               ,LowThreshold =_lowThreshold
-               ,HighThreshold = _highThreshold
-            };
-            var output = _colorDetector.Process(input);
+                var roiRectangle = Rectangle.Empty;
 
-            if (output.IsDetected)
-            {
-                var radius = 50;
-                var circle = new CircleF(output.CentralPoint, radius);
-                var color = new Bgr(Color.Yellow);
-                output.CapturedImage.Draw(circle, color, 3);
-                var ballTextLocation = output.CentralPoint.ToPoint();
-                ballTextLocation.X += radius;
-                output.CapturedImage.Draw("ball", ballTextLocation, FontFace.HersheyPlain, 3, color);
+                var w = Stopwatch.StartNew();
+                CameraCapture.Retrieve(matCaptured);
+                NotifyStatus("Retrieved frame in {0}", w.Elapsed.ToHumanReadable());
+
+                ResizeImageControls(matCaptured);
+
+                if (checkBoxRoi.Checked)
+                {
+                    // transpose top/bottom to make ui up/down more intuitive
+                    var imageHeight = matCaptured.Height;
+                    var top = imageHeight - sliderRoiTop.Value;
+                    var bottom = imageHeight - sliderRoiBottom.Value;
+
+                    var width = (sliderRoiRight.Value - sliderRoiLeft.Value);
+                    var height = bottom - top;
+
+                    roiRectangle = new Rectangle(
+                        sliderRoiLeft.Value
+                        , top
+                        , width
+                        , height
+                        );
+                }
+
+                var input = new ColourDetectorInput
+                {
+                    Captured = matCaptured
+                    ,LowThreshold = _lowThreshold
+                    ,HighThreshold = _highThreshold
+                    ,RegionOfInterest = roiRectangle
+                };
+                var output = _colorDetector.Process(input);
+
+                if (output.IsDetected)
+                {
+                    var radius = 50;
+                    var circle = new CircleF(output.CentralPoint, radius);
+                    var color = new Bgr(Color.Yellow);
+                    output.CapturedImage.Draw(circle, color, 3);
+                    var ballTextLocation = output.CentralPoint.ToPoint();
+                    ballTextLocation.X += radius;
+                    output.CapturedImage.Draw("ball", ballTextLocation, FontFace.HersheyPlain, 3, color);
+                }
+
+                if (checkBoxRoi.Checked)
+                {
+                    output.CapturedImage.Draw(roiRectangle, Color.Green.ToBgr());
+                }
+
+                //#region circle detection
+                //var watch = Stopwatch.StartNew();
+                //double cannyThreshold = 180.0;
+                //double circleAccumulatorThreshold = 120;
+                //CircleF[] circles = CvInvoke.HoughCircles(
+                //    thresholdImage
+                //    , HoughType.Gradient
+                //    , 2.0
+                //    , 20.0
+                //    , cannyThreshold
+                //    , circleAccumulatorThreshold
+                //    , 5);
+
+                //watch.Stop();
+                //NotifyStatus("Hough circles - {0} ms; ", watch.ElapsedMilliseconds);
+                //#endregion
+
+                //#region draw circles
+                //var circleImage = matCaptured.ToImage<Bgr, byte>();
+                //foreach (CircleF circle in circles)
+                //{
+                //    circleImage.Draw(circle, new Bgr(Color.Brown), 2);
+                //}
+                //#endregion
+
+                imageBoxCaptured.Image = output.CapturedImage;
+                imageBoxFiltered.Image = output.ThresholdImage;
             }
+        }
 
-            //#region circle detection
-            //var watch = Stopwatch.StartNew();
-            //double cannyThreshold = 180.0;
-            //double circleAccumulatorThreshold = 120;
-            //CircleF[] circles = CvInvoke.HoughCircles(
-            //    thresholdImage
-            //    , HoughType.Gradient
-            //    , 2.0
-            //    , 20.0
-            //    , cannyThreshold
-            //    , circleAccumulatorThreshold
-            //    , 5);
+        private void ResizeImageControls(Mat matCaptured)
+        {
+            if (!_captureResized)
+            {
+                _captureResized = true;
 
-            //watch.Stop();
-            //NotifyStatus("Hough circles - {0} ms; ", watch.ElapsedMilliseconds);
-            //#endregion
+                var newSize = new Size(matCaptured.Width, matCaptured.Height);
+                InvokeUI(() =>
+                {
+                    groupBoxCaptured.Size = newSize;
+                    groupBoxFiltered.Size = newSize;
 
-            //#region draw circles
-            //var circleImage = matCaptured.ToImage<Bgr, byte>();
-            //foreach (CircleF circle in circles)
-            //{
-            //    circleImage.Draw(circle, new Bgr(Color.Brown), 2);
-            //}
-            //#endregion
+                    sliderRoiLeft.Maximum = matCaptured.Width;
+                    sliderRoiRight.Maximum = matCaptured.Width;
+                    
+                    sliderRoiTop.Maximum = matCaptured.Height;
+                    sliderRoiBottom.Maximum = matCaptured.Height;
 
-            imageBoxCaptured.Image = output.CapturedImage;
-            imageBoxFiltered.Image = output.ThresholdImage;
+                    sliderRoiRight.Value = matCaptured.Width;
+                    sliderRoiTop.Value = matCaptured.Height;
+                });
+            }
         }
 
         private void ColourDetectionControl_Load(object sender, EventArgs e)
@@ -172,6 +226,11 @@ namespace PiCamCV.WinForms.CameraConsumers
         {
             SetLowScalar(155, 128, 44);
             SetHighScalar(182, 214, 105);
+        }
+
+        private void checkBoxRoiEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

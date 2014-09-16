@@ -15,6 +15,7 @@ namespace PiCamCV.Common
     {
         public MCvScalar LowThreshold { get; set; }
         public MCvScalar HighThreshold { get; set; }
+        public Rectangle RegionOfInterest { get; set; }
 
         public int MinimumDetectionArea { get; set; }
 
@@ -49,14 +50,20 @@ namespace PiCamCV.Common
     /// </summary>
     public class ColourDetector : CameraProcessor<ColourDetectorInput, ColourDetectorProcessOutput>
     {
-
         protected override ColourDetectorProcessOutput DoProcess(ColourDetectorInput input)
         {
             var output = new ColourDetectorProcessOutput();
             using(var hsvFrame = new Mat())
             using(var matThresholded = new Mat())
             {
-                CvInvoke.CvtColor(input.Captured, hsvFrame, ColorConversion.Bgr2Hsv);
+                var inputMat = input.Captured;
+
+                if (!input.RegionOfInterest.IsEmpty)
+                {
+                    inputMat = new Mat(inputMat, input.RegionOfInterest);
+                }
+
+                CvInvoke.CvtColor(inputMat, hsvFrame, ColorConversion.Bgr2Hsv);
 
                 using (var lowerScalar = new ScalarArray(input.LowThreshold))
                 using (var upperScalar = new ScalarArray(input.HighThreshold))
@@ -84,6 +91,13 @@ namespace PiCamCV.Common
                     var posX = Convert.ToSingle(moments.M10/area);
                     var posY = Convert.ToSingle(moments.M01/area);
                     output.IsDetected = true;
+
+                    if (!input.RegionOfInterest.IsEmpty)
+                    {
+                        posX += input.RegionOfInterest.X;
+                        posY += input.RegionOfInterest.Y;
+                    }
+
                     output.CentralPoint = new PointF(posX, posY);
                 }
 

@@ -38,6 +38,11 @@ namespace PiCamCV.WinForms
             CameraCapture.ImageGrabbed -= ImageGrabbedHandler;
         }
 
+        protected void InvokeUI(Action action)
+        {
+            Invoke((MethodInvoker) (() => action()));
+        }
+
         public void NotifyStatus(string messageFormat, params object[] args)
         {
             if (StatusUpdated != null)

@@ -25,6 +25,24 @@ namespace PiCamCV.WinForms.UserControls
             }
         }
 
+        public Orientation Orientation
+        {
+            get { return trackBar.Orientation; }
+            set { trackBar.Orientation = value; }
+        }
+
+        public int Maximum
+        {
+            get { return trackBar.Maximum; }
+            set { trackBar.Maximum = value; }
+        }
+
+        public int Minimum
+        {
+            get { return trackBar.Minimum; }
+            set { trackBar.Minimum = value; }
+        }
+
         public int Value
         {
             get { return _value; }  // cross thread from image grabbed event fix
