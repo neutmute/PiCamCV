@@ -27,7 +27,7 @@ namespace PiCamCV
         static readonly ILog Log = LogManager.GetCurrentClassLogger();
         public static ICaptureGrab GetCapture(CaptureDevice device)
         {
-
+            Log.Info(m => m("CVLibrary={0}", CvInvokeRaspiCamCV.CVLibrary));
             Log.Info(m => m("Getting {0} device", device));
             if (device == CaptureDevice.Pi)
             {
@@ -38,6 +38,10 @@ namespace PiCamCV
                 if (Environment.OSVersion.Platform == PlatformID.Unix)
                 {
                     Log.Warn("You are in Unix but aren't requesting a Pi camera? Whatever you say boss...");
+                    if (CvInvokeRaspiCamCV.CVLibrary.Contains("opencv"))
+                    {
+                        Log.Warn("You are Unix but trying to bind to opencv libraries - not raspicamcv");
+                    }
                 }
                 return new CaptureUsb();
             }

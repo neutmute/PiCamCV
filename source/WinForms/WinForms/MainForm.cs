@@ -36,7 +36,12 @@ namespace WinForms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            _capture = CaptureFactory.GetCapture(CaptureDevice.Usb);
+            var captureDevice = CaptureDevice.Usb;
+            if (Environment.OSVersion.Platform == PlatformID.Unix)
+            {
+                captureDevice = CaptureDevice.Pi;
+            }
+            _capture = CaptureFactory.GetCapture(captureDevice);
 
             SetupCameraConsumers(_capture);
             SetupFramerateTracking(_capture);

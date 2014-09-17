@@ -19,15 +19,15 @@ namespace PiCamCV
         public const CallingConvention CvCallingConvention = CallingConvention.Cdecl;
 
 #if (UNIX)
-        public const string CVLibrary = "raspicamcv";
-        public const string EntryPointCapture = "raspiCamCvCreateCameraCapture";
-        public const string EntryPointQuery = "raspiCamCvQueryFrame";
-        public const string EntryPointRelease = "raspiCamCvReleaseCapture";
+        public const string CVLibrary           = "raspicamcv";
+        public const string EntryPointCapture   = "raspiCamCvCreateCameraCapture";
+        public const string EntryPointQuery     = "raspiCamCvQueryFrame";
+        public const string EntryPointRelease   = "raspiCamCvReleaseCapture";
 #else
-        public const string CVLibrary = "opencv_videoio300";
-        public const string EntryPointCapture = "cvCreateCameraCapture";
-        public const string EntryPointQuery = "cvQueryFrame";
-        public const string EntryPointRelease = "cvReleaseCapture";
+        public const string CVLibrary           = "opencv_videoio300";
+        public const string EntryPointCapture   = "cvCreateCameraCapture";
+        public const string EntryPointQuery     = "cvQueryFrame";
+        public const string EntryPointRelease   = "cvReleaseCapture";
 #endif
 
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Common.Logging;
 using Emgu.CV;
 using PiCamCV.Common;
 using PiCamCV.Interfaces;
@@ -23,6 +24,9 @@ namespace PiCamCV.WinForms
     }
     public class CameraConsumerUserControl : UserControl, ICameraConsumer
     {
+        static ILog _Log = LogManager.GetCurrentClassLogger();
+        protected ILog Log { get { return _Log; } }
+
         public event EventHandler<StatusEventArgs> StatusUpdated;
         public ICaptureGrab CameraCapture { get; set; }
 

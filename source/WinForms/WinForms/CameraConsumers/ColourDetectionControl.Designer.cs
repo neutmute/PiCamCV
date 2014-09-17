@@ -30,6 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panelLeft = new System.Windows.Forms.Panel();
+            this.panelButtons = new System.Windows.Forms.Panel();
+            this.btnWriteSettingsForConsole = new System.Windows.Forms.Button();
             this.groupBoxRoi = new System.Windows.Forms.GroupBox();
             this.sliderRoiBottom = new PiCamCV.WinForms.UserControls.SliderControl();
             this.sliderRoiTop = new PiCamCV.WinForms.UserControls.SliderControl();
@@ -51,9 +53,8 @@
             this.imageBoxCaptured = new Emgu.CV.UI.ImageBox();
             this.groupBoxFiltered = new System.Windows.Forms.GroupBox();
             this.imageBoxFiltered = new Emgu.CV.UI.ImageBox();
-            this.panelButtons = new System.Windows.Forms.Panel();
-            this.btnWriteSettingsForConsole = new System.Windows.Forms.Button();
             this.panelLeft.SuspendLayout();
+            this.panelButtons.SuspendLayout();
             this.groupBoxRoi.SuspendLayout();
             this.groupBoxPresets.SuspendLayout();
             this.flowLayoutPanel.SuspendLayout();
@@ -61,7 +62,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).BeginInit();
             this.groupBoxFiltered.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxFiltered)).BeginInit();
-            this.panelButtons.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelLeft
@@ -80,6 +80,25 @@
             this.panelLeft.Name = "panelLeft";
             this.panelLeft.Size = new System.Drawing.Size(194, 731);
             this.panelLeft.TabIndex = 5;
+            // 
+            // panelButtons
+            // 
+            this.panelButtons.Controls.Add(this.btnWriteSettingsForConsole);
+            this.panelButtons.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelButtons.Location = new System.Drawing.Point(0, 656);
+            this.panelButtons.Name = "panelButtons";
+            this.panelButtons.Size = new System.Drawing.Size(194, 75);
+            this.panelButtons.TabIndex = 10;
+            // 
+            // btnWriteSettingsForConsole
+            // 
+            this.btnWriteSettingsForConsole.Location = new System.Drawing.Point(6, 39);
+            this.btnWriteSettingsForConsole.Name = "btnWriteSettingsForConsole";
+            this.btnWriteSettingsForConsole.Size = new System.Drawing.Size(179, 23);
+            this.btnWriteSettingsForConsole.TabIndex = 0;
+            this.btnWriteSettingsForConsole.Text = "Write settings for Console";
+            this.btnWriteSettingsForConsole.UseVisualStyleBackColor = true;
+            this.btnWriteSettingsForConsole.Click += new System.EventHandler(this.btnWriteSettingsForConsole_Click);
             // 
             // groupBoxRoi
             // 
@@ -329,25 +348,6 @@
             this.imageBoxFiltered.TabIndex = 6;
             this.imageBoxFiltered.TabStop = false;
             // 
-            // panelButtons
-            // 
-            this.panelButtons.Controls.Add(this.btnWriteSettingsForConsole);
-            this.panelButtons.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelButtons.Location = new System.Drawing.Point(0, 656);
-            this.panelButtons.Name = "panelButtons";
-            this.panelButtons.Size = new System.Drawing.Size(194, 75);
-            this.panelButtons.TabIndex = 10;
-            // 
-            // btnWriteSettingsForConsole
-            // 
-            this.btnWriteSettingsForConsole.Location = new System.Drawing.Point(6, 6);
-            this.btnWriteSettingsForConsole.Name = "btnWriteSettingsForConsole";
-            this.btnWriteSettingsForConsole.Size = new System.Drawing.Size(179, 23);
-            this.btnWriteSettingsForConsole.TabIndex = 0;
-            this.btnWriteSettingsForConsole.Text = "Write settings for Console";
-            this.btnWriteSettingsForConsole.UseVisualStyleBackColor = true;
-            this.btnWriteSettingsForConsole.Click += new System.EventHandler(this.btnWriteSettingsForConsole_Click);
-            // 
             // ColourDetectionControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -358,6 +358,7 @@
             this.Size = new System.Drawing.Size(817, 731);
             this.Load += new System.EventHandler(this.ColourDetectionControl_Load);
             this.panelLeft.ResumeLayout(false);
+            this.panelButtons.ResumeLayout(false);
             this.groupBoxRoi.ResumeLayout(false);
             this.groupBoxRoi.PerformLayout();
             this.groupBoxPresets.ResumeLayout(false);
@@ -366,7 +367,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).EndInit();
             this.groupBoxFiltered.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxFiltered)).EndInit();
-            this.panelButtons.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixDebug|AnyCPU'">
+    <OutputPath>bin\UnixDebug\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Common.Logging">
       <HintPath>..\..\..\packages\Common.Logging.2.2.0\lib\net40\Common.Logging.dll</HintPath>
@@ -50,9 +53,9 @@
     <Reference Include="Emgu.Util">
       <HintPath>..\..\..\..\emgu-source\bin\Emgu.Util.dll</HintPath>
     </Reference>
-    <Reference Include="Kraken.Core, Version=4.0.5.23, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Kraken.Core, Version=4.0.5.24, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Kraken.Core.4.5.0.23\lib\net40\Kraken.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\Kraken.Core.4.5.0.24\lib\net40\Kraken.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

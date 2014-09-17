@@ -118,7 +118,18 @@ namespace PiCamCV
         private CapturePi(int camIndex)
         {
             CvInvoke.UseOpenCL = false;
-            CvInvoke.CheckLibraryLoaded();
+            try
+            {
+                CvInvoke.CheckLibraryLoaded();
+            }
+            catch (Exception e)
+            {
+                if (Environment.OSVersion.Platform == PlatformID.Unix)
+                { 
+                    Log.Fatal(m => m("Failed to load OpenCV libraries. Did you copy emguCV binaries from Windows to Linux? You must use Linux compiled emguCV binaries."), e);
+                }
+                throw;
+            }
             _captureModuleType = CaptureModuleType.Camera;
 
             _ptr = CvInvokeRaspiCamCV.cvCreateCameraCapture(camIndex);

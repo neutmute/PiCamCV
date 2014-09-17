@@ -19,7 +19,6 @@ namespace PiCamCV.ConsoleApp
         {
             var appData = ExecutionEnvironment.GetApplicationMetadata();
             Log.Info(appData);
-            Log.Info(m => m("CVLibrary={0}", CvInvokeRaspiCamCV.CVLibrary));
 
             var options = new ConsoleOptions(args);
 
