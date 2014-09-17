@@ -64,6 +64,7 @@
     <Compile Include="CaptureFactory.cs" />
     <Compile Include="CapturePi.cs" />
     <Compile Include="CaptureUsb.cs" />
+    <Compile Include="ExtensionMethods\MvScalarExtensions.cs" />
     <Compile Include="Interfaces\ICaptureGrab.cs" />
     <Compile Include="PInvoke\CvInvokeRaspiCamCV.cs" />
     <Compile Include="Properties\AssemblyInfoUnique.cs" />

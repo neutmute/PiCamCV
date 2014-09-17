@@ -7,6 +7,7 @@ using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using PiCamCV.Common.Interfaces;
+using PiCamCV.ExtensionMethods;
 using PiCamCV.Interfaces;
 
 namespace PiCamCV.Common
@@ -27,7 +28,12 @@ namespace PiCamCV.Common
 
         public override string ToString()
         {
-            return string.Format("Low={0}, High={1}, MinimumDetectionArea={2}, Roi={3}", LowThreshold, HighThreshold, MinimumDetectionArea, Roi);
+            return string.Format(
+                "Low={0}, High={1}, MinimumDetectionArea={2}, Roi={3}"
+                , LowThreshold.ToStringE()
+                , HighThreshold.ToStringE()
+                , MinimumDetectionArea
+                , Roi);
         }
     }
 
@@ -43,6 +49,7 @@ namespace PiCamCV.Common
         public ColourDetectorInput()
         {
             SetCapturedImage = true;
+            Settings = new ColourDetectSettings();
         }
     }
 

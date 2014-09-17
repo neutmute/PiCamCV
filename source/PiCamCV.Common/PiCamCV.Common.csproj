@@ -45,8 +45,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\emgu-source\bin\Emgu.Util.dll</HintPath>
     </Reference>
-    <Reference Include="Kraken.Core">
-      <HintPath>..\..\packages\Kraken.Core.4.5.0.22\lib\net40\Kraken.Core.dll</HintPath>
+    <Reference Include="Kraken.Core, Version=4.0.5.23, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Kraken.Core.4.5.0.23\lib\net40\Kraken.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

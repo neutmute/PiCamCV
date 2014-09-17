@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using PiCamCV.ConsoleApp.Runners;
 using PiCamCV.Interfaces;
+using Raspberry.IO.Components.Controllers.Pca9685;
 using RPi.Pwm;
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -19,7 +20,6 @@ namespace PiCamCV.ConsoleApp.Runners
     {
         private int _waitTimeMs;
         PwmControl _pwmControl;
-
         bool _objectCurrentlyDetected;
 
         public ColourDetectSettings Settings { get; set; }
@@ -35,10 +35,20 @@ namespace PiCamCV.ConsoleApp.Runners
 
             var deviceFactory = new Pca9685DeviceFactory();
             var device = deviceFactory.GetDevice(options.UseFakeDevice);
+            SetLogLevel(device);
 
             _pwmControl = new PwmControl(device);
             _pwmControl.Init();
+        }
 
+        private void SetLogLevel(IPwmDevice device)
+        {
+            var stubPwmDevice = device as PwmDeviceStub;
+            if (stubPwmDevice != null)
+            {
+                // Remove sign of life which is too chatty
+                stubPwmDevice.LogChannels.Remove(PwmChannel.C0);
+            }
         }
 
         public override void Run()
