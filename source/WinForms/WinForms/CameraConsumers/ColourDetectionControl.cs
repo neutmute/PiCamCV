@@ -21,17 +21,16 @@ namespace PiCamCV.WinForms.CameraConsumers
     public partial class ColourDetectionControl : CameraConsumerUserControl
     {
         private readonly ColourDetector _colorDetector;
-        private MCvScalar _lowThreshold;
-        private MCvScalar _highThreshold;
         private bool _suppressUpdates;
         private bool _captureResized;
+
+        private ColourDetectorInput _detectorInput;
 
         public ColourDetectionControl()
         {
             InitializeComponent();
             _colorDetector = new ColourDetector();
-            _lowThreshold = new MCvScalar();
-            _highThreshold = new MCvScalar();
+            _detectorInput = new ColourDetectorInput();
         }
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
@@ -44,15 +43,10 @@ namespace PiCamCV.WinForms.CameraConsumers
                 
                 ResizeImageControls(matCaptured);
 
-                var settings = GetColourDetectSettings();
+                _detectorInput.Settings.Roi = GetRegionOfInterestFromControls();
+                _detectorInput.Captured = matCaptured;
 
-                var input = new ColourDetectorInput
-                {
-                    Captured = matCaptured
-                    ,Settings = settings
-                };
-
-                var output = _colorDetector.Process(input);
+                var output = _colorDetector.Process(_detectorInput);
 
                 if (output.IsDetected)
                 {
@@ -67,7 +61,7 @@ namespace PiCamCV.WinForms.CameraConsumers
 
                 if (checkBoxRoi.Checked)
                 {
-                    output.CapturedImage.Draw(settings.Roi, Color.Green.ToBgr());
+                    output.CapturedImage.Draw(_detectorInput.Settings.Roi, Color.Green.ToBgr());
                 }
 
                 //#region circle detection
@@ -99,19 +93,18 @@ namespace PiCamCV.WinForms.CameraConsumers
                 imageBoxFiltered.Image = output.ThresholdImage;
 
                 NotifyStatus(
-                    "Retrieved frame in {0}, processed colour in {1}"
+                    "Retrieved frame in {0}, processed colour in {1}, detected moment area={2}"
                     , retrieveElapsed.Elapsed.ToHumanReadable()
-                    , output.Elapsed.ToHumanReadable());
+                    , output.Elapsed.ToHumanReadable()
+                    , output.MomentArea);
             }
         }
 
         private ColourDetectSettings GetColourDetectSettings()
         {
-            var settings = new ColourDetectSettings();
+            var settings = _detectorInput.Settings;
             settings.Roi = GetRegionOfInterestFromControls();
-            settings.HighThreshold = _highThreshold;
-            settings.LowThreshold = _lowThreshold;
-            settings.MinimumDetectionArea = 200;
+            //settings.MomentArea = new RangeF(200,400);
             return settings;
         }
 
@@ -173,6 +166,9 @@ namespace PiCamCV.WinForms.CameraConsumers
             sliderValueMin.ValueChanged += HsvSlider_ValueChanged;
             sliderValueMax.ValueChanged += HsvSlider_ValueChanged;
 
+            sliderMomentAreaMin.ValueChanged += MomentSlider_ValueChanged;
+            sliderMomentAreaMax.ValueChanged += MomentSlider_ValueChanged;
+
             sliderHueMax.Maximum = 180;
             sliderHueMin.Maximum = 180;
 
@@ -181,38 +177,81 @@ namespace PiCamCV.WinForms.CameraConsumers
 
         void HsvSlider_ValueChanged(object sender, EventArgs e)
         {
-            UpdateScalarFromControls();
+            UpdateThresholdSettingsFromControls();
         }
 
-        private void SetLowScalar(int hue, int sat, int value)
+        void MomentSlider_ValueChanged(object sender, EventArgs e)
         {
-            _lowThreshold.V0 = hue;
-            _lowThreshold.V1 = sat;
-            _lowThreshold.V2 = value;
-            UpdateControlsFromScalar();
-        }
-        private void SetHighScalar(int hue, int sat, int value)
-        {
-            _highThreshold.V0 = hue;
-            _highThreshold.V1 = sat;
-            _highThreshold.V2 = value;
-            UpdateControlsFromScalar();
+            UpdateMomentSettingsFromControls();
         }
 
-        private void UpdateControlsFromScalar()
+        private MCvScalar GetScalar(double hue, double sat, double value)
+        {
+            var scalar = new MCvScalar();
+            scalar.V0 = hue;
+            scalar.V1 = sat;
+            scalar.V2 = value;
+            return scalar;
+        }
+
+        private void SetThresholdScalars(double lh, double ls, double lv, double hh, double hs, double hv)
+        {
+            _detectorInput.Settings.LowThreshold = GetScalar(lh, ls, lv);
+            _detectorInput.Settings.HighThreshold = GetScalar(hh, hs, hv);
+
+            UpdateThresholdSlidersFromSettings();
+        }
+
+
+        private void SetMomentArea(float min, float max)
+        {
+            var momentRange = new RangeF();
+            
+            momentRange.Min = min;
+            momentRange.Max = max;
+
+            _detectorInput.Settings.MomentArea = momentRange;
+
+            UpdateMomentSlidersFromSettings();
+        }
+
+        private void UpdateThresholdSlidersFromSettings()
         {
             _suppressUpdates = true;
-            sliderHueMin.Value = (int) _lowThreshold.V0;
-            sliderSaturationMin.Value = (int)_lowThreshold.V1;
-            sliderValueMin.Value = (int)_lowThreshold.V2;
 
-            sliderHueMax.Value = (int)_highThreshold.V0;
-            sliderSaturationMax.Value = (int)_highThreshold.V1;
-            sliderValueMax.Value = (int)_highThreshold.V2;
+            var settings = _detectorInput.Settings;
+            sliderHueMin.Value = (int)settings.LowThreshold.V0;
+            sliderSaturationMin.Value = (int)settings.LowThreshold.V1;
+            sliderValueMin.Value = (int)settings.LowThreshold.V2;
+
+            sliderHueMax.Value = (int)settings.HighThreshold.V0;
+            sliderSaturationMax.Value = (int)settings.HighThreshold.V1;
+            sliderValueMax.Value = (int)settings.HighThreshold.V2;
+            
             _suppressUpdates = false;
         }
 
-        private void UpdateScalarFromControls()
+        private void UpdateMomentSlidersFromSettings()
+        {
+            _suppressUpdates = true;
+
+            var settings = _detectorInput.Settings;
+
+            sliderMomentAreaMin.Value = (int)settings.MomentArea.Min;
+            sliderMomentAreaMax.Value = (int)settings.MomentArea.Max;
+
+            _suppressUpdates = false;
+        }
+
+        private void UpdateMomentSettingsFromControls()
+        {
+            if (!_suppressUpdates)
+            {
+                SetMomentArea(sliderMomentAreaMin.Value, sliderMomentAreaMax.Value);
+            }
+        }
+
+        private void UpdateThresholdSettingsFromControls()
         {
             if (!_suppressUpdates)
             {
@@ -224,15 +263,14 @@ namespace PiCamCV.WinForms.CameraConsumers
                 var highS = sliderSaturationMax.Value;
                 var highV = sliderValueMax.Value;
 
-                SetLowScalar(lowH, lowS, lowV);
-                SetHighScalar(highH, highS, highV);
+                SetThresholdScalars(lowH, lowS, lowV, highH, highS, highV);
             }
         }
 
         private void btnReset_Click(object sender, EventArgs e)
         {
-            SetLowScalar(0, 0, 0);
-            SetHighScalar(180, 255, 255);
+            SetThresholdScalars(0, 0, 0, 180, 255, 255);
+            SetMomentArea(200, 400);
         }
 
         /// <summary>
@@ -240,8 +278,7 @@ namespace PiCamCV.WinForms.CameraConsumers
         /// </summary>
         private void btnRedLights_Click(object sender, EventArgs e)
         {
-            SetLowScalar(140, 57, 25);
-            SetHighScalar(180,153,182);
+            SetThresholdScalars(140, 57, 25, 180, 153, 182);
         }
 
         /// <summary>
@@ -249,8 +286,7 @@ namespace PiCamCV.WinForms.CameraConsumers
         /// </summary>
         private void btnRedDaylight_Click(object sender, EventArgs e)
         {
-            SetLowScalar(155, 128, 44);
-            SetHighScalar(180, 214, 105);
+            SetThresholdScalars(155, 128, 44, 180, 214, 105);
         }
 
         private void checkBoxRoiEnabled_CheckedChanged(object sender, EventArgs e)

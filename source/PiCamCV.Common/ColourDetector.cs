@@ -6,6 +6,7 @@ using System.Text;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using PiCamCV.Common.ExtensionMethods;
 using PiCamCV.Common.Interfaces;
 using PiCamCV.ExtensionMethods;
 using PiCamCV.Interfaces;
@@ -20,7 +21,13 @@ namespace PiCamCV.Common
         public MCvScalar LowThreshold { get; set; }
         public MCvScalar HighThreshold { get; set; }
 
-        public int MinimumDetectionArea { get; set; }
+        /// <summary>
+        /// To trigger a detection this criteria must be met.
+        /// Too small: noise
+        /// Too much: more than one object/noise
+        /// </summary>
+        public RangeF MomentArea { get; set; }
+
         /// <summary>
         /// Region of interest
         /// </summary>
@@ -29,10 +36,10 @@ namespace PiCamCV.Common
         public override string ToString()
         {
             return string.Format(
-                "Low={0}, High={1}, MinimumDetectionArea={2}, Roi={3}"
+                "Low={0}, High={1}, MomentArea={2}, Roi={3}"
                 , LowThreshold.ToStringE()
                 , HighThreshold.ToStringE()
-                , MinimumDetectionArea
+                , MomentArea.ToStringE()
                 , Roi);
         }
     }
@@ -59,9 +66,12 @@ namespace PiCamCV.Common
 
         public Image<Gray, byte> ThresholdImage { get;  set; }
 
-        public PointF CentralPoint { get; set; }
         public bool IsDetected { get; set; }
 
+        public PointF CentralPoint { get; set; }
+
+        public double MomentArea { get; set; }
+        
         public override string ToString()
         {
             return string.Format("IsDetected={0}, CentralPoint={1}", IsDetected, CentralPoint);
@@ -110,11 +120,11 @@ namespace PiCamCV.Common
                 var moments = output.ThresholdImage.GetMoments(true);
                 moments.GetCentralMoment(0, 0);
 
-                var area = moments.M00;
-                if (area > settings.MinimumDetectionArea)
+                output.MomentArea = moments.M00;
+                if (settings.MomentArea.IsInRange(output.MomentArea))
                 {
-                    var posX = Convert.ToSingle(moments.M10/area);
-                    var posY = Convert.ToSingle(moments.M01/area);
+                    var posX = Convert.ToSingle(moments.M10 / output.MomentArea);
+                    var posY = Convert.ToSingle(moments.M01 / output.MomentArea);
                     output.IsDetected = true;
 
                     if (!settings.Roi.IsEmpty)

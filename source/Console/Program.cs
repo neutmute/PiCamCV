@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -38,6 +39,10 @@ namespace PiCamCV.ConsoleApp
                     captureDevice = CaptureDevice.Pi;
                 }
                 capture = CaptureFactory.GetCapture(captureDevice);
+                var captureProperties = capture.GetCaptureProperties();
+                Log.Info(m => m("Capture properties: {0}", captureProperties));
+
+                SafetyCheckRoi(options, captureProperties);
             }
 
             IRunner runner;
@@ -74,6 +79,17 @@ namespace PiCamCV.ConsoleApp
             }
 
             runner.Run();
+        }
+
+        private static void SafetyCheckRoi(ConsoleOptions options, CaptureProperties captureProperties)
+        {
+            var roiWidthTooBig = options.ColourSettings.Roi.Width > captureProperties.FrameWidth;
+            var roiHeightTooBig = options.ColourSettings.Roi.Height > captureProperties.FrameHeight;
+            if (roiWidthTooBig || roiHeightTooBig)
+            {
+                Log.Warn("ROI is too big! Ignoring");
+                options.ColourSettings.Roi = Rectangle.Empty;
+            }
         }
     }
 }

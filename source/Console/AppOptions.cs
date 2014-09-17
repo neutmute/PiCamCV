@@ -85,11 +85,11 @@ namespace PiCamCV.ConsoleApp
             if (colorSettingsFile.Exists)
             {
                 ColourSettings = Kelvin<ColourDetectSettings>.FromXmlFile(settingsFilename);
-                Log.Info(m => m("Color settings found: {0}", ColourSettings));
+                Log.Info(m => m("Color detection settings found: {0}", ColourSettings));
             }
             else
             {
-                Log.Info(m => m("No color settings found at '{0}'", settingsFilename));
+                Log.Info(m => m("No color detection settings found at '{0}'", settingsFilename));
             }
         }
 

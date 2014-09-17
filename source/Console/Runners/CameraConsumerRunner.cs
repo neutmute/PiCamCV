@@ -20,7 +20,6 @@ namespace PiCamCV.ConsoleApp.Runners
     public abstract class CameraConsumerRunner : BaseRunner, ICameraConsumer
     {
         protected bool Stopping { get; set; }
-        protected static ILog Log = LogManager.GetCurrentClassLogger();
         private FpsTracker _fpsTracker;
         protected CameraConsumerRunner(ICaptureGrab captureGrabber)
         {

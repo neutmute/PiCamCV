@@ -32,6 +32,9 @@
             this.panelLeft = new System.Windows.Forms.Panel();
             this.panelButtons = new System.Windows.Forms.Panel();
             this.btnWriteSettingsForConsole = new System.Windows.Forms.Button();
+            this.groupBoxMoments = new System.Windows.Forms.GroupBox();
+            this.sliderMomentAreaMax = new PiCamCV.WinForms.UserControls.SliderControl();
+            this.sliderMomentAreaMin = new PiCamCV.WinForms.UserControls.SliderControl();
             this.groupBoxRoi = new System.Windows.Forms.GroupBox();
             this.sliderRoiBottom = new PiCamCV.WinForms.UserControls.SliderControl();
             this.sliderRoiTop = new PiCamCV.WinForms.UserControls.SliderControl();
@@ -55,6 +58,7 @@
             this.imageBoxFiltered = new Emgu.CV.UI.ImageBox();
             this.panelLeft.SuspendLayout();
             this.panelButtons.SuspendLayout();
+            this.groupBoxMoments.SuspendLayout();
             this.groupBoxRoi.SuspendLayout();
             this.groupBoxPresets.SuspendLayout();
             this.flowLayoutPanel.SuspendLayout();
@@ -67,6 +71,7 @@
             // panelLeft
             // 
             this.panelLeft.Controls.Add(this.panelButtons);
+            this.panelLeft.Controls.Add(this.groupBoxMoments);
             this.panelLeft.Controls.Add(this.groupBoxRoi);
             this.panelLeft.Controls.Add(this.groupBoxPresets);
             this.panelLeft.Controls.Add(this.sliderValueMax);
@@ -84,21 +89,59 @@
             // panelButtons
             // 
             this.panelButtons.Controls.Add(this.btnWriteSettingsForConsole);
-            this.panelButtons.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelButtons.Location = new System.Drawing.Point(0, 656);
+            this.panelButtons.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelButtons.Location = new System.Drawing.Point(0, 623);
             this.panelButtons.Name = "panelButtons";
-            this.panelButtons.Size = new System.Drawing.Size(194, 75);
+            this.panelButtons.Size = new System.Drawing.Size(194, 69);
             this.panelButtons.TabIndex = 10;
             // 
             // btnWriteSettingsForConsole
             // 
-            this.btnWriteSettingsForConsole.Location = new System.Drawing.Point(6, 39);
+            this.btnWriteSettingsForConsole.Location = new System.Drawing.Point(3, 15);
             this.btnWriteSettingsForConsole.Name = "btnWriteSettingsForConsole";
             this.btnWriteSettingsForConsole.Size = new System.Drawing.Size(179, 23);
             this.btnWriteSettingsForConsole.TabIndex = 0;
             this.btnWriteSettingsForConsole.Text = "Write settings for Console";
             this.btnWriteSettingsForConsole.UseVisualStyleBackColor = true;
             this.btnWriteSettingsForConsole.Click += new System.EventHandler(this.btnWriteSettingsForConsole_Click);
+            // 
+            // groupBoxMoments
+            // 
+            this.groupBoxMoments.Controls.Add(this.sliderMomentAreaMax);
+            this.groupBoxMoments.Controls.Add(this.sliderMomentAreaMin);
+            this.groupBoxMoments.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBoxMoments.Location = new System.Drawing.Point(0, 534);
+            this.groupBoxMoments.Name = "groupBoxMoments";
+            this.groupBoxMoments.Size = new System.Drawing.Size(194, 89);
+            this.groupBoxMoments.TabIndex = 11;
+            this.groupBoxMoments.TabStop = false;
+            this.groupBoxMoments.Text = "Moments";
+            // 
+            // sliderMomentAreaMax
+            // 
+            this.sliderMomentAreaMax.Dock = System.Windows.Forms.DockStyle.Top;
+            this.sliderMomentAreaMax.Label = "Area Max";
+            this.sliderMomentAreaMax.Location = new System.Drawing.Point(3, 56);
+            this.sliderMomentAreaMax.Maximum = 100000;
+            this.sliderMomentAreaMax.Minimum = 0;
+            this.sliderMomentAreaMax.Name = "sliderMomentAreaMax";
+            this.sliderMomentAreaMax.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.sliderMomentAreaMax.Size = new System.Drawing.Size(188, 40);
+            this.sliderMomentAreaMax.TabIndex = 5;
+            this.sliderMomentAreaMax.Value = 0;
+            // 
+            // sliderMomentAreaMin
+            // 
+            this.sliderMomentAreaMin.Dock = System.Windows.Forms.DockStyle.Top;
+            this.sliderMomentAreaMin.Label = "Area Min";
+            this.sliderMomentAreaMin.Location = new System.Drawing.Point(3, 16);
+            this.sliderMomentAreaMin.Maximum = 1000;
+            this.sliderMomentAreaMin.Minimum = 0;
+            this.sliderMomentAreaMin.Name = "sliderMomentAreaMin";
+            this.sliderMomentAreaMin.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.sliderMomentAreaMin.Size = new System.Drawing.Size(188, 40);
+            this.sliderMomentAreaMin.TabIndex = 4;
+            this.sliderMomentAreaMin.Value = 0;
             // 
             // groupBoxRoi
             // 
@@ -108,7 +151,7 @@
             this.groupBoxRoi.Controls.Add(this.sliderRoiLeft);
             this.groupBoxRoi.Controls.Add(this.checkBoxRoi);
             this.groupBoxRoi.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBoxRoi.Location = new System.Drawing.Point(0, 438);
+            this.groupBoxRoi.Location = new System.Drawing.Point(0, 316);
             this.groupBoxRoi.Name = "groupBoxRoi";
             this.groupBoxRoi.Size = new System.Drawing.Size(194, 218);
             this.groupBoxRoi.TabIndex = 9;
@@ -185,16 +228,16 @@
             this.groupBoxPresets.Controls.Add(this.btnRedLights);
             this.groupBoxPresets.Controls.Add(this.btnReset);
             this.groupBoxPresets.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBoxPresets.Location = new System.Drawing.Point(0, 334);
+            this.groupBoxPresets.Location = new System.Drawing.Point(0, 240);
             this.groupBoxPresets.Name = "groupBoxPresets";
-            this.groupBoxPresets.Size = new System.Drawing.Size(194, 104);
+            this.groupBoxPresets.Size = new System.Drawing.Size(194, 76);
             this.groupBoxPresets.TabIndex = 8;
             this.groupBoxPresets.TabStop = false;
             this.groupBoxPresets.Text = "HSV Presets";
             // 
             // btnRedDaylight
             // 
-            this.btnRedDaylight.Location = new System.Drawing.Point(6, 77);
+            this.btnRedDaylight.Location = new System.Drawing.Point(66, 48);
             this.btnRedDaylight.Name = "btnRedDaylight";
             this.btnRedDaylight.Size = new System.Drawing.Size(114, 23);
             this.btnRedDaylight.TabIndex = 9;
@@ -204,7 +247,7 @@
             // 
             // btnRedLights
             // 
-            this.btnRedLights.Location = new System.Drawing.Point(6, 48);
+            this.btnRedLights.Location = new System.Drawing.Point(66, 19);
             this.btnRedLights.Name = "btnRedLights";
             this.btnRedLights.Size = new System.Drawing.Size(114, 23);
             this.btnRedLights.TabIndex = 8;
@@ -216,7 +259,7 @@
             // 
             this.btnReset.Location = new System.Drawing.Point(6, 19);
             this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(114, 23);
+            this.btnReset.Size = new System.Drawing.Size(54, 23);
             this.btnReset.TabIndex = 7;
             this.btnReset.Text = "Reset";
             this.btnReset.UseVisualStyleBackColor = true;
@@ -226,12 +269,12 @@
             // 
             this.sliderValueMax.Dock = System.Windows.Forms.DockStyle.Top;
             this.sliderValueMax.Label = "Value Max";
-            this.sliderValueMax.Location = new System.Drawing.Point(0, 278);
+            this.sliderValueMax.Location = new System.Drawing.Point(0, 200);
             this.sliderValueMax.Maximum = 255;
             this.sliderValueMax.Minimum = 0;
             this.sliderValueMax.Name = "sliderValueMax";
             this.sliderValueMax.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.sliderValueMax.Size = new System.Drawing.Size(194, 56);
+            this.sliderValueMax.Size = new System.Drawing.Size(194, 40);
             this.sliderValueMax.TabIndex = 4;
             this.sliderValueMax.Value = 0;
             // 
@@ -239,12 +282,12 @@
             // 
             this.sliderValueMin.Dock = System.Windows.Forms.DockStyle.Top;
             this.sliderValueMin.Label = "Value Min";
-            this.sliderValueMin.Location = new System.Drawing.Point(0, 222);
+            this.sliderValueMin.Location = new System.Drawing.Point(0, 160);
             this.sliderValueMin.Maximum = 255;
             this.sliderValueMin.Minimum = 0;
             this.sliderValueMin.Name = "sliderValueMin";
             this.sliderValueMin.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.sliderValueMin.Size = new System.Drawing.Size(194, 56);
+            this.sliderValueMin.Size = new System.Drawing.Size(194, 40);
             this.sliderValueMin.TabIndex = 5;
             this.sliderValueMin.Value = 0;
             // 
@@ -252,12 +295,12 @@
             // 
             this.sliderSaturationMax.Dock = System.Windows.Forms.DockStyle.Top;
             this.sliderSaturationMax.Label = "Saturation Max";
-            this.sliderSaturationMax.Location = new System.Drawing.Point(0, 166);
+            this.sliderSaturationMax.Location = new System.Drawing.Point(0, 120);
             this.sliderSaturationMax.Maximum = 255;
             this.sliderSaturationMax.Minimum = 0;
             this.sliderSaturationMax.Name = "sliderSaturationMax";
             this.sliderSaturationMax.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.sliderSaturationMax.Size = new System.Drawing.Size(194, 56);
+            this.sliderSaturationMax.Size = new System.Drawing.Size(194, 40);
             this.sliderSaturationMax.TabIndex = 2;
             this.sliderSaturationMax.Value = 0;
             // 
@@ -265,12 +308,12 @@
             // 
             this.sliderSaturationMin.Dock = System.Windows.Forms.DockStyle.Top;
             this.sliderSaturationMin.Label = "Saturation Min";
-            this.sliderSaturationMin.Location = new System.Drawing.Point(0, 110);
+            this.sliderSaturationMin.Location = new System.Drawing.Point(0, 80);
             this.sliderSaturationMin.Maximum = 255;
             this.sliderSaturationMin.Minimum = 0;
             this.sliderSaturationMin.Name = "sliderSaturationMin";
             this.sliderSaturationMin.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.sliderSaturationMin.Size = new System.Drawing.Size(194, 56);
+            this.sliderSaturationMin.Size = new System.Drawing.Size(194, 40);
             this.sliderSaturationMin.TabIndex = 3;
             this.sliderSaturationMin.Value = 0;
             // 
@@ -278,12 +321,12 @@
             // 
             this.sliderHueMax.Dock = System.Windows.Forms.DockStyle.Top;
             this.sliderHueMax.Label = "Hue Max";
-            this.sliderHueMax.Location = new System.Drawing.Point(0, 56);
+            this.sliderHueMax.Location = new System.Drawing.Point(0, 40);
             this.sliderHueMax.Maximum = 255;
             this.sliderHueMax.Minimum = 0;
             this.sliderHueMax.Name = "sliderHueMax";
             this.sliderHueMax.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.sliderHueMax.Size = new System.Drawing.Size(194, 54);
+            this.sliderHueMax.Size = new System.Drawing.Size(194, 40);
             this.sliderHueMax.TabIndex = 0;
             this.sliderHueMax.Value = 0;
             // 
@@ -296,7 +339,7 @@
             this.sliderHueMin.Minimum = 0;
             this.sliderHueMin.Name = "sliderHueMin";
             this.sliderHueMin.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.sliderHueMin.Size = new System.Drawing.Size(194, 56);
+            this.sliderHueMin.Size = new System.Drawing.Size(194, 40);
             this.sliderHueMin.TabIndex = 1;
             this.sliderHueMin.Value = 0;
             // 
@@ -359,6 +402,7 @@
             this.Load += new System.EventHandler(this.ColourDetectionControl_Load);
             this.panelLeft.ResumeLayout(false);
             this.panelButtons.ResumeLayout(false);
+            this.groupBoxMoments.ResumeLayout(false);
             this.groupBoxRoi.ResumeLayout(false);
             this.groupBoxRoi.PerformLayout();
             this.groupBoxPresets.ResumeLayout(false);
@@ -397,5 +441,8 @@
         private System.Windows.Forms.CheckBox checkBoxRoi;
         private System.Windows.Forms.Panel panelButtons;
         private System.Windows.Forms.Button btnWriteSettingsForConsole;
+        private System.Windows.Forms.GroupBox groupBoxMoments;
+        private UserControls.SliderControl sliderMomentAreaMax;
+        private UserControls.SliderControl sliderMomentAreaMin;
     }
 }

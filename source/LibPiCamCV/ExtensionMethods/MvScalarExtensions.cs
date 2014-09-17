@@ -16,7 +16,6 @@ namespace PiCamCV.ExtensionMethods
                 , scalar.V1
                 , scalar.V2
                 , scalar.V3);
-
         }
     }
 }

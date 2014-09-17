@@ -11,7 +11,6 @@ using RPi.Pwm;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using PiCamCV.Common;
-using PiCamCV.Interfaces;
 
 namespace PiCamCV.ConsoleApp.Runners
 {

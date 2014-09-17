@@ -25,7 +25,7 @@ namespace PiCamCV.ConsoleApp.Runners
             // useful defaults - red under lights
             Settings.LowThreshold = new MCvScalar(140, 57, 25);
             Settings.HighThreshold = new MCvScalar(187, 153, 82);
-            Settings.MinimumDetectionArea = 200;
+            Settings.MomentArea = new RangeF(200,400);
         }
 
 

@@ -36,8 +36,8 @@ namespace WinForms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            //var captureDevice = CaptureDevice.Usb;
-            var captureDevice = CaptureDevice.Pi;
+            var captureDevice = CaptureDevice.Usb;
+            //var captureDevice = CaptureDevice.Pi;
             if (Environment.OSVersion.Platform == PlatformID.Unix)
             {
                 captureDevice = CaptureDevice.Pi;
