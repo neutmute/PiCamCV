@@ -171,7 +171,10 @@ namespace PiCamCV.WinForms.CameraConsumers
             sliderSaturationMin.ValueChanged += HsvSlider_ValueChanged;
             sliderSaturationMax.ValueChanged += HsvSlider_ValueChanged;
             sliderValueMin.ValueChanged += HsvSlider_ValueChanged;
-            sliderValueMin.ValueChanged += HsvSlider_ValueChanged;
+            sliderValueMax.ValueChanged += HsvSlider_ValueChanged;
+
+            sliderHueMax.Maximum = 180;
+            sliderHueMin.Maximum = 180;
 
             btnReset_Click(null, null);
         }
@@ -205,7 +208,7 @@ namespace PiCamCV.WinForms.CameraConsumers
 
             sliderHueMax.Value = (int)_highThreshold.V0;
             sliderSaturationMax.Value = (int)_highThreshold.V1;
-            sliderValueMax.Value = (int)_highThreshold.V0;
+            sliderValueMax.Value = (int)_highThreshold.V2;
             _suppressUpdates = false;
         }
 
@@ -229,7 +232,7 @@ namespace PiCamCV.WinForms.CameraConsumers
         private void btnReset_Click(object sender, EventArgs e)
         {
             SetLowScalar(0, 0, 0);
-            SetHighScalar(255, 255, 255);
+            SetHighScalar(180, 255, 255);
         }
 
         /// <summary>
@@ -238,7 +241,7 @@ namespace PiCamCV.WinForms.CameraConsumers
         private void btnRedLights_Click(object sender, EventArgs e)
         {
             SetLowScalar(140, 57, 25);
-            SetHighScalar(187,153,182);
+            SetHighScalar(180,153,182);
         }
 
         /// <summary>
@@ -247,7 +250,7 @@ namespace PiCamCV.WinForms.CameraConsumers
         private void btnRedDaylight_Click(object sender, EventArgs e)
         {
             SetLowScalar(155, 128, 44);
-            SetHighScalar(182, 214, 105);
+            SetHighScalar(180, 214, 105);
         }
 
         private void checkBoxRoiEnabled_CheckedChanged(object sender, EventArgs e)

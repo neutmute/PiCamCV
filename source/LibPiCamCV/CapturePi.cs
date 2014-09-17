@@ -132,7 +132,15 @@ namespace PiCamCV
             }
             _captureModuleType = CaptureModuleType.Camera;
 
-            _ptr = CvInvokeRaspiCamCV.cvCreateCameraCapture(camIndex);
+            try
+            {
+                _ptr = CvInvokeRaspiCamCV.cvCreateCameraCapture(camIndex);
+            }
+            catch (DllNotFoundException e)
+            {
+                Log.Fatal("Are you running with the solution configuration matched to the right OS?", e);
+                throw;
+            }
             if (_ptr == IntPtr.Zero)
             {
                 throw new NullReferenceException(String.Format("Error: Unable to create capture from camera {0}", camIndex));
