@@ -6,6 +6,7 @@ using System.Text;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using Kraken.Core;
 using PiCamCV.Common.ExtensionMethods;
 using PiCamCV.Common.Interfaces;
 using PiCamCV.ExtensionMethods;
@@ -74,7 +75,12 @@ namespace PiCamCV.Common
         
         public override string ToString()
         {
-            return string.Format("IsDetected={0}, CentralPoint={1}", IsDetected, CentralPoint);
+            return string.Format(
+                "Processed colour in {3}, IsDetected={0}, MomentArea={2}, CentralPoint={1}"
+                , IsDetected
+                , CentralPoint
+                , MomentArea
+                , Elapsed.ToHumanReadable(HumanReadableTimeSpanOptions.Abbreviated));
         }
     }
 
@@ -123,8 +129,8 @@ namespace PiCamCV.Common
                 output.MomentArea = moments.M00;
                 if (settings.MomentArea.IsInRange(output.MomentArea))
                 {
-                    var posX = Convert.ToSingle(moments.M10 / output.MomentArea);
-                    var posY = Convert.ToSingle(moments.M01 / output.MomentArea);
+                    var posX = Convert.ToSingle(moments.M10/output.MomentArea);
+                    var posY = Convert.ToSingle(moments.M01/output.MomentArea);
                     output.IsDetected = true;
 
                     if (!settings.Roi.IsEmpty)

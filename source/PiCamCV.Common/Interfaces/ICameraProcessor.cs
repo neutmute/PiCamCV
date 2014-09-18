@@ -5,12 +5,18 @@ using System.Linq;
 using System.Text;
 using Common.Logging;
 using Emgu.CV;
+using Kraken.Core;
 
 namespace PiCamCV.Common.Interfaces
 {
     public class CameraProcessOutput
     {
         public TimeSpan Elapsed { get; internal set; }
+
+        public override string ToString()
+        {
+            return string.Format("Elapsed={0}", Elapsed.ToHumanReadable());
+        }
     }
 
     public class CameraProcessInput

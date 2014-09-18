@@ -56,6 +56,7 @@
             this.imageBoxCaptured = new Emgu.CV.UI.ImageBox();
             this.groupBoxFiltered = new System.Windows.Forms.GroupBox();
             this.imageBoxFiltered = new Emgu.CV.UI.ImageBox();
+            this.btnReadSettings = new System.Windows.Forms.Button();
             this.panelLeft.SuspendLayout();
             this.panelButtons.SuspendLayout();
             this.groupBoxMoments.SuspendLayout();
@@ -88,6 +89,7 @@
             // 
             // panelButtons
             // 
+            this.panelButtons.Controls.Add(this.btnReadSettings);
             this.panelButtons.Controls.Add(this.btnWriteSettingsForConsole);
             this.panelButtons.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelButtons.Location = new System.Drawing.Point(0, 623);
@@ -391,6 +393,16 @@
             this.imageBoxFiltered.TabIndex = 6;
             this.imageBoxFiltered.TabStop = false;
             // 
+            // btnReadSettings
+            // 
+            this.btnReadSettings.Location = new System.Drawing.Point(3, 43);
+            this.btnReadSettings.Name = "btnReadSettings";
+            this.btnReadSettings.Size = new System.Drawing.Size(179, 23);
+            this.btnReadSettings.TabIndex = 1;
+            this.btnReadSettings.Text = "Read settings for Console";
+            this.btnReadSettings.UseVisualStyleBackColor = true;
+            this.btnReadSettings.Click += new System.EventHandler(this.btnReadSettings_Click);
+            // 
             // ColourDetectionControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -444,5 +456,6 @@
         private System.Windows.Forms.GroupBox groupBoxMoments;
         private UserControls.SliderControl sliderMomentAreaMax;
         private UserControls.SliderControl sliderMomentAreaMin;
+        private System.Windows.Forms.Button btnReadSettings;
     }
 }

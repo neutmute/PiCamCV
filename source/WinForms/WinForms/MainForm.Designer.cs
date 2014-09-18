@@ -39,8 +39,8 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripLabelSettings = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabPageFaceDetection = new System.Windows.Forms.TabPage();
-            this.tabPageColourDetect = new System.Windows.Forms.TabPage();
             this.tabPageHaarCascade = new System.Windows.Forms.TabPage();
+            this.tabPageColourDetect = new System.Windows.Forms.TabPage();
             this.panelTop.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tabPageCameraCapture.SuspendLayout();
@@ -63,7 +63,7 @@
             // labelFrameRate
             // 
             this.labelFrameRate.AutoSize = true;
-            this.labelFrameRate.Location = new System.Drawing.Point(403, 17);
+            this.labelFrameRate.Location = new System.Drawing.Point(392, 9);
             this.labelFrameRate.Name = "labelFrameRate";
             this.labelFrameRate.Size = new System.Drawing.Size(62, 13);
             this.labelFrameRate.TabIndex = 7;
@@ -72,7 +72,7 @@
             // labelStatus
             // 
             this.labelStatus.AutoSize = true;
-            this.labelStatus.Location = new System.Drawing.Point(641, 17);
+            this.labelStatus.Location = new System.Drawing.Point(392, 31);
             this.labelStatus.Name = "labelStatus";
             this.labelStatus.Size = new System.Drawing.Size(37, 13);
             this.labelStatus.TabIndex = 6;
@@ -157,15 +157,6 @@
             this.tabPageFaceDetection.Text = "Face Detection";
             this.tabPageFaceDetection.UseVisualStyleBackColor = true;
             // 
-            // tabPageColourDetect
-            // 
-            this.tabPageColourDetect.Location = new System.Drawing.Point(4, 22);
-            this.tabPageColourDetect.Name = "tabPageColourDetect";
-            this.tabPageColourDetect.Size = new System.Drawing.Size(865, 467);
-            this.tabPageColourDetect.TabIndex = 2;
-            this.tabPageColourDetect.Text = "Colour Detection";
-            this.tabPageColourDetect.UseVisualStyleBackColor = true;
-            // 
             // tabPageHaarCascade
             // 
             this.tabPageHaarCascade.Location = new System.Drawing.Point(4, 22);
@@ -174,6 +165,15 @@
             this.tabPageHaarCascade.TabIndex = 3;
             this.tabPageHaarCascade.Text = "Haar Cascade Detection";
             this.tabPageHaarCascade.UseVisualStyleBackColor = true;
+            // 
+            // tabPageColourDetect
+            // 
+            this.tabPageColourDetect.Location = new System.Drawing.Point(4, 22);
+            this.tabPageColourDetect.Name = "tabPageColourDetect";
+            this.tabPageColourDetect.Size = new System.Drawing.Size(865, 467);
+            this.tabPageColourDetect.TabIndex = 2;
+            this.tabPageColourDetect.Text = "Colour Detection";
+            this.tabPageColourDetect.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 

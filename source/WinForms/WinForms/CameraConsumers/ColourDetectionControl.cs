@@ -56,7 +56,7 @@ namespace PiCamCV.WinForms.CameraConsumers
                     output.CapturedImage.Draw(circle, color, 3);
                     var ballTextLocation = output.CentralPoint.ToPoint();
                     ballTextLocation.X += radius;
-                    output.CapturedImage.Draw("ball", ballTextLocation, FontFace.HersheyPlain, 3, color);
+                  //  output.CapturedImage.Draw("ball", ballTextLocation, FontFace.HersheyPlain, 3, color);
                 }
 
                 if (checkBoxRoi.Checked)
@@ -93,10 +93,9 @@ namespace PiCamCV.WinForms.CameraConsumers
                 imageBoxFiltered.Image = output.ThresholdImage;
 
                 NotifyStatus(
-                    "Retrieved frame in {0}, processed colour in {1}, detected moment area={2}"
-                    , retrieveElapsed.Elapsed.ToHumanReadable()
-                    , output.Elapsed.ToHumanReadable()
-                    , output.MomentArea);
+                    "Retrieved frame in {0}, {1}"
+                    , retrieveElapsed.Elapsed.ToHumanReadable(HumanReadableTimeSpanOptions.Abbreviated)
+                    , output);
             }
         }
 
@@ -169,10 +168,20 @@ namespace PiCamCV.WinForms.CameraConsumers
             sliderMomentAreaMin.ValueChanged += MomentSlider_ValueChanged;
             sliderMomentAreaMax.ValueChanged += MomentSlider_ValueChanged;
 
+            sliderRoiBottom.ValueChanged += RoiSlider_ValueChanged;
+            sliderRoiTop.ValueChanged += RoiSlider_ValueChanged;
+            sliderRoiLeft.ValueChanged += RoiSlider_ValueChanged;
+            sliderRoiRight.ValueChanged += RoiSlider_ValueChanged;
+
             sliderHueMax.Maximum = 180;
             sliderHueMin.Maximum = 180;
 
             btnReset_Click(null, null);
+        }
+
+        private void RoiSlider_ValueChanged(object sender, EventArgs e)
+        {
+
         }
 
         void HsvSlider_ValueChanged(object sender, EventArgs e)
@@ -243,6 +252,18 @@ namespace PiCamCV.WinForms.CameraConsumers
             _suppressUpdates = false;
         }
 
+        //private void UpdateRoiSlidersFromSettings()
+        //{
+        //    _suppressUpdates = true;
+
+        //    var settings = _detectorInput.Settings;
+
+        //    sliderMomentAreaMin.Value = (int)settings.MomentArea.Min;
+        //    sliderMomentAreaMax.Value = (int)settings.MomentArea.Max;
+
+        //    _suppressUpdates = false;
+        //}
+
         private void UpdateMomentSettingsFromControls()
         {
             if (!_suppressUpdates)
@@ -270,7 +291,7 @@ namespace PiCamCV.WinForms.CameraConsumers
         private void btnReset_Click(object sender, EventArgs e)
         {
             SetThresholdScalars(0, 0, 0, 180, 255, 255);
-            SetMomentArea(200, 400);
+            SetMomentArea(200, 90000);
         }
 
         /// <summary>
@@ -294,13 +315,34 @@ namespace PiCamCV.WinForms.CameraConsumers
 
         }
 
-        private void btnWriteSettingsForConsole_Click(object sender, EventArgs e)
+        private FileInfo GetSettingsFileInfo()
         {
             var appData = ExecutionEnvironment.GetApplicationMetadata();
             var fileName = Path.Combine(appData.ExeFolder, "colordetectsettings.xml");
+            return new FileInfo(fileName);
+        }
 
-            Kelvin<ColourDetectSettings>.ToXmlFile(GetColourDetectSettings(), fileName);
-            NotifyStatus("Wrote settings to {0}", fileName);
+        private void btnWriteSettingsForConsole_Click(object sender, EventArgs e)
+        {
+            var fileinfo = GetSettingsFileInfo();
+            Kelvin<ColourDetectSettings>.ToXmlFile(GetColourDetectSettings(), fileinfo.FullName);
+            NotifyStatus("Wrote settings to '{0}'", fileinfo.FullName);
+        }
+
+        private void btnReadSettings_Click(object sender, EventArgs e)
+        {
+            var fileinfo = GetSettingsFileInfo();
+            if (fileinfo.Exists)
+            {
+                _detectorInput.Settings = Kelvin<ColourDetectSettings>.FromXmlFile(fileinfo.FullName);
+                UpdateMomentSlidersFromSettings();
+                UpdateThresholdSlidersFromSettings();
+                NotifyStatus("Read settings from '{0}'", fileinfo.FullName);
+            }
+            else
+            {
+                Log.Info(m =>m("{0} not found", fileinfo.FullName));
+            }
         }
     }
 }
