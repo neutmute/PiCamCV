@@ -45,6 +45,7 @@ namespace PiCamCV.WinForms.UserControls
 
                 var input = new FaceDetectorInput();
                 input.Captured = frame;
+                input.DetectEyes = chkDetectEyes.Checked;
 
                 var result = _faceDetector.Process(input);
                 var imageBgr = result.CapturedImage;
@@ -52,23 +53,23 @@ namespace PiCamCV.WinForms.UserControls
 
                 if (chkRectangles.Checked)
                 {
-                    foreach (Rectangle face in result.Faces)
+                    foreach (var face in result.Faces)
                     {
-                        imageBgr.Draw(face, new Bgr(Color.Red), 2);
-                    }
+                        imageBgr.Draw(face.Region, new Bgr(Color.Red), 2);
 
-                    var eyeCount = 0;
-                    foreach (Rectangle eye in result.Eyes)
-                    {
-                        eyeCount++;
-                        imageBgr.Draw(eye, new Bgr(Color.Blue), 2);
-                        imageBgr.Draw(eyeCount.ToString(), eye.Location, FontFace.HersheyComplexSmall, 2, new Bgr(Color.Blue));
+                        var eyeCount = 0;
+                        foreach (Rectangle eye in face.Eyes)
+                        {
+                            eyeCount++;
+                            imageBgr.Draw(eye, new Bgr(Color.Blue), 2);
+                            imageBgr.Draw(eyeCount.ToString(), eye.Location, FontFace.HersheyComplexSmall, 2, new Bgr(Color.Blue));
+                        }
                     }
                 }
 
-                if (chkSunnies.Checked)
+                if (chkSunnies.Checked && result.Faces.Count > 0)
                 {
-                    imageOut = WearSunnies(imageBgr, result.Eyes);
+                    imageOut = WearSunnies(imageBgr, result.Faces[0].Eyes);
                 }
                 
                 imageBox.Image = imageOut;

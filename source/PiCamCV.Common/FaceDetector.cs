@@ -11,12 +11,32 @@ namespace PiCamCV.Common
 {
     public class FaceDetectorInput : CameraProcessInput
     {
-        
-
-
+        public bool DetectEyes { get; set; }
         public FaceDetectorInput()
         {
-            
+            DetectEyes = true;
+        }
+    }
+
+    public class Face
+    {
+        public Rectangle Region { get; set; }
+
+        public List<Rectangle> Eyes { get; private set; }
+
+        public Face()
+        {
+            Eyes = new List<Rectangle>();
+        }
+
+        public Face(Rectangle region) :this()
+        {
+            Region = region;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Region={0}, Eyes.Count={1}", Region, Eyes.Count);
         }
     }
 
@@ -26,17 +46,15 @@ namespace PiCamCV.Common
         {
             get { return Faces.Count > 0; }
         }
-        public List<Rectangle> Faces { get; private set; }
-        public List<Rectangle> Eyes { get; private set; }
+        public List<Face> Faces { get; private set; }
         public FaceDetectorOutput()
         {
-            Faces = new List<Rectangle>();
-            Eyes = new List<Rectangle>();
+            Faces = new List<Face>();
         }
 
         public override string ToString()
         {
-            return string.Format("Faces.Count={0}, Eyes.Count={1}", Faces.Count, Eyes.Count);
+            return string.Format("Faces.Count={0}, Eyes.Count={1}", Faces.Count, Faces.Sum(f=>f.Eyes.Count));
         }
     }
 
@@ -71,24 +89,29 @@ namespace PiCamCV.Common
                    10,
                    new Size(20, 20));
 
-                result.Faces.AddRange(facesDetected);
 
-                foreach (Rectangle f in facesDetected)
+                result.Faces.AddRange(facesDetected.Select(f => new Face(f)));
+
+                if (input.DetectEyes)
                 {
-                    //Get the region of interest on the faces
-                    using (UMat faceRegion = new UMat(ugray, f))
+                    foreach (var face in result.Faces)
                     {
-                        Rectangle[] eyesDetected = _eyeClassifier.DetectMultiScale(
-                           faceRegion,
-                           1.1,
-                           10,
-                           new Size(20, 20));
-
-                        foreach (Rectangle e in eyesDetected)
+                        var faceRect = face.Region;
+                        //Get the region of interest on the faces
+                        using (var faceRegion = new UMat(ugray, faceRect))
                         {
-                            Rectangle eyeRect = e;
-                            eyeRect.Offset(f.X, f.Y);
-                            result.Eyes.Add(eyeRect);
+                            Rectangle[] eyesDetected = _eyeClassifier.DetectMultiScale(
+                                faceRegion,
+                                1.1,
+                                10,
+                                new Size(20, 20));
+
+                            foreach (Rectangle e in eyesDetected)
+                            {
+                                Rectangle eyeRect = e;
+                                eyeRect.Offset(faceRect.X, faceRect.Y);
+                                face.Eyes.Add(eyeRect);
+                            }
                         }
                     }
                 }
