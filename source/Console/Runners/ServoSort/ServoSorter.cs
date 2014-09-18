@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -21,6 +22,7 @@ namespace PiCamCV.ConsoleApp.Runners
         PwmControl _pwmControl;
         bool _objectCurrentlyDetected;
         private int _servoPosition;
+        private Stopwatch _debounceWatch;
 
         public ColourDetectSettings Settings { get; set; }
         
@@ -32,6 +34,8 @@ namespace PiCamCV.ConsoleApp.Runners
             _servoPosition = 50;
 
             Settings = options.ColourSettings;
+
+            _debounceWatch = new Stopwatch();
 
             var deviceFactory = new Pca9685DeviceFactory();
             var device = deviceFactory.GetDevice(options.UseFakeDevice);
@@ -54,6 +58,7 @@ namespace PiCamCV.ConsoleApp.Runners
         public override void Run()
         {
             StartLedSignOfLifeAsync();
+            SweeperToGreen();
             base.Run();
         }
         public override void ImageGrabbedHandler(object sender, EventArgs e)
@@ -73,29 +78,36 @@ namespace PiCamCV.ConsoleApp.Runners
 
                 if (result.IsDetected)
                 {
-                    _objectCurrentlyDetected = true;
-                    SweeperArmToFull();
-                    Log.Info(result);
+                    if (!_objectCurrentlyDetected)
+                    {
+                        _debounceWatch.Start();
+                        _objectCurrentlyDetected = true;
+                    }
+                    SweeperToRed();
+                    Log.Info(m=>m("Red detected! {0}", result));
                 }
                 else
                 {
-                    if (_objectCurrentlyDetected)
+                    var isInDebouncePeriod = _debounceWatch.IsRunning && _debounceWatch.ElapsedMilliseconds < 800;
+                    if (_objectCurrentlyDetected && !isInDebouncePeriod)
                     {
-                        SweeperArmReset();
+                        _debounceWatch.Reset();
+                        Log.Info(m => m("Red gone"));
+                        SweeperToGreen();
                         _objectCurrentlyDetected = false;
                     }
                 }
             }
         }
 
-        private void SweeperArmToFull()
+        private void SweeperToGreen()
         {
-           // _pwmControl.Servo.MoveTo(100);
+            ServoSet(65);
         }
 
-        private void SweeperArmReset()
+        private void SweeperToRed()
         {
-           
+            ServoSet(53);
         }
 
         private async Task StartLedSignOfLifeAsync()
@@ -141,10 +153,10 @@ namespace PiCamCV.ConsoleApp.Runners
                     _waitTimeMs -= 10;
                     Log.Info(m =>m("_waitTimeMs={0}", _waitTimeMs));
                     break;
-                case ConsoleKey.OemPeriod:
+                case ConsoleKey.RightArrow:
                     ServoNudge(1);
                     break;
-                case ConsoleKey.OemComma:
+                case ConsoleKey.LeftArrow:
                     ServoNudge(-1);
                     break;
                 case ConsoleKey.M:

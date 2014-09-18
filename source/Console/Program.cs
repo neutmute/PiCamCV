@@ -83,12 +83,15 @@ namespace PiCamCV.ConsoleApp
 
         private static void SafetyCheckRoi(ConsoleOptions options, CaptureProperties captureProperties)
         {
-            var roiWidthTooBig = options.ColourSettings.Roi.Width > captureProperties.FrameWidth;
-            var roiHeightTooBig = options.ColourSettings.Roi.Height > captureProperties.FrameHeight;
-            if (roiWidthTooBig || roiHeightTooBig)
+            if (captureProperties.FrameWidth != 0 && captureProperties.FrameHeight != 0)
             {
-                Log.Warn("ROI is too big! Ignoring");
-                options.ColourSettings.Roi = Rectangle.Empty;
+                var roiWidthTooBig = options.ColourSettings.Roi.Width > captureProperties.FrameWidth;
+                var roiHeightTooBig = options.ColourSettings.Roi.Height > captureProperties.FrameHeight;
+                if (roiWidthTooBig || roiHeightTooBig)
+                {
+                    Log.Warn("ROI is too big! Ignoring");
+                    options.ColourSettings.Roi = Rectangle.Empty;
+                }
             }
         }
     }

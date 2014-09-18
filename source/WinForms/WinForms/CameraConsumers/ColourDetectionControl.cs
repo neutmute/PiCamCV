@@ -103,7 +103,6 @@ namespace PiCamCV.WinForms.CameraConsumers
         {
             var settings = _detectorInput.Settings;
             settings.Roi = GetRegionOfInterestFromControls();
-            //settings.MomentArea = new RangeF(200,400);
             return settings;
         }
 
