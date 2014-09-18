@@ -31,7 +31,7 @@ namespace PiCamCV.ConsoleApp
                     case ConsoleKey.Q:
                         exit = true;
                         break;
-                    case ConsoleKey.T:
+                    default:
                         if (KeyEvent != null)
                         {
                             KeyEvent(this, new ConsoleKeyEventArgs(key));

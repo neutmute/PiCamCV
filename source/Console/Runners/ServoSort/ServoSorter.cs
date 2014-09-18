@@ -20,6 +20,7 @@ namespace PiCamCV.ConsoleApp.Runners
         private int _waitTimeMs;
         PwmControl _pwmControl;
         bool _objectCurrentlyDetected;
+        private int _servoPosition;
 
         public ColourDetectSettings Settings { get; set; }
         
@@ -28,14 +29,14 @@ namespace PiCamCV.ConsoleApp.Runners
             ,ConsoleOptions options) : base(capture)
         {
             _waitTimeMs = 100;
-
+            _servoPosition = 50;
 
             Settings = options.ColourSettings;
 
             var deviceFactory = new Pca9685DeviceFactory();
             var device = deviceFactory.GetDevice(options.UseFakeDevice);
             SetLogLevel(device);
-
+            
             _pwmControl = new PwmControl(device);
             _pwmControl.Init();
         }
@@ -89,12 +90,12 @@ namespace PiCamCV.ConsoleApp.Runners
 
         private void SweeperArmToFull()
         {
-            _pwmControl.Servo.MoveTo(100);
+           // _pwmControl.Servo.MoveTo(100);
         }
 
         private void SweeperArmReset()
         {
-            _pwmControl.Servo.MoveTo(0);
+           
         }
 
         private async Task StartLedSignOfLifeAsync()
@@ -108,8 +109,29 @@ namespace PiCamCV.ConsoleApp.Runners
                 _pwmControl.Led0.On(percentage);
                 await Task.Delay(50).ConfigureAwait(false);
             }
+            _pwmControl.Led0.Off();
             Log.Info("Sign of life: off");
         }
+
+        private void ServoNudge(int nudge)
+        {
+            _servoPosition+=nudge;
+            _pwmControl.Servo.MoveTo(_servoPosition);
+            Log.Info(m => m("Servo={0}", _servoPosition));
+        }
+
+        private void ServoSet(int percent)
+        {
+            _servoPosition = percent;
+            _pwmControl.Servo.MoveTo(_servoPosition);
+            Log.Info(m => m("Servo={0}", _servoPosition));
+        }
+
+        //protected override void Stop()
+        //{
+        //    _pwmControl.
+        //    base.Stop();
+        //}
 
         public override void HandleKey(ConsoleKeyInfo keyInfo)
         {
@@ -118,6 +140,18 @@ namespace PiCamCV.ConsoleApp.Runners
                 case ConsoleKey.T:
                     _waitTimeMs -= 10;
                     Log.Info(m =>m("_waitTimeMs={0}", _waitTimeMs));
+                    break;
+                case ConsoleKey.OemPeriod:
+                    ServoNudge(1);
+                    break;
+                case ConsoleKey.OemComma:
+                    ServoNudge(-1);
+                    break;
+                case ConsoleKey.M:
+                    ServoSet(50);
+                    break;
+                default:
+                    Log.Info(m => m("Ignoring key {0}", keyInfo.Key));
                     break;
             }
         }
