@@ -5,17 +5,30 @@ using PiCamCV.Interfaces;
 
 namespace PiCamCV
 {
+    public class CaptureUsb : CaptureEmgu
+    {
+        public CaptureUsb() : base(new Capture())
+        {
+        }
+    }
+    public class CaptureFile : CaptureEmgu
+    {
+        public CaptureFile(string filename)
+            : base(new Capture(filename))
+        {
+        }
+    }
+
     /// <summary>
-    /// Provides a facade around Emgu capture
-    /// Help compare CapturePi against Emgu Capture
+    /// Provides a facade around Emgu capture so we can present the same interface for CapturePi
     /// </summary>
-    public class CaptureUsb : ICaptureGrab
+    public abstract class CaptureEmgu : ICaptureGrab
     {
         private readonly Capture _capture;
 
-        public CaptureUsb()
+        protected CaptureEmgu(Capture capture)
         {
-            _capture = new Capture();
+            _capture = capture;
         }
 
         public event EventHandler ImageGrabbed
@@ -72,7 +85,7 @@ namespace PiCamCV
             return _capture.GetCaptureProperty(index);
         }
 
-        public bool SetCaptureProperty(Emgu.CV.CvEnum.CapProp property, double value)
+        public bool SetCaptureProperty(CapProp property, double value)
         {
             return _capture.SetCaptureProperty(property, value);
         }

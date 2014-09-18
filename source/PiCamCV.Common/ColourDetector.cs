@@ -49,22 +49,15 @@ namespace PiCamCV.Common
     {
         public ColourDetectSettings Settings { get; set; }
 
-        /// <summary>
-        /// Turn off for console perf tweak
-        /// </summary>
-        public bool SetCapturedImage { get; set; }
 
         public ColourDetectorInput()
         {
-            SetCapturedImage = true;
             Settings = new ColourDetectSettings();
         }
     }
 
     public class ColourDetectorProcessOutput : CameraProcessOutput
     {
-        public Image<Bgr, byte> CapturedImage { get;  set; }
-
         public Image<Gray, byte> ThresholdImage { get;  set; }
 
         public bool IsDetected { get; set; }
@@ -141,11 +134,6 @@ namespace PiCamCV.Common
                     }
 
                     output.CentralPoint = new PointF(posX, posY);
-                }
-
-                if (input.SetCapturedImage)
-                {
-                    output.CapturedImage = input.Captured.ToImage<Bgr, byte>();
                 }
             }
             return output;

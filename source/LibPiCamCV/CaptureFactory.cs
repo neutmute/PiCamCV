@@ -28,7 +28,7 @@ namespace PiCamCV
         public static ICaptureGrab GetCapture(CaptureDevice device)
         {
             Log.Info(m => m("CVLibrary={0}", CvInvokeRaspiCamCV.CVLibrary));
-            Log.Info(m => m("Getting {0} device", device));
+            Log.Info(m => m("Getting {0} camera", device));
             if (device == CaptureDevice.Pi)
             {
                 return new CapturePi();

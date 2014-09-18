@@ -12,8 +12,8 @@ using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Emgu.CV.UI;
-using FaceDetection;
 using Kraken.Core;
+using PiCamCV.Common;
 
 namespace PiCamCV.WinForms.UserControls
 {
@@ -21,6 +21,7 @@ namespace PiCamCV.WinForms.UserControls
     {
         private FileInfo haarEyeFile;
         private FileInfo haarFaceFile;
+        private FaceDetector _faceDetector;
         
         public FaceDetectionControl()
         {
@@ -32,33 +33,48 @@ namespace PiCamCV.WinForms.UserControls
             var haarCascadePath = Path.Combine(new FileInfo(assemblyPath).DirectoryName, "haarcascades");
             haarEyeFile = new FileInfo(Path.Combine(haarCascadePath, "haarcascade_eye.xml"));
             haarFaceFile = new FileInfo(Path.Combine(haarCascadePath, "haarcascade_frontalface_default.xml"));
+
+            _faceDetector = new FaceDetector(haarFaceFile.FullName, haarEyeFile.FullName);
         }
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
-            var frame = new Mat();
-            CameraCapture.Retrieve(frame);
-            var image = frame.ToImage<Bgr, byte>();
-
-            var result = DetectFace.Detect(image, haarFaceFile.FullName, haarEyeFile.FullName);
-            
-            foreach (Rectangle face in result.Faces)
+            using (var frame = new Mat())
             {
-                image.Draw(face, new Bgr(Color.Red), 2);
-            }
+                CameraCapture.Retrieve(frame);
 
-            var imageSunnies = WearSunnies(image, result.Eyes);
-            var eyeCount = 0;
-            foreach (Rectangle eye in result.Eyes)
-            {
-                eyeCount++;
-                image.Draw(eye, new Bgr(Color.Blue), 2);
-                image.Draw(eyeCount.ToString(), eye.Location, FontFace.HersheyComplexSmall, 2, new Bgr(Color.Blue));
-            }
+                var input = new FaceDetectorInput();
+                input.Captured = frame;
 
-            imageBox.Image = imageSunnies;
-            
-            NotifyStatus("Face detection took {0}", result.DetectionTime.ToHumanReadable());
+                var result = _faceDetector.Process(input);
+                var imageBgr = result.CapturedImage;
+                IImage imageOut = imageBgr;
+
+                if (chkRectangles.Checked)
+                {
+                    foreach (Rectangle face in result.Faces)
+                    {
+                        imageBgr.Draw(face, new Bgr(Color.Red), 2);
+                    }
+
+                    var eyeCount = 0;
+                    foreach (Rectangle eye in result.Eyes)
+                    {
+                        eyeCount++;
+                        imageBgr.Draw(eye, new Bgr(Color.Blue), 2);
+                        imageBgr.Draw(eyeCount.ToString(), eye.Location, FontFace.HersheyComplexSmall, 2, new Bgr(Color.Blue));
+                    }
+                }
+
+                if (chkSunnies.Checked)
+                {
+                    imageOut = WearSunnies(imageBgr, result.Eyes);
+                }
+                
+                imageBox.Image = imageOut;
+
+                NotifyStatus("Face detection took {0}", result.Elapsed.ToHumanReadable());
+            }
         }
 
         public Image<Bgra, byte> Overlay3(Image<Bgra, byte> background, Image<Bgra, byte> foreground)
@@ -197,6 +213,11 @@ namespace PiCamCV.WinForms.UserControls
                 }
             }
 }
+
+        private void chkRectangles_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
         
     }
 }

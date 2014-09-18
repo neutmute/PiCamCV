@@ -67,6 +67,7 @@
     <Compile Include="ColourDetector.cs" />
     <Compile Include="ExtensionMethods\PointFExtensions.cs" />
     <Compile Include="ExtensionMethods\RangeFExtensions.cs" />
+    <Compile Include="FaceDetector.cs" />
     <Compile Include="FpsTracker.cs" />
     <Compile Include="Interfaces\ICameraConsumer.cs" />
     <Compile Include="Interfaces\ICameraProcessor.cs" />
