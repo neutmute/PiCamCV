@@ -18,11 +18,11 @@ namespace PiCamCV.ConsoleApp.Runners
 
     public  class ServoSorter : CameraConsumerRunner
     {
-        private int _waitTimeMs;
         PwmControl _pwmControl;
         bool _objectCurrentlyDetected;
         private int _servoPosition;
-        private Stopwatch _debounceWatch;
+        private readonly Stopwatch _debounceWatch;
+        private readonly ColourDetector _detector;
 
         public ColourDetectSettings Settings { get; set; }
         
@@ -30,8 +30,7 @@ namespace PiCamCV.ConsoleApp.Runners
             ICaptureGrab capture
             ,ConsoleOptions options) : base(capture)
         {
-            _waitTimeMs = 100;
-            _servoPosition = 50;
+            _servoPosition = 70;
 
             Settings = options.ColourSettings;
 
@@ -43,6 +42,8 @@ namespace PiCamCV.ConsoleApp.Runners
             
             _pwmControl = new PwmControl(device);
             _pwmControl.Init();
+
+            _detector = new ColourDetector();
         }
 
         private void SetLogLevel(IPwmDevice device)
@@ -66,7 +67,7 @@ namespace PiCamCV.ConsoleApp.Runners
             using (var matCaptured = new Mat())
             {
                 CameraCapture.Retrieve(matCaptured);
-                var detector = new ColourDetector();
+                
                 var input = new ColourDetectorInput
                 {
                     Captured = matCaptured
@@ -74,7 +75,7 @@ namespace PiCamCV.ConsoleApp.Runners
                    ,SetCapturedImage = false
                 };
 
-                var result = detector.Process(input);
+                var result = _detector.Process(input);
 
                 if (result.IsDetected)
                 {
@@ -102,7 +103,7 @@ namespace PiCamCV.ConsoleApp.Runners
 
         private void SweeperToGreen()
         {
-            ServoSet(65);
+            ServoSet(70);
         }
 
         private void SweeperToRed()
@@ -138,21 +139,11 @@ namespace PiCamCV.ConsoleApp.Runners
             _pwmControl.Servo.MoveTo(_servoPosition);
             Log.Info(m => m("Servo={0}", _servoPosition));
         }
-
-        //protected override void Stop()
-        //{
-        //    _pwmControl.
-        //    base.Stop();
-        //}
-
+        
         public override void HandleKey(ConsoleKeyInfo keyInfo)
         {
             switch (keyInfo.Key)
             {
-                case ConsoleKey.T:
-                    _waitTimeMs -= 10;
-                    Log.Info(m =>m("_waitTimeMs={0}", _waitTimeMs));
-                    break;
                 case ConsoleKey.RightArrow:
                     ServoNudge(1);
                     break;
