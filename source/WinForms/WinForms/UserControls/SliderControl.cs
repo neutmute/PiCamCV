@@ -31,6 +31,24 @@ namespace PiCamCV.WinForms.UserControls
             set { trackBar.Orientation = value; }
         }
 
+        public int TickFrequency
+        {
+            get { return trackBar.TickFrequency; }
+            set { trackBar.TickFrequency = value; }
+        }
+
+        public int LargeChange
+        {
+            get { return trackBar.LargeChange; }
+            set { trackBar.LargeChange = value; }
+        }
+
+        public int SmallChange
+        {
+            get { return trackBar.SmallChange; }
+            set { trackBar.SmallChange = value; }
+        }
+
         public int Maximum
         {
             get { return trackBar.Maximum; }

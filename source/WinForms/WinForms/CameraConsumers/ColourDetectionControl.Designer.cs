@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.panelLeft = new System.Windows.Forms.Panel();
             this.panelButtons = new System.Windows.Forms.Panel();
+            this.btnReadSettings = new System.Windows.Forms.Button();
             this.btnWriteSettingsForConsole = new System.Windows.Forms.Button();
             this.groupBoxMoments = new System.Windows.Forms.GroupBox();
             this.sliderMomentAreaMax = new PiCamCV.WinForms.UserControls.SliderControl();
@@ -56,7 +57,6 @@
             this.imageBoxCaptured = new Emgu.CV.UI.ImageBox();
             this.groupBoxFiltered = new System.Windows.Forms.GroupBox();
             this.imageBoxFiltered = new Emgu.CV.UI.ImageBox();
-            this.btnReadSettings = new System.Windows.Forms.Button();
             this.panelLeft.SuspendLayout();
             this.panelButtons.SuspendLayout();
             this.groupBoxMoments.SuspendLayout();
@@ -97,6 +97,16 @@
             this.panelButtons.Size = new System.Drawing.Size(194, 69);
             this.panelButtons.TabIndex = 10;
             // 
+            // btnReadSettings
+            // 
+            this.btnReadSettings.Location = new System.Drawing.Point(3, 43);
+            this.btnReadSettings.Name = "btnReadSettings";
+            this.btnReadSettings.Size = new System.Drawing.Size(179, 23);
+            this.btnReadSettings.TabIndex = 1;
+            this.btnReadSettings.Text = "Read settings for Console";
+            this.btnReadSettings.UseVisualStyleBackColor = true;
+            this.btnReadSettings.Click += new System.EventHandler(this.btnReadSettings_Click);
+            // 
             // btnWriteSettingsForConsole
             // 
             this.btnWriteSettingsForConsole.Location = new System.Drawing.Point(3, 15);
@@ -123,26 +133,32 @@
             // 
             this.sliderMomentAreaMax.Dock = System.Windows.Forms.DockStyle.Top;
             this.sliderMomentAreaMax.Label = "Area Max";
+            this.sliderMomentAreaMax.LargeChange = 200;
             this.sliderMomentAreaMax.Location = new System.Drawing.Point(3, 56);
             this.sliderMomentAreaMax.Maximum = 100000;
             this.sliderMomentAreaMax.Minimum = 0;
             this.sliderMomentAreaMax.Name = "sliderMomentAreaMax";
             this.sliderMomentAreaMax.Orientation = System.Windows.Forms.Orientation.Horizontal;
             this.sliderMomentAreaMax.Size = new System.Drawing.Size(188, 40);
+            this.sliderMomentAreaMax.SmallChange = 100;
             this.sliderMomentAreaMax.TabIndex = 5;
+            this.sliderMomentAreaMax.TickFrequency = 1000;
             this.sliderMomentAreaMax.Value = 0;
             // 
             // sliderMomentAreaMin
             // 
             this.sliderMomentAreaMin.Dock = System.Windows.Forms.DockStyle.Top;
             this.sliderMomentAreaMin.Label = "Area Min";
+            this.sliderMomentAreaMin.LargeChange = 5;
             this.sliderMomentAreaMin.Location = new System.Drawing.Point(3, 16);
             this.sliderMomentAreaMin.Maximum = 1000;
             this.sliderMomentAreaMin.Minimum = 0;
             this.sliderMomentAreaMin.Name = "sliderMomentAreaMin";
             this.sliderMomentAreaMin.Orientation = System.Windows.Forms.Orientation.Horizontal;
             this.sliderMomentAreaMin.Size = new System.Drawing.Size(188, 40);
+            this.sliderMomentAreaMin.SmallChange = 1;
             this.sliderMomentAreaMin.TabIndex = 4;
+            this.sliderMomentAreaMin.TickFrequency = 1;
             this.sliderMomentAreaMin.Value = 0;
             // 
             // groupBoxRoi
@@ -164,52 +180,64 @@
             // 
             this.sliderRoiBottom.Dock = System.Windows.Forms.DockStyle.Left;
             this.sliderRoiBottom.Label = "Bottom";
+            this.sliderRoiBottom.LargeChange = 5;
             this.sliderRoiBottom.Location = new System.Drawing.Point(95, 125);
             this.sliderRoiBottom.Maximum = 255;
             this.sliderRoiBottom.Minimum = 0;
             this.sliderRoiBottom.Name = "sliderRoiBottom";
             this.sliderRoiBottom.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.sliderRoiBottom.Size = new System.Drawing.Size(90, 90);
+            this.sliderRoiBottom.SmallChange = 1;
             this.sliderRoiBottom.TabIndex = 3;
+            this.sliderRoiBottom.TickFrequency = 1;
             this.sliderRoiBottom.Value = 0;
             // 
             // sliderRoiTop
             // 
             this.sliderRoiTop.Dock = System.Windows.Forms.DockStyle.Left;
             this.sliderRoiTop.Label = "Top";
+            this.sliderRoiTop.LargeChange = 5;
             this.sliderRoiTop.Location = new System.Drawing.Point(3, 125);
             this.sliderRoiTop.Maximum = 255;
             this.sliderRoiTop.Minimum = 0;
             this.sliderRoiTop.Name = "sliderRoiTop";
             this.sliderRoiTop.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.sliderRoiTop.Size = new System.Drawing.Size(92, 90);
+            this.sliderRoiTop.SmallChange = 1;
             this.sliderRoiTop.TabIndex = 2;
+            this.sliderRoiTop.TickFrequency = 1;
             this.sliderRoiTop.Value = 0;
             // 
             // sliderRoiRight
             // 
             this.sliderRoiRight.Dock = System.Windows.Forms.DockStyle.Top;
             this.sliderRoiRight.Label = "Right";
+            this.sliderRoiRight.LargeChange = 5;
             this.sliderRoiRight.Location = new System.Drawing.Point(3, 79);
             this.sliderRoiRight.Maximum = 255;
             this.sliderRoiRight.Minimum = 0;
             this.sliderRoiRight.Name = "sliderRoiRight";
             this.sliderRoiRight.Orientation = System.Windows.Forms.Orientation.Horizontal;
             this.sliderRoiRight.Size = new System.Drawing.Size(188, 46);
+            this.sliderRoiRight.SmallChange = 1;
             this.sliderRoiRight.TabIndex = 1;
+            this.sliderRoiRight.TickFrequency = 1;
             this.sliderRoiRight.Value = 0;
             // 
             // sliderRoiLeft
             // 
             this.sliderRoiLeft.Dock = System.Windows.Forms.DockStyle.Top;
             this.sliderRoiLeft.Label = "Left";
+            this.sliderRoiLeft.LargeChange = 5;
             this.sliderRoiLeft.Location = new System.Drawing.Point(3, 33);
             this.sliderRoiLeft.Maximum = 255;
             this.sliderRoiLeft.Minimum = 0;
             this.sliderRoiLeft.Name = "sliderRoiLeft";
             this.sliderRoiLeft.Orientation = System.Windows.Forms.Orientation.Horizontal;
             this.sliderRoiLeft.Size = new System.Drawing.Size(188, 46);
+            this.sliderRoiLeft.SmallChange = 1;
             this.sliderRoiLeft.TabIndex = 0;
+            this.sliderRoiLeft.TickFrequency = 1;
             this.sliderRoiLeft.Value = 0;
             // 
             // checkBoxRoi
@@ -271,78 +299,96 @@
             // 
             this.sliderValueMax.Dock = System.Windows.Forms.DockStyle.Top;
             this.sliderValueMax.Label = "Value Max";
+            this.sliderValueMax.LargeChange = 5;
             this.sliderValueMax.Location = new System.Drawing.Point(0, 200);
             this.sliderValueMax.Maximum = 255;
             this.sliderValueMax.Minimum = 0;
             this.sliderValueMax.Name = "sliderValueMax";
             this.sliderValueMax.Orientation = System.Windows.Forms.Orientation.Horizontal;
             this.sliderValueMax.Size = new System.Drawing.Size(194, 40);
+            this.sliderValueMax.SmallChange = 1;
             this.sliderValueMax.TabIndex = 4;
+            this.sliderValueMax.TickFrequency = 1;
             this.sliderValueMax.Value = 0;
             // 
             // sliderValueMin
             // 
             this.sliderValueMin.Dock = System.Windows.Forms.DockStyle.Top;
             this.sliderValueMin.Label = "Value Min";
+            this.sliderValueMin.LargeChange = 5;
             this.sliderValueMin.Location = new System.Drawing.Point(0, 160);
             this.sliderValueMin.Maximum = 255;
             this.sliderValueMin.Minimum = 0;
             this.sliderValueMin.Name = "sliderValueMin";
             this.sliderValueMin.Orientation = System.Windows.Forms.Orientation.Horizontal;
             this.sliderValueMin.Size = new System.Drawing.Size(194, 40);
+            this.sliderValueMin.SmallChange = 1;
             this.sliderValueMin.TabIndex = 5;
+            this.sliderValueMin.TickFrequency = 1;
             this.sliderValueMin.Value = 0;
             // 
             // sliderSaturationMax
             // 
             this.sliderSaturationMax.Dock = System.Windows.Forms.DockStyle.Top;
             this.sliderSaturationMax.Label = "Saturation Max";
+            this.sliderSaturationMax.LargeChange = 5;
             this.sliderSaturationMax.Location = new System.Drawing.Point(0, 120);
             this.sliderSaturationMax.Maximum = 255;
             this.sliderSaturationMax.Minimum = 0;
             this.sliderSaturationMax.Name = "sliderSaturationMax";
             this.sliderSaturationMax.Orientation = System.Windows.Forms.Orientation.Horizontal;
             this.sliderSaturationMax.Size = new System.Drawing.Size(194, 40);
+            this.sliderSaturationMax.SmallChange = 1;
             this.sliderSaturationMax.TabIndex = 2;
+            this.sliderSaturationMax.TickFrequency = 1;
             this.sliderSaturationMax.Value = 0;
             // 
             // sliderSaturationMin
             // 
             this.sliderSaturationMin.Dock = System.Windows.Forms.DockStyle.Top;
             this.sliderSaturationMin.Label = "Saturation Min";
+            this.sliderSaturationMin.LargeChange = 5;
             this.sliderSaturationMin.Location = new System.Drawing.Point(0, 80);
             this.sliderSaturationMin.Maximum = 255;
             this.sliderSaturationMin.Minimum = 0;
             this.sliderSaturationMin.Name = "sliderSaturationMin";
             this.sliderSaturationMin.Orientation = System.Windows.Forms.Orientation.Horizontal;
             this.sliderSaturationMin.Size = new System.Drawing.Size(194, 40);
+            this.sliderSaturationMin.SmallChange = 1;
             this.sliderSaturationMin.TabIndex = 3;
+            this.sliderSaturationMin.TickFrequency = 1;
             this.sliderSaturationMin.Value = 0;
             // 
             // sliderHueMax
             // 
             this.sliderHueMax.Dock = System.Windows.Forms.DockStyle.Top;
             this.sliderHueMax.Label = "Hue Max";
+            this.sliderHueMax.LargeChange = 5;
             this.sliderHueMax.Location = new System.Drawing.Point(0, 40);
             this.sliderHueMax.Maximum = 255;
             this.sliderHueMax.Minimum = 0;
             this.sliderHueMax.Name = "sliderHueMax";
             this.sliderHueMax.Orientation = System.Windows.Forms.Orientation.Horizontal;
             this.sliderHueMax.Size = new System.Drawing.Size(194, 40);
+            this.sliderHueMax.SmallChange = 1;
             this.sliderHueMax.TabIndex = 0;
+            this.sliderHueMax.TickFrequency = 1;
             this.sliderHueMax.Value = 0;
             // 
             // sliderHueMin
             // 
             this.sliderHueMin.Dock = System.Windows.Forms.DockStyle.Top;
             this.sliderHueMin.Label = "Hue Min";
+            this.sliderHueMin.LargeChange = 5;
             this.sliderHueMin.Location = new System.Drawing.Point(0, 0);
             this.sliderHueMin.Maximum = 255;
             this.sliderHueMin.Minimum = 0;
             this.sliderHueMin.Name = "sliderHueMin";
             this.sliderHueMin.Orientation = System.Windows.Forms.Orientation.Horizontal;
             this.sliderHueMin.Size = new System.Drawing.Size(194, 40);
+            this.sliderHueMin.SmallChange = 1;
             this.sliderHueMin.TabIndex = 1;
+            this.sliderHueMin.TickFrequency = 1;
             this.sliderHueMin.Value = 0;
             // 
             // flowLayoutPanel
@@ -392,16 +438,6 @@
             this.imageBoxFiltered.Size = new System.Drawing.Size(365, 354);
             this.imageBoxFiltered.TabIndex = 6;
             this.imageBoxFiltered.TabStop = false;
-            // 
-            // btnReadSettings
-            // 
-            this.btnReadSettings.Location = new System.Drawing.Point(3, 43);
-            this.btnReadSettings.Name = "btnReadSettings";
-            this.btnReadSettings.Size = new System.Drawing.Size(179, 23);
-            this.btnReadSettings.TabIndex = 1;
-            this.btnReadSettings.Text = "Read settings for Console";
-            this.btnReadSettings.UseVisualStyleBackColor = true;
-            this.btnReadSettings.Click += new System.EventHandler(this.btnReadSettings_Click);
             // 
             // ColourDetectionControl
             // 

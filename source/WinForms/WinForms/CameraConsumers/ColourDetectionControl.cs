@@ -117,15 +117,11 @@ namespace PiCamCV.WinForms.CameraConsumers
                 var top = imageHeight - sliderRoiTop.Value;
                 var bottom = imageHeight - sliderRoiBottom.Value;
 
+                var left = sliderRoiLeft.Value;
                 var width = (sliderRoiRight.Value - sliderRoiLeft.Value);
                 var height = bottom - top;
 
-                roiRectangle = new Rectangle(
-                    sliderRoiLeft.Value
-                    , top
-                    , width
-                    , height
-                    );
+                roiRectangle = new Rectangle(left, top, width, height);
             }
 
             return roiRectangle;
@@ -290,7 +286,7 @@ namespace PiCamCV.WinForms.CameraConsumers
         private void btnReset_Click(object sender, EventArgs e)
         {
             SetThresholdScalars(0, 0, 0, 180, 255, 255);
-            SetMomentArea(200, 90000);
+            SetMomentArea(200, 1000);
         }
 
         /// <summary>

@@ -150,8 +150,14 @@ namespace PiCamCV.ConsoleApp.Runners
                 case ConsoleKey.LeftArrow:
                     ServoNudge(-1);
                     break;
-                case ConsoleKey.M:
+                case ConsoleKey.Z:
                     ServoSet(50);
+                    break;
+                case ConsoleKey.X:
+                    ServoSet(56);
+                    break;
+                case ConsoleKey.C:
+                    ServoSet(80);
                     break;
                 default:
                     Log.Info(m => m("Ignoring key {0}", keyInfo.Key));
