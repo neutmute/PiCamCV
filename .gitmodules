@@ -1,0 +1,7 @@
+[submodule "lib/RPi.Demo"]
+	path = lib/RPi.Demo
+	url = git@github.com:neutmute/RPi.Demo.git
+[submodule "lib/raspberry-sharp-io"]
+	path = lib/raspberry-sharp-io
+	url = git@github.com:neutmute/raspberry-sharp-io.git
+	branch = nm-tweaks
