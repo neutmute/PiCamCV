@@ -27,7 +27,7 @@ namespace PiCamCV
         static readonly ILog Log = LogManager.GetCurrentClassLogger();
         public static ICaptureGrab GetCapture(CaptureDevice device)
         {
-            Log.Info(m => m("CVLibrary={0}", CvInvokeRaspiCamCV.CVLibrary));
+            Log.Info(m => m("CV Library={0}", CvInvokeRaspiCamCV.CVLibrary));
             Log.Info(m => m("Getting {0} camera", device));
             if (device == CaptureDevice.Pi)
             {

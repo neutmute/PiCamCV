@@ -117,7 +117,6 @@ namespace PiCamCV
         ///<param name="camIndex"> The index of the camera to create capture from, starting from 0</param>
         private CapturePi(int camIndex)
         {
-            CvInvoke.UseOpenCL = false;
             try
             {
                 CvInvoke.CheckLibraryLoaded();

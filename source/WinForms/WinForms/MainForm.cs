@@ -28,6 +28,7 @@ namespace WinForms
         {
             InitializeComponent();
             _tabPageLinks = new List<KeyValuePair<TabPage, CameraConsumerUserControl>>();
+            _fpsTracker = new FpsTracker();
         }
 
         private void tabPageCameraCapture_Click(object sender, EventArgs e)
@@ -36,7 +37,9 @@ namespace WinForms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            CvInvoke.UseOpenCL = false;
             var captureDevice = CaptureDevice.Usb;
+
             //var captureDevice = CaptureDevice.Pi;
             if (Environment.OSVersion.Platform == PlatformID.Unix)
             {
@@ -47,15 +50,19 @@ namespace WinForms
             SetupCameraConsumers(_capture);
             SetupFramerateTracking(_capture);
 
+//            SetCaptureProperties(); //access violation with logitech
+        }
+
+        private void SetCaptureProperties()
+        {
             var capSettings = new CaptureProperties();
             capSettings.FrameWidth = 320;
             capSettings.FrameHeight = 240;
-          //  _capture.SetCaptureProperties(capSettings); access violation
+            _capture.SetCaptureProperties(capSettings); //access violation
         }
 
         private void SetupFramerateTracking(ICaptureGrab capture)
         {
-            _fpsTracker = new FpsTracker();
             capture.ImageGrabbed += _fpsTracker.NotifyImageGrabbed;
             _fpsTracker.ReportFrames = s => Invoke((MethodInvoker) delegate { labelFrameRate.Text = s; });
         }
