@@ -41,6 +41,7 @@
             this.tabPageFaceDetection = new System.Windows.Forms.TabPage();
             this.tabPageHaarCascade = new System.Windows.Forms.TabPage();
             this.tabPageColourDetect = new System.Windows.Forms.TabPage();
+            this.chkOpenCL = new System.Windows.Forms.CheckBox();
             this.panelTop.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tabPageCameraCapture.SuspendLayout();
@@ -49,6 +50,7 @@
             // 
             // panelTop
             // 
+            this.panelTop.Controls.Add(this.chkOpenCL);
             this.panelTop.Controls.Add(this.labelFrameRate);
             this.panelTop.Controls.Add(this.labelStatus);
             this.panelTop.Controls.Add(this.btnFlipHorizontal);
@@ -57,7 +59,7 @@
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(0, 0);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(873, 47);
+            this.panelTop.Size = new System.Drawing.Size(873, 63);
             this.panelTop.TabIndex = 1;
             // 
             // labelFrameRate
@@ -115,10 +117,10 @@
             this.tabControlMain.Controls.Add(this.tabPageHaarCascade);
             this.tabControlMain.Controls.Add(this.tabPageColourDetect);
             this.tabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControlMain.Location = new System.Drawing.Point(0, 47);
+            this.tabControlMain.Location = new System.Drawing.Point(0, 63);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
-            this.tabControlMain.Size = new System.Drawing.Size(873, 493);
+            this.tabControlMain.Size = new System.Drawing.Size(873, 477);
             this.tabControlMain.TabIndex = 2;
             // 
             // tabPageCameraCapture
@@ -127,7 +129,7 @@
             this.tabPageCameraCapture.Location = new System.Drawing.Point(4, 22);
             this.tabPageCameraCapture.Name = "tabPageCameraCapture";
             this.tabPageCameraCapture.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageCameraCapture.Size = new System.Drawing.Size(865, 467);
+            this.tabPageCameraCapture.Size = new System.Drawing.Size(865, 451);
             this.tabPageCameraCapture.TabIndex = 0;
             this.tabPageCameraCapture.Text = "Camera Capture";
             this.tabPageCameraCapture.UseVisualStyleBackColor = true;
@@ -137,7 +139,7 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabelSettings});
-            this.statusStrip1.Location = new System.Drawing.Point(3, 442);
+            this.statusStrip1.Location = new System.Drawing.Point(3, 426);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(859, 22);
             this.statusStrip1.TabIndex = 0;
@@ -175,6 +177,17 @@
             this.tabPageColourDetect.Text = "Colour Detection";
             this.tabPageColourDetect.UseVisualStyleBackColor = true;
             // 
+            // chkOpenCL
+            // 
+            this.chkOpenCL.AutoSize = true;
+            this.chkOpenCL.Location = new System.Drawing.Point(7, 40);
+            this.chkOpenCL.Name = "chkOpenCL";
+            this.chkOpenCL.Size = new System.Drawing.Size(87, 17);
+            this.chkOpenCL.TabIndex = 8;
+            this.chkOpenCL.Text = "Use OpenCL";
+            this.chkOpenCL.UseVisualStyleBackColor = true;
+            this.chkOpenCL.CheckedChanged += new System.EventHandler(this.chkOpenCL_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -211,6 +224,7 @@
         private System.Windows.Forms.Label labelFrameRate;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripLabelSettings;
+        private System.Windows.Forms.CheckBox chkOpenCL;
 
     }
 }

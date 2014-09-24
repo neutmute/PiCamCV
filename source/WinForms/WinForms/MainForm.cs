@@ -22,7 +22,7 @@ namespace WinForms
     {
         private ICaptureGrab _capture;
         readonly List<KeyValuePair<TabPage, CameraConsumerUserControl>> _tabPageLinks;
-        private FpsTracker _fpsTracker;
+        private readonly FpsTracker _fpsTracker;
         public bool CameraCaptureInProgress { get; set; }
         public MainForm()
         {
@@ -37,7 +37,6 @@ namespace WinForms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            CvInvoke.UseOpenCL = false;
             var captureDevice = CaptureDevice.Usb;
 
             //var captureDevice = CaptureDevice.Pi;
@@ -46,6 +45,7 @@ namespace WinForms
                 captureDevice = CaptureDevice.Pi;
             }
             _capture = CaptureFactory.GetCapture(captureDevice);
+            //_capture = new CaptureFile(@"D:\Data\Documents\Pictures\2014\20140531_SwimmingLessons\MVI_8742.MOV");
 
             SetupCameraConsumers(_capture);
             SetupFramerateTracking(_capture);
@@ -147,6 +147,11 @@ namespace WinForms
 
                 CameraCaptureInProgress = !CameraCaptureInProgress;
             }
+        }
+
+        private void chkOpenCL_CheckedChanged(object sender, EventArgs e)
+        {
+            CvInvoke.UseOpenCL = chkOpenCL.Checked;
         }
     }
 }
