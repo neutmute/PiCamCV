@@ -29,20 +29,30 @@
         private void InitializeComponent()
         {
             this.panelTop = new System.Windows.Forms.Panel();
-            this.labelFrameRate = new System.Windows.Forms.Label();
-            this.labelStatus = new System.Windows.Forms.Label();
-            this.btnFlipHorizontal = new System.Windows.Forms.Button();
+            this.groupBoxRealTime = new System.Windows.Forms.GroupBox();
             this.btnFlipVertical = new System.Windows.Forms.Button();
+            this.btnFlipHorizontal = new System.Windows.Forms.Button();
+            this.groupBoxPreCapture = new System.Windows.Forms.GroupBox();
+            this.radFile = new System.Windows.Forms.RadioButton();
+            this.radCamera = new System.Windows.Forms.RadioButton();
+            this.labelCameraIndex = new System.Windows.Forms.Label();
+            this.spinEditCameraIndex = new System.Windows.Forms.NumericUpDown();
+            this.chkOpenCL = new System.Windows.Forms.CheckBox();
             this.btnStartStop = new System.Windows.Forms.Button();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageCameraCapture = new System.Windows.Forms.TabPage();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripLabelSettings = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripLabelFrames = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripLabelStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabPageFaceDetection = new System.Windows.Forms.TabPage();
             this.tabPageHaarCascade = new System.Windows.Forms.TabPage();
             this.tabPageColourDetect = new System.Windows.Forms.TabPage();
-            this.chkOpenCL = new System.Windows.Forms.CheckBox();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.panelTop.SuspendLayout();
+            this.groupBoxRealTime.SuspendLayout();
+            this.groupBoxPreCapture.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spinEditCameraIndex)).BeginInit();
             this.tabControlMain.SuspendLayout();
             this.tabPageCameraCapture.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -50,62 +60,118 @@
             // 
             // panelTop
             // 
-            this.panelTop.Controls.Add(this.chkOpenCL);
-            this.panelTop.Controls.Add(this.labelFrameRate);
-            this.panelTop.Controls.Add(this.labelStatus);
-            this.panelTop.Controls.Add(this.btnFlipHorizontal);
-            this.panelTop.Controls.Add(this.btnFlipVertical);
-            this.panelTop.Controls.Add(this.btnStartStop);
+            this.panelTop.Controls.Add(this.groupBoxRealTime);
+            this.panelTop.Controls.Add(this.groupBoxPreCapture);
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(0, 0);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(873, 63);
+            this.panelTop.Size = new System.Drawing.Size(1192, 63);
             this.panelTop.TabIndex = 1;
             // 
-            // labelFrameRate
+            // groupBoxRealTime
             // 
-            this.labelFrameRate.AutoSize = true;
-            this.labelFrameRate.Location = new System.Drawing.Point(392, 9);
-            this.labelFrameRate.Name = "labelFrameRate";
-            this.labelFrameRate.Size = new System.Drawing.Size(62, 13);
-            this.labelFrameRate.TabIndex = 7;
-            this.labelFrameRate.Text = "Frame Rate";
-            // 
-            // labelStatus
-            // 
-            this.labelStatus.AutoSize = true;
-            this.labelStatus.Location = new System.Drawing.Point(392, 31);
-            this.labelStatus.Name = "labelStatus";
-            this.labelStatus.Size = new System.Drawing.Size(37, 13);
-            this.labelStatus.TabIndex = 6;
-            this.labelStatus.Text = "Status";
-            // 
-            // btnFlipHorizontal
-            // 
-            this.btnFlipHorizontal.Location = new System.Drawing.Point(131, 12);
-            this.btnFlipHorizontal.Name = "btnFlipHorizontal";
-            this.btnFlipHorizontal.Size = new System.Drawing.Size(118, 23);
-            this.btnFlipHorizontal.TabIndex = 5;
-            this.btnFlipHorizontal.Text = "Flip Horizontal";
-            this.btnFlipHorizontal.UseVisualStyleBackColor = true;
-            this.btnFlipHorizontal.Click += new System.EventHandler(this.btnFlipHorizontal_Click);
+            this.groupBoxRealTime.Controls.Add(this.btnFlipVertical);
+            this.groupBoxRealTime.Controls.Add(this.btnFlipHorizontal);
+            this.groupBoxRealTime.Dock = System.Windows.Forms.DockStyle.Left;
+            this.groupBoxRealTime.Location = new System.Drawing.Point(685, 0);
+            this.groupBoxRealTime.Name = "groupBoxRealTime";
+            this.groupBoxRealTime.Size = new System.Drawing.Size(442, 63);
+            this.groupBoxRealTime.TabIndex = 12;
+            this.groupBoxRealTime.TabStop = false;
+            this.groupBoxRealTime.Text = "Mid Capture";
             // 
             // btnFlipVertical
             // 
-            this.btnFlipVertical.Location = new System.Drawing.Point(255, 12);
+            this.btnFlipVertical.Location = new System.Drawing.Point(130, 19);
             this.btnFlipVertical.Name = "btnFlipVertical";
             this.btnFlipVertical.Size = new System.Drawing.Size(118, 23);
-            this.btnFlipVertical.TabIndex = 4;
+            this.btnFlipVertical.TabIndex = 7;
             this.btnFlipVertical.Text = "Flip Vertical";
             this.btnFlipVertical.UseVisualStyleBackColor = true;
             this.btnFlipVertical.Click += new System.EventHandler(this.btnFlipVertical_Click);
             // 
+            // btnFlipHorizontal
+            // 
+            this.btnFlipHorizontal.Location = new System.Drawing.Point(6, 19);
+            this.btnFlipHorizontal.Name = "btnFlipHorizontal";
+            this.btnFlipHorizontal.Size = new System.Drawing.Size(118, 23);
+            this.btnFlipHorizontal.TabIndex = 6;
+            this.btnFlipHorizontal.Text = "Flip Horizontal";
+            this.btnFlipHorizontal.UseVisualStyleBackColor = true;
+            this.btnFlipHorizontal.Click += new System.EventHandler(this.btnFlipHorizontal_Click);
+            // 
+            // groupBoxPreCapture
+            // 
+            this.groupBoxPreCapture.Controls.Add(this.radFile);
+            this.groupBoxPreCapture.Controls.Add(this.radCamera);
+            this.groupBoxPreCapture.Controls.Add(this.labelCameraIndex);
+            this.groupBoxPreCapture.Controls.Add(this.spinEditCameraIndex);
+            this.groupBoxPreCapture.Controls.Add(this.chkOpenCL);
+            this.groupBoxPreCapture.Controls.Add(this.btnStartStop);
+            this.groupBoxPreCapture.Dock = System.Windows.Forms.DockStyle.Left;
+            this.groupBoxPreCapture.Location = new System.Drawing.Point(0, 0);
+            this.groupBoxPreCapture.Name = "groupBoxPreCapture";
+            this.groupBoxPreCapture.Size = new System.Drawing.Size(685, 63);
+            this.groupBoxPreCapture.TabIndex = 11;
+            this.groupBoxPreCapture.TabStop = false;
+            this.groupBoxPreCapture.Text = "Setup";
+            // 
+            // radFile
+            // 
+            this.radFile.AutoSize = true;
+            this.radFile.Location = new System.Drawing.Point(3, 40);
+            this.radFile.Name = "radFile";
+            this.radFile.Size = new System.Drawing.Size(41, 17);
+            this.radFile.TabIndex = 15;
+            this.radFile.TabStop = true;
+            this.radFile.Text = "File";
+            this.radFile.UseVisualStyleBackColor = true;
+            this.radFile.CheckedChanged += new System.EventHandler(this.radFile_CheckedChanged);
+            // 
+            // radCamera
+            // 
+            this.radCamera.AutoSize = true;
+            this.radCamera.Location = new System.Drawing.Point(3, 19);
+            this.radCamera.Name = "radCamera";
+            this.radCamera.Size = new System.Drawing.Size(61, 17);
+            this.radCamera.TabIndex = 14;
+            this.radCamera.TabStop = true;
+            this.radCamera.Text = "Camera";
+            this.radCamera.UseVisualStyleBackColor = true;
+            // 
+            // labelCameraIndex
+            // 
+            this.labelCameraIndex.AutoSize = true;
+            this.labelCameraIndex.Location = new System.Drawing.Point(299, 22);
+            this.labelCameraIndex.Name = "labelCameraIndex";
+            this.labelCameraIndex.Size = new System.Drawing.Size(72, 13);
+            this.labelCameraIndex.TabIndex = 12;
+            this.labelCameraIndex.Text = "Camera Index";
+            // 
+            // spinEditCameraIndex
+            // 
+            this.spinEditCameraIndex.Location = new System.Drawing.Point(377, 19);
+            this.spinEditCameraIndex.Name = "spinEditCameraIndex";
+            this.spinEditCameraIndex.Size = new System.Drawing.Size(30, 20);
+            this.spinEditCameraIndex.TabIndex = 11;
+            // 
+            // chkOpenCL
+            // 
+            this.chkOpenCL.AutoSize = true;
+            this.chkOpenCL.Location = new System.Drawing.Point(467, 43);
+            this.chkOpenCL.Name = "chkOpenCL";
+            this.chkOpenCL.Size = new System.Drawing.Size(87, 17);
+            this.chkOpenCL.TabIndex = 9;
+            this.chkOpenCL.Text = "Use OpenCL";
+            this.chkOpenCL.UseVisualStyleBackColor = true;
+            this.chkOpenCL.CheckedChanged += new System.EventHandler(this.chkOpenCL_CheckedChanged);
+            // 
             // btnStartStop
             // 
-            this.btnStartStop.Location = new System.Drawing.Point(7, 12);
+            this.btnStartStop.Location = new System.Drawing.Point(467, 18);
             this.btnStartStop.Name = "btnStartStop";
             this.btnStartStop.Size = new System.Drawing.Size(118, 23);
-            this.btnStartStop.TabIndex = 3;
+            this.btnStartStop.TabIndex = 4;
             this.btnStartStop.Text = "Start Capture";
             this.btnStartStop.UseVisualStyleBackColor = true;
             this.btnStartStop.Click += new System.EventHandler(this.btnStartStop_Click);
@@ -120,7 +186,7 @@
             this.tabControlMain.Location = new System.Drawing.Point(0, 63);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
-            this.tabControlMain.Size = new System.Drawing.Size(873, 477);
+            this.tabControlMain.Size = new System.Drawing.Size(1192, 477);
             this.tabControlMain.TabIndex = 2;
             // 
             // tabPageCameraCapture
@@ -129,7 +195,7 @@
             this.tabPageCameraCapture.Location = new System.Drawing.Point(4, 22);
             this.tabPageCameraCapture.Name = "tabPageCameraCapture";
             this.tabPageCameraCapture.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageCameraCapture.Size = new System.Drawing.Size(865, 451);
+            this.tabPageCameraCapture.Size = new System.Drawing.Size(1184, 451);
             this.tabPageCameraCapture.TabIndex = 0;
             this.tabPageCameraCapture.Text = "Camera Capture";
             this.tabPageCameraCapture.UseVisualStyleBackColor = true;
@@ -138,23 +204,38 @@
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripLabelSettings});
+            this.toolStripLabelSettings,
+            this.toolStripLabelFrames,
+            this.toolStripLabelStatus});
             this.statusStrip1.Location = new System.Drawing.Point(3, 426);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(859, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1178, 22);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // toolStripLabelSettings
             // 
             this.toolStripLabelSettings.Name = "toolStripLabelSettings";
-            this.toolStripLabelSettings.Size = new System.Drawing.Size(0, 17);
+            this.toolStripLabelSettings.Size = new System.Drawing.Size(56, 17);
+            this.toolStripLabelSettings.Text = "(settings)";
+            // 
+            // toolStripLabelFrames
+            // 
+            this.toolStripLabelFrames.Name = "toolStripLabelFrames";
+            this.toolStripLabelFrames.Size = new System.Drawing.Size(51, 17);
+            this.toolStripLabelFrames.Text = "(frames)";
+            // 
+            // toolStripLabelStatus
+            // 
+            this.toolStripLabelStatus.Name = "toolStripLabelStatus";
+            this.toolStripLabelStatus.Size = new System.Drawing.Size(46, 17);
+            this.toolStripLabelStatus.Text = "(status)";
             // 
             // tabPageFaceDetection
             // 
             this.tabPageFaceDetection.Location = new System.Drawing.Point(4, 22);
             this.tabPageFaceDetection.Name = "tabPageFaceDetection";
-            this.tabPageFaceDetection.Size = new System.Drawing.Size(865, 467);
+            this.tabPageFaceDetection.Size = new System.Drawing.Size(1184, 451);
             this.tabPageFaceDetection.TabIndex = 1;
             this.tabPageFaceDetection.Text = "Face Detection";
             this.tabPageFaceDetection.UseVisualStyleBackColor = true;
@@ -163,7 +244,7 @@
             // 
             this.tabPageHaarCascade.Location = new System.Drawing.Point(4, 22);
             this.tabPageHaarCascade.Name = "tabPageHaarCascade";
-            this.tabPageHaarCascade.Size = new System.Drawing.Size(865, 467);
+            this.tabPageHaarCascade.Size = new System.Drawing.Size(1184, 451);
             this.tabPageHaarCascade.TabIndex = 3;
             this.tabPageHaarCascade.Text = "Haar Cascade Detection";
             this.tabPageHaarCascade.UseVisualStyleBackColor = true;
@@ -172,34 +253,30 @@
             // 
             this.tabPageColourDetect.Location = new System.Drawing.Point(4, 22);
             this.tabPageColourDetect.Name = "tabPageColourDetect";
-            this.tabPageColourDetect.Size = new System.Drawing.Size(865, 467);
+            this.tabPageColourDetect.Size = new System.Drawing.Size(1184, 451);
             this.tabPageColourDetect.TabIndex = 2;
             this.tabPageColourDetect.Text = "Colour Detection";
             this.tabPageColourDetect.UseVisualStyleBackColor = true;
             // 
-            // chkOpenCL
+            // openFileDialog
             // 
-            this.chkOpenCL.AutoSize = true;
-            this.chkOpenCL.Location = new System.Drawing.Point(7, 40);
-            this.chkOpenCL.Name = "chkOpenCL";
-            this.chkOpenCL.Size = new System.Drawing.Size(87, 17);
-            this.chkOpenCL.TabIndex = 8;
-            this.chkOpenCL.Text = "Use OpenCL";
-            this.chkOpenCL.UseVisualStyleBackColor = true;
-            this.chkOpenCL.CheckedChanged += new System.EventHandler(this.chkOpenCL_CheckedChanged);
+            this.openFileDialog.FileName = "openFileDialog1";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(873, 540);
+            this.ClientSize = new System.Drawing.Size(1192, 540);
             this.Controls.Add(this.tabControlMain);
             this.Controls.Add(this.panelTop);
             this.Name = "MainForm";
             this.Text = "PiCamCV WinForms";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.panelTop.ResumeLayout(false);
-            this.panelTop.PerformLayout();
+            this.groupBoxRealTime.ResumeLayout(false);
+            this.groupBoxPreCapture.ResumeLayout(false);
+            this.groupBoxPreCapture.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spinEditCameraIndex)).EndInit();
             this.tabControlMain.ResumeLayout(false);
             this.tabPageCameraCapture.ResumeLayout(false);
             this.tabPageCameraCapture.PerformLayout();
@@ -215,16 +292,23 @@
         private System.Windows.Forms.TabControl tabControlMain;
         private System.Windows.Forms.TabPage tabPageCameraCapture;
         private System.Windows.Forms.TabPage tabPageFaceDetection;
-        private System.Windows.Forms.Button btnFlipHorizontal;
-        private System.Windows.Forms.Button btnFlipVertical;
-        private System.Windows.Forms.Button btnStartStop;
-        private System.Windows.Forms.Label labelStatus;
         private System.Windows.Forms.TabPage tabPageColourDetect;
         private System.Windows.Forms.TabPage tabPageHaarCascade;
-        private System.Windows.Forms.Label labelFrameRate;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripLabelSettings;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripLabelFrames;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripLabelStatus;
+        private System.Windows.Forms.GroupBox groupBoxRealTime;
+        private System.Windows.Forms.Button btnFlipVertical;
+        private System.Windows.Forms.Button btnFlipHorizontal;
+        private System.Windows.Forms.GroupBox groupBoxPreCapture;
+        private System.Windows.Forms.Label labelCameraIndex;
+        private System.Windows.Forms.NumericUpDown spinEditCameraIndex;
         private System.Windows.Forms.CheckBox chkOpenCL;
+        private System.Windows.Forms.Button btnStartStop;
+        private System.Windows.Forms.RadioButton radFile;
+        private System.Windows.Forms.RadioButton radCamera;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
 
     }
 }

@@ -20,9 +20,10 @@ namespace PiCamCV
         {
             if (File != null)
             {
-                return string.Format("Device={0}, Camera Index={1}", Device, CameraIndex);    
+                return string.Format("Video='{0}'", File.FullName);
             }
-            return string.Format("Video='{0}'", File.FullName);
+
+            return string.Format("Device={0}, Camera Index={1}", Device, CameraIndex);   
         }
     }
 

@@ -18,8 +18,7 @@ namespace PiCamCV
     /// <summary> 
     /// Capture images from either camera or video file. 
     /// </summary>
-    public class CapturePi :
-        UnmanagedObject, ICaptureGrab
+    public class CapturePi : UnmanagedObject, ICaptureGrab
     {
 
         protected static ILog Log = LogManager.GetCurrentClassLogger();

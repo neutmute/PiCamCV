@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -20,9 +21,12 @@ namespace WinForms
 {
     public partial class MainForm : Form
     {
+        private FileInfo _videoFileSource;
         private ICaptureGrab _capture;
         readonly List<KeyValuePair<TabPage, CameraConsumerUserControl>> _tabPageLinks;
         private readonly FpsTracker _fpsTracker;
+        private List<CameraConsumerUserControl> _consumers;
+
         public bool CameraCaptureInProgress { get; set; }
         public MainForm()
         {
@@ -37,21 +41,9 @@ namespace WinForms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            var request = new CaptureRequest {Device = CaptureDevice.Usb};
-
-            //var captureDevice = CaptureDevice.Pi;
-            if (Environment.OSVersion.Platform == PlatformID.Unix)
-            {
-                request.Device = CaptureDevice.Pi;
-            }
-
-            _capture = CaptureFactory.GetCapture(request);
-            //_capture = new CaptureFile(@"D:\Data\Documents\Pictures\2014\20140531_SwimmingLessons\MVI_8742.MOV");
-
-            SetupCameraConsumers(_capture);
-            SetupFramerateTracking(_capture);
-
-//            SetCaptureProperties(); //access violation with logitech
+            SetupCameraConsumers();
+            radCamera.Checked = true;
+            //SetupCapture();
         }
 
         private void SetCaptureProperties()
@@ -65,28 +57,17 @@ namespace WinForms
         private void SetupFramerateTracking(ICaptureGrab capture)
         {
             capture.ImageGrabbed += _fpsTracker.NotifyImageGrabbed;
-            _fpsTracker.ReportFrames = s => Invoke((MethodInvoker) delegate { labelFrameRate.Text = s; });
+            _fpsTracker.ReportFrames = s => InvokeUI(() => { toolStripLabelFrames.Text = s; });
         }
 
-        private void SetupCameraConsumers(ICaptureGrab capture)
+        protected void InvokeUI(Action action)
         {
-            var basicCapture = new BasicCaptureControl();
-            var faceDetection = new FaceDetectionControl();
-            var colourDetection = new ColourDetectionControl();
-            var haarDetection = new HaarCascadeControl();
+            Invoke((MethodInvoker)(() => action()));
+        }
 
-            var consumers = new List<CameraConsumerUserControl>();
-            consumers.Add(basicCapture);
-            consumers.Add(faceDetection);
-            consumers.Add(colourDetection);
-            consumers.Add(haarDetection);
-
-            _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageCameraCapture, basicCapture));
-            _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageFaceDetection, faceDetection));
-            _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageColourDetect, colourDetection));
-            _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageHaarCascade, haarDetection));
-
-            foreach (var consumer in consumers)
+        private void AssignCaptureToConsumers(ICaptureGrab capture)
+        {
+            foreach (var consumer in _consumers)
             {
                 consumer.CameraCapture = capture;
                 var tabPage = _tabPageLinks.Find(kvp => kvp.Value == consumer).Key;
@@ -94,17 +75,33 @@ namespace WinForms
                 consumer.Dock = DockStyle.Fill;
                 consumer.StatusUpdated += consumer_StatusUpdated;
             }
+        }
+
+        private void SetupCameraConsumers()
+        {
+            var basicCapture = new BasicCaptureControl();
+            var faceDetection = new FaceDetectionControl();
+            var colourDetection = new ColourDetectionControl();
+            var haarDetection = new HaarCascadeControl();
+
+            _consumers = new List<CameraConsumerUserControl>();
+            _consumers.Add(basicCapture);
+            _consumers.Add(faceDetection);
+            _consumers.Add(colourDetection);
+            _consumers.Add(haarDetection);
+
+            _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageCameraCapture, basicCapture));
+            _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageFaceDetection, faceDetection));
+            _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageColourDetect, colourDetection));
+            _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageHaarCascade, haarDetection));
+
 
             tabControlMain.SelectedIndexChanged += tabControlMain_SelectedIndexChanged;
-            tabControlMain_SelectedIndexChanged(null, null);
         }
 
         void consumer_StatusUpdated(object sender, StatusEventArgs e)
         {
-            labelStatus.Invoke((MethodInvoker)delegate
-            {
-                labelStatus.Text = e.Message;
-            });
+            InvokeUI(() => { toolStripLabelStatus.Text = e.Message; });
         }
 
         void tabControlMain_SelectedIndexChanged(object sender, EventArgs e)
@@ -131,16 +128,26 @@ namespace WinForms
 
         private void btnStartStop_Click(object sender, EventArgs e)
         {
+            var captureJustCreated = false;
+            if (_capture == null)
+            {
+                SetupCapture();
+                captureJustCreated = true;
+            }
             if (_capture != null)
             {
                 if (CameraCaptureInProgress)
-                {  //stop the capture
+                {  
+                    //stop the capture
                     btnStartStop.Text = "Start Capture";
                     _capture.Pause();
                 }
                 else
                 {
-                    //start the capture
+                    if (!captureJustCreated)
+                    {
+                        SetupCapture();
+                    }
                     btnStartStop.Text = "Stop";
                     _capture.Start();
                     toolStripLabelSettings.Text = _capture.GetCaptureProperties().ToString();
@@ -154,5 +161,61 @@ namespace WinForms
         {
             CvInvoke.UseOpenCL = chkOpenCL.Checked;
         }
+
+        private void SetupCapture()
+        {
+            if (_capture != null)
+            {
+                _capture.Dispose();
+            }
+
+            var request = new CaptureRequest
+            {
+                Device = CaptureDevice.Usb
+                ,CameraIndex = (int) spinEditCameraIndex.Value
+            };
+
+            if (radFile.Checked)
+            {
+                request.File = _videoFileSource;
+            }
+
+            //var captureDevice = CaptureDevice.Pi;
+            if (Environment.OSVersion.Platform == PlatformID.Unix)
+            {
+                request.Device = CaptureDevice.Pi;
+            }
+
+            _capture = CaptureFactory.GetCapture(request);
+            //_capture = new CaptureFile(@"D:\Data\Documents\Pictures\2014\20140531_SwimmingLessons\MVI_8742.MOV");
+
+            AssignCaptureToConsumers(_capture);
+            SetupFramerateTracking(_capture);
+
+            //            SetCaptureProperties(); //access violation with logitech
+
+
+            tabControlMain_SelectedIndexChanged(null, null);
+        }
+
+        /// <summary>
+        /// mono text boxes broken hence unsual UI
+        /// </summary>
+        private void radFile_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radFile.Checked)
+            {
+                var result = openFileDialog.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    _videoFileSource = new FileInfo(openFileDialog.FileName);
+                }
+                else
+                {
+                    radCamera.Checked = true;
+                }
+            }
+        }
+
     }
 }
