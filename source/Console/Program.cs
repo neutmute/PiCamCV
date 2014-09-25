@@ -33,12 +33,12 @@ namespace PiCamCV.ConsoleApp
             ICaptureGrab capture = null;
             if (options.Mode != Mode.simple)
             {
-                var captureDevice = CaptureDevice.Usb;
+                var request = new CaptureRequest { Device = CaptureDevice.Usb };
                 if (Environment.OSVersion.Platform == PlatformID.Unix)
                 {
-                    captureDevice = CaptureDevice.Pi;
+                    request.Device = CaptureDevice.Pi;
                 }
-                capture = CaptureFactory.GetCapture(captureDevice);
+                capture = CaptureFactory.GetCapture(request);
                 var captureProperties = capture.GetCaptureProperties();
                 Log.Info(m => m("Capture properties: {0}", captureProperties));
 

@@ -1,13 +1,19 @@
 ﻿using System;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
+using Emgu.Util;
 using PiCamCV.Interfaces;
 
 namespace PiCamCV
 {
     public class CaptureUsb : CaptureEmgu
     {
-        public CaptureUsb() : base(new Capture())
+        public CaptureUsb() : this(0)
+        {
+        }
+
+        public CaptureUsb(int index)
+            : base(new Capture(index))
         {
         }
     }
@@ -22,7 +28,7 @@ namespace PiCamCV
     /// <summary>
     /// Provides a facade around Emgu capture so we can present the same interface for CapturePi
     /// </summary>
-    public abstract class CaptureEmgu : ICaptureGrab
+    public abstract class CaptureEmgu : DisposableObject, ICaptureGrab
     {
         private readonly Capture _capture;
 
@@ -89,5 +95,10 @@ namespace PiCamCV
         {
             return _capture.SetCaptureProperty(property, value);
         }
+
+        protected override void DisposeObject()
+        {
+            _capture.Dispose();
+        } 
     }
 }

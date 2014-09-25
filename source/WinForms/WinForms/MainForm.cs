@@ -37,14 +37,15 @@ namespace WinForms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            var captureDevice = CaptureDevice.Usb;
+            var request = new CaptureRequest {Device = CaptureDevice.Usb};
 
             //var captureDevice = CaptureDevice.Pi;
             if (Environment.OSVersion.Platform == PlatformID.Unix)
             {
-                captureDevice = CaptureDevice.Pi;
+                request.Device = CaptureDevice.Pi;
             }
-            _capture = CaptureFactory.GetCapture(captureDevice);
+
+            _capture = CaptureFactory.GetCapture(request);
             //_capture = new CaptureFile(@"D:\Data\Documents\Pictures\2014\20140531_SwimmingLessons\MVI_8742.MOV");
 
             SetupCameraConsumers(_capture);

@@ -20,7 +20,7 @@ namespace PiCamCV.Interfaces
             return string.Format("Width={0}, Height={1}, IsMonochrome={2}, Fps={3}", FrameWidth, FrameHeight, IsMonochrome, Fps);
         }
     }
-    public interface ICaptureGrab : ICapture
+    public interface ICaptureGrab : ICapture, IDisposable
     {
         event EventHandler ImageGrabbed;
 
