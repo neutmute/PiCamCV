@@ -18,55 +18,14 @@ using PiCamCV.WinForms.ExtensionMethods;
 
 namespace PiCamCV.WinForms.UserControls
 {
-    public class AccessoryOverlay
-    {
-        private Rectangle _calculatedRectangle;
-        public Image<Bgra, byte> Overlay { get; private set; }
-        public FileInfo File { get; set; }
-
-        public Rectangle CalculatedRectangle
-        {
-            get { return _calculatedRectangle; }
-            set
-            {
-                _calculatedRectangle = value;
-                if (value != Rectangle.Empty)
-                {
-                    LastGoodRectangle = value;
-                }
-            }
-        }
-
-        public Rectangle LastGoodRectangle { get; set; }
-
-        public Rectangle FinalRectangle
-        {
-            get
-            {
-                if (CalculatedRectangle == Rectangle.Empty)
-                {
-                    return LastGoodRectangle;
-                }
-                return CalculatedRectangle;
-            }
-            
-        }
-
-        public bool IsWearable { get; set; }
-
-        public AccessoryOverlay(string filename)
-        {
-            Overlay = new Image<Bgra, byte>(filename);
-        }
-    }
-
     public partial class FaceDetectionControl : CameraConsumerUserControl
     {
         private FileInfo haarEyeFile;
         private FileInfo haarFaceFile;
         private FaceDetector _faceDetector;
         private Rectangle _lastGoodSunnies;
-        private AccessoryOverlay _sunnies2;
+        private AccessoryOverlay _sunglassOverlay2;
+        private AccessoryOverlay _hatOverlay1;
         
         public FaceDetectionControl()
         {
@@ -82,7 +41,8 @@ namespace PiCamCV.WinForms.UserControls
             _faceDetector = new FaceDetector(haarFaceFile.FullName, haarEyeFile.FullName);
             _lastGoodSunnies = Rectangle.Empty;
 
-            _sunnies2 = new AccessoryOverlay(@"D:\Downloads\sunnies\sunglasses2.png");
+            _sunglassOverlay2 = new AccessoryOverlay(@"D:\Downloads\sunnies\sunglasses2.png");
+            _hatOverlay1 = new AccessoryOverlay(@"D:\Downloads\sunnies\partyhat.png");
         }
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
@@ -97,7 +57,7 @@ namespace PiCamCV.WinForms.UserControls
 
                 var result = _faceDetector.Process(input);
                 var imageBgr = result.CapturedImage;
-                IImage imageOut = imageBgr;
+              //  IImage imageOut = imageBgr;
 
                 if (chkRectangles.Checked)
                 {
@@ -115,30 +75,55 @@ namespace PiCamCV.WinForms.UserControls
                     }
                 }
 
-                if (chkSunnies.Checked && result.Faces.Count > 0)
-                {
+                var inputBgra = imageBgr.Mat.ToImage<Bgra, byte>();
+                Image<Bgra, byte> output = inputBgra;
 
-                    imageOut = WearSunnies2(imageBgr, result.Faces[0].Eyes);
-                   // var imageOut2 = WearSunnies2(imageBgr, result.Faces[0].Eyes);
+                if (result.Faces.Any())
+                {
+                    if (chkSunnies.Checked)
+                    {
+                        output = WearSunnies2(output, result.Faces[0].Eyes);
+                    }
+
+                    if (chkHat.Checked)
+                    {
+                        output = WearHat(output, result.Faces[0]);
+                    }
                 }
-                
-                imageBox.Image = imageOut;
+
+
+                imageBox.Image = output;
 
                 NotifyStatus("Face detection took {0}", result.Elapsed.ToHumanReadable());
             }
         }
 
-
-        public Image<Bgra, byte> WearSunnies2(Image<Bgr, byte> inputBgr, List<Rectangle> eyes)
+        public Image<Bgra, byte> WearHat(Image<Bgra, byte> inputBgr, Face face)
         {
-            _sunnies2.CalculatedRectangle = GetSunglassRectangle(eyes);
-            return WearObject(inputBgr, _sunnies2);
+            _hatOverlay1.CalculatedRectangle = GetHatRectangle(face);
+            return WearObject(inputBgr, _hatOverlay1);
         }
 
-        public Image<Bgra, byte> WearObject(Image<Bgr, byte> inputBgr, AccessoryOverlay accessory)
+        private Rectangle GetHatRectangle(Face face)
+        {
+            var height = face.Region.Height * 3/4;
+            var top = face.Region.Top - height;
+
+            var width = face.Region.Width * 5 / 6;
+            var left = (width/3) + face.Region.X;
+            var hatRectangle = new Rectangle(left, top, width, height);
+            return hatRectangle;
+        }
+
+        public Image<Bgra, byte> WearSunnies2(Image<Bgra, byte> inputBgr, List<Rectangle> eyes)
+        {
+            _sunglassOverlay2.CalculatedRectangle = GetSunglassRectangle(eyes);
+            return WearObject(inputBgr, _sunglassOverlay2);
+        }
+
+        public Image<Bgra, byte> WearObject(Image<Bgra, byte> inputBgra, AccessoryOverlay accessory)
         {
 
-            var inputBgra = inputBgr.Mat.ToImage<Bgra, byte>();
             var bgraBlack = new Bgra(0, 0, 0, 0);
 
             if (accessory.FinalRectangle == Rectangle.Empty)
@@ -149,7 +134,7 @@ namespace PiCamCV.WinForms.UserControls
             var overlayRect = accessory.FinalRectangle;
             var resizeOverlayBgra = accessory.Overlay.Resize(overlayRect.Width, overlayRect.Height, Inter.Linear);
 
-            var overlayTargetBgra = new Image<Bgra, byte>(inputBgr.Width, inputBgr.Height, bgraBlack);
+            var overlayTargetBgra = new Image<Bgra, byte>(inputBgra.Width, inputBgra.Height, bgraBlack);
             overlayTargetBgra.ROI = overlayRect;
             resizeOverlayBgra.CopyTo(overlayTargetBgra);
             overlayTargetBgra.ROI = Rectangle.Empty;
@@ -157,7 +142,7 @@ namespace PiCamCV.WinForms.UserControls
             const bool useMask = true;
             if (useMask)
             {
-                var overlayMask = new Image<Gray, Byte>(inputBgr.Width, inputBgr.Height);
+                var overlayMask = new Image<Gray, Byte>(inputBgra.Width, inputBgra.Height);
                 CvInvoke.CvtColor(overlayTargetBgra, overlayMask, ColorConversion.Bgr2Gray);
                 overlayMask = overlayMask.ThresholdBinary(new Gray(1), new Gray(1));
                 inputBgra.SetValue(bgraBlack, overlayMask);
@@ -170,65 +155,7 @@ namespace PiCamCV.WinForms.UserControls
 
             return outputBgra;
         }
-
-        //public Image<Bgra, byte> WearSunnies(Image<Bgr,byte> inputBgr, List<Rectangle> eyes)
-        //{
-        //    var inputBgra = inputBgr.Mat.ToImage<Bgra, byte>();
-        //    var bgraBlack = new Bgra(0, 0, 0, 0);
-        //  //  if (eyes.Count == 2)
-        //    {
-        //        var sunnyFile = @"D:\Downloads\sunnies\sunglasses2.png";
-             
-        //        var overlayBgra = new Image<Bgra, byte>(sunnyFile);// overlayMat.ToImage<Bgra, byte>();
-
-        //        Rectangle sunglassRect;
-        //        if (eyes.Count == 2)
-        //        {
-        //            sunglassRect = GetSunglassRectangle(eyes);
-        //        }
-        //        else if (_lastGoodSunnies!= Rectangle.Empty)
-        //        {
-        //            sunglassRect = _lastGoodSunnies;
-        //        }
-        //        else
-        //        {
-        //            return inputBgra;
-        //        }
-
-        //        Log.Info(m => m("Painting sunnies {0}", sunglassRect));
-        //        var resizeOverlayBgra = overlayBgra.Resize(sunglassRect.Width, sunglassRect.Height, Inter.Linear);
-
-        //        var overlayTargetBgra = new Image<Bgra, byte>(inputBgr.Width, inputBgr.Height, bgraBlack);
-        //        overlayTargetBgra.ROI = sunglassRect;
-        //        resizeOverlayBgra.CopyTo(overlayTargetBgra);
-        //        overlayTargetBgra.ROI = Rectangle.Empty;
-
-        //        const bool useMask = true;
-        //        if (useMask)
-        //        {
-        //            var overlayMask = new Image<Gray, Byte>(inputBgr.Width, inputBgr.Height);
-        //            CvInvoke.CvtColor(overlayTargetBgra, overlayMask, ColorConversion.Bgr2Gray);
-        //            overlayMask = overlayMask.ThresholdBinary(new Gray(1), new Gray(1));
-        //            //inputBgra.ROI = sunglassRect;
-        //            inputBgra.SetValue(bgraBlack, overlayMask);
-        //        }
-        //        else
-        //        {
-                    
-        //        }
-
-        //        var outputBgra = inputBgra.AddWeighted(overlayTargetBgra, 1, 1, 1);
-                
-        //        inputBgra.ROI = Rectangle.Empty;
-        //        outputBgra.ROI = Rectangle.Empty;
-
-        //        return outputBgra;
-        //    }
-        //    return inputBgra;
-
-           
-        //}
-
+        
         private Rectangle GetSunglassRectangle(List<Rectangle> eyes)
         {
             if (eyes.Count == 2)
@@ -260,6 +187,7 @@ namespace PiCamCV.WinForms.UserControls
                 return Rectangle.Empty;
             }
         }
+
         
     }
 }

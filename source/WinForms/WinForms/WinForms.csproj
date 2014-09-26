@@ -74,6 +74,7 @@
     <Compile Include="..\..\..\Solution Items\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="CameraConsumers\AccessoryOverlay.cs" />
     <Compile Include="CameraConsumers\ColourDetectionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
