@@ -14,14 +14,59 @@ using Emgu.CV.Structure;
 using Emgu.CV.UI;
 using Kraken.Core;
 using PiCamCV.Common;
+using PiCamCV.WinForms.ExtensionMethods;
 
 namespace PiCamCV.WinForms.UserControls
 {
+    public class AccessoryOverlay
+    {
+        private Rectangle _calculatedRectangle;
+        public Image<Bgra, byte> Overlay { get; private set; }
+        public FileInfo File { get; set; }
+
+        public Rectangle CalculatedRectangle
+        {
+            get { return _calculatedRectangle; }
+            set
+            {
+                _calculatedRectangle = value;
+                if (value != Rectangle.Empty)
+                {
+                    LastGoodRectangle = value;
+                }
+            }
+        }
+
+        public Rectangle LastGoodRectangle { get; set; }
+
+        public Rectangle FinalRectangle
+        {
+            get
+            {
+                if (CalculatedRectangle == Rectangle.Empty)
+                {
+                    return LastGoodRectangle;
+                }
+                return CalculatedRectangle;
+            }
+            
+        }
+
+        public bool IsWearable { get; set; }
+
+        public AccessoryOverlay(string filename)
+        {
+            Overlay = new Image<Bgra, byte>(filename);
+        }
+    }
+
     public partial class FaceDetectionControl : CameraConsumerUserControl
     {
         private FileInfo haarEyeFile;
         private FileInfo haarFaceFile;
         private FaceDetector _faceDetector;
+        private Rectangle _lastGoodSunnies;
+        private AccessoryOverlay _sunnies2;
         
         public FaceDetectionControl()
         {
@@ -35,6 +80,9 @@ namespace PiCamCV.WinForms.UserControls
             haarFaceFile = new FileInfo(Path.Combine(haarCascadePath, "haarcascade_frontalface_default.xml"));
 
             _faceDetector = new FaceDetector(haarFaceFile.FullName, haarEyeFile.FullName);
+            _lastGoodSunnies = Rectangle.Empty;
+
+            _sunnies2 = new AccessoryOverlay(@"D:\Downloads\sunnies\sunglasses2.png");
         }
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
@@ -42,7 +90,7 @@ namespace PiCamCV.WinForms.UserControls
             using (var frame = new Mat())
             {
                 CameraCapture.Retrieve(frame);
-
+                
                 var input = new FaceDetectorInput();
                 input.Captured = frame;
                 input.DetectEyes = chkDetectEyes.Checked;
@@ -69,7 +117,9 @@ namespace PiCamCV.WinForms.UserControls
 
                 if (chkSunnies.Checked && result.Faces.Count > 0)
                 {
-                    imageOut = WearSunnies(imageBgr, result.Faces[0].Eyes);
+
+                    imageOut = WearSunnies2(imageBgr, result.Faces[0].Eyes);
+                   // var imageOut2 = WearSunnies2(imageBgr, result.Faces[0].Eyes);
                 }
                 
                 imageBox.Image = imageOut;
@@ -78,146 +128,137 @@ namespace PiCamCV.WinForms.UserControls
             }
         }
 
-        public Image<Bgra, byte> Overlay3(Image<Bgra, byte> background, Image<Bgra, byte> foreground)
+
+        public Image<Bgra, byte> WearSunnies2(Image<Bgr, byte> inputBgr, List<Rectangle> eyes)
         {
-           // var overlayMask = new Image<Gray, Byte>(overlay.Width, overlay.Height);
-          
-            return background.AddWeighted(foreground, 0.5, 0.5, 0.5);
+            _sunnies2.CalculatedRectangle = GetSunglassRectangle(eyes);
+            return WearObject(inputBgr, _sunnies2);
         }
 
-        //public Image<Bgra, byte> WearSunniesMaskMethod(Image<Bgr, byte> inputBgr, List<Rectangle> eyes)
+        public Image<Bgra, byte> WearObject(Image<Bgr, byte> inputBgr, AccessoryOverlay accessory)
+        {
+
+            var inputBgra = inputBgr.Mat.ToImage<Bgra, byte>();
+            var bgraBlack = new Bgra(0, 0, 0, 0);
+
+            if (accessory.FinalRectangle == Rectangle.Empty)
+            {
+                return inputBgra;
+            }
+
+            var overlayRect = accessory.FinalRectangle;
+            var resizeOverlayBgra = accessory.Overlay.Resize(overlayRect.Width, overlayRect.Height, Inter.Linear);
+
+            var overlayTargetBgra = new Image<Bgra, byte>(inputBgr.Width, inputBgr.Height, bgraBlack);
+            overlayTargetBgra.ROI = overlayRect;
+            resizeOverlayBgra.CopyTo(overlayTargetBgra);
+            overlayTargetBgra.ROI = Rectangle.Empty;
+
+            const bool useMask = true;
+            if (useMask)
+            {
+                var overlayMask = new Image<Gray, Byte>(inputBgr.Width, inputBgr.Height);
+                CvInvoke.CvtColor(overlayTargetBgra, overlayMask, ColorConversion.Bgr2Gray);
+                overlayMask = overlayMask.ThresholdBinary(new Gray(1), new Gray(1));
+                inputBgra.SetValue(bgraBlack, overlayMask);
+            }
+
+            var outputBgra = inputBgra.AddWeighted(overlayTargetBgra, 1, 1, 1);
+
+            inputBgra.ROI = Rectangle.Empty;
+            outputBgra.ROI = Rectangle.Empty;
+
+            return outputBgra;
+        }
+
+        //public Image<Bgra, byte> WearSunnies(Image<Bgr,byte> inputBgr, List<Rectangle> eyes)
         //{
-        //    // detect which pixels in the overlay have something in them
-        //    // and make a binary mask out of it
-            
-        //        var sunnyFile = @"D:\Downloads\sunnies\sunglasses.png";
+        //    var inputBgra = inputBgr.Mat.ToImage<Bgra, byte>();
+        //    var bgraBlack = new Bgra(0, 0, 0, 0);
+        //  //  if (eyes.Count == 2)
+        //    {
+        //        var sunnyFile = @"D:\Downloads\sunnies\sunglasses2.png";
+             
         //        var overlayBgra = new Image<Bgra, byte>(sunnyFile);// overlayMat.ToImage<Bgra, byte>();
-        //     var overlayMask = new Image<Gray, Byte>(overlayBgra.Width, overlayBgra.Height);
-        //    CvInvoke.CvtColor(overlayBgra, overlayMask, ColorConversion.Bgr2Gray);
 
-        //    overlayMask = overlayMask.ThresholdBinaryInv(new Gray(1), new Gray(10));
+        //        Rectangle sunglassRect;
+        //        if (eyes.Count == 2)
+        //        {
+        //            sunglassRect = GetSunglassRectangle(eyes);
+        //        }
+        //        else if (_lastGoodSunnies!= Rectangle.Empty)
+        //        {
+        //            sunglassRect = _lastGoodSunnies;
+        //        }
+        //        else
+        //        {
+        //            return inputBgra;
+        //        }
 
-        //    // expand the mask from 1-channel to 3-channel
-        //    overlayMask.Mat.Reshape(2);
-        //    //overlayMask.Mat.CopyTo(overlay);
-        //    var overlayMaskBgr  = overlayMask.Mat.ToImage<Bgr, byte>();
+        //        Log.Info(m => m("Painting sunnies {0}", sunglassRect));
+        //        var resizeOverlayBgra = overlayBgra.Resize(sunglassRect.Width, sunglassRect.Height, Inter.Linear);
 
-        //    //inputBgr *= overlayMaskBgr;
+        //        var overlayTargetBgra = new Image<Bgra, byte>(inputBgr.Width, inputBgr.Height, bgraBlack);
+        //        overlayTargetBgra.ROI = sunglassRect;
+        //        resizeOverlayBgra.CopyTo(overlayTargetBgra);
+        //        overlayTargetBgra.ROI = Rectangle.Empty;
 
-        //    ////var resizedMask = overlayMask.Resize(background.Width, background.Height, Inter.Linear);
+        //        const bool useMask = true;
+        //        if (useMask)
+        //        {
+        //            var overlayMask = new Image<Gray, Byte>(inputBgr.Width, inputBgr.Height);
+        //            CvInvoke.CvtColor(overlayTargetBgra, overlayMask, ColorConversion.Bgr2Gray);
+        //            overlayMask = overlayMask.ThresholdBinary(new Gray(1), new Gray(1));
+        //            //inputBgra.ROI = sunglassRect;
+        //            inputBgra.SetValue(bgraBlack, overlayMask);
+        //        }
+        //        else
+        //        {
+                    
+        //        }
 
+        //        var outputBgra = inputBgra.AddWeighted(overlayTargetBgra, 1, 1, 1);
+                
+        //        inputBgra.ROI = Rectangle.Empty;
+        //        outputBgra.ROI = Rectangle.Empty;
 
-        //    ////var bgraOverlay = resizedMask.Mat.ToImage<Bgra, byte>();
-        //    ////var bgraBackground = background.ToImage<Bgra, byte>();
+        //        return outputBgra;
+        //    }
+        //    return inputBgra;
 
-
-            
-
-        //    // background = overlay.Log
-        //    // backgroundbackground.Cross(overlayMask);
-        //    //// # here's where the work gets done :
-
-        //    // # mask out the pixels that you want to overlay
-        //    // img *= overlayMask
-
-        //    // # put the overlay on
-        //    // img += overlay
-
-        //    // # Show the image.
-        //    // cv2.imshow(WINDOW_NAME, img)
+           
         //}
 
-        public Image<Bgra, byte> WearSunnies(Image<Bgr,byte> inputBgr, List<Rectangle> eyes)
+        private Rectangle GetSunglassRectangle(List<Rectangle> eyes)
         {
-            var inputBgra = inputBgr.Mat.ToImage<Bgra, byte>();
             if (eyes.Count == 2)
             {
-                var sunnyFile = @"D:\Downloads\sunnies\sunglasses.png";
-             
-                var overlayBgra = new Image<Bgra, byte>(sunnyFile);// overlayMat.ToImage<Bgra, byte>();
-             
                 eyes.Sort((e1, e2) => e1.Left.CompareTo(e2.Left));
                 var leftEye = eyes[0];
                 var rightEye = eyes[1];
 
-                var width = rightEye.X - leftEye.X + rightEye.Width;
-                var height = leftEye.Height;
+                var eyeWidth = (rightEye.X - leftEye.X) + rightEye.Width;
+                var eyeHeight = (int) (leftEye.Height*1.5);
 
-                var sunglassRect = new Rectangle(leftEye.X, leftEye.Y, width, height);
-                
-                var resizeOverlayBgra = overlayBgra.Resize(sunglassRect.Width, sunglassRect.Height, Inter.Linear);
+                var widthFactor = (int) (eyeWidth*0.25);
+                var heightFactor = (int) (eyeHeight*1.1);
 
-                var overlayTargetBgra = new Image<Bgra, byte>(inputBgr.Width, inputBgr.Height, new Bgra(0, 0, 0, 0));
-                overlayTargetBgra.ROI = sunglassRect;
-                resizeOverlayBgra.CopyTo(overlayTargetBgra);
-                overlayTargetBgra.ROI = Rectangle.Empty;
+                var width = eyeWidth + 2*widthFactor;
+                var height = eyeHeight + heightFactor;
 
-                var outputBgra = inputBgra.AddWeighted(overlayTargetBgra, 0.9, 1, -0.5);
-                inputBgra.ROI = Rectangle.Empty;
-                outputBgra.ROI = Rectangle.Empty;
+                var left = leftEye.X - widthFactor;
+                var minEyeHeight = Math.Min(leftEye.Y, rightEye.Y);
+                var maxEyeHeight = Math.Max(leftEye.Y, rightEye.Y);
+                var top = (int) (minEyeHeight - (maxEyeHeight*0.1));
 
-                return outputBgra;
+                var sunglassRect = new Rectangle(left, top, width, height);
+
+                return sunglassRect;
             }
-            return inputBgra;
-
-           
-        }
-
-        /// <summary>
-        /// http://jepsonsblog.blogspot.in/2012/10/overlay-transparent-image-in-opencv.html
-        /// </summary>
-        public void OverlayImage(Mat background, Mat foreground, Mat output, Point location)
-        {
-            background.CopyTo(output);
-            var fgImage = foreground.ToImage<Bgra, byte>();
-
-            // start at the row indicated by location, or at row 0 if location.y is negative.
-            for (int y = Math.Max(location.Y, 0); y < background.Rows; ++y)
+            else
             {
-                int fY = y - location.Y; // because of the translation
-
-                // we are done of we have processed all rows of the foreground image.
-                if (fY >= foreground.Rows)
-                    break;
-
-                // start at the column indicated by location, 
-
-                // or at column 0 if location.x is negative.
-                for (int x = Math.Max(location.X, 0); x < background.Cols; ++x)
-                {
-                    int fX = x - location.X; // because of the translation.
-
-                    // we are done with this row if the column is outside of the foreground image.
-                    if (fX >= foreground.Cols)
-                        break;
-
-                    // determine the opacity of the foregrond pixel, using its fourth (alpha) channel.
-                    var opacity =
-                        (double)fgImage.Data.GetValue(fY * foreground.Step + fX * foreground.NumberOfChannels + 3) / 255;
-
-
-                    // and now combine the background and foreground pixel, using the opacity, 
-
-                    // but only if opacity > 0.
-                    for (int c = 0; opacity > 0 && c < output.NumberOfChannels; ++c)
-                    {
-                        byte foregroundPx =
-                            (byte) foreground.Data.GetValue(fY*foreground.Step + fX*foreground.NumberOfChannels + c);
-                        byte backgroundPx =
-                            (byte) background.Data.GetValue(y*background.Step + x*background.NumberOfChannels + c);
-
-                        var outIndex = y*output.Step + output.NumberOfChannels*x + c;
-                        var outValue = backgroundPx*(1 - opacity) + foregroundPx*opacity;
-
-                        output.Data.SetValue(outValue, outIndex);
-                    }
-                }
+                return Rectangle.Empty;
             }
-}
-
-        private void chkRectangles_CheckedChanged(object sender, EventArgs e)
-        {
-
         }
         
     }

@@ -30,18 +30,18 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panelLeft = new System.Windows.Forms.Panel();
-            this.groupBoxCaptured = new System.Windows.Forms.GroupBox();
-            this.imageBox = new Emgu.CV.UI.ImageBox();
-            this.groupBoxSettings = new System.Windows.Forms.GroupBox();
             this.groupBoxOverlays = new System.Windows.Forms.GroupBox();
             this.chkSunnies = new System.Windows.Forms.CheckBox();
             this.chkRectangles = new System.Windows.Forms.CheckBox();
+            this.groupBoxSettings = new System.Windows.Forms.GroupBox();
             this.chkDetectEyes = new System.Windows.Forms.CheckBox();
+            this.groupBoxCaptured = new System.Windows.Forms.GroupBox();
+            this.imageBox = new Emgu.CV.UI.ImageBox();
             this.panelLeft.SuspendLayout();
+            this.groupBoxOverlays.SuspendLayout();
+            this.groupBoxSettings.SuspendLayout();
             this.groupBoxCaptured.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox)).BeginInit();
-            this.groupBoxSettings.SuspendLayout();
-            this.groupBoxOverlays.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelLeft
@@ -54,43 +54,12 @@
             this.panelLeft.Size = new System.Drawing.Size(138, 464);
             this.panelLeft.TabIndex = 6;
             // 
-            // groupBoxCaptured
-            // 
-            this.groupBoxCaptured.Controls.Add(this.imageBox);
-            this.groupBoxCaptured.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxCaptured.Location = new System.Drawing.Point(138, 0);
-            this.groupBoxCaptured.Name = "groupBoxCaptured";
-            this.groupBoxCaptured.Size = new System.Drawing.Size(459, 464);
-            this.groupBoxCaptured.TabIndex = 7;
-            this.groupBoxCaptured.TabStop = false;
-            this.groupBoxCaptured.Text = "Image";
-            // 
-            // imageBox
-            // 
-            this.imageBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.imageBox.Location = new System.Drawing.Point(3, 16);
-            this.imageBox.Name = "imageBox";
-            this.imageBox.Size = new System.Drawing.Size(453, 445);
-            this.imageBox.TabIndex = 6;
-            this.imageBox.TabStop = false;
-            // 
-            // groupBoxSettings
-            // 
-            this.groupBoxSettings.Controls.Add(this.chkDetectEyes);
-            this.groupBoxSettings.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBoxSettings.Location = new System.Drawing.Point(0, 0);
-            this.groupBoxSettings.Name = "groupBoxSettings";
-            this.groupBoxSettings.Size = new System.Drawing.Size(138, 63);
-            this.groupBoxSettings.TabIndex = 1;
-            this.groupBoxSettings.TabStop = false;
-            this.groupBoxSettings.Text = "Settings";
-            // 
             // groupBoxOverlays
             // 
             this.groupBoxOverlays.Controls.Add(this.chkSunnies);
             this.groupBoxOverlays.Controls.Add(this.chkRectangles);
             this.groupBoxOverlays.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBoxOverlays.Location = new System.Drawing.Point(0, 63);
+            this.groupBoxOverlays.Location = new System.Drawing.Point(0, 136);
             this.groupBoxOverlays.Name = "groupBoxOverlays";
             this.groupBoxOverlays.Size = new System.Drawing.Size(138, 101);
             this.groupBoxOverlays.TabIndex = 2;
@@ -119,6 +88,17 @@
             this.chkRectangles.Text = "Rectangles";
             this.chkRectangles.UseVisualStyleBackColor = true;
             // 
+            // groupBoxSettings
+            // 
+            this.groupBoxSettings.Controls.Add(this.chkDetectEyes);
+            this.groupBoxSettings.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBoxSettings.Location = new System.Drawing.Point(0, 0);
+            this.groupBoxSettings.Name = "groupBoxSettings";
+            this.groupBoxSettings.Size = new System.Drawing.Size(138, 136);
+            this.groupBoxSettings.TabIndex = 1;
+            this.groupBoxSettings.TabStop = false;
+            this.groupBoxSettings.Text = "Settings";
+            // 
             // chkDetectEyes
             // 
             this.chkDetectEyes.AutoSize = true;
@@ -131,6 +111,26 @@
             this.chkDetectEyes.Text = "Detect Eyes";
             this.chkDetectEyes.UseVisualStyleBackColor = true;
             // 
+            // groupBoxCaptured
+            // 
+            this.groupBoxCaptured.Controls.Add(this.imageBox);
+            this.groupBoxCaptured.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxCaptured.Location = new System.Drawing.Point(138, 0);
+            this.groupBoxCaptured.Name = "groupBoxCaptured";
+            this.groupBoxCaptured.Size = new System.Drawing.Size(459, 464);
+            this.groupBoxCaptured.TabIndex = 7;
+            this.groupBoxCaptured.TabStop = false;
+            this.groupBoxCaptured.Text = "Image";
+            // 
+            // imageBox
+            // 
+            this.imageBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.imageBox.Location = new System.Drawing.Point(3, 16);
+            this.imageBox.Name = "imageBox";
+            this.imageBox.Size = new System.Drawing.Size(453, 445);
+            this.imageBox.TabIndex = 6;
+            this.imageBox.TabStop = false;
+            // 
             // FaceDetectionControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -141,12 +141,12 @@
             this.Size = new System.Drawing.Size(597, 464);
             this.Load += new System.EventHandler(this.ControlLoad);
             this.panelLeft.ResumeLayout(false);
-            this.groupBoxCaptured.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.imageBox)).EndInit();
-            this.groupBoxSettings.ResumeLayout(false);
-            this.groupBoxSettings.PerformLayout();
             this.groupBoxOverlays.ResumeLayout(false);
             this.groupBoxOverlays.PerformLayout();
+            this.groupBoxSettings.ResumeLayout(false);
+            this.groupBoxSettings.PerformLayout();
+            this.groupBoxCaptured.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.imageBox)).EndInit();
             this.ResumeLayout(false);
 
         }

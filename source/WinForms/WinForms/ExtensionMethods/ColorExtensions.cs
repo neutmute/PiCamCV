@@ -13,5 +13,10 @@ namespace PiCamCV.WinForms.ExtensionMethods
         {
             return new Bgr(color);
         }
+
+        public static Bgra ToBgra(this Color color)
+        {
+            return new Bgra(color.B, color.G, color.R, 1);
+        }
     }
 }
