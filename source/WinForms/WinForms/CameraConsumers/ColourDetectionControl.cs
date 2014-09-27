@@ -64,30 +64,6 @@ namespace PiCamCV.WinForms.CameraConsumers
                     output.CapturedImage.Draw(_detectorInput.Settings.Roi, Color.Green.ToBgr());
                 }
 
-                //#region circle detection
-                //var watch = Stopwatch.StartNew();
-                //double cannyThreshold = 180.0;
-                //double circleAccumulatorThreshold = 120;
-                //CircleF[] circles = CvInvoke.HoughCircles(
-                //    thresholdImage
-                //    , HoughType.Gradient
-                //    , 2.0
-                //    , 20.0
-                //    , cannyThreshold
-                //    , circleAccumulatorThreshold
-                //    , 5);
-
-                //watch.Stop();
-                //NotifyStatus("Hough circles - {0} ms; ", watch.ElapsedMilliseconds);
-                //#endregion
-
-                //#region draw circles
-                //var circleImage = matCaptured.ToImage<Bgr, byte>();
-                //foreach (CircleF circle in circles)
-                //{
-                //    circleImage.Draw(circle, new Bgr(Color.Brown), 2);
-                //}
-                //#endregion
 
                 imageBoxCaptured.Image = output.CapturedImage;
                 imageBoxFiltered.Image = output.ThresholdImage;

@@ -49,6 +49,7 @@
             this.toolStripLabelSettings = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripLabelFrames = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripLabelStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tabPageShapes = new System.Windows.Forms.TabPage();
             this.panelTop.SuspendLayout();
             this.groupBoxRealTime.SuspendLayout();
             this.groupBoxPreCapture.SuspendLayout();
@@ -185,6 +186,7 @@
             this.tabControlMain.Controls.Add(this.tabPageFaceDetection);
             this.tabControlMain.Controls.Add(this.tabPageHaarCascade);
             this.tabControlMain.Controls.Add(this.tabPageColourDetect);
+            this.tabControlMain.Controls.Add(this.tabPageShapes);
             this.tabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlMain.Location = new System.Drawing.Point(0, 63);
             this.tabControlMain.Name = "tabControlMain";
@@ -265,6 +267,15 @@
             this.toolStripLabelStatus.Size = new System.Drawing.Size(46, 19);
             this.toolStripLabelStatus.Text = "(status)";
             // 
+            // tabPageShapes
+            // 
+            this.tabPageShapes.Location = new System.Drawing.Point(4, 22);
+            this.tabPageShapes.Name = "tabPageShapes";
+            this.tabPageShapes.Size = new System.Drawing.Size(1184, 451);
+            this.tabPageShapes.TabIndex = 4;
+            this.tabPageShapes.Text = "Shape Detection";
+            this.tabPageShapes.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -312,6 +323,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripLabelSettings;
         private System.Windows.Forms.ToolStripStatusLabel toolStripLabelFrames;
         private System.Windows.Forms.ToolStripStatusLabel toolStripLabelStatus;
+        private System.Windows.Forms.TabPage tabPageShapes;
 
     }
 }

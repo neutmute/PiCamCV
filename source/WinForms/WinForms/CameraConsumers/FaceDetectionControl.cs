@@ -82,7 +82,7 @@ namespace PiCamCV.WinForms.UserControls
                 {
                     if (chkSunnies.Checked)
                     {
-                        output = WearSunnies2(output, result.Faces[0].Eyes);
+                        output = WearSunnies2(output, result.Faces[0]);
                     }
 
                     if (chkHat.Checked)
@@ -115,9 +115,9 @@ namespace PiCamCV.WinForms.UserControls
             return hatRectangle;
         }
 
-        public Image<Bgra, byte> WearSunnies2(Image<Bgra, byte> inputBgr, List<Rectangle> eyes)
+        public Image<Bgra, byte> WearSunnies2(Image<Bgra, byte> inputBgr, Face face)
         {
-            _sunglassOverlay2.CalculatedRectangle = GetSunglassRectangle(eyes);
+            _sunglassOverlay2.CalculatedRectangle = GetSunglassRectangle(face);
             return WearObject(inputBgr, _sunglassOverlay2);
         }
 
@@ -131,10 +131,13 @@ namespace PiCamCV.WinForms.UserControls
                 return inputBgra;
             }
 
+            ConformRoi(accessory, inputBgra);
+
             var overlayRect = accessory.FinalRectangle;
             var resizeOverlayBgra = accessory.Overlay.Resize(overlayRect.Width, overlayRect.Height, Inter.Linear);
 
             var overlayTargetBgra = new Image<Bgra, byte>(inputBgra.Width, inputBgra.Height, bgraBlack);
+            Log.Info(m => m("Overlay rect {0}", overlayRect));
             overlayTargetBgra.ROI = overlayRect;
             resizeOverlayBgra.CopyTo(overlayTargetBgra);
             overlayTargetBgra.ROI = Rectangle.Empty;
@@ -155,9 +158,33 @@ namespace PiCamCV.WinForms.UserControls
 
             return outputBgra;
         }
-        
-        private Rectangle GetSunglassRectangle(List<Rectangle> eyes)
+
+        /// <summary>
+        /// If ROI goes beyond the image boundaries, things blow up
+        /// </summary>
+        private void ConformRoi(AccessoryOverlay accessory, Image<Bgra, byte> inputBgra)
         {
+            var roiRect = accessory.CalculatedRectangle;
+            
+            var farRight = roiRect.X + roiRect.Width;
+            if (farRight > inputBgra.Width)
+            {
+                roiRect.Width -= (farRight - inputBgra.Width);
+            }
+
+            if (roiRect.Y < 0)
+            {
+                roiRect.Height += roiRect.Y;
+                roiRect.Y = 0;
+
+            }
+            accessory.CalculatedRectangle = roiRect;
+        }
+
+        private Rectangle GetSunglassRectangle(Face face)
+        {
+            var eyes = face.Eyes;
+            var faceHeight = face.Region.Height;
             if (eyes.Count == 2)
             {
                 eyes.Sort((e1, e2) => e1.Left.CompareTo(e2.Left));
@@ -168,7 +195,7 @@ namespace PiCamCV.WinForms.UserControls
                 var eyeHeight = (int) (leftEye.Height*1.5);
 
                 var widthFactor = (int) (eyeWidth*0.25);
-                var heightFactor = (int) (eyeHeight*1.1);
+                var heightFactor = (int)(faceHeight * 0.27);
 
                 var width = eyeWidth + 2*widthFactor;
                 var height = eyeHeight + heightFactor;

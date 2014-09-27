@@ -34,11 +34,7 @@ namespace WinForms
             _tabPageLinks = new List<KeyValuePair<TabPage, CameraConsumerUserControl>>();
             _fpsTracker = new FpsTracker();
         }
-
-        private void tabPageCameraCapture_Click(object sender, EventArgs e)
-        {
-        }
-
+        
         private void MainForm_Load(object sender, EventArgs e)
         {
             SetupCameraConsumers();
@@ -83,17 +79,20 @@ namespace WinForms
             var faceDetection = new FaceDetectionControl();
             var colourDetection = new ColourDetectionControl();
             var haarDetection = new HaarCascadeControl();
+            var shapeDetection = new ShapeDetectionControl();
 
             _consumers = new List<CameraConsumerUserControl>();
             _consumers.Add(basicCapture);
             _consumers.Add(faceDetection);
             _consumers.Add(colourDetection);
             _consumers.Add(haarDetection);
+            _consumers.Add(shapeDetection);
 
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageCameraCapture, basicCapture));
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageFaceDetection, faceDetection));
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageColourDetect, colourDetection));
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageHaarCascade, haarDetection));
+            _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageShapes, shapeDetection));
 
 
             tabControlMain.SelectedIndexChanged += tabControlMain_SelectedIndexChanged;
@@ -101,7 +100,13 @@ namespace WinForms
 
         void consumer_StatusUpdated(object sender, StatusEventArgs e)
         {
-            InvokeUI(() => { toolStripLabelStatus.Text = e.Message; });
+            InvokeUI(() =>
+            {
+                if (!toolStripLabelStatus.IsDisposed)
+                { 
+                    toolStripLabelStatus.Text = e.Message;
+                }
+            });
         }
 
         void tabControlMain_SelectedIndexChanged(object sender, EventArgs e)
