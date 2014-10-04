@@ -1,11 +1,15 @@
 
 #PiCamCV#
-Experiments in getting the Raspberry Pi camera module working under mono with [OpenCV](http://www.opencv.org) via [EmguCV](http://www.emgu.com/).
+Experiments with [OpenCV](http://www.opencv.org) and the Raspberry Pi using [EmguCV](http://www.emgu.com/) and C#. 
+Compatible with USB cameras (Windows and Raspberry Pi) as well as the [Raspberry Pi Camera Module](http://www.raspberrypi.org/products/camera-module/).
 
 ## Build Instructions ##
-See [EmguCV with the Raspberry Pi Camera Module](http://spacerazor.wordpress.com/2014/08/30/emgucv-with-the-raspberry-pi-camera-module/).
+See the post [EmguCV with the Raspberry Pi Camera Module](http://spacerazor.wordpress.com/2014/08/30/emgucv-with-the-raspberry-pi-camera-module/).
 
-## Result ##
+## Preliminary Results ##
 ![Mono using OpenCV with the Pi Camera module](https://raw.githubusercontent.com/neutmute/PiCamCV/master/docs/picamcv.png)
 
 Or see it on [YouTube](https://www.youtube.com/watch?v=L0edGgYIjlc).
+
+## Advanced Results ##
+A [Lego red/green marble sorting machine](https://www.youtube.com/watch?v=hioV2RuUE-w).
