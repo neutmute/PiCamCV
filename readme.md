@@ -12,4 +12,4 @@ See the post [EmguCV with the Raspberry Pi Camera Module](http://spacerazor.word
 Or see it on [YouTube](https://www.youtube.com/watch?v=L0edGgYIjlc).
 
 ## Advanced Results ##
-A [Lego red/green marble sorting machine](https://www.youtube.com/watch?v=hioV2RuUE-w).
+A [Lego red/green marble sorting machine](http://youtu.be/MWK55A0RH0U) using OpenCV::InRange.
