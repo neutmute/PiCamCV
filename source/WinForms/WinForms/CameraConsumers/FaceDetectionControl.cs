@@ -43,13 +43,7 @@ namespace PiCamCV.WinForms.UserControls
             _hatOverlay1 = new AccessoryOverlay(GetAbsolutePathFromAssemblyRelative("Resources/Images/partyhat.png"));
         }
 
-        private string GetAbsolutePathFromAssemblyRelative(string relativePath)
-        {
-            var assemblyPath = Assembly.GetExecutingAssembly().Location;
-            var absolutePath = Path.Combine(new FileInfo(assemblyPath).DirectoryName, relativePath);
-            return absolutePath;
-        }
-
+        
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
             using (var frame = new Mat())
@@ -62,7 +56,6 @@ namespace PiCamCV.WinForms.UserControls
 
                 var result = _faceDetector.Process(input);
                 var imageBgr = result.CapturedImage;
-              //  IImage imageOut = imageBgr;
 
                 if (chkRectangles.Checked)
                 {
@@ -83,20 +76,20 @@ namespace PiCamCV.WinForms.UserControls
                 var inputBgra = imageBgr.Mat.ToImage<Bgra, byte>();
                 Image<Bgra, byte> output = inputBgra;
 
-                if (result.Faces.Any())
+
+                result.Faces.ForEach(f =>
                 {
                     if (chkSunnies.Checked)
                     {
-                        output = WearSunnies2(output, result.Faces[0]);
+                        output = WearSunnies2(output, f);
                     }
 
                     if (chkHat.Checked)
                     {
-                        output = WearHat(output, result.Faces[0]);
+                        output = WearHat(output, f);
                     }
-                }
-
-
+                });
+                
                 imageBox.Image = output;
 
                 NotifyStatus("Face detection took {0}", result.Elapsed.ToHumanReadable());

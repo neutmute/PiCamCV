@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 using Common.Logging;
 using Emgu.CV;
@@ -47,6 +49,14 @@ namespace PiCamCV.WinForms
                 CameraCapture.ImageGrabbed -= ImageGrabbedHandler;
             }
         }
+
+        protected string GetAbsolutePathFromAssemblyRelative(string relativePath)
+        {
+            var assemblyPath = Assembly.GetExecutingAssembly().Location;
+            var absolutePath = Path.Combine(new FileInfo(assemblyPath).DirectoryName, relativePath);
+            return absolutePath;
+        }
+
 
         protected void InvokeUI(Action action)
         {

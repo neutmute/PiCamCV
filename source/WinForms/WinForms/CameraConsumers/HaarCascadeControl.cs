@@ -29,18 +29,16 @@ namespace PiCamCV.WinForms.CameraConsumers
             //var xmlContent = File.ReadAllText(@"C:\CodeOther\PiCamCV\source\PiCamCV.Common\haarcascades\haarcascade_castrillon_mouth.xml");
             //var xmlContent = File.ReadAllText(@"C:\CodeOther\PiCamCV\source\PiCamCV.Common\haarcascades\haarcascade_lego_batman5.xml");
 
-            var cascadeToLoad = @"C:\CodeOther\PiCamCV\source\PiCamCV.Common\haarcascades\haarcascade_lego_batmanU1.xml";
-            var cascadeFileInfo = new FileInfo(cascadeToLoad);
+            var cascadeFileInfo = new FileInfo(GetAbsolutePathFromAssemblyRelative("haarcascades/haarcascade_lego_batman5.xml"));
             if (cascadeFileInfo.Exists)
             {
-                var xmlContent = File.ReadAllText(cascadeToLoad);
+                var xmlContent = File.ReadAllText(cascadeFileInfo.FullName);
                 _detector = new CascadeDetector(xmlContent);
             }
             else
             {
-                Log.Error(m=>m("Failed to load cascade {0}", cascadeToLoad));
+                Log.Error(m => m("Failed to load cascade {0}", cascadeFileInfo.FullName));
             }
-         
         }
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
