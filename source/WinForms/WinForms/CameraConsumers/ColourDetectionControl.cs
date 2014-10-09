@@ -41,8 +41,6 @@ namespace PiCamCV.WinForms.CameraConsumers
                 CameraCapture.Retrieve(matCaptured);
                 retrieveElapsed.Stop();
                 
-                ResizeImageControls(matCaptured);
-
                 _detectorInput.Settings.Roi = GetRegionOfInterestFromControls();
                 _detectorInput.Captured = matCaptured;
 
@@ -67,6 +65,8 @@ namespace PiCamCV.WinForms.CameraConsumers
 
                 imageBoxCaptured.Image = output.CapturedImage;
                 imageBoxFiltered.Image = output.ThresholdImage;
+
+                ResizeImageControls();
 
                 NotifyStatus(
                     "Retrieved frame in {0}, {1}"
@@ -103,26 +103,33 @@ namespace PiCamCV.WinForms.CameraConsumers
             return roiRectangle;
         }
 
-        private void ResizeImageControls(Mat matCaptured)
+        private void ResizeImageControls(bool forceResize = false)
         {
-            if (!_captureResized)
+            if (!_captureResized || forceResize)
             {
                 _captureResized = true;
 
-                var newSize = new Size(matCaptured.Width, matCaptured.Height);
+                IImage image = imageBoxCaptured.Image;
+
+                var marginFat = 20;
+                var newSize = new Size(
+                    (int)(image.Size.Width * imageBoxCaptured.ZoomScale) + marginFat
+                    , (int)(image.Size.Height * imageBoxCaptured.ZoomScale) + marginFat);
                 InvokeUI(() =>
                 {
+                    var width = image.Size.Width;
+                    var height = image.Size.Height;
                     groupBoxCaptured.Size = newSize;
                     groupBoxFiltered.Size = newSize;
 
-                    sliderRoiLeft.Maximum = matCaptured.Width;
-                    sliderRoiRight.Maximum = matCaptured.Width;
-                    
-                    sliderRoiTop.Maximum = matCaptured.Height;
-                    sliderRoiBottom.Maximum = matCaptured.Height;
+                    sliderRoiLeft.Maximum = width;
+                    sliderRoiRight.Maximum = width;
 
-                    sliderRoiRight.Value = matCaptured.Width;
-                    sliderRoiTop.Value = matCaptured.Height;
+                    sliderRoiTop.Maximum = height;
+                    sliderRoiBottom.Maximum = height;
+
+                    sliderRoiRight.Value = width;
+                    sliderRoiTop.Value = height;
                 });
             }
         }
@@ -315,6 +322,12 @@ namespace PiCamCV.WinForms.CameraConsumers
             {
                 Log.Info(m =>m("{0} not found", fileinfo.FullName));
             }
+        }
+        
+        private void imageBoxCaptured_OnZoomScaleChange(object sender, EventArgs e)
+        {
+            ResizeImageControls(true);
+            //imageBoxFiltered.ZoomScale = imageBoxCaptured.ZoomScale;
         }
     }
 }

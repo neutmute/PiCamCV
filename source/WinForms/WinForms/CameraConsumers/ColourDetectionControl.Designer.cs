@@ -413,12 +413,14 @@
             // 
             // imageBoxCaptured
             // 
+            this.imageBoxCaptured.BackColor = System.Drawing.SystemColors.Control;
             this.imageBoxCaptured.Dock = System.Windows.Forms.DockStyle.Fill;
             this.imageBoxCaptured.Location = new System.Drawing.Point(3, 16);
             this.imageBoxCaptured.Name = "imageBoxCaptured";
             this.imageBoxCaptured.Size = new System.Drawing.Size(368, 364);
             this.imageBoxCaptured.TabIndex = 5;
             this.imageBoxCaptured.TabStop = false;
+            this.imageBoxCaptured.OnZoomScaleChange += new System.EventHandler(this.imageBoxCaptured_OnZoomScaleChange);
             // 
             // groupBoxFiltered
             // 
