@@ -61,7 +61,7 @@ namespace PiCamCV.WinForms.CameraConsumers
 
                 if (checkBoxRoi.Checked)
                 {
-                    output.CapturedImage.Draw(_detectorInput.Settings.Roi, Color.Green.ToBgr());
+                    output.CapturedImage.Draw(_detectorInput.Settings.Roi, Color.Green.ToBgr(), 3);
                 }
 
 
@@ -146,6 +146,7 @@ namespace PiCamCV.WinForms.CameraConsumers
 
             sliderHueMax.Maximum = 180;
             sliderHueMin.Maximum = 180;
+            sliderMomentAreaMax.Maximum = (int) (640*480*0.25);
 
             btnReset_Click(null, null);
         }

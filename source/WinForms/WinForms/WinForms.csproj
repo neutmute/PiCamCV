@@ -204,6 +204,12 @@
     <Content Include="..\..\PiCamCV.Common\haarcascades\haarcascade_lego_batman5.xml">
       <Link>haarcascades\haarcascade_lego_batman5.xml</Link>
     </Content>
+    <Content Include="Resources\Images\partyhat.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Images\sunglasses2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

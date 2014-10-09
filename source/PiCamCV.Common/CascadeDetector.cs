@@ -72,11 +72,13 @@ CAPTURE_IMAGE_HEIGHT = 240
                 //normalizes brightness and increases contrast of the image
                 CvInvoke.EqualizeHist(ugray, ugray);
 
-                Rectangle[] objectsDetected = objectClassifier.DetectMultiScale(
-                   ugray,
-                   1.1,
-                   10,
-                   Size.Empty);
+                //Rectangle[] objectsDetected = objectClassifier.DetectMultiScale(
+                //   ugray,
+                //   1.1,
+                //   10,
+                //   Size.Empty);
+
+                Rectangle[] objectsDetected = objectClassifier.DetectMultiScale(ugray);
 
                 result.Objects = objectsDetected.ToList();
             }
