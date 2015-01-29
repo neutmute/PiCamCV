@@ -57,7 +57,7 @@ namespace PiCamCV
             }
             else
             {
-                EmitUsbWarnings();
+                EmitWarnings(request.Device);
                 if (request.Device == CaptureDevice.Pi)
                 {
                     return new CapturePi();
@@ -77,11 +77,14 @@ namespace PiCamCV
             }
         }
 
-        private static void EmitUsbWarnings()
+        private static void EmitWarnings(CaptureDevice requestedDevice)
         {
             if (Environment.OSVersion.Platform == PlatformID.Unix)
             {
-                Log.Warn("You are in Unix but aren't requesting a Pi camera? Whatever you say boss...");
+                if (requestedDevice == CaptureDevice.Usb)
+                {
+                    Log.Warn("You are in Unix but aren't requesting a Pi camera? Whatever you say boss...");
+                }
                 if (CvInvokeRaspiCamCV.CVLibrary.Contains("opencv"))
                 {
                     Log.Warn("You are in Unix but trying to bind to opencv libraries - not raspicamcv");
