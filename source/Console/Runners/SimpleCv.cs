@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Emgu.CV;
+using Emgu.CV.Structure;
 
 namespace PiCamCV.ConsoleApp
 {
@@ -13,16 +14,20 @@ namespace PiCamCV.ConsoleApp
         /// </summary>
         public void Run()
         {
-            CvInvoke.cvNamedWindow("RaspiCamTest"); //Create the window using the specific name
+            CvInvoke.NamedWindow("RaspiCamTest"); //Create the window using the specific name
             IntPtr capture = CvInvokeRaspiCamCV.cvCreateCameraCapture(0); // Index doesn't really matter
 
             do
             {
-                IntPtr image = CvInvokeRaspiCamCV.cvQueryFrame(capture);
-                CvInvoke.cvShowImage("RaspiCamTest", image);
-            } while (CvInvoke.cvWaitKey(100) < 0);
+                IntPtr imagePtr = CvInvokeRaspiCamCV.cvQueryFrame(capture);
+                using (var managedImage = Image<Bgr, Byte>.FromIplImagePtr(imagePtr))
+                {
+                    CvInvoke.Imshow("RaspiCamTest", managedImage);
+                }
 
-            CvInvoke.cvDestroyWindow("RaspiCamTest");
+            } while (CvInvoke.WaitKey(100) < 0);
+
+            CvInvoke.DestroyWindow("RaspiCamTest");
             CvInvokeRaspiCamCV.cvReleaseCapture(ref capture);
         }
     }
