@@ -7,9 +7,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Common.Logging;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using Kraken.Core;
 using PiCamCV;
 using PiCamCV.Common;
 using PiCamCV.Interfaces;
@@ -21,6 +23,7 @@ namespace WinForms
 {
     public partial class MainForm : Form
     {
+        protected static ILog Log = LogManager.GetCurrentClassLogger();
         private FileInfo _videoFileSource;
         private ICaptureGrab _capture;
         readonly List<KeyValuePair<TabPage, CameraConsumerUserControl>> _tabPageLinks;
@@ -37,6 +40,10 @@ namespace WinForms
         
         private void MainForm_Load(object sender, EventArgs e)
         {
+
+            var appData = ExecutionEnvironment.GetApplicationMetadata();
+            Log.Info(appData);
+
             SetupCameraConsumers();
             radCamera.Checked = true;
             //SetupCapture();

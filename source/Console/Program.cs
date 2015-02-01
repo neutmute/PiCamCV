@@ -12,6 +12,9 @@ using PiCamCV.Interfaces;
 
 namespace PiCamCV.ConsoleApp
 {
+    /// <summary>
+    /// mono picamcv.con.exe -m=simple
+    /// </summary>
     class Program
     {
 

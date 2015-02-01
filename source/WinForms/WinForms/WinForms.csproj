@@ -35,6 +35,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixDebug|AnyCPU'">
     <OutputPath>bin\UnixDebug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;UNIX</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Common.Logging">
