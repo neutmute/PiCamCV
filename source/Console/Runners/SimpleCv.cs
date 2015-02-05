@@ -18,7 +18,7 @@ namespace PiCamCV.ConsoleApp
         public void Run()
         {
             Log.Info("Creating Window");
-            CvInvoke.NamedWindow("RaspiCamTest"); //Create the window using the specific name
+            CvInvoke.cvNamedWindow("RaspiCamTest"); //Create the window using the specific name
 
             Log.Info("Creating capture");
             IntPtr capture = CvInvokeRaspiCamCV.cvCreateCameraCapture(0); // Index doesn't really matter
@@ -28,12 +28,12 @@ namespace PiCamCV.ConsoleApp
                 IntPtr imagePtr = CvInvokeRaspiCamCV.cvQueryFrame(capture);
                 using (var managedImage = Image<Bgr, Byte>.FromIplImagePtr(imagePtr))
                 {
-                    CvInvoke.Imshow("RaspiCamTest", managedImage);
+                    CvInvoke.cvShowImage("RaspiCamTest", managedImage);
                 }
 
-            } while (CvInvoke.WaitKey(100) < 0);
+            } while (CvInvoke.cvWaitKey(100) < 0);
 
-            CvInvoke.DestroyWindow("RaspiCamTest");
+            CvInvoke.cvDestroyWindow("RaspiCamTest");
             CvInvokeRaspiCamCV.cvReleaseCapture(ref capture);
         }
     }
