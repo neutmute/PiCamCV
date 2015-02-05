@@ -136,7 +136,7 @@ namespace PiCamCV
             }
             catch (DllNotFoundException e)
             {
-                Log.Fatal("Are you running with the solution configuration matched to the right OS?", e);
+                Log.Fatal("Are you running with the solution configuration matched to the right OS? or missing libraspicamcv.so? ", e);
                 throw;
             }
             if (_ptr == IntPtr.Zero)

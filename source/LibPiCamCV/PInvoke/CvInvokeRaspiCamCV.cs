@@ -24,7 +24,8 @@ namespace PiCamCV
         public const string EntryPointQuery     = "raspiCamCvQueryFrame";
         public const string EntryPointRelease   = "raspiCamCvReleaseCapture";
 #else
-        public const string CVLibrary           = "opencv_videoio300";
+       // Use this for Pi USB mode public const string CVLibrary           = "opencv_videoio";
+        public const string CVLibrary = "opencv_videoio300";
         public const string EntryPointCapture   = "cvCreateCameraCapture";
         public const string EntryPointQuery     = "cvQueryFrame";
         public const string EntryPointRelease   = "cvReleaseCapture";
