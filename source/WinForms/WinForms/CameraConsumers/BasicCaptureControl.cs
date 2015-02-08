@@ -21,7 +21,7 @@ namespace PiCamCV.WinForms
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
             var frame = new Mat();
-            CameraCapture.Retrieve(frame);
+            if (!CameraCapture.Retrieve(frame)) return;
 
             var grayFrame = new Mat();
             CvInvoke.CvtColor(frame, grayFrame, ColorConversion.Bgr2Gray);
