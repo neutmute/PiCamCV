@@ -176,6 +176,22 @@ namespace PiCamCV
             return true;
         }
 
+        public static void DoMatTest(string message = null)
+        {
+            if (message != "Form load")
+            {
+                Log.InfoFormat("Skipping matt test {0}", message);
+                return;
+            }
+            Log.InfoFormat("Mat test! {0}" , message);
+            var m1 = new Mat();
+            var m2 = new Mat();
+            m2.CopyTo(m1);
+
+            m1.Dispose();
+            m2.Dispose();
+        }
+
         #region Grab process
         /// <summary>
         /// The event to be called when an image is grabbed
