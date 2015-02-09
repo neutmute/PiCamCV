@@ -181,7 +181,7 @@ namespace PiCamCV
                 }
                 else
                 {
-                    Log.InfoFormat("Capturing with config {0}", config);
+                    Log.InfoFormat("Requesting capture config {0}", config);
                     _ptr = CvInvokeRaspiCamCV.cvCreateCameraCapture2(camIndex, ref config);
                 }
             }

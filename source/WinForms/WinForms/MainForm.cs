@@ -65,7 +65,10 @@ namespace WinForms
 
         protected void InvokeUI(Action action)
         {
-            Invoke((MethodInvoker)(() => action()));
+            if (!IsDisposed)
+            {
+                Invoke((MethodInvoker) (() => action()));
+            }
         }
 
         private void AssignCaptureToConsumers(ICaptureGrab capture)

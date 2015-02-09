@@ -29,10 +29,12 @@ namespace PiCamCV
 #else
        // Use this for Pi USB mode public const string CVLibrary           = "opencv_videoio";
         public const string CVLibrary = "opencv_videoio300";
-        public const string EntryPointCapture   = "cvCreateCameraCapture";
+        public const string EntryPointCapture = "cvCreateCameraCapture";
+        public const string EntryPointCapture2 = "NOT SUPPORTED";
         public const string EntryPointQuery     = "cvQueryFrame";
         public const string EntryPointRelease   = "cvReleaseCapture";
         public const string EntryPointGetProperty = "cvGetCaptureProperty";
+        public const string EntryPointSetProperty = "cvSetCaptureProperty";
 #endif
 
 
