@@ -198,7 +198,7 @@ namespace WinForms
                 request.Device = CaptureDevice.Pi;
             }
 
-            CapturePi.DoMatTest("CreateCapture");
+            CapturePi.DoMatMagic("CreateCapture");
 
             _capture = CaptureFactory.GetCapture(request);
             //_capture = new CaptureFile(@"D:\Data\Documents\Pictures\2014\20140531_SwimmingLessons\MVI_8742.MOV");

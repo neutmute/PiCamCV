@@ -60,7 +60,8 @@ namespace PiCamCV
                 EmitWarnings(request.Device);
                 if (request.Device == CaptureDevice.Pi)
                 {
-                    return new CapturePi();
+                    var config = new CaptureConfig {Width = 640, Height = 480, Framerate = 25, Monochrome = true};
+                    return new CapturePi(config);
                 }
                 else
                 {

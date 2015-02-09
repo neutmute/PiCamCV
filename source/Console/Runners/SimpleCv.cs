@@ -21,7 +21,12 @@ namespace PiCamCV.ConsoleApp
             CvInvoke.cvNamedWindow("RaspiCamTest"); //Create the window using the specific name
 
             Log.Info("Creating capture");
-            IntPtr capture = CvInvokeRaspiCamCV.cvCreateCameraCapture(0); // Index doesn't really matter
+
+
+            var captureConfig = new CaptureConfig { Width = 640, Height = 480, Framerate = 25, Monochrome = true };
+            var piConfig = PiCameraConfig.FromConfig(captureConfig);
+
+            IntPtr capture = CvInvokeRaspiCamCV.cvCreateCameraCapture2(0, ref piConfig); // Index doesn't really matter
 
             do
             {

@@ -34,6 +34,10 @@ namespace PiCamCV.ConsoleApp
             }
 
             ICaptureGrab capture = null;
+
+
+            CapturePi.DoMatMagic("CreateCapture");
+
             if (options.Mode != Mode.simple)
             {
                 var request = new CaptureRequest { Device = CaptureDevice.Usb };

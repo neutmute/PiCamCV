@@ -40,6 +40,9 @@ namespace PiCamCV
         [DllImport(CVLibrary, EntryPoint=EntryPointCapture, CallingConvention = CvCallingConvention)]
         public static extern IntPtr cvCreateCameraCapture(int index);
 
+        [DllImport(CVLibrary, EntryPoint = EntryPointCapture, CallingConvention = CvCallingConvention)]
+        public static extern IntPtr cvCreateCameraCapture2(int index, ref PiCameraConfig config);
+
         
         /// <summary>
         /// Grabs a frame from camera or video file, decompresses and returns it. This function is just a combination of cvGrabFrame and cvRetrieveFrame in one call. 

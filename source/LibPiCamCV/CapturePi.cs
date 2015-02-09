@@ -15,18 +15,84 @@ using PiCamCV.Interfaces;
 
 namespace PiCamCV
 {
+    public class CaptureConfig
+    {
+        public int Width { get;set; }
+        public int Height { get;set; }
+        public int Bitrate { get;set; }
+        public int Framerate { get;set; }
+        public bool Monochrome { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format(
+                "w={0}, h={1}, bitrate={2}, framerate={3}, monochrome={4}"
+                ,Width
+                ,Height
+                ,Bitrate
+                ,Framerate
+                ,Monochrome
+                );
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PiCameraConfig
+    {
+	    public int Width;              
+	    public int Height;             
+	    public int Bitrate;            
+	    public int Framerate;          
+	    public int Monochrome;
+
+        public override string ToString()
+        {
+            return string.Format(
+                  "w={0}, h={1}, bitrate={2}, framerate={3}, monochrome={4}"
+                  , Width
+                  , Height
+                  , Bitrate
+                  , Framerate
+                  , Monochrome
+                  );
+        }
+
+       public static PiCameraConfig FromConfig(CaptureConfig config)
+       {
+           var s = new PiCameraConfig();
+
+           if (config == null)
+           {
+               s.Width = 0;
+               s.Height = 0;
+               s.Bitrate = 0;
+               s.Framerate = 0;
+               s.Monochrome = 0;
+           }
+           else
+           {
+               s.Width = config.Width;
+               s.Height = config.Height;
+               s.Bitrate = config.Bitrate;
+               s.Framerate = config.Framerate;
+               s.Monochrome = config.Monochrome ? 1 : 0;
+           }
+
+           return s;
+       }
+    };
+
     /// <summary> 
     /// Capture images from either camera or video file. 
     /// </summary>
     public class CapturePi : UnmanagedObject, ICaptureGrab
     {
-
         protected static ILog Log = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// the type of flipping
         /// </summary>
-        private FlipType _flipType = Emgu.CV.CvEnum.FlipType.None;
+        private FlipType _flipType = FlipType.None;
 
         /// <summary>
         /// The type of capture source
@@ -108,13 +174,50 @@ namespace PiCamCV
 
         #region constructors
         ///<summary> Create a capture using the default camera </summary>
-        public CapturePi() : this(0)
+        public CapturePi(): this(0, null)
+        {
+        }
+
+        public CapturePi(CaptureConfig config)
+            : this(0, config)
         {
         }
 
         ///<summary> Create a capture using the specific camera</summary>
         ///<param name="camIndex"> The index of the camera to create capture from, starting from 0</param>
-        private CapturePi(int camIndex)
+        private CapturePi(int camIndex, CaptureConfig config)
+        {
+            _captureModuleType = CaptureModuleType.Camera;
+            InitOpenCV();
+            InitCapture(camIndex, PiCameraConfig.FromConfig(config));
+        }
+
+        private void InitCapture(int camIndex, PiCameraConfig config)
+        {
+            try
+            {
+                if (config.Width == 0)
+                { 
+                    _ptr = CvInvokeRaspiCamCV.cvCreateCameraCapture(camIndex);
+                }
+                else
+                {
+                    Log.InfoFormat("Capturing with config {0}", config);
+                    _ptr = CvInvokeRaspiCamCV.cvCreateCameraCapture2(camIndex, ref config);
+                }
+            }
+            catch (DllNotFoundException e)
+            {
+                Log.Fatal("Are you running with the solution configuration matched to the right OS? or missing libraspicamcv.so?", e);
+                throw;
+            }
+            if (_ptr == IntPtr.Zero)
+            {
+                throw new NullReferenceException(String.Format("Error: Unable to create capture from camera {0}", camIndex));
+            }
+        }
+
+        private static void InitOpenCV()
         {
             try
             {
@@ -123,27 +226,17 @@ namespace PiCamCV
             catch (Exception e)
             {
                 if (Environment.OSVersion.Platform == PlatformID.Unix)
-                { 
-                    Log.Fatal(m => m("Failed to load OpenCV libraries. Did you copy emguCV binaries from Windows to Linux? You must use Linux compiled emguCV binaries."), e);
+                {
+                    Log.Fatal(
+                        m =>
+                            m(
+                                "Failed to load OpenCV libraries. Did you copy emguCV binaries from Windows to Linux? You must use Linux compiled emguCV binaries."),
+                        e);
                 }
                 throw;
             }
-            _captureModuleType = CaptureModuleType.Camera;
-
-            try
-            {
-                _ptr = CvInvokeRaspiCamCV.cvCreateCameraCapture(camIndex);
-            }
-            catch (DllNotFoundException e)
-            {
-                Log.Fatal("Are you running with the solution configuration matched to the right OS? or missing libraspicamcv.so? ", e);
-                throw;
-            }
-            if (_ptr == IntPtr.Zero)
-            {
-                throw new NullReferenceException(String.Format("Error: Unable to create capture from camera {0}", camIndex));
-            }
         }
+
         #endregion
 
         #region implement UnmanagedObject
@@ -176,11 +269,11 @@ namespace PiCamCV
             return true;
         }
 
-        public static void DoMatTest(string message = null)
+        public static void DoMatMagic(string message = null)
         {
-            if (message != "Form load")
+            if (message != "Magical Mystery Heap fix")
             {
-                Log.InfoFormat("Skipping matt test {0}", message);
+                Log.InfoFormat("Magical Mystery Heap fix from '{0}'", message);
                 return;
             }
             Log.InfoFormat("Mat test! {0}" , message);
