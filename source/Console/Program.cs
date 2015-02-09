@@ -47,7 +47,7 @@ namespace PiCamCV.ConsoleApp
                 }
                 capture = CaptureFactory.GetCapture(request);
                 var captureProperties = capture.GetCaptureProperties();
-                Log.Info(m => m("Capture properties: {0}", captureProperties));
+                Log.Info(m => m("Capture properties read: {0}", captureProperties));
 
                 SafetyCheckRoi(options, captureProperties);
             }
@@ -90,7 +90,11 @@ namespace PiCamCV.ConsoleApp
 
         private static void SafetyCheckRoi(ConsoleOptions options, CaptureProperties captureProperties)
         {
-            if (captureProperties.FrameWidth != 0 && captureProperties.FrameHeight != 0)
+            if (
+                captureProperties.FrameWidth != 0   && 
+                captureProperties.FrameHeight != 0  &&
+                options.ColourSettings != null
+                )
             {
                 var roiWidthTooBig = options.ColourSettings.Roi.Width > captureProperties.FrameWidth;
                 var roiHeightTooBig = options.ColourSettings.Roi.Height > captureProperties.FrameHeight;

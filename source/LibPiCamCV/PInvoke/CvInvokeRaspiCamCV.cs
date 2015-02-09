@@ -19,16 +19,20 @@ namespace PiCamCV
         public const CallingConvention CvCallingConvention = CallingConvention.Cdecl;
 
 #if (UNIX)
-        public const string CVLibrary           = "raspicamcv";
-        public const string EntryPointCapture   = "raspiCamCvCreateCameraCapture";
-        public const string EntryPointQuery     = "raspiCamCvQueryFrame";
-        public const string EntryPointRelease   = "raspiCamCvReleaseCapture";
+        public const string CVLibrary               = "raspicamcv";
+        public const string EntryPointCapture       = "raspiCamCvCreateCameraCapture";
+        public const string EntryPointCapture2      = "raspiCamCvCreateCameraCapture2";
+        public const string EntryPointQuery         = "raspiCamCvQueryFrame";
+        public const string EntryPointRelease       = "raspiCamCvReleaseCapture";
+        public const string EntryPointGetProperty   = "raspiCamCvGetCaptureProperty";
+        public const string EntryPointSetProperty   = "raspiCamCvSetCaptureProperty";
 #else
        // Use this for Pi USB mode public const string CVLibrary           = "opencv_videoio";
         public const string CVLibrary = "opencv_videoio300";
         public const string EntryPointCapture   = "cvCreateCameraCapture";
         public const string EntryPointQuery     = "cvQueryFrame";
         public const string EntryPointRelease   = "cvReleaseCapture";
+        public const string EntryPointGetProperty = "cvGetCaptureProperty";
 #endif
 
 
@@ -40,7 +44,7 @@ namespace PiCamCV
         [DllImport(CVLibrary, EntryPoint=EntryPointCapture, CallingConvention = CvCallingConvention)]
         public static extern IntPtr cvCreateCameraCapture(int index);
 
-        [DllImport(CVLibrary, EntryPoint = EntryPointCapture, CallingConvention = CvCallingConvention)]
+        [DllImport(CVLibrary, EntryPoint = EntryPointCapture2, CallingConvention = CvCallingConvention)]
         public static extern IntPtr cvCreateCameraCapture2(int index, ref PiCameraConfig config);
 
         
@@ -61,5 +65,12 @@ namespace PiCamCV
         [DllImport(CVLibrary, EntryPoint=EntryPointRelease, CallingConvention = CvCallingConvention)]
         public static extern void cvReleaseCapture(ref IntPtr capture);
 
+
+        [DllImport(CVLibrary, EntryPoint = EntryPointGetProperty, CallingConvention = CvCallingConvention)]
+        public static extern double cvGetCaptureProperty(IntPtr capture, int property);
+
+
+        [DllImport(CVLibrary, EntryPoint = EntryPointSetProperty, CallingConvention = CvCallingConvention)]
+        public static extern int cvSetCaptureProperty(IntPtr capture, int property, double value);
     }
 }

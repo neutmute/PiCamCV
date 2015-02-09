@@ -20,25 +20,36 @@ namespace PiCamCV.WinForms
         
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
-            var frame = new Mat();
-            if (!CameraCapture.Retrieve(frame)) return;
+            using(var inputFrame = new Mat())
+            {
+                if (!CameraCapture.Retrieve(inputFrame)) return;
 
-            var grayFrame = new Mat();
-            CvInvoke.CvtColor(frame, grayFrame, ColorConversion.Bgr2Gray);
-            
-            var smallGrayFrame = new Mat();
-            CvInvoke.PyrDown(grayFrame, smallGrayFrame);
-            
-            var smoothedGrayFrame = new Mat();
-            CvInvoke.PyrUp(smallGrayFrame, smoothedGrayFrame);
+                using (var smoothedGrayFrame = new Mat())
+                using (var smallGrayFrame = new Mat())
+                using (var cannyFrame = new Mat())
+                using (var grayFrame = new Mat())
+                {
+                    if (inputFrame.NumberOfChannels > 1)
+                    {
+                        CvInvoke.CvtColor(inputFrame, grayFrame, ColorConversion.Bgr2Gray);
+                    }
+                    else
+                    {
+                        inputFrame.CopyTo(grayFrame);
+                    }
 
-            var cannyFrame = new Mat();
-            CvInvoke.Canny(smoothedGrayFrame, cannyFrame, 100, 60);
+                    CvInvoke.PyrDown(grayFrame, smallGrayFrame);
 
-            imageBoxCaptured.Image = frame;
-            imageBoxGray.Image = grayFrame;
-            imageBoxSmoothedGray.Image = smoothedGrayFrame;
-            imageBoxCanny.Image = cannyFrame;
+                    CvInvoke.PyrUp(smallGrayFrame, smoothedGrayFrame);
+
+                    CvInvoke.Canny(smoothedGrayFrame, cannyFrame, 100, 60);
+
+                    imageBoxCaptured.Image = inputFrame;
+                    imageBoxGray.Image = grayFrame;
+                    imageBoxSmoothedGray.Image = smoothedGrayFrame;
+                    imageBoxCanny.Image = cannyFrame;
+                }
+            }
 
             NotifyStatus(string.Empty);
         }
