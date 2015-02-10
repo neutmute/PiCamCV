@@ -45,6 +45,9 @@ namespace PiCamCV.ConsoleApp
                 {
                     request.Device = CaptureDevice.Pi;
                 }
+
+                request.Config = new CaptureConfig { Width = 640, Height = 480, Framerate = 25, Monochrome = true };
+
                 capture = CaptureFactory.GetCapture(request);
                 var captureProperties = capture.GetCaptureProperties();
                 Log.Info(m => m("Capture properties read: {0}", captureProperties));
@@ -56,6 +59,9 @@ namespace PiCamCV.ConsoleApp
             Log.Info(options);
             switch (options.Mode)
             {
+                case Mode.noop: runner = new NoopRunner(capture);
+                    break;
+
                 case Mode.simple:runner = new SimpleCv(); 
                     break;
 

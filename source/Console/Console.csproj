@@ -86,6 +86,7 @@
     <Compile Include="Runners\ColorDetectRunner.cs" />
     <Compile Include="Runners\EightBitConverter.cs" />
     <Compile Include="KeyHandler.cs" />
+    <Compile Include="Runners\NoopRunner.cs" />
     <Compile Include="Runners\ServoSort\PwmControl.cs" />
     <Compile Include="Runners\ServoSort\ServoSorter.cs" />
     <Compile Include="Runners\SimpleCv.cs" />

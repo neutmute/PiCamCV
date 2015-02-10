@@ -17,7 +17,8 @@ namespace PiCamCV.ConsoleApp
         simple,
         colourdetect,
         haar,
-        servosort
+        servosort,
+        noop
     }
 
     public class ConsoleOptions

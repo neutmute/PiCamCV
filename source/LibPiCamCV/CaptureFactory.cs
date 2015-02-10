@@ -15,6 +15,12 @@ namespace PiCamCV
         public int CameraIndex { get; set; }
 
         public FileInfo File { get; set; }
+        public CaptureConfig Config { get; set; }
+
+        public CaptureRequest()
+        {
+            Config = new CaptureConfig();
+        }
 
         public override string ToString()
         {
@@ -23,7 +29,7 @@ namespace PiCamCV
                 return string.Format("Video='{0}'", File.FullName);
             }
 
-            return string.Format("Device={0}, Camera Index={1}", Device, CameraIndex);   
+            return string.Format("Device={0}, Camera Index={1}, Config={2}", Device, CameraIndex, Config);
         }
     }
 
@@ -60,8 +66,7 @@ namespace PiCamCV
                 EmitWarnings(request.Device);
                 if (request.Device == CaptureDevice.Pi)
                 {
-                    var config = new CaptureConfig {Width = 640, Height = 480, Framerate = 25, Monochrome = false};
-                    return new CapturePi(config);
+                    return new CapturePi(request.Config);
                 }
                 else
                 {
