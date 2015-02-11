@@ -54,33 +54,13 @@ namespace WinForms
             var resComponents = cmbResolution.Text.Split('x');
             config.Width = Convert.ToInt32(resComponents[0]);
             config.Height = Convert.ToInt32(resComponents[1]);
-            
-            //switch (cmbResolution.SelectedIndex)
-            //{
-            //    case 0:
-            //        config.Width = 320;
-            //        config.Height = 240;
-            //        break;
-            //    case 1:
-            //        config.Width = 640;
-            //        config.Height = 480;
-            //        break;
-            //    case 2:
-            //        config.Width = 960;
-            //        config.Height = 720;
-            //        break;
-            //}
+            config.Bitrate = Convert.ToInt32(txtBitrate.Text);
+            config.Framerate = Convert.ToInt32(txtFramerate.Text);
             config.Monochrome = chkMonochrome.Checked;
 
             return config;
         }
-
-        private void SetCaptureProperties()
-        {
-            var capSettings = HarvestFormCaptureConfig();
-            _capture.SetCaptureProperties(capSettings); //access violation
-        }
-
+        
         private void SetupFramerateTracking(ICaptureGrab capture)
         {
             capture.ImageGrabbed += _fpsTracker.NotifyImageGrabbed;
@@ -91,7 +71,7 @@ namespace WinForms
         {
             if (!IsDisposed)
             {
-                Invoke((MethodInvoker) (() => action()));
+                Invoke((MethodInvoker) (() => {if (!IsDisposed) action();}));
             }
         }
 
