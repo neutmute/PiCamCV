@@ -45,11 +45,13 @@
             this.tabPageFaceDetection = new System.Windows.Forms.TabPage();
             this.tabPageHaarCascade = new System.Windows.Forms.TabPage();
             this.tabPageColourDetect = new System.Windows.Forms.TabPage();
+            this.tabPageShapes = new System.Windows.Forms.TabPage();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripLabelSettings = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripLabelFrames = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripLabelStatus = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tabPageShapes = new System.Windows.Forms.TabPage();
+            this.cmbResolution = new System.Windows.Forms.ComboBox();
+            this.chkMonochrome = new System.Windows.Forms.CheckBox();
             this.panelTop.SuspendLayout();
             this.groupBoxRealTime.SuspendLayout();
             this.groupBoxPreCapture.SuspendLayout();
@@ -73,9 +75,9 @@
             this.groupBoxRealTime.Controls.Add(this.btnFlipVertical);
             this.groupBoxRealTime.Controls.Add(this.btnFlipHorizontal);
             this.groupBoxRealTime.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxRealTime.Location = new System.Drawing.Point(415, 0);
+            this.groupBoxRealTime.Location = new System.Drawing.Point(589, 0);
             this.groupBoxRealTime.Name = "groupBoxRealTime";
-            this.groupBoxRealTime.Size = new System.Drawing.Size(777, 63);
+            this.groupBoxRealTime.Size = new System.Drawing.Size(603, 63);
             this.groupBoxRealTime.TabIndex = 12;
             this.groupBoxRealTime.TabStop = false;
             this.groupBoxRealTime.Text = "Mid Capture";
@@ -102,6 +104,8 @@
             // 
             // groupBoxPreCapture
             // 
+            this.groupBoxPreCapture.Controls.Add(this.chkMonochrome);
+            this.groupBoxPreCapture.Controls.Add(this.cmbResolution);
             this.groupBoxPreCapture.Controls.Add(this.radFile);
             this.groupBoxPreCapture.Controls.Add(this.radCamera);
             this.groupBoxPreCapture.Controls.Add(this.labelCameraIndex);
@@ -111,7 +115,7 @@
             this.groupBoxPreCapture.Dock = System.Windows.Forms.DockStyle.Left;
             this.groupBoxPreCapture.Location = new System.Drawing.Point(0, 0);
             this.groupBoxPreCapture.Name = "groupBoxPreCapture";
-            this.groupBoxPreCapture.Size = new System.Drawing.Size(415, 63);
+            this.groupBoxPreCapture.Size = new System.Drawing.Size(589, 63);
             this.groupBoxPreCapture.TabIndex = 11;
             this.groupBoxPreCapture.TabStop = false;
             this.groupBoxPreCapture.Text = "Setup";
@@ -158,7 +162,7 @@
             // chkOpenCL
             // 
             this.chkOpenCL.AutoSize = true;
-            this.chkOpenCL.Location = new System.Drawing.Point(319, 17);
+            this.chkOpenCL.Location = new System.Drawing.Point(342, 20);
             this.chkOpenCL.Name = "chkOpenCL";
             this.chkOpenCL.Size = new System.Drawing.Size(87, 17);
             this.chkOpenCL.TabIndex = 9;
@@ -168,7 +172,7 @@
             // 
             // btnStartStop
             // 
-            this.btnStartStop.Location = new System.Drawing.Point(195, 13);
+            this.btnStartStop.Location = new System.Drawing.Point(455, 15);
             this.btnStartStop.Name = "btnStartStop";
             this.btnStartStop.Size = new System.Drawing.Size(118, 23);
             this.btnStartStop.TabIndex = 4;
@@ -231,6 +235,15 @@
             this.tabPageColourDetect.Text = "Colour Detection";
             this.tabPageColourDetect.UseVisualStyleBackColor = true;
             // 
+            // tabPageShapes
+            // 
+            this.tabPageShapes.Location = new System.Drawing.Point(4, 22);
+            this.tabPageShapes.Name = "tabPageShapes";
+            this.tabPageShapes.Size = new System.Drawing.Size(1184, 451);
+            this.tabPageShapes.TabIndex = 4;
+            this.tabPageShapes.Text = "Shape Detection";
+            this.tabPageShapes.UseVisualStyleBackColor = true;
+            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -267,14 +280,28 @@
             this.toolStripLabelStatus.Size = new System.Drawing.Size(46, 19);
             this.toolStripLabelStatus.Text = "(status)";
             // 
-            // tabPageShapes
+            // cmbResolution
             // 
-            this.tabPageShapes.Location = new System.Drawing.Point(4, 22);
-            this.tabPageShapes.Name = "tabPageShapes";
-            this.tabPageShapes.Size = new System.Drawing.Size(1184, 451);
-            this.tabPageShapes.TabIndex = 4;
-            this.tabPageShapes.Text = "Shape Detection";
-            this.tabPageShapes.UseVisualStyleBackColor = true;
+            this.cmbResolution.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbResolution.FormattingEnabled = true;
+            this.cmbResolution.Items.AddRange(new object[] {
+            "320x240",
+            "640x480",
+            "960x720"});
+            this.cmbResolution.Location = new System.Drawing.Point(201, 15);
+            this.cmbResolution.Name = "cmbResolution";
+            this.cmbResolution.Size = new System.Drawing.Size(121, 21);
+            this.cmbResolution.TabIndex = 16;
+            // 
+            // chkMonochrome
+            // 
+            this.chkMonochrome.AutoSize = true;
+            this.chkMonochrome.Location = new System.Drawing.Point(342, 40);
+            this.chkMonochrome.Name = "chkMonochrome";
+            this.chkMonochrome.Size = new System.Drawing.Size(88, 17);
+            this.chkMonochrome.TabIndex = 17;
+            this.chkMonochrome.Text = "Monochrome";
+            this.chkMonochrome.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -324,6 +351,8 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripLabelFrames;
         private System.Windows.Forms.ToolStripStatusLabel toolStripLabelStatus;
         private System.Windows.Forms.TabPage tabPageShapes;
+        private System.Windows.Forms.CheckBox chkMonochrome;
+        private System.Windows.Forms.ComboBox cmbResolution;
 
     }
 }

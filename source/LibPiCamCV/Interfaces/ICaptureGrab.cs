@@ -8,18 +8,18 @@ using Emgu.CV.CvEnum;
 namespace PiCamCV.Interfaces
 {
 
-    public class CaptureProperties
-    {
-        public int FrameHeight { get;set;}
-        public int FrameWidth { get; set; }
-        public int Fps { get; set; }
-        public bool IsMonochrome { get; set; }
+    //public class CaptureProperties
+    //{
+    //    public int FrameHeight { get;set;}
+    //    public int FrameWidth { get; set; }
+    //    public int Fps { get; set; }
+    //    public bool IsMonochrome { get; set; }
 
-        public override string ToString()
-        {
-            return string.Format("Width={0}, Height={1}, IsMonochrome={2}, Fps={3}", FrameWidth, FrameHeight, IsMonochrome, Fps);
-        }
-    }
+    //    public override string ToString()
+    //    {
+    //        return string.Format("Width={0}, Height={1}, IsMonochrome={2}, Fps={3}", FrameWidth, FrameHeight, IsMonochrome, Fps);
+    //    }
+    //}
     public interface ICaptureGrab : ICapture, IDisposable
     {
         event EventHandler ImageGrabbed;
@@ -74,20 +74,21 @@ namespace PiCamCV.Interfaces
     CV_CAP_PROP_RECTIFICATION Rectification flag for stereo cameras (note: only supported by DC1394 v 2.x backend currently)
 
          */
-        public static CaptureProperties GetCaptureProperties(this ICaptureGrab capture)
+        public static CaptureConfig GetCaptureProperties(this ICaptureGrab capture)
         {
-            var settings = new CaptureProperties();
-            settings.FrameHeight = Convert.ToInt32(capture.GetCaptureProperty(CapProp.FrameHeight));
-            settings.FrameWidth = Convert.ToInt32(capture.GetCaptureProperty(CapProp.FrameWidth));
-            settings.Fps = Convert.ToInt32(capture.GetCaptureProperty(CapProp.Fps));
-            settings.IsMonochrome = Convert.ToBoolean(capture.GetCaptureProperty(CapProp.Monochrome));
+            var settings = new CaptureConfig();
+            settings.Height = Convert.ToInt32(capture.GetCaptureProperty(CapProp.FrameHeight));
+            settings.Width = Convert.ToInt32(capture.GetCaptureProperty(CapProp.FrameWidth));
+            settings.Framerate = Convert.ToInt32(capture.GetCaptureProperty(CapProp.Fps));
+            settings.Monochrome = Convert.ToBoolean(capture.GetCaptureProperty(CapProp.Monochrome));
             return settings;
         }
 
-        public static void SetCaptureProperties(this ICaptureGrab capture, CaptureProperties properties)
+        public static void SetCaptureProperties(this ICaptureGrab capture, CaptureConfig properties)
         {
-            capture.SetCaptureProperty(CapProp.FrameHeight, properties.FrameHeight);
-            capture.SetCaptureProperty(CapProp.FrameWidth, properties.FrameWidth);
+            capture.SetCaptureProperty(CapProp.FrameHeight, properties.Height);
+            capture.SetCaptureProperty(CapProp.FrameWidth,  properties.Width);
+            capture.SetCaptureProperty(CapProp.Monochrome, properties.Monochrome ? 1 : 0);
         }
     }
 }

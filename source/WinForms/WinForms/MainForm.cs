@@ -40,20 +40,41 @@ namespace WinForms
         
         private void MainForm_Load(object sender, EventArgs e)
         {
-
             var appData = ExecutionEnvironment.GetApplicationMetadata();
             Log.Info(appData);
 
             SetupCameraConsumers();
             radCamera.Checked = true;
-            //SetupCapture();
+            cmbResolution.SelectedIndex = 1;
+        }
+
+        private CaptureConfig HarvestFormCaptureConfig()
+        {
+            var config = new CaptureConfig();
+
+            switch (cmbResolution.SelectedIndex)
+            {
+                case 0:
+                    config.Width = 320;
+                    config.Height = 240;
+                    break;
+                case 1:
+                    config.Width = 640;
+                    config.Height = 480;
+                    break;
+                case 2:
+                    config.Width = 960;
+                    config.Height = 720;
+                    break;
+            }
+            config.Monochrome = chkMonochrome.Checked;
+
+            return config;
         }
 
         private void SetCaptureProperties()
         {
-            var capSettings = new CaptureProperties();
-            capSettings.FrameWidth = 320;
-            capSettings.FrameHeight = 240;
+            var capSettings = HarvestFormCaptureConfig();
             _capture.SetCaptureProperties(capSettings); //access violation
         }
 
@@ -143,11 +164,9 @@ namespace WinForms
 
         private void btnStartStop_Click(object sender, EventArgs e)
         {
-            var captureJustCreated = false;
             if (_capture == null)
             {
                 SetupCapture();
-                captureJustCreated = true;
             }
             if (_capture != null)
             {
@@ -155,7 +174,8 @@ namespace WinForms
                 {  
                     //stop the capture
                     btnStartStop.Text = "Start Capture";
-                    _capture.Pause();
+                    _capture.Dispose();
+                    _capture = null;
                 }
                 else
                 {
@@ -186,6 +206,8 @@ namespace WinForms
                 ,CameraIndex = (int) spinEditCameraIndex.Value
             };
 
+            request.Config = HarvestFormCaptureConfig();
+
             if (radFile.Checked)
             {
                 request.File = _videoFileSource;
@@ -200,13 +222,9 @@ namespace WinForms
             CapturePi.DoMatMagic("CreateCapture");
 
             _capture = CaptureFactory.GetCapture(request);
-            //_capture = new CaptureFile(@"D:\Data\Documents\Pictures\2014\20140531_SwimmingLessons\MVI_8742.MOV");
-
+            
             AssignCaptureToConsumers(_capture);
             SetupFramerateTracking(_capture);
-
-            //            SetCaptureProperties(); //access violation with logitech
-
 
             tabControlMain_SelectedIndexChanged(null, null);
         }

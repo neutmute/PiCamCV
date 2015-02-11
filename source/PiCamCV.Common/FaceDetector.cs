@@ -75,7 +75,14 @@ namespace PiCamCV.Common
             var result = new FaceDetectorOutput();
             using (UMat ugray = new UMat())
             {
-                CvInvoke.CvtColor(input.Captured, ugray, Emgu.CV.CvEnum.ColorConversion.Bgr2Gray);
+                if (input.Captured.NumberOfChannels == 3)
+                {
+                    CvInvoke.CvtColor(input.Captured, ugray, Emgu.CV.CvEnum.ColorConversion.Bgr2Gray);
+                }
+                else
+                {
+                    input.Captured.CopyTo(ugray);
+                }
 
                 //normalizes brightness and increases contrast of the image
                 CvInvoke.EqualizeHist(ugray, ugray);
