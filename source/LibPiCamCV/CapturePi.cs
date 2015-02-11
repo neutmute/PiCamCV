@@ -224,6 +224,7 @@ namespace PiCamCV
         /// </summary>
         protected override void DisposeObject()
         {
+            Log.Info("Releasing capture");
             Stop();
             CvInvokeRaspiCamCV.cvReleaseCapture(ref _ptr);
         }

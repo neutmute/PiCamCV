@@ -159,10 +159,6 @@ namespace WinForms
                 }
                 else
                 {
-                    if (!captureJustCreated)
-                    {
-                        SetupCapture();
-                    }
                     btnStartStop.Text = "Stop";
                     _capture.Start();
                     toolStripLabelSettings.Text = _capture.GetCaptureProperties().ToString();
