@@ -51,22 +51,25 @@ namespace WinForms
         private CaptureConfig HarvestFormCaptureConfig()
         {
             var config = new CaptureConfig();
-
-            switch (cmbResolution.SelectedIndex)
-            {
-                case 0:
-                    config.Width = 320;
-                    config.Height = 240;
-                    break;
-                case 1:
-                    config.Width = 640;
-                    config.Height = 480;
-                    break;
-                case 2:
-                    config.Width = 960;
-                    config.Height = 720;
-                    break;
-            }
+            var resComponents = cmbResolution.Text.Split('x');
+            config.Width = Convert.ToInt32(resComponents[0]);
+            config.Height = Convert.ToInt32(resComponents[1]);
+            
+            //switch (cmbResolution.SelectedIndex)
+            //{
+            //    case 0:
+            //        config.Width = 320;
+            //        config.Height = 240;
+            //        break;
+            //    case 1:
+            //        config.Width = 640;
+            //        config.Height = 480;
+            //        break;
+            //    case 2:
+            //        config.Width = 960;
+            //        config.Height = 720;
+            //        break;
+            //}
             config.Monochrome = chkMonochrome.Checked;
 
             return config;

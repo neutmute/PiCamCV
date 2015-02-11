@@ -282,7 +282,6 @@
             // 
             // cmbResolution
             // 
-            this.cmbResolution.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbResolution.FormattingEnabled = true;
             this.cmbResolution.Items.AddRange(new object[] {
             "320x240",
