@@ -318,10 +318,16 @@ namespace PiCamCV
         /// </summary>
         public void Start()
         {
-            if (_grabState != GrabState.Running)
+            switch (_grabState)
             {
-                _grabState = GrabState.Running;
-                ThreadPool.QueueUserWorkItem(delegate { Run(); });
+                case GrabState.Pause:
+                    _grabState = GrabState.Running;
+                    break;
+                case GrabState.Stopped:
+                case GrabState.Stopping:   
+                    _grabState = GrabState.Running;
+                    ThreadPool.QueueUserWorkItem(delegate { Run(); });
+                    break;
             }
         }
 
@@ -331,7 +337,9 @@ namespace PiCamCV
         public void Pause()
         {
             if (_grabState == GrabState.Running)
+            {
                 _grabState = GrabState.Pause;
+            }
         }
 
         /// <summary>
