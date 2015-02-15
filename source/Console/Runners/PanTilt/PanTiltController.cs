@@ -70,6 +70,9 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         
     }
 
+    /// <summary>
+    /// mono picamcv.con.exe -m=pantiltjoy -nopwm
+    /// </summary>
     public class JoystickPanTiltController : PanTiltController, IRunner
     {
         private readonly int _joystickIndex;
@@ -93,13 +96,16 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
         public void Run()
         {
+            Log.InfoFormat("Starting timer with a sample rate of {0} ms", _sampleRateMilliseconds);
             var timer = new Timer();
             timer.AutoReset = true;
             timer.Interval = _sampleRateMilliseconds;
             timer.Elapsed += (s, e) => Tick();
+            timer.Start();
 
             var keyHandler = new KeyHandler();
             keyHandler.WaitForExit();
+
         }
 
         public void Tick()

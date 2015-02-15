@@ -40,7 +40,8 @@ namespace PiCamCV.ConsoleApp
 
             CapturePi.DoMatMagic("CreateCapture");
 
-            if (options.Mode != Mode.simple)
+            var noCaptureGrabs = new[] {Mode.simple, Mode.pantiltjoy};
+            if (!noCaptureGrabs.Contains(options.Mode))
             {
                 var request = new CaptureRequest { Device = CaptureDevice.Usb };
                 if (Environment.OSVersion.Platform == PlatformID.Unix)
