@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using Common.Logging;
 using OpenTK.Input;
+using RPi.Pwm.Motors;
 
 namespace PiCamCV.ConsoleApp.Runners.PanTilt
 {
@@ -50,7 +51,10 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
         protected ILog Log { get { return _log; } }
 
-        protected IPanTiltMechanism PanTiltMechanism {get;set;}
+        private IPanTiltMechanism PanTiltMechanism {get;set;}
+
+        protected IServoMotor PanServo { get { return PanTiltMechanism.PanServo; } }
+        protected IServoMotor TiltServo { get { return PanTiltMechanism.TiltServo; } }
 
         protected PanTiltController(IPanTiltMechanism panTiltMech)
         {
@@ -77,21 +81,26 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
     {
         private readonly int _joystickIndex;
         private readonly int _sampleRateMilliseconds;
+        private JoystickState _currentState;
+        private JoystickCapabilities _capabilities;
 
         public JoystickPanTiltController(IPanTiltMechanism panTiltMechanism): base(panTiltMechanism)
         {
             _joystickIndex = 0;
             _sampleRateMilliseconds = 100;
-            
-            var caps = Joystick.GetCapabilities(_joystickIndex);
-            if (caps.IsConnected)
+
+            _capabilities = Joystick.GetCapabilities(_joystickIndex);
+            if (_capabilities.IsConnected)
             {
                 Log.InfoFormat(
                     "Joystick {0} connected. Axes.Count={1}, Buttons.Count={2}"
                     , _joystickIndex
-                    , caps.AxisCount
-                    , caps.ButtonCount);
+                    , _capabilities.AxisCount
+                    , _capabilities.ButtonCount);
             }
+
+            PanServo.MoveTo(50);
+            TiltServo.MoveTo(50);
         }
 
         public void Run()
@@ -110,19 +119,57 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
         public void Tick()
         {
-            var joystickState = Joystick.GetState(_joystickIndex);
-            float x = joystickState.GetAxis(JoystickAxis.Axis0);
-            float y = joystickState.GetAxis(JoystickAxis.Axis1);
-            var button0 = joystickState.GetButton(JoystickButton.Button0);
+            _currentState = Joystick.GetState(_joystickIndex);
 
             Screen.BeginRepaint();
-            Screen.WriteLine("Axis 0: {0}", x);
-            Screen.WriteLine("Axis 1: {0}", y);
-            Screen.WriteLine("Button 0: {0}", button0);
 
-            var panServo = PanTiltMechanism.PanServo;
-            var tiltServo = PanTiltMechanism.TiltServo;
-            //panServo.MoveTo(panServo.CurrentPercent * )
+            for (int i = 0; i < _capabilities.AxisCount; i++)
+            {
+                ScreenWriteAxis((JoystickAxis)i);
+            }
+            for (int i = 0; i < _capabilities.ButtonCount; i++)
+            {
+                ScreenWriteButton((JoystickButton)i);
+            }
+
+            var panAxis = ReadAxis(JoystickAxis.Axis0);
+            var tiltAxis = (ReadAxis(JoystickAxis.Axis1) -0.5m) * 2; // tilt normalisation
+            var throttleAxis = ReadAxis(JoystickAxis.Axis2);
+
+            var throttleMultipler = (5*(-throttleAxis+ 1.1m)); // 1 to bias to +ve, .1 to ensure always non zero
+
+            if (Math.Abs(panAxis) > 0.6m)
+            {
+                var newPanServoPercent = (PanServo.CurrentPercent + (panAxis*throttleMultipler));
+                PanServo.MoveTo(newPanServoPercent);
+            }
+            
+            if (Math.Abs(tiltAxis) > 0.6m)
+            {
+                var newTiltServoPercent = (TiltServo.CurrentPercent + (tiltAxis * throttleMultipler));
+                TiltServo.MoveTo(newTiltServoPercent);
+            }
+
+            Screen.WriteLine("Throttle Multiplier = {0:F}", throttleMultipler);
+            Screen.WriteLine("Pan = {0:F}%" , PanServo.CurrentPercent);
+            Screen.WriteLine("Tilt = {0:F}%", TiltServo.CurrentPercent);
+        }
+
+        private Decimal ReadAxis(JoystickAxis axis)
+        {
+            return (Decimal) _currentState.GetAxis(axis);
+        }
+
+        private void ScreenWriteAxis(JoystickAxis axis)
+        {
+            var axisValue = _currentState.GetAxis(axis);
+            Screen.WriteLine("{0}={1}", axis, axisValue);
+        }
+
+        private void ScreenWriteButton(JoystickButton button)
+        {
+            var buttonValue = _currentState.GetButton(button);
+            Screen.WriteLine("{0}={1}", button, buttonValue);
         }
     }
 }
