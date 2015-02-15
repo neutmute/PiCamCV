@@ -18,6 +18,7 @@ namespace PiCamCV.ConsoleApp
         colourdetect,
         haar,
         servosort,
+        pantiltjoy,
         noop
     }
 

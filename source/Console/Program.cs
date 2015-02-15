@@ -8,7 +8,9 @@ using Common.Logging;
 using Emgu.CV;
 using Kraken.Core;
 using PiCamCV.ConsoleApp.Runners;
+using PiCamCV.ConsoleApp.Runners.PanTilt;
 using PiCamCV.Interfaces;
+using RPi.Pwm;
 
 namespace PiCamCV.ConsoleApp
 {
@@ -85,6 +87,14 @@ namespace PiCamCV.ConsoleApp
 
                 case Mode.servosort:
                     runner = new ServoSorter(capture, options);
+                    break;
+
+                case Mode.pantiltjoy:
+                    var pwmDeviceFactory = new Pca9685DeviceFactory();
+                    var pwmDevice = pwmDeviceFactory.GetDevice(options.UseFakeDevice);
+
+                    var panTiltMech = new PanTiltMechanism(pwmDevice);
+                    runner = new JoystickPanTiltController(panTiltMech);
                     break;
 
                 default:

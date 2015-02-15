@@ -18,7 +18,7 @@ namespace PiCamCV.ConsoleApp.Runners
 
     public  class ServoSorter : CameraConsumerRunner
     {
-        PwmControl _pwmControl;
+        ServoSortPwmControl _pwmControl;
         bool _objectCurrentlyDetected;
         private int _servoPosition;
         private readonly Stopwatch _debounceWatch;
@@ -40,7 +40,7 @@ namespace PiCamCV.ConsoleApp.Runners
             var device = deviceFactory.GetDevice(options.UseFakeDevice);
             SetLogLevel(device);
             
-            _pwmControl = new PwmControl(device);
+            _pwmControl = new ServoSortPwmControl(device);
             _pwmControl.Init();
 
             _detector = new ColourDetector();

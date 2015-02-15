@@ -64,6 +64,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Kraken.Core.4.5.0.26\lib\net40\Kraken.Core.dll</HintPath>
     </Reference>
+    <Reference Include="OpenTK">
+      <HintPath>..\..\packages\OpenTK.1.1.1589.5942\lib\NET40\OpenTK.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -83,11 +86,15 @@
     <Compile Include="Properties\AssemblyInfoUnique.cs" />
     <Compile Include="Runners\CameraConsumerRunner.cs" />
     <Compile Include="Runners\CascadeRunner.cs" />
+    <Compile Include="Runners\PanTilt\PanTiltController.cs" />
+    <Compile Include="Runners\PanTilt\PanTiltMechanism.cs" />
+    <Compile Include="Runners\PanTilt\PanTiltRunner.cs" />
     <Compile Include="Runners\ColorDetectRunner.cs" />
     <Compile Include="Runners\EightBitConverter.cs" />
     <Compile Include="KeyHandler.cs" />
     <Compile Include="Runners\NoopRunner.cs" />
-    <Compile Include="Runners\ServoSort\PwmControl.cs" />
+    <Compile Include="Runners\ServoSort\PwmControlBase.cs" />
+    <Compile Include="Runners\ServoSort\ServoSortPwmControl.cs" />
     <Compile Include="Runners\ServoSort\ServoSorter.cs" />
     <Compile Include="Runners\SimpleCv.cs" />
   </ItemGroup>
@@ -116,7 +123,7 @@
       <Project>{aeecae23-d46e-4f64-91b3-c0b50bc2483e}</Project>
       <Name>RPi.Comms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\RPi.Demo\src\RPi.Pwm\RPi.Pwm.csproj">
+    <ProjectReference Include="..\..\lib\RPi.Demo\src\RPi.Pwm\RPi.Pwm.csproj">
       <Project>{552a044b-139f-4f45-96a0-0698a05c52d9}</Project>
       <Name>RPi.Pwm</Name>
     </ProjectReference>
