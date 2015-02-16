@@ -151,8 +151,8 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             }
 
             Screen.WriteLine("Throttle Multiplier = {0:F}", throttleMultipler);
-            Screen.WriteLine("Pan = {0:F}%" , PanServo.CurrentPercent);
-            Screen.WriteLine("Tilt = {0:F}%", TiltServo.CurrentPercent);
+            Screen.WriteLine("Pan = {0:F}%, {1}pwm", PanServo.CurrentPercent, PanServo.CurrentPwm);
+            Screen.WriteLine("Tilt = {0:F}%, {1}pwm", TiltServo.CurrentPercent, TiltServo.CurrentPwm);
         }
 
         private Decimal ReadAxis(JoystickAxis axis)
