@@ -134,7 +134,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
             var panAxis = ReadAxis(JoystickAxis.Axis0);
             var tiltAxis = (ReadAxis(JoystickAxis.Axis1) -0.5m) * 2; // tilt normalisation
-            var throttleAxis = ReadAxis(JoystickAxis.Axis2);
+            var throttleAxis = ReadAxis(JoystickAxis.Axis3);
 
             var throttleMultipler = (5*(-throttleAxis+ 1.1m)); // 1 to bias to +ve, .1 to ensure always non zero
 
