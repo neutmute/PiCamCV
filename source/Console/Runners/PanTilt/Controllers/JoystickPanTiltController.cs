@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Timers;
 using OpenTK.Input;
+using PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies;
 
 namespace PiCamCV.ConsoleApp.Runners.PanTilt
 {
@@ -65,21 +66,11 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             var tiltAxis = (ReadAxis(JoystickAxis.Axis1) -0.5m) * 2; // tilt normalisation
             var throttleAxis = ReadAxis(JoystickAxis.Axis3);
 
-            var throttleMultipler = (4*(-throttleAxis+ 1.1m)); // 1 to bias to +ve, .1 to ensure always non zero
+            var moveStrategy = new JoystickModifierStrategy(panAxis, tiltAxis, throttleAxis);
+            var newPosition = moveStrategy.CalculateNewSetting(CurrentSetting);
+            MoveTo(newPosition);
 
-            if (Math.Abs(panAxis) > 0.6m)
-            {
-                var newPanServoPercent = (PanServo.CurrentPercent + (panAxis*throttleMultipler));
-                PanServo.MoveTo(newPanServoPercent);
-            }
-            
-            if (Math.Abs(tiltAxis) > 0.6m)
-            {
-                var newTiltServoPercent = (TiltServo.CurrentPercent + (tiltAxis * throttleMultipler));
-                TiltServo.MoveTo(newTiltServoPercent);
-            }
-
-            Screen.WriteLine("Throttle Multiplier = {0:F}", throttleMultipler);
+            Screen.WriteLine("Throttle Multiplier = {0:F}", moveStrategy.ThrottleMultipler);
             ScreenWritePanTiltSettings();
         }
 

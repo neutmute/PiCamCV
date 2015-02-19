@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using PiCamCV.Common;
 using PiCamCV.Interfaces;
 
@@ -10,6 +11,10 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         private FpsTracker _fpsTracker;
         public ICaptureGrab CameraCapture { get; set; }
 
+        protected CaptureConfig CaptureConfig { get; private set; }
+
+        protected Point CentrePoint { get; private set; }
+
         protected CameraBasedPanTiltController(IPanTiltMechanism panTiltMech, ICaptureGrab captureGrabber)
             : base(panTiltMech)
         {
@@ -20,6 +25,11 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             CameraCapture = captureGrabber;
             CameraCapture.ImageGrabbed += ImageGrabbedHandler;
             CameraCapture.ImageGrabbed += _fpsTracker.NotifyImageGrabbed;
+
+            CaptureConfig = captureGrabber.GetCaptureProperties();
+            CentrePoint = new Point(CaptureConfig.Width/2, CaptureConfig.Height/2);
+
+            Log.InfoFormat("Centre = {0}", CentrePoint);
         }
 
 

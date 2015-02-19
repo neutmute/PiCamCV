@@ -90,6 +90,10 @@
     <Compile Include="Runners\PanTilt\Controllers\ColourTrackingPanTiltController.cs" />
     <Compile Include="Runners\PanTilt\Controllers\FaceTrackingPanTiltController.cs" />
     <Compile Include="Runners\PanTilt\Controllers\JoystickPanTiltController.cs" />
+    <Compile Include="Runners\PanTilt\MoveStrategies\IPanTiltModifierStrategy.cs" />
+    <Compile Include="Runners\PanTilt\MoveStrategies\JoystickModifierStrategy.cs" />
+    <Compile Include="Runners\PanTilt\MoveStrategies\SimpleCameraModifierStrategy.cs" />
+    <Compile Include="Runners\PanTilt\PanTiltSetting.cs" />
     <Compile Include="Runners\PanTilt\PanTiltController.cs" />
     <Compile Include="Runners\PanTilt\PanTiltMechanism.cs" />
     <Compile Include="Runners\PanTilt\PanTiltRunner.cs" />

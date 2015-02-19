@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Common.Logging;
+using PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies;
 using RPi.Pwm.Motors;
 
 namespace PiCamCV.ConsoleApp.Runners.PanTilt
@@ -19,6 +20,14 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         protected IServoMotor PanServo { get { return PanTiltMechanism.PanServo; } }
         protected IServoMotor TiltServo { get { return PanTiltMechanism.TiltServo; } }
 
+        public PanTiltSetting CurrentSetting
+        {
+            get
+            {
+                return new PanTiltSetting {PanPercent = PanServo.CurrentPercent, TiltPercent = TiltServo.CurrentPercent};
+            }
+        }
+
         protected PanTiltController(IPanTiltMechanism panTiltMech)
         {
             Screen = new Screen();
@@ -30,5 +39,16 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             Screen.WriteLine("Tilt = {0:F}%, {1}pwm", TiltServo.CurrentPercent, TiltServo.CurrentPwm);
         }
 
+        protected void MoveTo(PanTiltSetting newPosition)
+        {
+            if (newPosition.PanPercent.HasValue)
+            {
+                PanServo.MoveTo(newPosition.PanPercent.Value);
+            }
+            if (newPosition.TiltPercent.HasValue)
+            {
+                TiltServo.MoveTo(newPosition.TiltPercent.Value);
+            }
+        }
     }
 }

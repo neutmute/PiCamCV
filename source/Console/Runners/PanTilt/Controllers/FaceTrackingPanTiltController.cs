@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Emgu.CV;
 using PiCamCV.Common;
+using PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies;
 using PiCamCV.Interfaces;
 
 namespace PiCamCV.ConsoleApp.Runners.PanTilt
@@ -20,6 +21,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             var haarFaceFile = new FileInfo(environmentService.GetAbsolutePathFromAssemblyRelative("haarcascades/haarcascade_frontalface_default.xml"));
 
             _faceDetector = new FaceDetector(haarFaceFile.FullName, haarEyeFile.FullName);
+
         }
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
@@ -33,6 +35,12 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
                 var result = _faceDetector.Process(input);
                // result.Faces[0].Region.
+
+                if (result.Faces.Count > 0)
+                {
+                    //var 
+                    var moveStrategy = new SimpleCameraModifierStrategy();
+                }
 
                 var imageBgr = result.CapturedImage;
             }
