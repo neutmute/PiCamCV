@@ -20,8 +20,6 @@ namespace PiCamCV.WinForms.UserControls
 {
     public partial class FaceDetectionControl : CameraConsumerUserControl
     {
-        private FileInfo haarEyeFile;
-        private FileInfo haarFaceFile;
         private FaceDetector _faceDetector;
         private Rectangle _lastGoodSunnies;
         private AccessoryOverlay _sunglassOverlay2;
@@ -33,14 +31,15 @@ namespace PiCamCV.WinForms.UserControls
         }
         public void ControlLoad(object sender, EventArgs e)
         {
-            haarEyeFile = new FileInfo(GetAbsolutePathFromAssemblyRelative("haarcascades/haarcascade_eye.xml"));
-            haarFaceFile = new FileInfo(GetAbsolutePathFromAssemblyRelative("haarcascades/haarcascade_frontalface_default.xml"));
+            var environmentService = new EnvironmentService();
+            var haarEyeFile = new FileInfo(environmentService.GetAbsolutePathFromAssemblyRelative("haarcascades/haarcascade_eye.xml"));
+            var haarFaceFile = new FileInfo(environmentService.GetAbsolutePathFromAssemblyRelative("haarcascades/haarcascade_frontalface_default.xml"));
 
             _faceDetector = new FaceDetector(haarFaceFile.FullName, haarEyeFile.FullName);
             _lastGoodSunnies = Rectangle.Empty;
 
-            _sunglassOverlay2 = new AccessoryOverlay(GetAbsolutePathFromAssemblyRelative("Resources/Images/sunglasses2.png"));
-            _hatOverlay1 = new AccessoryOverlay(GetAbsolutePathFromAssemblyRelative("Resources/Images/partyhat.png"));
+            _sunglassOverlay2 = new AccessoryOverlay(environmentService.GetAbsolutePathFromAssemblyRelative("Resources/Images/sunglasses2.png"));
+            _hatOverlay1 = new AccessoryOverlay(environmentService.GetAbsolutePathFromAssemblyRelative("Resources/Images/partyhat.png"));
         }
 
         

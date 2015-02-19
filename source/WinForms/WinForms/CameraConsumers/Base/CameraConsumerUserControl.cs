@@ -50,12 +50,7 @@ namespace PiCamCV.WinForms
             }
         }
 
-        protected string GetAbsolutePathFromAssemblyRelative(string relativePath)
-        {
-            var assemblyPath = Assembly.GetExecutingAssembly().Location;
-            var absolutePath = Path.Combine(new FileInfo(assemblyPath).DirectoryName, relativePath);
-            return absolutePath;
-        }
+      
 
 
         protected void InvokeUI(Action action)

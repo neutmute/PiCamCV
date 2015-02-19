@@ -22,8 +22,8 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
         public PanTiltMechanism(IPwmDevice pwmDevice) : base(pwmDevice)
         {
-            PanServo = new ServoMotor(PwmDevice, PwmChannel.C0, 150, 600);
-            TiltServo = new ServoMotor(PwmDevice, PwmChannel.C1, 150, 600);
+            PanServo = new ServoMotor(PwmDevice, PwmChannel.C0, 130, 670);
+            TiltServo = new ServoMotor(PwmDevice, PwmChannel.C1, 130, 670);
         }
     }
 }

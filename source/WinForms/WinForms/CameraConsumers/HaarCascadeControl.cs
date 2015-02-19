@@ -29,7 +29,8 @@ namespace PiCamCV.WinForms.CameraConsumers
             //var xmlContent = File.ReadAllText(@"C:\CodeOther\PiCamCV\source\PiCamCV.Common\haarcascades\haarcascade_castrillon_mouth.xml");
             //var xmlContent = File.ReadAllText(@"C:\CodeOther\PiCamCV\source\PiCamCV.Common\haarcascades\haarcascade_lego_batman5.xml");
 
-            var cascadeFileInfo = new FileInfo(GetAbsolutePathFromAssemblyRelative("haarcascades/haarcascade_lego_batman5.xml"));
+            var environmentService = new EnvironmentService();
+            var cascadeFileInfo = new FileInfo(environmentService.GetAbsolutePathFromAssemblyRelative("haarcascades/haarcascade_lego_batman5.xml"));
             if (cascadeFileInfo.Exists)
             {
                 var xmlContent = File.ReadAllText(cascadeFileInfo.FullName);

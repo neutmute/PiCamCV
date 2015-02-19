@@ -86,6 +86,10 @@
     <Compile Include="Properties\AssemblyInfoUnique.cs" />
     <Compile Include="Runners\CameraConsumerRunner.cs" />
     <Compile Include="Runners\CascadeRunner.cs" />
+    <Compile Include="Runners\PanTilt\Controllers\CameraBasedPanTiltController.cs" />
+    <Compile Include="Runners\PanTilt\Controllers\ColourTrackingPanTiltController.cs" />
+    <Compile Include="Runners\PanTilt\Controllers\FaceTrackingPanTiltController.cs" />
+    <Compile Include="Runners\PanTilt\Controllers\JoystickPanTiltController.cs" />
     <Compile Include="Runners\PanTilt\PanTiltController.cs" />
     <Compile Include="Runners\PanTilt\PanTiltMechanism.cs" />
     <Compile Include="Runners\PanTilt\PanTiltRunner.cs" />
@@ -93,6 +97,7 @@
     <Compile Include="Runners\EightBitConverter.cs" />
     <Compile Include="KeyHandler.cs" />
     <Compile Include="Runners\NoopRunner.cs" />
+    <Compile Include="Runners\PanTilt\Screen.cs" />
     <Compile Include="Runners\ServoSort\PwmControlBase.cs" />
     <Compile Include="Runners\ServoSort\ServoSortPwmControl.cs" />
     <Compile Include="Runners\ServoSort\ServoSorter.cs" />
@@ -162,6 +167,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>$(SolutionDir)build\post_build_get_unmanaged.cmd $(SolutionDir) $(TargetDir)</PostBuildEvent>
