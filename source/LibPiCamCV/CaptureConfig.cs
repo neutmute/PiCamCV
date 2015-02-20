@@ -1,9 +1,12 @@
-﻿namespace PiCamCV
+﻿using System.Drawing;
+
+namespace PiCamCV
 {
     public class CaptureConfig
     {
         public int Width { get;set; }
         public int Height { get;set; }
+
         public int Bitrate { get;set; }
         public int Framerate { get;set; }
         public bool Monochrome { get; set; }

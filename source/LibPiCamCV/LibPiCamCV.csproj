@@ -96,6 +96,7 @@
     <Compile Include="CaptureUsb.cs" />
     <Compile Include="EnvironmentService.cs" />
     <Compile Include="ExtensionMethods\MvScalarExtensions.cs" />
+    <Compile Include="ExtensionMethods\RectangleExtensions.cs" />
     <Compile Include="Interfaces\ICaptureGrab.cs" />
     <Compile Include="PInvoke\CvInvokeRaspiCamCV.cs" />
     <Compile Include="Properties\AssemblyInfoUnique.cs" />

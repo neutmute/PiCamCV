@@ -10,6 +10,7 @@ using Kraken.Core;
 using PiCamCV.ConsoleApp.Runners;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 using PiCamCV.Interfaces;
+using Raspberry.IO.Components.Controllers.Pca9685;
 using RPi.Pwm;
 
 namespace PiCamCV.ConsoleApp
@@ -40,7 +41,8 @@ namespace PiCamCV.ConsoleApp
 
             CapturePi.DoMatMagic("CreateCapture");
 
-            var noCaptureGrabs = new[] {Mode.simple, Mode.pantiltjoy};
+            var noCaptureGrabs = new[] { Mode.simple, Mode.pantiltjoy };
+            var i2cRequired = new[] { Mode.pantiltface, Mode.pantiltjoy };
             if (!noCaptureGrabs.Contains(options.Mode))
             {
                 var request = new CaptureRequest { Device = CaptureDevice.Usb };
@@ -56,6 +58,14 @@ namespace PiCamCV.ConsoleApp
                 Log.Info(m => m("Capture properties read: {0}", captureProperties));
 
                 SafetyCheckRoi(options, captureProperties);
+            }
+
+            IPanTiltMechanism panTiltMech = null;
+            if (i2cRequired.Contains(options.Mode))
+            {
+                var pwmDeviceFactory = new Pca9685DeviceFactory();
+                var pwmDevice = pwmDeviceFactory.GetDevice(options.UseFakeDevice);
+                panTiltMech = new PanTiltMechanism(pwmDevice);
             }
 
             IRunner runner;
@@ -91,11 +101,11 @@ namespace PiCamCV.ConsoleApp
                     break;
 
                 case Mode.pantiltjoy:
-                    var pwmDeviceFactory = new Pca9685DeviceFactory();
-                    var pwmDevice = pwmDeviceFactory.GetDevice(options.UseFakeDevice);
-
-                    var panTiltMech = new PanTiltMechanism(pwmDevice);
                     runner = new JoystickPanTiltController(panTiltMech);
+                    break;
+
+                case Mode.pantiltface:
+                    runner = new FaceTrackingPanTiltController(panTiltMech, capture);
                     break;
 
                 default:

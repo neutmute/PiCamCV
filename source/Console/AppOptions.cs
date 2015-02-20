@@ -19,6 +19,7 @@ namespace PiCamCV.ConsoleApp
         haar,
         servosort,
         pantiltjoy,
+        pantiltface,
         noop
     }
 
