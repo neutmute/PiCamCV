@@ -31,13 +31,13 @@
             this.components = new System.ComponentModel.Container();
             this.panelLeft = new System.Windows.Forms.Panel();
             this.groupBoxOverlays = new System.Windows.Forms.GroupBox();
+            this.chkHat = new System.Windows.Forms.CheckBox();
             this.chkSunnies = new System.Windows.Forms.CheckBox();
             this.chkRectangles = new System.Windows.Forms.CheckBox();
             this.groupBoxSettings = new System.Windows.Forms.GroupBox();
             this.chkDetectEyes = new System.Windows.Forms.CheckBox();
             this.groupBoxCaptured = new System.Windows.Forms.GroupBox();
             this.imageBox = new Emgu.CV.UI.ImageBox();
-            this.chkHat = new System.Windows.Forms.CheckBox();
             this.panelLeft.SuspendLayout();
             this.groupBoxOverlays.SuspendLayout();
             this.groupBoxSettings.SuspendLayout();
@@ -67,6 +67,16 @@
             this.groupBoxOverlays.TabIndex = 2;
             this.groupBoxOverlays.TabStop = false;
             this.groupBoxOverlays.Text = "Overlays";
+            // 
+            // chkHat
+            // 
+            this.chkHat.AutoSize = true;
+            this.chkHat.Location = new System.Drawing.Point(7, 65);
+            this.chkHat.Name = "chkHat";
+            this.chkHat.Size = new System.Drawing.Size(84, 17);
+            this.chkHat.TabIndex = 2;
+            this.chkHat.Text = "Accessory 2";
+            this.chkHat.UseVisualStyleBackColor = true;
             // 
             // chkSunnies
             // 
@@ -132,16 +142,6 @@
             this.imageBox.Size = new System.Drawing.Size(453, 445);
             this.imageBox.TabIndex = 6;
             this.imageBox.TabStop = false;
-            // 
-            // chkHat
-            // 
-            this.chkHat.AutoSize = true;
-            this.chkHat.Location = new System.Drawing.Point(7, 65);
-            this.chkHat.Name = "chkHat";
-            this.chkHat.Size = new System.Drawing.Size(84, 17);
-            this.chkHat.TabIndex = 2;
-            this.chkHat.Text = "Accessory 2";
-            this.chkHat.UseVisualStyleBackColor = true;
             // 
             // FaceDetectionControl
             // 

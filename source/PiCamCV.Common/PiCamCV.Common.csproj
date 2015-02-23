@@ -76,6 +76,7 @@
     <Compile Include="CameraConsumerBase.cs" />
     <Compile Include="CascadeDetector.cs" />
     <Compile Include="ColourDetector.cs" />
+    <Compile Include="ExtensionMethods\CaptureConfigExtensions.cs" />
     <Compile Include="ExtensionMethods\PointFExtensions.cs" />
     <Compile Include="ExtensionMethods\RangeFExtensions.cs" />
     <Compile Include="FaceDetector.cs" />

@@ -103,6 +103,12 @@
     <Compile Include="CameraConsumers\ShapeDetectionControl.Designer.cs">
       <DependentUpon>ShapeDetectionControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="CameraConsumers\PanTiltCalibrationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CameraConsumers\PanTiltCalibrationControl.Designer.cs">
+      <DependentUpon>PanTiltCalibrationControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="ExtensionMethods\ColorExtensions.cs" />
     <Compile Include="Properties\AssemblyInfoUnique.cs" />
     <Compile Include="MainForm.cs">
@@ -132,6 +138,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CameraConsumers\HaarCascadeControl.resx">
       <DependentUpon>HaarCascadeControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CameraConsumers\PanTiltCalibrationControl.resx">
+      <DependentUpon>PanTiltCalibrationControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CameraConsumers\ShapeDetectionControl.resx">
       <DependentUpon>ShapeDetectionControl.cs</DependentUpon>

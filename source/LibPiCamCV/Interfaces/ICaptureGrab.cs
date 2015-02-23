@@ -26,7 +26,6 @@ namespace PiCamCV.Interfaces
 
         bool FlipHorizontal { get; set; }
         bool FlipVertical { get; set; }
-
         void Start();
         void Stop();
         void Pause();
@@ -46,7 +45,6 @@ namespace PiCamCV.Interfaces
         /// <param name="value">Value of the property</param>
         /// <returns>True if success</returns>
         bool SetCaptureProperty(CapProp property, double value);
-        
     }
 
     public static class CaptureGrabExtentions

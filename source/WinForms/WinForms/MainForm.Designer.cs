@@ -33,6 +33,13 @@
             this.btnFlipVertical = new System.Windows.Forms.Button();
             this.btnFlipHorizontal = new System.Windows.Forms.Button();
             this.groupBoxPreCapture = new System.Windows.Forms.GroupBox();
+            this.txtFramerate = new System.Windows.Forms.TextBox();
+            this.lblFrames = new System.Windows.Forms.Label();
+            this.txtBitrate = new System.Windows.Forms.TextBox();
+            this.lblWidthHeight = new System.Windows.Forms.Label();
+            this.lblBitrate = new System.Windows.Forms.Label();
+            this.chkMonochrome = new System.Windows.Forms.CheckBox();
+            this.cmbResolution = new System.Windows.Forms.ComboBox();
             this.radFile = new System.Windows.Forms.RadioButton();
             this.radCamera = new System.Windows.Forms.RadioButton();
             this.labelCameraIndex = new System.Windows.Forms.Label();
@@ -50,13 +57,7 @@
             this.toolStripLabelSettings = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripLabelFrames = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripLabelStatus = new System.Windows.Forms.ToolStripStatusLabel();
-            this.cmbResolution = new System.Windows.Forms.ComboBox();
-            this.chkMonochrome = new System.Windows.Forms.CheckBox();
-            this.lblBitrate = new System.Windows.Forms.Label();
-            this.lblWidthHeight = new System.Windows.Forms.Label();
-            this.txtBitrate = new System.Windows.Forms.TextBox();
-            this.txtFramerate = new System.Windows.Forms.TextBox();
-            this.lblFrames = new System.Windows.Forms.Label();
+            this.tabPagePanTiltCalibration = new System.Windows.Forms.TabPage();
             this.panelTop.SuspendLayout();
             this.groupBoxRealTime.SuspendLayout();
             this.groupBoxPreCapture.SuspendLayout();
@@ -130,6 +131,72 @@
             this.groupBoxPreCapture.TabStop = false;
             this.groupBoxPreCapture.Text = "Setup";
             // 
+            // txtFramerate
+            // 
+            this.txtFramerate.Location = new System.Drawing.Point(403, 18);
+            this.txtFramerate.Name = "txtFramerate";
+            this.txtFramerate.Size = new System.Drawing.Size(40, 20);
+            this.txtFramerate.TabIndex = 22;
+            this.txtFramerate.Text = "25";
+            // 
+            // lblFrames
+            // 
+            this.lblFrames.AutoSize = true;
+            this.lblFrames.Location = new System.Drawing.Point(346, 21);
+            this.lblFrames.Name = "lblFrames";
+            this.lblFrames.Size = new System.Drawing.Size(51, 13);
+            this.lblFrames.TabIndex = 21;
+            this.lblFrames.Text = "Frames/s";
+            // 
+            // txtBitrate
+            // 
+            this.txtBitrate.Location = new System.Drawing.Point(250, 43);
+            this.txtBitrate.Name = "txtBitrate";
+            this.txtBitrate.Size = new System.Drawing.Size(87, 20);
+            this.txtBitrate.TabIndex = 20;
+            this.txtBitrate.Text = "17000000";
+            // 
+            // lblWidthHeight
+            // 
+            this.lblWidthHeight.AutoSize = true;
+            this.lblWidthHeight.Location = new System.Drawing.Point(200, 21);
+            this.lblWidthHeight.Name = "lblWidthHeight";
+            this.lblWidthHeight.Size = new System.Drawing.Size(44, 13);
+            this.lblWidthHeight.TabIndex = 19;
+            this.lblWidthHeight.Text = "(w) x (h)";
+            // 
+            // lblBitrate
+            // 
+            this.lblBitrate.AutoSize = true;
+            this.lblBitrate.Location = new System.Drawing.Point(200, 46);
+            this.lblBitrate.Name = "lblBitrate";
+            this.lblBitrate.Size = new System.Drawing.Size(37, 13);
+            this.lblBitrate.TabIndex = 18;
+            this.lblBitrate.Text = "Bitrate";
+            // 
+            // chkMonochrome
+            // 
+            this.chkMonochrome.AutoSize = true;
+            this.chkMonochrome.Location = new System.Drawing.Point(465, 40);
+            this.chkMonochrome.Name = "chkMonochrome";
+            this.chkMonochrome.Size = new System.Drawing.Size(88, 17);
+            this.chkMonochrome.TabIndex = 17;
+            this.chkMonochrome.Text = "Monochrome";
+            this.chkMonochrome.UseVisualStyleBackColor = true;
+            // 
+            // cmbResolution
+            // 
+            this.cmbResolution.FormattingEnabled = true;
+            this.cmbResolution.Items.AddRange(new object[] {
+            "160x120",
+            "320x240",
+            "640x480",
+            "960x720"});
+            this.cmbResolution.Location = new System.Drawing.Point(250, 18);
+            this.cmbResolution.Name = "cmbResolution";
+            this.cmbResolution.Size = new System.Drawing.Size(87, 21);
+            this.cmbResolution.TabIndex = 16;
+            // 
             // radFile
             // 
             this.radFile.AutoSize = true;
@@ -201,6 +268,7 @@
             this.tabControlMain.Controls.Add(this.tabPageHaarCascade);
             this.tabControlMain.Controls.Add(this.tabPageColourDetect);
             this.tabControlMain.Controls.Add(this.tabPageShapes);
+            this.tabControlMain.Controls.Add(this.tabPagePanTiltCalibration);
             this.tabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlMain.Location = new System.Drawing.Point(0, 79);
             this.tabControlMain.Name = "tabControlMain";
@@ -222,7 +290,7 @@
             // 
             this.tabPageFaceDetection.Location = new System.Drawing.Point(4, 22);
             this.tabPageFaceDetection.Name = "tabPageFaceDetection";
-            this.tabPageFaceDetection.Size = new System.Drawing.Size(1184, 451);
+            this.tabPageFaceDetection.Size = new System.Drawing.Size(1184, 435);
             this.tabPageFaceDetection.TabIndex = 1;
             this.tabPageFaceDetection.Text = "Face Detection";
             this.tabPageFaceDetection.UseVisualStyleBackColor = true;
@@ -231,7 +299,7 @@
             // 
             this.tabPageHaarCascade.Location = new System.Drawing.Point(4, 22);
             this.tabPageHaarCascade.Name = "tabPageHaarCascade";
-            this.tabPageHaarCascade.Size = new System.Drawing.Size(1184, 451);
+            this.tabPageHaarCascade.Size = new System.Drawing.Size(1184, 435);
             this.tabPageHaarCascade.TabIndex = 3;
             this.tabPageHaarCascade.Text = "Haar Cascade Detection";
             this.tabPageHaarCascade.UseVisualStyleBackColor = true;
@@ -240,7 +308,7 @@
             // 
             this.tabPageColourDetect.Location = new System.Drawing.Point(4, 22);
             this.tabPageColourDetect.Name = "tabPageColourDetect";
-            this.tabPageColourDetect.Size = new System.Drawing.Size(1184, 451);
+            this.tabPageColourDetect.Size = new System.Drawing.Size(1184, 435);
             this.tabPageColourDetect.TabIndex = 2;
             this.tabPageColourDetect.Text = "Colour Detection";
             this.tabPageColourDetect.UseVisualStyleBackColor = true;
@@ -249,7 +317,7 @@
             // 
             this.tabPageShapes.Location = new System.Drawing.Point(4, 22);
             this.tabPageShapes.Name = "tabPageShapes";
-            this.tabPageShapes.Size = new System.Drawing.Size(1184, 451);
+            this.tabPageShapes.Size = new System.Drawing.Size(1184, 435);
             this.tabPageShapes.TabIndex = 4;
             this.tabPageShapes.Text = "Shape Detection";
             this.tabPageShapes.UseVisualStyleBackColor = true;
@@ -290,71 +358,15 @@
             this.toolStripLabelStatus.Size = new System.Drawing.Size(46, 19);
             this.toolStripLabelStatus.Text = "(status)";
             // 
-            // cmbResolution
+            // tabPagePanTiltCalibration
             // 
-            this.cmbResolution.FormattingEnabled = true;
-            this.cmbResolution.Items.AddRange(new object[] {
-            "160x120",
-            "320x240",
-            "640x480",
-            "960x720"});
-            this.cmbResolution.Location = new System.Drawing.Point(250, 18);
-            this.cmbResolution.Name = "cmbResolution";
-            this.cmbResolution.Size = new System.Drawing.Size(87, 21);
-            this.cmbResolution.TabIndex = 16;
-            // 
-            // chkMonochrome
-            // 
-            this.chkMonochrome.AutoSize = true;
-            this.chkMonochrome.Location = new System.Drawing.Point(465, 40);
-            this.chkMonochrome.Name = "chkMonochrome";
-            this.chkMonochrome.Size = new System.Drawing.Size(88, 17);
-            this.chkMonochrome.TabIndex = 17;
-            this.chkMonochrome.Text = "Monochrome";
-            this.chkMonochrome.UseVisualStyleBackColor = true;
-            // 
-            // lblBitrate
-            // 
-            this.lblBitrate.AutoSize = true;
-            this.lblBitrate.Location = new System.Drawing.Point(200, 46);
-            this.lblBitrate.Name = "lblBitrate";
-            this.lblBitrate.Size = new System.Drawing.Size(37, 13);
-            this.lblBitrate.TabIndex = 18;
-            this.lblBitrate.Text = "Bitrate";
-            // 
-            // lblWidthHeight
-            // 
-            this.lblWidthHeight.AutoSize = true;
-            this.lblWidthHeight.Location = new System.Drawing.Point(200, 21);
-            this.lblWidthHeight.Name = "lblWidthHeight";
-            this.lblWidthHeight.Size = new System.Drawing.Size(44, 13);
-            this.lblWidthHeight.TabIndex = 19;
-            this.lblWidthHeight.Text = "(w) x (h)";
-            // 
-            // txtBitrate
-            // 
-            this.txtBitrate.Location = new System.Drawing.Point(250, 43);
-            this.txtBitrate.Name = "txtBitrate";
-            this.txtBitrate.Size = new System.Drawing.Size(87, 20);
-            this.txtBitrate.TabIndex = 20;
-            this.txtBitrate.Text = "17000000";
-            // 
-            // txtFramerate
-            // 
-            this.txtFramerate.Location = new System.Drawing.Point(403, 18);
-            this.txtFramerate.Name = "txtFramerate";
-            this.txtFramerate.Size = new System.Drawing.Size(40, 20);
-            this.txtFramerate.TabIndex = 22;
-            this.txtFramerate.Text = "25";
-            // 
-            // lblFrames
-            // 
-            this.lblFrames.AutoSize = true;
-            this.lblFrames.Location = new System.Drawing.Point(346, 21);
-            this.lblFrames.Name = "lblFrames";
-            this.lblFrames.Size = new System.Drawing.Size(51, 13);
-            this.lblFrames.TabIndex = 21;
-            this.lblFrames.Text = "Frames/s";
+            this.tabPagePanTiltCalibration.Location = new System.Drawing.Point(4, 22);
+            this.tabPagePanTiltCalibration.Name = "tabPagePanTiltCalibration";
+            this.tabPagePanTiltCalibration.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPagePanTiltCalibration.Size = new System.Drawing.Size(1184, 435);
+            this.tabPagePanTiltCalibration.TabIndex = 5;
+            this.tabPagePanTiltCalibration.Text = "Pan Tilt Calibration";
+            this.tabPagePanTiltCalibration.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -411,6 +423,7 @@
         private System.Windows.Forms.Label lblBitrate;
         private System.Windows.Forms.TextBox txtFramerate;
         private System.Windows.Forms.Label lblFrames;
+        private System.Windows.Forms.TabPage tabPagePanTiltCalibration;
 
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using PiCamCV.Common;
+using PiCamCV.Common.ExtensionMethods;
 using PiCamCV.Interfaces;
 
 namespace PiCamCV.ConsoleApp.Runners.PanTilt
@@ -27,7 +28,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             CameraCapture.ImageGrabbed += _fpsTracker.NotifyImageGrabbed;
 
             CaptureConfig = captureGrabber.GetCaptureProperties();
-            CentrePoint = new Point(CaptureConfig.Width/2, CaptureConfig.Height/2);
+            CentrePoint = CaptureConfig.GetCenter();
 
             Log.InfoFormat("Centre = {0}", CentrePoint);
         }

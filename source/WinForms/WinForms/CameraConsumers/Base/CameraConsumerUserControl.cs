@@ -42,6 +42,8 @@ namespace PiCamCV.WinForms
             }
         }
 
+        protected virtual void OnSubscribe() { }
+
         public void Unsubscribe()
         {
             if (CameraCapture != null)
@@ -49,10 +51,7 @@ namespace PiCamCV.WinForms
                 CameraCapture.ImageGrabbed -= ImageGrabbedHandler;
             }
         }
-
-      
-
-
+        
         protected void InvokeUI(Action action)
         {
             Invoke((MethodInvoker) (() => action()));
