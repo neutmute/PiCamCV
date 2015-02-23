@@ -95,7 +95,6 @@
     <Compile Include="Runners\PanTilt\MoveStrategies\SimpleCameraModifierStrategy.cs" />
     <Compile Include="Runners\PanTilt\PanTiltSetting.cs" />
     <Compile Include="Runners\PanTilt\PanTiltController.cs" />
-    <Compile Include="Runners\PanTilt\PanTiltMechanism.cs" />
     <Compile Include="Runners\PanTilt\PanTiltRunner.cs" />
     <Compile Include="Runners\ColorDetectRunner.cs" />
     <Compile Include="Runners\EightBitConverter.cs" />

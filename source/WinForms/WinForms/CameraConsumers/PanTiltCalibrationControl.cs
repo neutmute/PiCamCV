@@ -8,14 +8,18 @@ using System.Text;
 using System.Windows.Forms;
 using Emgu.CV;
 using Emgu.CV.Structure;
+using PiCamCV.Common;
 using PiCamCV.Common.ExtensionMethods;
 using PiCamCV.Interfaces;
 using PiCamCV.WinForms.ExtensionMethods;
+using RPi.Pwm;
 
 namespace PiCamCV.WinForms.CameraConsumers
 {
     public partial class PanTiltCalibrationControl : CameraConsumerUserControl
     {
+        protected IPanTiltMechanism PanTiltMechanism { get; set; }
+
         public Point? Reticle { get; set; }
 
         public PanTiltCalibrationControl()
@@ -26,7 +30,16 @@ namespace PiCamCV.WinForms.CameraConsumers
 
         private void btnGoto_Click(object sender, EventArgs e)
         {
+            decimal panPercent, tiltPercent;
 
+            var panOK = Decimal.TryParse(txtPanPercent.Text, out panPercent);
+            var tiltOK = Decimal.TryParse(txtTiltPercent.Text, out tiltPercent);
+
+            if (panOK && tiltOK)
+            {
+                PanTiltMechanism.PanServo.MoveTo(panPercent);
+                PanTiltMechanism.TiltServo.MoveTo(tiltPercent);
+            }
         }
 
         protected override void OnSubscribe()
@@ -35,6 +48,18 @@ namespace PiCamCV.WinForms.CameraConsumers
             
             txtReticleX.Text = center.X.ToString();
             txtReticleY.Text = center.Y.ToString();
+
+            InitI2C();
+        }
+
+        private void InitI2C()
+        {
+            if (PanTiltMechanism == null)
+            {
+                var pwmDeviceFactory = new Pca9685DeviceFactory();
+                var pwmDevice = pwmDeviceFactory.GetDevice();
+                PanTiltMechanism = new PanTiltMechanism(pwmDevice);
+            }
         }
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)

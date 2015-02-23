@@ -9,10 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PiCamCV.WinForms</RootNamespace>
     <AssemblyName>picamcv.win</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -23,6 +24,7 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,10 +34,12 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixDebug|AnyCPU'">
     <OutputPath>bin\UnixDebug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;UNIX</DefineConstants>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Common.Logging">
@@ -177,6 +181,30 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\lib\raspberry-sharp-io\Raspberry.IO.Components\Raspberry.IO.Components.csproj">
+      <Project>{8388cfca-e3db-43f7-b049-2cb195211ce8}</Project>
+      <Name>Raspberry.IO.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\raspberry-sharp-io\Raspberry.IO.GeneralPurpose\Raspberry.IO.GeneralPurpose.csproj">
+      <Project>{281c71ed-c36d-408e-8baa-75c381dc17e7}</Project>
+      <Name>Raspberry.IO.GeneralPurpose</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\raspberry-sharp-io\Raspberry.IO.InterIntegratedCircuit\Raspberry.IO.InterIntegratedCircuit.csproj">
+      <Project>{63b8403e-bc56-43f9-a045-f61ecc3871f3}</Project>
+      <Name>Raspberry.IO.InterIntegratedCircuit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\raspberry-sharp-io\Raspberry.IO.SerialPeripheralInterface\Raspberry.IO.SerialPeripheralInterface.csproj">
+      <Project>{326342e5-0411-40e8-9f2d-563d6b192568}</Project>
+      <Name>Raspberry.IO.SerialPeripheralInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\RPi.Demo\src\RPi.Comms\RPi.Comms.csproj">
+      <Project>{aeecae23-d46e-4f64-91b3-c0b50bc2483e}</Project>
+      <Name>RPi.Comms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\RPi.Demo\src\RPi.Pwm\RPi.Pwm.csproj">
+      <Project>{552a044b-139f-4f45-96a0-0698a05c52d9}</Project>
+      <Name>RPi.Pwm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\LibPiCamCV\LibPiCamCV.csproj">
       <Project>{9c3c3278-805b-43b2-9741-fd8a47575462}</Project>
       <Name>LibPiCamCV</Name>

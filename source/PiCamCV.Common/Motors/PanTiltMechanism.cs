@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Raspberry.IO.Components.Controllers.Pca9685;
+using RPi.Pwm;
 using RPi.Pwm.Motors;
 
-namespace PiCamCV.ConsoleApp.Runners.PanTilt
+namespace PiCamCV.Common
 {
     public interface IPanTiltMechanism
     {

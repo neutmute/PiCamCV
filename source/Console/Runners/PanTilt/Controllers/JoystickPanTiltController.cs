@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Timers;
 using OpenTK.Input;
+using PiCamCV.Common;
 using PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies;
 
 namespace PiCamCV.ConsoleApp.Runners.PanTilt

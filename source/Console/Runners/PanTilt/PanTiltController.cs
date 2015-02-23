@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Common.Logging;
+using PiCamCV.Common;
 using PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies;
 using RPi.Pwm.Motors;
 

@@ -7,6 +7,7 @@ using System.Text;
 using Common.Logging;
 using Emgu.CV;
 using Kraken.Core;
+using PiCamCV.Common;
 using PiCamCV.ConsoleApp.Runners;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 using PiCamCV.Interfaces;
