@@ -53,6 +53,9 @@
     <Reference Include="Common.Logging.Core">
       <HintPath>..\..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Common.Logging.NLog20">
+      <HintPath>..\..\packages\Common.Logging.NLog20.2.2.0\lib\net40\Common.Logging.NLog20.dll</HintPath>
+    </Reference>
     <Reference Include="Emgu.CV">
       <HintPath>..\..\..\emgu-source\bin\Emgu.CV.dll</HintPath>
     </Reference>
@@ -63,6 +66,9 @@
     <Reference Include="Kraken.Core, Version=4.0.5.26, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Kraken.Core.4.5.0.26\lib\net40\Kraken.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK">
       <HintPath>..\..\packages\OpenTK.1.1.1589.5942\lib\NET40\OpenTK.dll</HintPath>
