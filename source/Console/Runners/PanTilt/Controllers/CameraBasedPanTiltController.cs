@@ -2,6 +2,7 @@
 using System.Drawing;
 using PiCamCV.Common;
 using PiCamCV.Common.ExtensionMethods;
+using PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies;
 using PiCamCV.Interfaces;
 
 namespace PiCamCV.ConsoleApp.Runners.PanTilt
@@ -71,6 +72,21 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         private void keyHandler_KeyEvent(object sender, ConsoleKeyEventArgs e)
         {
             HandleKey(e.KeyInfo);
+        }
+
+
+        protected void ReactToTarget(Point targetPoint)
+        {
+            var moveStrategy = new CameraModifierStrategy(CaptureConfig, Screen, targetPoint, CentrePoint);
+            var newPosition = moveStrategy.CalculateNewSetting(CurrentSetting);
+
+            MoveTo(newPosition);
+
+            //var imageBgr = result.CapturedImage;
+
+            Screen.WriteLine("Capture Config {0}", CaptureConfig);
+            Screen.WriteLine("Target {0}", targetPoint);
+            ScreenWritePanTiltSettings();
         }
     }
 }

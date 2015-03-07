@@ -47,17 +47,11 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
                     targetPoint = faceTarget.Region.Center();
                 }
 
-                var moveStrategy = new CameraModifierStrategy(Screen, targetPoint, CentrePoint);
-                var newPosition = moveStrategy.CalculateNewSetting(CurrentSetting);
-                MoveTo(newPosition);
+                ReactToTarget(targetPoint);
 
-                //var imageBgr = result.CapturedImage;
-
-                Screen.WriteLine("Capture Config {0}", CaptureConfig);
-                Screen.WriteLine("Target {0}", targetPoint);
                 Screen.WriteLine("Faces Detected {0}", result.Faces.Count);
-                ScreenWritePanTiltSettings();
             }
         }
+
     }
 }
