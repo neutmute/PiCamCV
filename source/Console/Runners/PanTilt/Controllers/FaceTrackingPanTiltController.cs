@@ -13,6 +13,9 @@ using PiCamCV.Interfaces;
 
 namespace PiCamCV.ConsoleApp.Runners.PanTilt
 {
+    /// <summary>
+    /// sudo mono picamcv.con.exe -m=pantiltface
+    /// </summary>
     public class FaceTrackingPanTiltController : CameraBasedPanTiltController
     {
         private readonly FaceDetector _faceDetector;
@@ -23,7 +26,6 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             var haarFaceFile = new FileInfo(environmentService.GetAbsolutePathFromAssemblyRelative("haarcascades/haarcascade_frontalface_default.xml"));
 
             _faceDetector = new FaceDetector(haarFaceFile.FullName, haarEyeFile.FullName);
-
         }
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
@@ -36,24 +38,24 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
                 input.DetectEyes = false;
 
                 var result = _faceDetector.Process(input);
-               
-                Face faceTarget = null;
+
                 Point targetPoint = CentrePoint;
 
                 if (result.Faces.Count > 0)
                 {
-                    faceTarget = result.Faces[0];
+                    Face faceTarget = result.Faces[0];
                     targetPoint = faceTarget.Region.Center();
                 }
 
-                var moveStrategy = new SimpleCameraModifierStrategy(targetPoint, CentrePoint);
+                var moveStrategy = new CameraModifierStrategy(Screen, targetPoint, CentrePoint);
                 var newPosition = moveStrategy.CalculateNewSetting(CurrentSetting);
                 MoveTo(newPosition);
 
-                var imageBgr = result.CapturedImage;
+                //var imageBgr = result.CapturedImage;
 
                 Screen.WriteLine("Capture Config {0}", CaptureConfig);
                 Screen.WriteLine("Target {0}", targetPoint);
+                Screen.WriteLine("Faces Detected {0}", result.Faces.Count);
                 ScreenWritePanTiltSettings();
             }
         }

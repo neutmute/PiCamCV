@@ -13,7 +13,6 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
     {
         private readonly static ILog _log = LogManager.GetCurrentClassLogger();
         protected Screen Screen {get; private set; }
-
         protected ILog Log { get { return _log; } }
 
         private IPanTiltMechanism PanTiltMechanism {get;set;}

@@ -19,7 +19,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
         public void BeginRepaint()
         {
-            _lineNumber = 1;
+            _lineNumber = 0;
         }
 
 
@@ -28,7 +28,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             if (_lineNumber < Console.BufferHeight)
             {
                 Console.SetCursorPosition(0, _lineNumber);
-                var message = string.Format(format, args);
+                var message = args.Length > 0 ? string.Format(format, args) : format;
                 Console.WriteLine(message.PadRight(Console.BufferWidth, ' '));
             }
             _lineNumber++;

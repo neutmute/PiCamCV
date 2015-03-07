@@ -52,7 +52,7 @@ namespace PiCamCV.ConsoleApp
                     request.Device = CaptureDevice.Pi;
                 }
 
-                request.Config = new CaptureConfig { Width = 640, Height = 480, Framerate = 25, Monochrome = true };
+                request.Config = new CaptureConfig { Width = 128, Height = 96, Framerate = 10, Monochrome = true };
 
                 capture = CaptureFactory.GetCapture(request);
                 var captureProperties = capture.GetCaptureProperties();

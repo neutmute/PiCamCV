@@ -9,34 +9,41 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
     public abstract class CameraBasedPanTiltController : PanTiltController, IRunner, ICameraConsumer
     {
         protected bool Stopping { get; set; }
-        private FpsTracker _fpsTracker;
+        protected FpsTracker FpsTracker {get;private set;}
         public ICaptureGrab CameraCapture { get; set; }
 
         protected CaptureConfig CaptureConfig { get; private set; }
 
         protected Point CentrePoint { get; private set; }
 
+        protected int Ticks { get;set;}
+
         protected CameraBasedPanTiltController(IPanTiltMechanism panTiltMech, ICaptureGrab captureGrabber)
             : base(panTiltMech)
         {
-            _fpsTracker = new FpsTracker();
-            _fpsTracker.ReportEveryNthFrame = 50;
-            _fpsTracker.ReportFrames = s => Log.Info(m => m(s));
+            FpsTracker = new FpsTracker();
+            FpsTracker.ReportEveryNthFrame = 2;
+            FpsTracker.ReportFrames = s => Screen.WriteLine(s);
 
             CameraCapture = captureGrabber;
-            CameraCapture.ImageGrabbed += ImageGrabbedHandler;
-            CameraCapture.ImageGrabbed += _fpsTracker.NotifyImageGrabbed;
+            CameraCapture.ImageGrabbed += InternalImageGrabbedHandler;
 
             CaptureConfig = captureGrabber.GetCaptureProperties();
             CentrePoint = CaptureConfig.GetCenter();
 
             Log.InfoFormat("Centre = {0}", CentrePoint);
+            Ticks = 0;
         }
 
-
+        private void InternalImageGrabbedHandler(object sender, EventArgs e)
+        {
+            FpsTracker.NotifyImageGrabbed(sender, e);
+            Screen.BeginRepaint();
+            Screen.WriteLine("Frame count={0}", Ticks++);
+            ImageGrabbedHandler(sender, e);
+        }
         public abstract void ImageGrabbedHandler(object sender, EventArgs e);
-
-
+        
         public virtual void HandleKey(ConsoleKeyInfo keyInfo)
         {
             Log.Info(m => m("Ignoring key {0}", keyInfo.Key));
@@ -45,6 +52,8 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         public void Run()
         {
             CameraCapture.Start();
+
+            MoveTo(new PanTiltSetting(50, 50));
 
             var keyHandler = new KeyHandler();
             keyHandler.KeyEvent += keyHandler_KeyEvent;

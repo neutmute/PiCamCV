@@ -53,11 +53,11 @@
             this.tabPageHaarCascade = new System.Windows.Forms.TabPage();
             this.tabPageColourDetect = new System.Windows.Forms.TabPage();
             this.tabPageShapes = new System.Windows.Forms.TabPage();
+            this.tabPagePanTiltCalibration = new System.Windows.Forms.TabPage();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripLabelSettings = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripLabelFrames = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripLabelStatus = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tabPagePanTiltCalibration = new System.Windows.Forms.TabPage();
             this.panelTop.SuspendLayout();
             this.groupBoxRealTime.SuspendLayout();
             this.groupBoxPreCapture.SuspendLayout();
@@ -188,6 +188,8 @@
             // 
             this.cmbResolution.FormattingEnabled = true;
             this.cmbResolution.Items.AddRange(new object[] {
+            "64x48",
+            "128x96",
             "160x120",
             "320x240",
             "640x480",
@@ -322,6 +324,16 @@
             this.tabPageShapes.Text = "Shape Detection";
             this.tabPageShapes.UseVisualStyleBackColor = true;
             // 
+            // tabPagePanTiltCalibration
+            // 
+            this.tabPagePanTiltCalibration.Location = new System.Drawing.Point(4, 22);
+            this.tabPagePanTiltCalibration.Name = "tabPagePanTiltCalibration";
+            this.tabPagePanTiltCalibration.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPagePanTiltCalibration.Size = new System.Drawing.Size(1184, 435);
+            this.tabPagePanTiltCalibration.TabIndex = 5;
+            this.tabPagePanTiltCalibration.Text = "Pan Tilt Calibration";
+            this.tabPagePanTiltCalibration.UseVisualStyleBackColor = true;
+            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -357,16 +369,6 @@
             this.toolStripLabelStatus.Name = "toolStripLabelStatus";
             this.toolStripLabelStatus.Size = new System.Drawing.Size(46, 19);
             this.toolStripLabelStatus.Text = "(status)";
-            // 
-            // tabPagePanTiltCalibration
-            // 
-            this.tabPagePanTiltCalibration.Location = new System.Drawing.Point(4, 22);
-            this.tabPagePanTiltCalibration.Name = "tabPagePanTiltCalibration";
-            this.tabPagePanTiltCalibration.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPagePanTiltCalibration.Size = new System.Drawing.Size(1184, 435);
-            this.tabPagePanTiltCalibration.TabIndex = 5;
-            this.tabPagePanTiltCalibration.Text = "Pan Tilt Calibration";
-            this.tabPagePanTiltCalibration.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 

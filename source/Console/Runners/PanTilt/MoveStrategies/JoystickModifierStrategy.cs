@@ -26,12 +26,14 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies
             var newSetting = new PanTiltSetting();
             ThrottleMultipler = (4 * (-_throttleAxis + 1.1m)); // 1 to bias to +ve, .1 to ensure always non zero
 
-            if (Math.Abs(_panAxis) > 0.6m)
+            const decimal deadZone = 0.6m;
+
+            if (Math.Abs(_panAxis) > deadZone)
             {
                 newSetting.PanPercent = (currentSetting.PanPercent + (_panAxis * ThrottleMultipler));  
             }
 
-            if (Math.Abs(_tiltAxis) > 0.6m)
+            if (Math.Abs(_tiltAxis) > deadZone)
             {
                 newSetting.TiltPercent = (currentSetting.TiltPercent + (_tiltAxis * ThrottleMultipler));
             }
