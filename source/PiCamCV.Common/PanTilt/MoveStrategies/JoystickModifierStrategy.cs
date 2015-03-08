@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies
 {
-    class JoystickModifierStrategy : IPanTiltModifierStrategy
+    public class JoystickModifierStrategy : IPanTiltModifierStrategy
     {
         private readonly decimal _panAxis;
         private readonly decimal _tiltAxis;

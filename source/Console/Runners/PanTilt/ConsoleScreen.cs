@@ -2,11 +2,11 @@
 
 namespace PiCamCV.ConsoleApp.Runners.PanTilt
 {
-    public class Screen
+    public class ConsoleScreen : IScreen
     {
         private int _lineNumber;
 
-        public Screen()
+        public ConsoleScreen()
         {
             Clear();
         }

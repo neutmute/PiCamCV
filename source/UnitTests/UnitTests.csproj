@@ -82,6 +82,14 @@
       <Project>{b699ff77-a5f6-41aa-a97a-2adb1808f951}</Project>
       <Name>Console</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LibPiCamCV\LibPiCamCV.csproj">
+      <Project>{9c3c3278-805b-43b2-9741-fd8a47575462}</Project>
+      <Name>LibPiCamCV</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PiCamCV.Common\PiCamCV.Common.csproj">
+      <Project>{233c04e5-2565-4e9c-ac8b-eec462268cf8}</Project>
+      <Name>PiCamCV.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Emgu.CV;
 using PiCamCV.Common;
+using PiCamCV.Common.Interfaces;
 using PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies;
 using PiCamCV.ExtensionMethods;
 using PiCamCV.Interfaces;
@@ -19,7 +20,8 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
     public class FaceTrackingPanTiltController : CameraBasedPanTiltController
     {
         private readonly FaceDetector _faceDetector;
-        public FaceTrackingPanTiltController(IPanTiltMechanism panTiltMech, ICaptureGrab captureGrabber) : base(panTiltMech, captureGrabber)
+        public FaceTrackingPanTiltController(IPanTiltMechanism panTiltMech, CaptureConfig captureConfig, IScreen screen)
+            : base(panTiltMech, captureConfig, screen)
         {
             var environmentService = new EnvironmentService();
             var haarEyeFile = new FileInfo(environmentService.GetAbsolutePathFromAssemblyRelative("haarcascades/haarcascade_eye.xml"));
@@ -28,30 +30,28 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             _faceDetector = new FaceDetector(haarFaceFile.FullName, haarEyeFile.FullName);
         }
 
-        public override void ImageGrabbedHandler(object sender, EventArgs e)
+        protected override CameraProcessOutput DoProcess(CameraProcessInput baseInput)
         {
-            using (var capturedFrame = new Mat())
+            var input = new FaceDetectorInput();
+            input.Captured = baseInput.Captured;
+            input.DetectEyes = false;
+
+            var result = _faceDetector.Process(input);
+
+            Point targetPoint = CentrePoint;
+
+            if (result.Faces.Count > 0)
             {
-                CameraCapture.Retrieve(capturedFrame);
-                var input = new FaceDetectorInput();
-                input.Captured = capturedFrame;
-                input.DetectEyes = false;
-
-                var result = _faceDetector.Process(input);
-
-                Point targetPoint = CentrePoint;
-
-                if (result.Faces.Count > 0)
-                {
-                    Face faceTarget = result.Faces[0];
-                    targetPoint = faceTarget.Region.Center();
-                }
-
-                ReactToTarget(targetPoint);
-
-                Screen.WriteLine("Faces Detected {0}", result.Faces.Count);
+                Face faceTarget = result.Faces[0];
+                targetPoint = faceTarget.Region.Center();
             }
-        }
 
+            ReactToTarget(targetPoint);
+
+            Screen.WriteLine("Faces Detected {0}", result.Faces.Count);
+
+            var outerResult = new CameraProcessOutput();
+            return outerResult;
+        }
     }
 }

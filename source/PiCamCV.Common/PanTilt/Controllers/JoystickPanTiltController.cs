@@ -9,17 +9,16 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
     /// <summary>
     /// mono picamcv.con.exe -m=pantiltjoy -nopwm
     /// </summary>
-    public class JoystickPanTiltController : PanTiltController, IRunner
+    public class JoystickPanTiltController : PanTiltController
     {
         private readonly int _joystickIndex;
-        private readonly int _sampleRateMilliseconds;
         private JoystickState _currentState;
         private JoystickCapabilities _capabilities;
 
-        public JoystickPanTiltController(IPanTiltMechanism panTiltMechanism): base(panTiltMechanism)
+        public JoystickPanTiltController(IPanTiltMechanism panTiltMechanism, IScreen screen)
+            : base(panTiltMechanism, screen)
         {
             _joystickIndex = 0;
-            _sampleRateMilliseconds = 100;
 
             _capabilities = Joystick.GetCapabilities(_joystickIndex);
             if (_capabilities.IsConnected)
@@ -35,18 +34,6 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             TiltServo.MoveTo(50);
         }
 
-        public void Run()
-        {
-            Log.InfoFormat("Starting timer with a sample rate of {0} ms", _sampleRateMilliseconds);
-            var timer = new Timer();
-            timer.AutoReset = true;
-            timer.Interval = _sampleRateMilliseconds;
-            timer.Elapsed += (s, e) => Tick();
-            timer.Start();
-
-            var keyHandler = new KeyHandler();
-            keyHandler.WaitForExit();
-        }
 
         public void Tick()
         {

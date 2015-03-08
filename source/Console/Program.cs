@@ -44,6 +44,7 @@ namespace PiCamCV.ConsoleApp
 
             var noCaptureGrabs = new[] { Mode.simple, Mode.pantiltjoy };
             var i2cRequired = new[] { Mode.pantiltface, Mode.pantiltjoy };
+            CaptureConfig captureConfig = null;
             if (!noCaptureGrabs.Contains(options.Mode))
             {
                 var request = new CaptureRequest { Device = CaptureDevice.Usb };
@@ -55,18 +56,20 @@ namespace PiCamCV.ConsoleApp
                 request.Config = new CaptureConfig { Width = 128, Height = 96, Framerate = 10, Monochrome = true };
 
                 capture = CaptureFactory.GetCapture(request);
-                var captureProperties = capture.GetCaptureProperties();
-                Log.Info(m => m("Capture properties read: {0}", captureProperties));
+                captureConfig = capture.GetCaptureProperties();
+                Log.Info(m => m("Capture properties read: {0}", captureConfig));
 
-                SafetyCheckRoi(options, captureProperties);
+                SafetyCheckRoi(options, captureConfig);
             }
 
             IPanTiltMechanism panTiltMech = null;
+            IScreen screen = null;
             if (i2cRequired.Contains(options.Mode))
             {
                 var pwmDeviceFactory = new Pca9685DeviceFactory();
                 var pwmDevice = pwmDeviceFactory.GetDevice(options.UseFakeDevice);
                 panTiltMech = new PanTiltMechanism(pwmDevice);
+                screen = new ConsoleScreen();
             }
 
             IRunner runner;
@@ -102,11 +105,13 @@ namespace PiCamCV.ConsoleApp
                     break;
 
                 case Mode.pantiltjoy:
-                    runner = new JoystickPanTiltController(panTiltMech);
+                    var joyController = new JoystickPanTiltController(panTiltMech, screen);
+                    runner = new TimerRunner(joyController);
                     break;
 
                 case Mode.pantiltface:
-                    runner = new FaceTrackingPanTiltController(panTiltMech, capture);
+                    var controller = new FaceTrackingPanTiltController(panTiltMech, captureConfig, screen);
+                    runner = new CameraBasedPanTiltRunner(panTiltMech, capture, controller, screen);
                     break;
 
                 default:

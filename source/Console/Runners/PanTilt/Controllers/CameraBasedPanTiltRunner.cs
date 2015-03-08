@@ -1,27 +1,32 @@
 ﻿using System;
 using System.Drawing;
+using Emgu.CV;
 using PiCamCV.Common;
 using PiCamCV.Common.ExtensionMethods;
+using PiCamCV.Common.Interfaces;
 using PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies;
 using PiCamCV.Interfaces;
 
 namespace PiCamCV.ConsoleApp.Runners.PanTilt
 {
-    public abstract class CameraBasedPanTiltController : PanTiltController, IRunner, ICameraConsumer
+    public class CameraBasedPanTiltRunner : PanTiltController, IRunner
     {
+        private readonly CameraBasedPanTiltController _controller;
         protected bool Stopping { get; set; }
         protected FpsTracker FpsTracker {get;private set;}
         public ICaptureGrab CameraCapture { get; set; }
 
         protected CaptureConfig CaptureConfig { get; private set; }
-
-        protected Point CentrePoint { get; private set; }
-
-        protected int Ticks { get;set;}
-
-        protected CameraBasedPanTiltController(IPanTiltMechanism panTiltMech, ICaptureGrab captureGrabber)
-            : base(panTiltMech)
+        
+        public CameraBasedPanTiltRunner(
+            IPanTiltMechanism panTiltMech
+            , ICaptureGrab captureGrabber
+            , CameraBasedPanTiltController controller
+            , IScreen screen)
+            : base(panTiltMech, screen)
         {
+            _controller = controller;
+
             FpsTracker = new FpsTracker();
             FpsTracker.ReportEveryNthFrame = 2;
             FpsTracker.ReportFrames = s => Screen.WriteLine(s);
@@ -30,20 +35,21 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             CameraCapture.ImageGrabbed += InternalImageGrabbedHandler;
 
             CaptureConfig = captureGrabber.GetCaptureProperties();
-            CentrePoint = CaptureConfig.GetCenter();
-
-            Log.InfoFormat("Centre = {0}", CentrePoint);
-            Ticks = 0;
         }
 
         private void InternalImageGrabbedHandler(object sender, EventArgs e)
         {
             FpsTracker.NotifyImageGrabbed(sender, e);
-            Screen.BeginRepaint();
-            Screen.WriteLine("Frame count={0}", Ticks++);
-            ImageGrabbedHandler(sender, e);
+
+            using (var matCaptured = new Mat())
+            {
+                CameraCapture.Retrieve(matCaptured);
+                var input = new CameraProcessInput();
+                input.Captured = matCaptured;
+                input.SetCapturedImage = false;
+                var output = _controller.Process(input);
+            }
         }
-        public abstract void ImageGrabbedHandler(object sender, EventArgs e);
         
         public virtual void HandleKey(ConsoleKeyInfo keyInfo)
         {
@@ -53,9 +59,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         public void Run()
         {
             CameraCapture.Start();
-
-            MoveTo(new PanTiltSetting(50, 50));
-
+            
             var keyHandler = new KeyHandler();
             keyHandler.KeyEvent += keyHandler_KeyEvent;
             keyHandler.WaitForExit();
@@ -74,19 +78,5 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             HandleKey(e.KeyInfo);
         }
 
-
-        protected void ReactToTarget(Point targetPoint)
-        {
-            var moveStrategy = new CameraModifierStrategy(CaptureConfig, Screen, targetPoint, CentrePoint);
-            var newPosition = moveStrategy.CalculateNewSetting(CurrentSetting);
-
-            MoveTo(newPosition);
-
-            //var imageBgr = result.CapturedImage;
-
-            Screen.WriteLine("Capture Config {0}", CaptureConfig);
-            Screen.WriteLine("Target {0}", targetPoint);
-            ScreenWritePanTiltSettings();
-        }
     }
 }

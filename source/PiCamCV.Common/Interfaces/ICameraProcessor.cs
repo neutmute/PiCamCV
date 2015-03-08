@@ -38,8 +38,12 @@ namespace PiCamCV.Common.Interfaces
     }
 
 
-    public abstract class CameraProcessor<TInput, TResult> : DisposableObject
-        where TInput:CameraProcessInput 
+    public interface ICameraProcessor<TInput, TResult> where TInput : CameraProcessInput where TResult : CameraProcessOutput
+    {
+        TResult Process(TInput input);
+    }
+
+    public abstract class CameraProcessor<TInput, TResult> : DisposableObject, ICameraProcessor<TInput, TResult> where TInput:CameraProcessInput 
         where TResult:CameraProcessOutput
     {
         private readonly static ILog _log = LogManager.GetCurrentClassLogger();

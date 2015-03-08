@@ -12,15 +12,13 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies
     {
         private Point _target;
         private Point _objective;
-        private CaptureConfig _captureConfig;
-        private readonly Screen _screen;
+        private readonly IScreen _screen;
         private readonly decimal _xDiffScale, _yDiffScale;
 
         private readonly static ILog Log = LogManager.GetCurrentClassLogger();
 
-        public CameraModifierStrategy(CaptureConfig captureConfig, Screen screen, Point objective, Point target)
+        public CameraModifierStrategy(CaptureConfig captureConfig, IScreen screen, Point objective, Point target)
         {
-            _captureConfig = captureConfig;
             _objective = objective;
             _target = target;
             _screen = screen;
