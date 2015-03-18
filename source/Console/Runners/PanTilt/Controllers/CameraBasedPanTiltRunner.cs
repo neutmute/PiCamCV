@@ -47,7 +47,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
                 var input = new CameraProcessInput();
                 input.Captured = matCaptured;
                 input.SetCapturedImage = false;
-                var output = _controller.Process(input);
+                _controller.Process(input);
             }
         }
         
@@ -77,6 +77,5 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         {
             HandleKey(e.KeyInfo);
         }
-
     }
 }

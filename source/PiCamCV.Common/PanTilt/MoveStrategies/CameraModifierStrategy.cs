@@ -24,8 +24,8 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies
             _screen = screen;
 
             // calibration was done in 320x240. If capture settings different need to scale the calibration
-            _xDiffScale = 320 / captureConfig.Width;
-            _yDiffScale = 240 / captureConfig.Height;
+            _xDiffScale = captureConfig.Width /320m;
+            _yDiffScale = captureConfig.Height /240m;
         }
         public PanTiltSetting CalculateNewSetting( PanTiltSetting currentSetting)
         {
@@ -39,8 +39,8 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies
              * Linear regression calculated from observation
              * https://github.com/neutmute/PiCamCV/blob/master/docs/panTiltCalibration.xlsx
              */
-            var xDeflection = xDiff > deadZone ? 0.0933m * xDiff + 0.0864m : 0;
-            var yDeflection = yDiff > deadZone ? 0.0812m * yDiff + 0.2091m : 0;
+            var xDeflection = Math.Abs(xDiff) > deadZone ? 0.0933m * xDiff + 0.0864m : 0;
+            var yDeflection = Math.Abs(yDiff) > deadZone ? 0.0812m * yDiff + 0.2091m : 0;
 
             newSetting.PanPercent += xDeflection;
             newSetting.TiltPercent += yDeflection;

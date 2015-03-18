@@ -36,23 +36,29 @@
             this.groupBoxCaptured = new System.Windows.Forms.GroupBox();
             this.imageBoxCaptured = new Emgu.CV.UI.ImageBox();
             this.groupBoxControls = new System.Windows.Forms.GroupBox();
+            this.panelScreen = new System.Windows.Forms.Panel();
+            this.txtScreen = new System.Windows.Forms.TextBox();
+            this.groupBoxControllers = new System.Windows.Forms.GroupBox();
+            this.chkBoxFaceTracker = new System.Windows.Forms.CheckBox();
+            this.groupBoxReticle = new System.Windows.Forms.GroupBox();
+            this.btnPaintReticle = new System.Windows.Forms.Button();
+            this.txtReticleY = new System.Windows.Forms.TextBox();
+            this.txtReticleX = new System.Windows.Forms.TextBox();
+            this.labelReticleX = new System.Windows.Forms.Label();
+            this.labelReticleY = new System.Windows.Forms.Label();
             this.groupBoxMoveTo = new System.Windows.Forms.GroupBox();
             this.btnGoto = new System.Windows.Forms.Button();
             this.txtTiltPercent = new System.Windows.Forms.TextBox();
             this.txtPanPercent = new System.Windows.Forms.TextBox();
             this.labelTilt = new System.Windows.Forms.Label();
             this.labelPan = new System.Windows.Forms.Label();
-            this.groupBoxReticle = new System.Windows.Forms.GroupBox();
-            this.txtReticleY = new System.Windows.Forms.TextBox();
-            this.txtReticleX = new System.Windows.Forms.TextBox();
-            this.labelReticleY = new System.Windows.Forms.Label();
-            this.labelReticleX = new System.Windows.Forms.Label();
-            this.btnPaintReticle = new System.Windows.Forms.Button();
             this.groupBoxCaptured.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).BeginInit();
             this.groupBoxControls.SuspendLayout();
-            this.groupBoxMoveTo.SuspendLayout();
+            this.panelScreen.SuspendLayout();
+            this.groupBoxControllers.SuspendLayout();
             this.groupBoxReticle.SuspendLayout();
+            this.groupBoxMoveTo.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxCaptured
@@ -77,6 +83,8 @@
             // 
             // groupBoxControls
             // 
+            this.groupBoxControls.Controls.Add(this.panelScreen);
+            this.groupBoxControls.Controls.Add(this.groupBoxControllers);
             this.groupBoxControls.Controls.Add(this.groupBoxReticle);
             this.groupBoxControls.Controls.Add(this.groupBoxMoveTo);
             this.groupBoxControls.Dock = System.Windows.Forms.DockStyle.Left;
@@ -86,6 +94,103 @@
             this.groupBoxControls.TabIndex = 1;
             this.groupBoxControls.TabStop = false;
             this.groupBoxControls.Text = "Controls";
+            // 
+            // panelScreen
+            // 
+            this.panelScreen.Controls.Add(this.txtScreen);
+            this.panelScreen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelScreen.Location = new System.Drawing.Point(3, 294);
+            this.panelScreen.Name = "panelScreen";
+            this.panelScreen.Size = new System.Drawing.Size(194, 142);
+            this.panelScreen.TabIndex = 7;
+            // 
+            // txtScreen
+            // 
+            this.txtScreen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtScreen.Font = new System.Drawing.Font("Courier New", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtScreen.Location = new System.Drawing.Point(0, 0);
+            this.txtScreen.Multiline = true;
+            this.txtScreen.Name = "txtScreen";
+            this.txtScreen.Size = new System.Drawing.Size(194, 142);
+            this.txtScreen.TabIndex = 0;
+            // 
+            // groupBoxControllers
+            // 
+            this.groupBoxControllers.Controls.Add(this.chkBoxFaceTracker);
+            this.groupBoxControllers.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBoxControllers.Location = new System.Drawing.Point(3, 231);
+            this.groupBoxControllers.Name = "groupBoxControllers";
+            this.groupBoxControllers.Size = new System.Drawing.Size(194, 63);
+            this.groupBoxControllers.TabIndex = 6;
+            this.groupBoxControllers.TabStop = false;
+            this.groupBoxControllers.Text = "Controllers";
+            // 
+            // chkBoxFaceTracker
+            // 
+            this.chkBoxFaceTracker.AutoSize = true;
+            this.chkBoxFaceTracker.Location = new System.Drawing.Point(8, 19);
+            this.chkBoxFaceTracker.Name = "chkBoxFaceTracker";
+            this.chkBoxFaceTracker.Size = new System.Drawing.Size(95, 17);
+            this.chkBoxFaceTracker.TabIndex = 0;
+            this.chkBoxFaceTracker.Text = "Face Tracking";
+            this.chkBoxFaceTracker.UseVisualStyleBackColor = true;
+            // 
+            // groupBoxReticle
+            // 
+            this.groupBoxReticle.Controls.Add(this.btnPaintReticle);
+            this.groupBoxReticle.Controls.Add(this.txtReticleY);
+            this.groupBoxReticle.Controls.Add(this.txtReticleX);
+            this.groupBoxReticle.Controls.Add(this.labelReticleX);
+            this.groupBoxReticle.Controls.Add(this.labelReticleY);
+            this.groupBoxReticle.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBoxReticle.Location = new System.Drawing.Point(3, 116);
+            this.groupBoxReticle.Name = "groupBoxReticle";
+            this.groupBoxReticle.Size = new System.Drawing.Size(194, 115);
+            this.groupBoxReticle.TabIndex = 5;
+            this.groupBoxReticle.TabStop = false;
+            this.groupBoxReticle.Text = "Reticle";
+            // 
+            // btnPaintReticle
+            // 
+            this.btnPaintReticle.Location = new System.Drawing.Point(45, 71);
+            this.btnPaintReticle.Name = "btnPaintReticle";
+            this.btnPaintReticle.Size = new System.Drawing.Size(84, 23);
+            this.btnPaintReticle.TabIndex = 13;
+            this.btnPaintReticle.Text = "Paint";
+            this.btnPaintReticle.UseVisualStyleBackColor = true;
+            this.btnPaintReticle.Click += new System.EventHandler(this.btnPaintReticle_Click);
+            // 
+            // txtReticleY
+            // 
+            this.txtReticleY.Location = new System.Drawing.Point(45, 48);
+            this.txtReticleY.Name = "txtReticleY";
+            this.txtReticleY.Size = new System.Drawing.Size(84, 20);
+            this.txtReticleY.TabIndex = 12;
+            // 
+            // txtReticleX
+            // 
+            this.txtReticleX.Location = new System.Drawing.Point(45, 23);
+            this.txtReticleX.Name = "txtReticleX";
+            this.txtReticleX.Size = new System.Drawing.Size(84, 20);
+            this.txtReticleX.TabIndex = 11;
+            // 
+            // labelReticleX
+            // 
+            this.labelReticleX.AutoSize = true;
+            this.labelReticleX.Location = new System.Drawing.Point(5, 26);
+            this.labelReticleX.Name = "labelReticleX";
+            this.labelReticleX.Size = new System.Drawing.Size(12, 13);
+            this.labelReticleX.TabIndex = 9;
+            this.labelReticleX.Text = "x";
+            // 
+            // labelReticleY
+            // 
+            this.labelReticleY.AutoSize = true;
+            this.labelReticleY.Location = new System.Drawing.Point(5, 51);
+            this.labelReticleY.Name = "labelReticleY";
+            this.labelReticleY.Size = new System.Drawing.Size(12, 13);
+            this.labelReticleY.TabIndex = 10;
+            this.labelReticleY.Text = "y";
             // 
             // groupBoxMoveTo
             // 
@@ -144,63 +249,6 @@
             this.labelPan.TabIndex = 4;
             this.labelPan.Text = "Pan";
             // 
-            // groupBoxReticle
-            // 
-            this.groupBoxReticle.Controls.Add(this.btnPaintReticle);
-            this.groupBoxReticle.Controls.Add(this.txtReticleY);
-            this.groupBoxReticle.Controls.Add(this.txtReticleX);
-            this.groupBoxReticle.Controls.Add(this.labelReticleX);
-            this.groupBoxReticle.Controls.Add(this.labelReticleY);
-            this.groupBoxReticle.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBoxReticle.Location = new System.Drawing.Point(3, 116);
-            this.groupBoxReticle.Name = "groupBoxReticle";
-            this.groupBoxReticle.Size = new System.Drawing.Size(194, 115);
-            this.groupBoxReticle.TabIndex = 5;
-            this.groupBoxReticle.TabStop = false;
-            this.groupBoxReticle.Text = "Reticle";
-            // 
-            // txtReticleY
-            // 
-            this.txtReticleY.Location = new System.Drawing.Point(45, 48);
-            this.txtReticleY.Name = "txtReticleY";
-            this.txtReticleY.Size = new System.Drawing.Size(84, 20);
-            this.txtReticleY.TabIndex = 12;
-            // 
-            // txtReticleX
-            // 
-            this.txtReticleX.Location = new System.Drawing.Point(45, 23);
-            this.txtReticleX.Name = "txtReticleX";
-            this.txtReticleX.Size = new System.Drawing.Size(84, 20);
-            this.txtReticleX.TabIndex = 11;
-            // 
-            // labelReticleY
-            // 
-            this.labelReticleY.AutoSize = true;
-            this.labelReticleY.Location = new System.Drawing.Point(5, 51);
-            this.labelReticleY.Name = "labelReticleY";
-            this.labelReticleY.Size = new System.Drawing.Size(12, 13);
-            this.labelReticleY.TabIndex = 10;
-            this.labelReticleY.Text = "y";
-            // 
-            // labelReticleX
-            // 
-            this.labelReticleX.AutoSize = true;
-            this.labelReticleX.Location = new System.Drawing.Point(5, 26);
-            this.labelReticleX.Name = "labelReticleX";
-            this.labelReticleX.Size = new System.Drawing.Size(12, 13);
-            this.labelReticleX.TabIndex = 9;
-            this.labelReticleX.Text = "x";
-            // 
-            // btnPaintReticle
-            // 
-            this.btnPaintReticle.Location = new System.Drawing.Point(45, 71);
-            this.btnPaintReticle.Name = "btnPaintReticle";
-            this.btnPaintReticle.Size = new System.Drawing.Size(84, 23);
-            this.btnPaintReticle.TabIndex = 13;
-            this.btnPaintReticle.Text = "Paint";
-            this.btnPaintReticle.UseVisualStyleBackColor = true;
-            this.btnPaintReticle.Click += new System.EventHandler(this.btnPaintReticle_Click);
-            // 
             // PanTiltCalibrationControl
             // 
             this.Controls.Add(this.groupBoxCaptured);
@@ -210,10 +258,14 @@
             this.groupBoxCaptured.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).EndInit();
             this.groupBoxControls.ResumeLayout(false);
-            this.groupBoxMoveTo.ResumeLayout(false);
-            this.groupBoxMoveTo.PerformLayout();
+            this.panelScreen.ResumeLayout(false);
+            this.panelScreen.PerformLayout();
+            this.groupBoxControllers.ResumeLayout(false);
+            this.groupBoxControllers.PerformLayout();
             this.groupBoxReticle.ResumeLayout(false);
             this.groupBoxReticle.PerformLayout();
+            this.groupBoxMoveTo.ResumeLayout(false);
+            this.groupBoxMoveTo.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -224,5 +276,9 @@
         private System.Windows.Forms.TextBox txtReticleX;
         private System.Windows.Forms.Label labelReticleX;
         private System.Windows.Forms.Label labelReticleY;
+        private System.Windows.Forms.GroupBox groupBoxControllers;
+        private System.Windows.Forms.CheckBox chkBoxFaceTracker;
+        private System.Windows.Forms.Panel panelScreen;
+        private System.Windows.Forms.TextBox txtScreen;
     }
 }

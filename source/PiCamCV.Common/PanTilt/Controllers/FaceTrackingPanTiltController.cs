@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Emgu.CV;
+using Emgu.CV.Structure;
 using PiCamCV.Common;
 using PiCamCV.Common.Interfaces;
 using PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies;
@@ -30,7 +31,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             _faceDetector = new FaceDetector(haarFaceFile.FullName, haarEyeFile.FullName);
         }
 
-        protected override CameraProcessOutput DoProcess(CameraProcessInput baseInput)
+        protected override CameraPanTiltProcessOutput DoProcess(CameraProcessInput baseInput)
         {
             var input = new FaceDetectorInput();
             input.Captured = baseInput.Captured;
@@ -38,7 +39,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
             var result = _faceDetector.Process(input);
 
-            Point targetPoint = CentrePoint;
+            var targetPoint = CentrePoint;
 
             if (result.Faces.Count > 0)
             {
@@ -46,11 +47,16 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
                 targetPoint = faceTarget.Region.Center();
             }
 
-            ReactToTarget(targetPoint);
+            Screen.BeginRepaint();
+            var outerResult = ReactToTarget(targetPoint);
 
-            Screen.WriteLine("Faces Detected {0}", result.Faces.Count);
+            if (input.SetCapturedImage)
+            {
+                outerResult.CapturedImage = input.Captured.ToImage<Bgr, byte>();
+            }
 
-            var outerResult = new CameraProcessOutput();
+            Screen.WriteLine("Detected Face Count={0}", result.Faces.Count);
+            
             return outerResult;
         }
     }

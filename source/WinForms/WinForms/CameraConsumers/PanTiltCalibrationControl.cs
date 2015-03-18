@@ -8,8 +8,11 @@ using System.Text;
 using System.Windows.Forms;
 using Emgu.CV;
 using Emgu.CV.Structure;
+using Kraken.Core;
 using PiCamCV.Common;
 using PiCamCV.Common.ExtensionMethods;
+using PiCamCV.Common.Interfaces;
+using PiCamCV.ConsoleApp.Runners.PanTilt;
 using PiCamCV.Interfaces;
 using PiCamCV.WinForms.ExtensionMethods;
 using RPi.Pwm;
@@ -19,6 +22,7 @@ namespace PiCamCV.WinForms.CameraConsumers
     public partial class PanTiltCalibrationControl : CameraConsumerUserControl
     {
         protected IPanTiltMechanism PanTiltMechanism { get; set; }
+        private FaceTrackingPanTiltController _faceTrackingController;
 
         public Point? Reticle { get; set; }
 
@@ -44,16 +48,21 @@ namespace PiCamCV.WinForms.CameraConsumers
 
         protected override void OnSubscribe()
         {
-            var center = CameraCapture.GetCaptureProperties().GetCenter();
+            var captureConfig = CameraCapture.GetCaptureProperties();
+            var center = captureConfig.GetCenter();
             
             txtReticleX.Text = center.X.ToString();
             txtReticleY.Text = center.Y.ToString();
 
             InitI2C();
+
+            var screen = new TextboxScreen(txtScreen);
+            _faceTrackingController = new FaceTrackingPanTiltController(PanTiltMechanism, captureConfig, screen);
         }
 
         private void InitI2C()
         {
+            Log.Info("Initialising I2C bus");
             if (PanTiltMechanism == null)
             {
                 var pwmDeviceFactory = new Pca9685DeviceFactory();
@@ -68,25 +77,37 @@ namespace PiCamCV.WinForms.CameraConsumers
             {
                 CameraCapture.Retrieve(matCaptured);
 
-                var bgraImage = matCaptured.ToImage<Bgra, byte>();
+                var bgrImage = matCaptured.ToImage<Bgr, byte>();
                 var captureConfig = CameraCapture.GetCaptureProperties();
                 var centre = captureConfig.GetCenter();
 
-                DrawReticle(bgraImage, centre, Color.Red);
+                DrawReticle(bgrImage, centre, Color.Red);
 
                 if (Reticle != null)
                 {
-                    DrawReticle(bgraImage, Reticle.Value, Color.Green);    
+                    DrawReticle(bgrImage, Reticle.Value, Color.Green);    
                 }
 
-                imageBoxCaptured.Image = bgraImage;
+                if (chkBoxFaceTracker.Enabled)
+                {
+                    var input = new CameraProcessInput();
+                    input.SetCapturedImage = true;
+                    input.Captured = matCaptured;
+                    var result = _faceTrackingController.Process(input);
+
+                    DrawReticle(bgrImage, result.Target, Color.Yellow);   
+                    
+                    NotifyStatus("Face tracking took {0}", result.Elapsed.ToHumanReadable());
+                }
+
+                imageBoxCaptured.Image = bgrImage;
             }
         }
 
-        private void DrawReticle(Image<Bgra, byte> image, Point center, Color colorIn)
+        private void DrawReticle(Image<Bgr, byte> image, Point center, Color colorIn)
         {
-            var reticleRadius = 50;
-            var color = colorIn.ToBgra();
+            const int reticleRadius = 25;
+            var color = colorIn.ToBgr();
             var topVert = new Point(center.X, center.Y - reticleRadius);
             var bottomVert = new Point(center.X, center.Y + reticleRadius);
 

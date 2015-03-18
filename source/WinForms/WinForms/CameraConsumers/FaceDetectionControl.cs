@@ -21,7 +21,6 @@ namespace PiCamCV.WinForms.UserControls
     public partial class FaceDetectionControl : CameraConsumerUserControl
     {
         private FaceDetector _faceDetector;
-        private Rectangle _lastGoodSunnies;
         private AccessoryOverlay _sunglassOverlay2;
         private AccessoryOverlay _hatOverlay1;
         
@@ -36,7 +35,6 @@ namespace PiCamCV.WinForms.UserControls
             var haarFaceFile = new FileInfo(environmentService.GetAbsolutePathFromAssemblyRelative("haarcascades/haarcascade_frontalface_default.xml"));
 
             _faceDetector = new FaceDetector(haarFaceFile.FullName, haarEyeFile.FullName);
-            _lastGoodSunnies = Rectangle.Empty;
 
             _sunglassOverlay2 = new AccessoryOverlay(environmentService.GetAbsolutePathFromAssemblyRelative("Resources/Images/sunglasses2.png"));
             _hatOverlay1 = new AccessoryOverlay(environmentService.GetAbsolutePathFromAssemblyRelative("Resources/Images/partyhat.png"));

@@ -13,7 +13,7 @@ namespace PiCamCV.ExtensionMethods
             var midHeight = rectangle.Height/2;
             var midWidth = rectangle.Width/2;
 
-            var point = new Point(rectangle.Left + midWidth, rectangle.Height + midHeight);
+            var point = new Point(rectangle.Left + midWidth, rectangle.Top + midHeight);
             return point;
         }
     }
