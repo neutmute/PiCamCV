@@ -24,12 +24,12 @@ namespace PiCamCV.WinForms.CameraConsumers
         protected IPanTiltMechanism PanTiltMechanism { get; set; }
         private FaceTrackingPanTiltController _faceTrackingController;
 
-        public Point? Reticle { get; set; }
+        public Point? UserReticle { get; set; }
 
         public PanTiltCalibrationControl()
         {
             InitializeComponent();
-            Reticle = null;
+            UserReticle = null;
         }
 
         private void btnGoto_Click(object sender, EventArgs e)
@@ -83,9 +83,9 @@ namespace PiCamCV.WinForms.CameraConsumers
 
                 DrawReticle(bgrImage, centre, Color.Red);
 
-                if (Reticle != null)
+                if (UserReticle != null)
                 {
-                    DrawReticle(bgrImage, Reticle.Value, Color.Green);    
+                    DrawReticle(bgrImage, UserReticle.Value, Color.Green);    
                 }
 
                 if (chkBoxFaceTracker.Enabled)
@@ -94,6 +94,11 @@ namespace PiCamCV.WinForms.CameraConsumers
                     input.SetCapturedImage = true;
                     input.Captured = matCaptured;
                     var result = _faceTrackingController.Process(input);
+
+                    foreach (var face in result.Faces)
+                    {
+                        bgrImage.Draw(face.Region, new Bgr(Color.Yellow), 2);
+                    }
 
                     DrawReticle(bgrImage, result.Target, Color.Yellow);   
                     
@@ -130,11 +135,11 @@ namespace PiCamCV.WinForms.CameraConsumers
 
             if (xOK && yOK)
             {
-                Reticle = new Point(xCoord, yCoord);
+                UserReticle = new Point(xCoord, yCoord);
             }
             else
             {
-                Reticle = null;
+                UserReticle = null;
             }
         }
     }

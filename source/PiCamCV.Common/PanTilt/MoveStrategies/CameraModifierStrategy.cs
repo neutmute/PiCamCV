@@ -45,16 +45,22 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies
             newSetting.PanPercent += xDeflection;
             newSetting.TiltPercent += yDeflection;
 
-            var message = string.Format(
-                "Target={0}, Objective={1}. Moving {2} -> {3}"
+            var message1 = string.Format(
+                "Target={0}, Objective={1}"
                 , _target
                 , _objective
+                );
+
+            var message2 = string.Format(
+                "Moving {0} -> {1}"
                 , currentSetting
                 , newSetting
                 );
 
-            _screen.WriteLine(message);
-            Log.Info(message);
+            _screen.WriteLine(message1);
+            _screen.WriteLine(message2);
+            Log.Info(message1);
+            Log.Info(message2);
 
             return newSetting;
         }

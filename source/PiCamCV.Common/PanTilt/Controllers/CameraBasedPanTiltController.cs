@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using Emgu.CV.Structure;
@@ -10,6 +11,16 @@ using PiCamCV.Interfaces;
 
 namespace PiCamCV.ConsoleApp.Runners.PanTilt
 {
+    public class FaceTrackingPanTiltOutput : CameraPanTiltProcessOutput
+    {
+        public List<Face> Faces { get; private set; }
+
+        public FaceTrackingPanTiltOutput()
+        {
+            Faces = new List<Face>();
+        }
+    }
+
     public class CameraPanTiltProcessOutput : CameraProcessOutput
     {
         public PanTiltSetting PanTiltPrior { get; set; }
@@ -29,10 +40,12 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         
     }
 
-    public abstract class CameraBasedPanTiltController : 
+    public abstract class CameraBasedPanTiltController<TOutput> : 
         PanTiltController
         , IController
-        , ICameraProcessor<CameraProcessInput, CameraPanTiltProcessOutput>
+        , ICameraProcessor<CameraProcessInput, TOutput>
+
+        where TOutput : CameraPanTiltProcessOutput, new()
     {
         protected CaptureConfig CaptureConfig { get; private set; }
 
@@ -53,9 +66,9 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         }
 
 
-        protected CameraPanTiltProcessOutput ReactToTarget(Point targetPoint)
+        protected TOutput ReactToTarget(Point targetPoint)
         {
-            var output = new CameraPanTiltProcessOutput();
+            var output = new TOutput();
             var moveStrategy = new CameraModifierStrategy(CaptureConfig, Screen, targetPoint, CentrePoint);
             var newPosition = moveStrategy.CalculateNewSetting(CurrentSetting);
 
@@ -75,7 +88,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             return output;
         }
 
-        public CameraPanTiltProcessOutput Process(CameraProcessInput input)
+        public TOutput Process(CameraProcessInput input)
         {
             var stopWatch = Stopwatch.StartNew();
             var result = DoProcess(input);
@@ -88,6 +101,6 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             result.Elapsed = stopWatch.Elapsed;
             return result;
         }
-        protected abstract CameraPanTiltProcessOutput DoProcess(CameraProcessInput input);
+        protected abstract TOutput DoProcess(CameraProcessInput input);
     }
 }

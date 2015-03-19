@@ -65,9 +65,9 @@
             // 
             this.groupBoxCaptured.Controls.Add(this.imageBoxCaptured);
             this.groupBoxCaptured.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxCaptured.Location = new System.Drawing.Point(200, 0);
+            this.groupBoxCaptured.Location = new System.Drawing.Point(221, 0);
             this.groupBoxCaptured.Name = "groupBoxCaptured";
-            this.groupBoxCaptured.Size = new System.Drawing.Size(428, 439);
+            this.groupBoxCaptured.Size = new System.Drawing.Size(407, 439);
             this.groupBoxCaptured.TabIndex = 2;
             this.groupBoxCaptured.TabStop = false;
             this.groupBoxCaptured.Text = "Captured";
@@ -77,7 +77,7 @@
             this.imageBoxCaptured.Dock = System.Windows.Forms.DockStyle.Fill;
             this.imageBoxCaptured.Location = new System.Drawing.Point(3, 16);
             this.imageBoxCaptured.Name = "imageBoxCaptured";
-            this.imageBoxCaptured.Size = new System.Drawing.Size(422, 420);
+            this.imageBoxCaptured.Size = new System.Drawing.Size(401, 420);
             this.imageBoxCaptured.TabIndex = 4;
             this.imageBoxCaptured.TabStop = false;
             // 
@@ -90,7 +90,7 @@
             this.groupBoxControls.Dock = System.Windows.Forms.DockStyle.Left;
             this.groupBoxControls.Location = new System.Drawing.Point(0, 0);
             this.groupBoxControls.Name = "groupBoxControls";
-            this.groupBoxControls.Size = new System.Drawing.Size(200, 439);
+            this.groupBoxControls.Size = new System.Drawing.Size(221, 439);
             this.groupBoxControls.TabIndex = 1;
             this.groupBoxControls.TabStop = false;
             this.groupBoxControls.Text = "Controls";
@@ -101,17 +101,17 @@
             this.panelScreen.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelScreen.Location = new System.Drawing.Point(3, 294);
             this.panelScreen.Name = "panelScreen";
-            this.panelScreen.Size = new System.Drawing.Size(194, 142);
+            this.panelScreen.Size = new System.Drawing.Size(215, 142);
             this.panelScreen.TabIndex = 7;
             // 
             // txtScreen
             // 
             this.txtScreen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtScreen.Font = new System.Drawing.Font("Courier New", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtScreen.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtScreen.Location = new System.Drawing.Point(0, 0);
             this.txtScreen.Multiline = true;
             this.txtScreen.Name = "txtScreen";
-            this.txtScreen.Size = new System.Drawing.Size(194, 142);
+            this.txtScreen.Size = new System.Drawing.Size(215, 142);
             this.txtScreen.TabIndex = 0;
             // 
             // groupBoxControllers
@@ -120,7 +120,7 @@
             this.groupBoxControllers.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBoxControllers.Location = new System.Drawing.Point(3, 231);
             this.groupBoxControllers.Name = "groupBoxControllers";
-            this.groupBoxControllers.Size = new System.Drawing.Size(194, 63);
+            this.groupBoxControllers.Size = new System.Drawing.Size(215, 63);
             this.groupBoxControllers.TabIndex = 6;
             this.groupBoxControllers.TabStop = false;
             this.groupBoxControllers.Text = "Controllers";
@@ -145,7 +145,7 @@
             this.groupBoxReticle.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBoxReticle.Location = new System.Drawing.Point(3, 116);
             this.groupBoxReticle.Name = "groupBoxReticle";
-            this.groupBoxReticle.Size = new System.Drawing.Size(194, 115);
+            this.groupBoxReticle.Size = new System.Drawing.Size(215, 115);
             this.groupBoxReticle.TabIndex = 5;
             this.groupBoxReticle.TabStop = false;
             this.groupBoxReticle.Text = "Reticle";
@@ -202,7 +202,7 @@
             this.groupBoxMoveTo.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBoxMoveTo.Location = new System.Drawing.Point(3, 16);
             this.groupBoxMoveTo.Name = "groupBoxMoveTo";
-            this.groupBoxMoveTo.Size = new System.Drawing.Size(194, 100);
+            this.groupBoxMoveTo.Size = new System.Drawing.Size(215, 100);
             this.groupBoxMoveTo.TabIndex = 4;
             this.groupBoxMoveTo.TabStop = false;
             this.groupBoxMoveTo.Text = "Goto";

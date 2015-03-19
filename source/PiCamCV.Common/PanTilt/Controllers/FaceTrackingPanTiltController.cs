@@ -18,7 +18,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
     /// <summary>
     /// sudo mono picamcv.con.exe -m=pantiltface
     /// </summary>
-    public class FaceTrackingPanTiltController : CameraBasedPanTiltController
+    public class FaceTrackingPanTiltController : CameraBasedPanTiltController<FaceTrackingPanTiltOutput>
     {
         private readonly FaceDetector _faceDetector;
         public FaceTrackingPanTiltController(IPanTiltMechanism panTiltMech, CaptureConfig captureConfig, IScreen screen)
@@ -31,7 +31,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             _faceDetector = new FaceDetector(haarFaceFile.FullName, haarEyeFile.FullName);
         }
 
-        protected override CameraPanTiltProcessOutput DoProcess(CameraProcessInput baseInput)
+        protected override FaceTrackingPanTiltOutput DoProcess(CameraProcessInput baseInput)
         {
             var input = new FaceDetectorInput();
             input.Captured = baseInput.Captured;
@@ -49,6 +49,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
             Screen.BeginRepaint();
             var outerResult = ReactToTarget(targetPoint);
+            outerResult.Faces.AddRange(result.Faces);
 
             if (input.SetCapturedImage)
             {
