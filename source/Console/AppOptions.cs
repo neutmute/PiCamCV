@@ -83,17 +83,15 @@ namespace PiCamCV.ConsoleApp
 
         private void ReadColorSettings()
         {
-            var appData = ExecutionEnvironment.GetApplicationMetadata();
-            var settingsFilename = Path.Combine(appData.ExeFolder, "colordetectsettings.xml");
-            var colorSettingsFile = new FileInfo(settingsFilename);
-            if (colorSettingsFile.Exists)
+            var repo = new ColourSettingsRepository();
+            if (repo.IsPresent)
             {
-                ColourSettings = Kelvin<ColourDetectSettings>.FromXmlFile(settingsFilename);
+                ColourSettings = repo.Read();
                 Log.Info(m => m("Color detection settings found: {0}", ColourSettings));
             }
             else
             {
-                Log.Info(m => m("No color detection settings found at '{0}'", settingsFilename));
+                Log.Info(m => m("No color detection settings found"));
             }
         }
 

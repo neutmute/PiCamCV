@@ -23,6 +23,8 @@ namespace PiCamCV.WinForms.CameraConsumers
     {
         protected IPanTiltMechanism PanTiltMechanism { get; set; }
         private FaceTrackingPanTiltController _faceTrackingController;
+        private ColourTrackingPanTiltController _colourTrackingController;
+        private readonly IColourSettingsRepository _colourSettingsRepo;
 
         public Point? UserReticle { get; set; }
 
@@ -30,6 +32,7 @@ namespace PiCamCV.WinForms.CameraConsumers
         {
             InitializeComponent();
             UserReticle = null;
+            _colourSettingsRepo = new ColourSettingsRepository();
         }
 
         private void btnGoto_Click(object sender, EventArgs e)
@@ -58,6 +61,8 @@ namespace PiCamCV.WinForms.CameraConsumers
 
             var screen = new TextboxScreen(txtScreen);
             _faceTrackingController = new FaceTrackingPanTiltController(PanTiltMechanism, captureConfig, screen);
+            _colourTrackingController = new ColourTrackingPanTiltController(PanTiltMechanism, captureConfig, screen);
+            _colourTrackingController.Settings = _colourSettingsRepo.Read();
         }
 
         private void InitI2C()

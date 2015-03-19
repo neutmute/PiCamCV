@@ -52,6 +52,7 @@
             this.txtPanPercent = new System.Windows.Forms.TextBox();
             this.labelTilt = new System.Windows.Forms.Label();
             this.labelPan = new System.Windows.Forms.Label();
+            this.chkBoxColourTracking = new System.Windows.Forms.CheckBox();
             this.groupBoxCaptured.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).BeginInit();
             this.groupBoxControls.SuspendLayout();
@@ -115,6 +116,7 @@
             // 
             // groupBoxControllers
             // 
+            this.groupBoxControllers.Controls.Add(this.chkBoxColourTracking);
             this.groupBoxControllers.Controls.Add(this.chkBoxFaceTracker);
             this.groupBoxControllers.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBoxControllers.Location = new System.Drawing.Point(3, 231);
@@ -127,7 +129,7 @@
             // chkBoxFaceTracker
             // 
             this.chkBoxFaceTracker.AutoSize = true;
-            this.chkBoxFaceTracker.Location = new System.Drawing.Point(8, 19);
+            this.chkBoxFaceTracker.Location = new System.Drawing.Point(8, 40);
             this.chkBoxFaceTracker.Name = "chkBoxFaceTracker";
             this.chkBoxFaceTracker.Size = new System.Drawing.Size(95, 17);
             this.chkBoxFaceTracker.TabIndex = 0;
@@ -248,6 +250,16 @@
             this.labelPan.TabIndex = 4;
             this.labelPan.Text = "Pan";
             // 
+            // chkBoxColourTracking
+            // 
+            this.chkBoxColourTracking.AutoSize = true;
+            this.chkBoxColourTracking.Location = new System.Drawing.Point(8, 19);
+            this.chkBoxColourTracking.Name = "chkBoxColourTracking";
+            this.chkBoxColourTracking.Size = new System.Drawing.Size(101, 17);
+            this.chkBoxColourTracking.TabIndex = 1;
+            this.chkBoxColourTracking.Text = "Colour Tracking";
+            this.chkBoxColourTracking.UseVisualStyleBackColor = true;
+            // 
             // PanTiltControl
             // 
             this.Controls.Add(this.groupBoxCaptured);
@@ -279,5 +291,6 @@
         private System.Windows.Forms.CheckBox chkBoxFaceTracker;
         private System.Windows.Forms.Panel panelScreen;
         private System.Windows.Forms.TextBox txtScreen;
+        private System.Windows.Forms.CheckBox chkBoxColourTracking;
     }
 }

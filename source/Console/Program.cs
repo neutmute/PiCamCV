@@ -92,13 +92,11 @@ namespace PiCamCV.ConsoleApp
                     break;
 
                 case Mode.haar:
-                    
                     var relativePath = string.Format(@"haarcascades{0}haarcascade_frontalface_default.xml", Path.DirectorySeparatorChar);
                     var cascadeFilename = Path.Combine(appData.ExeFolder, relativePath);
                     var cascadeContent = File.ReadAllText(cascadeFilename);
                     runner = new CascadeRunner(capture, cascadeContent);
                     break;
-
 
                 case Mode.servosort:
                     runner = new ServoSorter(capture, options);
@@ -122,7 +120,6 @@ namespace PiCamCV.ConsoleApp
                     }
                     runner = new CameraBasedPanTiltRunner(panTiltMech, capture, controllerC, screen);
                     break;
-                    
 
                 default:
                     throw KrakenException.Create("Option mode {0} needs wiring up", options.Mode);

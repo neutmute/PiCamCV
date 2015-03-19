@@ -21,16 +21,18 @@ namespace PiCamCV.WinForms.CameraConsumers
     public partial class ColourDetectionControl : CameraConsumerUserControl
     {
         private readonly ColourDetector _colorDetector;
+        private readonly IColourSettingsRepository _colorSettingsRepo;
         private bool _suppressUpdates;
         private bool _captureResized;
 
-        private ColourDetectorInput _detectorInput;
+        private readonly ColourDetectorInput _detectorInput;
 
         public ColourDetectionControl()
         {
             InitializeComponent();
             _colorDetector = new ColourDetector();
             _detectorInput = new ColourDetectorInput();
+            _colorSettingsRepo = new ColourSettingsRepository();
         }
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
@@ -230,19 +232,7 @@ namespace PiCamCV.WinForms.CameraConsumers
 
             _suppressUpdates = false;
         }
-
-        //private void UpdateRoiSlidersFromSettings()
-        //{
-        //    _suppressUpdates = true;
-
-        //    var settings = _detectorInput.Settings;
-
-        //    sliderMomentAreaMin.Value = (int)settings.MomentArea.Min;
-        //    sliderMomentAreaMax.Value = (int)settings.MomentArea.Max;
-
-        //    _suppressUpdates = false;
-        //}
-
+        
         private void UpdateMomentSettingsFromControls()
         {
             if (!_suppressUpdates)
@@ -294,40 +284,30 @@ namespace PiCamCV.WinForms.CameraConsumers
 
         }
 
-        private FileInfo GetSettingsFileInfo()
-        {
-            var appData = ExecutionEnvironment.GetApplicationMetadata();
-            var fileName = Path.Combine(appData.ExeFolder, "colordetectsettings.xml");
-            return new FileInfo(fileName);
-        }
-
         private void btnWriteSettingsForConsole_Click(object sender, EventArgs e)
         {
-            var fileinfo = GetSettingsFileInfo();
-            Kelvin<ColourDetectSettings>.ToXmlFile(GetColourDetectSettings(), fileinfo.FullName);
-            NotifyStatus("Wrote settings to '{0}'", fileinfo.FullName);
+            _colorSettingsRepo.Write(GetColourDetectSettings());
+            NotifyStatus("Wrote settings to respository");
         }
 
         private void btnReadSettings_Click(object sender, EventArgs e)
         {
-            var fileinfo = GetSettingsFileInfo();
-            if (fileinfo.Exists)
+            if (_colorSettingsRepo.IsPresent)
             {
-                _detectorInput.Settings = Kelvin<ColourDetectSettings>.FromXmlFile(fileinfo.FullName);
+                _detectorInput.Settings = _colorSettingsRepo.Read();
                 UpdateMomentSlidersFromSettings();
                 UpdateThresholdSlidersFromSettings();
-                NotifyStatus("Read settings from '{0}'", fileinfo.FullName);
+                NotifyStatus("Read settings from repository");
             }
             else
             {
-                Log.Info(m =>m("{0} not found", fileinfo.FullName));
+                Log.Info("Settings not found");
             }
         }
         
         private void imageBoxCaptured_OnZoomScaleChange(object sender, EventArgs e)
         {
             ResizeImageControls(true);
-            //imageBoxFiltered.ZoomScale = imageBoxCaptured.ZoomScale;
         }
     }
 }
