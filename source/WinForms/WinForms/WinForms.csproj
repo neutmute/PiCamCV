@@ -41,6 +41,9 @@
     <DefineConstants>TRACE;DEBUG;UNIX</DefineConstants>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>pi.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Common.Logging">
       <HintPath>..\..\..\packages\Common.Logging.2.2.0\lib\net40\Common.Logging.dll</HintPath>
@@ -250,6 +253,7 @@
       <Link>haarcascades\haarcascade_lego_batman5.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="pi.ico" />
     <Content Include="Resources\Images\partyhat.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

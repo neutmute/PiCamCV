@@ -58,6 +58,9 @@ namespace PiCamCV.Common
 
     public class ColourDetectorProcessOutput : CameraProcessOutput
     {
+        /// <summary>
+        /// The image that has had the filters applied before moments detected
+        /// </summary>
         public Image<Gray, byte> ThresholdImage { get;  set; }
 
         public bool IsDetected { get; set; }

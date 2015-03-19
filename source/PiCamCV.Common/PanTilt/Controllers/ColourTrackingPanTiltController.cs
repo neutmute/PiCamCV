@@ -27,6 +27,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             colourDetectorInput.SetCapturedImage = input.SetCapturedImage;
             colourDetectorInput.Settings = Settings;
 
+            Screen.BeginRepaint();
             var colourDetectorOutput = _colourDetector.Process(colourDetectorInput);
 
             var targetPoint = CentrePoint;
@@ -35,6 +36,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
                 targetPoint = colourDetectorOutput.CentralPoint.ToPoint();
             }
             var output = ReactToTarget(targetPoint);
+            output.IsDetected = colourDetectorOutput.IsDetected;
             output.MomentArea = colourDetectorOutput.MomentArea;
             return output;
         }

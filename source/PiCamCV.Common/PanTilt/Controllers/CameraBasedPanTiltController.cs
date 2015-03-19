@@ -13,6 +13,8 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 {
     public class ColourTrackingPanTiltOutput : CameraPanTiltProcessOutput
     {
+
+        public bool IsDetected { get; set; }
         public double MomentArea { get; set; }
 
     }

@@ -90,16 +90,30 @@ namespace PiCamCV.WinForms.CameraConsumers
 
                 if (UserReticle != null)
                 {
-                    DrawReticle(bgrImage, UserReticle.Value, Color.Green);    
+                    DrawReticle(bgrImage, UserReticle.Value, Color.Green);
+                }
+                
+                var input = new CameraProcessInput();
+                input.SetCapturedImage = true;
+                input.Captured = matCaptured;
+
+                Action<int, string> writeTextToImage = (height, message) => bgrImage.Draw(message, new Point(0, height), Emgu.CV.CvEnum.FontFace.HersheySimplex, 0.4, new Bgr(Color.White));
+                
+                if (chkBoxColourTracking.Checked)
+                {
+                    var result = _colourTrackingController.Process(input);
+                    if (result.IsDetected)
+                    {
+                        DrawReticle(bgrImage, result.Target, Color.Yellow);
+                    }
+                    writeTextToImage(captureConfig.Height - 10, "Colour Tracking");
+                    NotifyStatus("Colour tracking took {0}", result.Elapsed.ToHumanReadable());
                 }
 
-                if (chkBoxFaceTracker.Enabled)
+                if (chkBoxFaceTracker.Checked)
                 {
-                    var input = new CameraProcessInput();
-                    input.SetCapturedImage = true;
-                    input.Captured = matCaptured;
+                    writeTextToImage(captureConfig.Height - 50, "Face Tracking");
                     var result = _faceTrackingController.Process(input);
-
                     if (result.IsDetected)
                     {
                         foreach (var face in result.Faces)

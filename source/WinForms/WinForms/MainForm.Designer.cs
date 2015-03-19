@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.panelTop = new System.Windows.Forms.Panel();
             this.groupBoxRealTime = new System.Windows.Forms.GroupBox();
             this.btnFlipVertical = new System.Windows.Forms.Button();
@@ -378,6 +379,7 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tabControlMain);
             this.Controls.Add(this.panelTop);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "PiCamCV WinForms";
             this.Load += new System.EventHandler(this.MainForm_Load);
