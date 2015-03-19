@@ -94,7 +94,7 @@ namespace WinForms
             var colourDetection = new ColourDetectionControl();
             var haarDetection = new HaarCascadeControl();
             var shapeDetection = new ShapeDetectionControl();
-            var panTiltCalibration = new PanTiltCalibrationControl();
+            var panTiltCalibration = new PanTiltControl();
 
             _consumers = new List<CameraConsumerUserControl>();
             _consumers.Add(basicCapture);

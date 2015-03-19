@@ -110,9 +110,19 @@ namespace PiCamCV.ConsoleApp
                     break;
 
                 case Mode.pantiltface:
-                    var controller = new FaceTrackingPanTiltController(panTiltMech, captureConfig, screen);
-                    runner = new CameraBasedPanTiltRunner(panTiltMech, capture, controller, screen);
+                    var controllerF = new FaceTrackingPanTiltController(panTiltMech, captureConfig, screen);
+                    runner = new CameraBasedPanTiltRunner(panTiltMech, capture, controllerF, screen);
                     break;
+
+                case Mode.pantiltcolour:
+                    var controllerC = new ColourTrackingPanTiltController(panTiltMech, captureConfig, screen);
+                    if (options.HasColourSettings)
+                    {
+                        controllerC.Settings = options.ColourSettings;
+                    }
+                    runner = new CameraBasedPanTiltRunner(panTiltMech, capture, controllerC, screen);
+                    break;
+                    
 
                 default:
                     throw KrakenException.Create("Option mode {0} needs wiring up", options.Mode);

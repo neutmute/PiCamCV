@@ -103,7 +103,7 @@
             this.btnReadSettings.Name = "btnReadSettings";
             this.btnReadSettings.Size = new System.Drawing.Size(179, 23);
             this.btnReadSettings.TabIndex = 1;
-            this.btnReadSettings.Text = "Read settings for Console";
+            this.btnReadSettings.Text = "Read settings from disk";
             this.btnReadSettings.UseVisualStyleBackColor = true;
             this.btnReadSettings.Click += new System.EventHandler(this.btnReadSettings_Click);
             // 
@@ -113,7 +113,7 @@
             this.btnWriteSettingsForConsole.Name = "btnWriteSettingsForConsole";
             this.btnWriteSettingsForConsole.Size = new System.Drawing.Size(179, 23);
             this.btnWriteSettingsForConsole.TabIndex = 0;
-            this.btnWriteSettingsForConsole.Text = "Write settings for Console";
+            this.btnWriteSettingsForConsole.Text = "Write settings to disk";
             this.btnWriteSettingsForConsole.UseVisualStyleBackColor = true;
             this.btnWriteSettingsForConsole.Click += new System.EventHandler(this.btnWriteSettingsForConsole_Click);
             // 

@@ -11,7 +11,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 {
     public class CameraBasedPanTiltRunner : PanTiltController, IRunner
     {
-        private readonly CameraBasedPanTiltController<FaceTrackingPanTiltOutput> _controller;
+        private readonly IController<CameraPanTiltProcessOutput> _controller;
         protected bool Stopping { get; set; }
         protected FpsTracker FpsTracker {get;private set;}
         public ICaptureGrab CameraCapture { get; set; }
@@ -21,7 +21,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         public CameraBasedPanTiltRunner(
             IPanTiltMechanism panTiltMech
             , ICaptureGrab captureGrabber
-            , CameraBasedPanTiltController<FaceTrackingPanTiltOutput> controller
+            , IController<CameraPanTiltProcessOutput> controller
             , IScreen screen)
             : base(panTiltMech, screen)
         {

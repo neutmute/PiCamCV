@@ -331,7 +331,7 @@
             this.tabPagePanTiltCalibration.Padding = new System.Windows.Forms.Padding(3);
             this.tabPagePanTiltCalibration.Size = new System.Drawing.Size(1184, 435);
             this.tabPagePanTiltCalibration.TabIndex = 5;
-            this.tabPagePanTiltCalibration.Text = "Pan Tilt Calibration";
+            this.tabPagePanTiltCalibration.Text = "Pan Tilt";
             this.tabPagePanTiltCalibration.UseVisualStyleBackColor = true;
             // 
             // statusStrip1

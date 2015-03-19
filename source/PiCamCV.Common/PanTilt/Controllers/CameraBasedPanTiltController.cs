@@ -11,9 +11,19 @@ using PiCamCV.Interfaces;
 
 namespace PiCamCV.ConsoleApp.Runners.PanTilt
 {
+    public class ColourTrackingPanTiltOutput : CameraPanTiltProcessOutput
+    {
+        public double MomentArea { get; set; }
+
+    }
     public class FaceTrackingPanTiltOutput : CameraPanTiltProcessOutput
     {
         public List<Face> Faces { get; private set; }
+
+        public bool IsDetected
+        {
+            get { return Faces.Count > 0; }
+        }
 
         public FaceTrackingPanTiltOutput()
         {
@@ -35,14 +45,14 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         }
     }
 
-    public interface IController
+    public interface IController<out TOutput> where TOutput : CameraPanTiltProcessOutput, new()
     {
-        
+        TOutput Process(CameraProcessInput input);
     }
 
     public abstract class CameraBasedPanTiltController<TOutput> : 
         PanTiltController
-        , IController
+        , IController<TOutput>
         , ICameraProcessor<CameraProcessInput, TOutput>
 
         where TOutput : CameraPanTiltProcessOutput, new()

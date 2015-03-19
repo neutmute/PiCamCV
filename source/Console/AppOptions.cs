@@ -20,6 +20,7 @@ namespace PiCamCV.ConsoleApp
         servosort,
         pantiltjoy,
         pantiltface,
+        pantiltcolour,
         noop
     }
 

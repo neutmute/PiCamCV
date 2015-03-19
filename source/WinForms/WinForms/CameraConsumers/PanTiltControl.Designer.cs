@@ -1,6 +1,6 @@
 ﻿namespace PiCamCV.WinForms.CameraConsumers
 {
-    partial class PanTiltCalibrationControl
+    partial class PanTiltControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -93,7 +93,6 @@
             this.groupBoxControls.Size = new System.Drawing.Size(221, 439);
             this.groupBoxControls.TabIndex = 1;
             this.groupBoxControls.TabStop = false;
-            this.groupBoxControls.Text = "Controls";
             // 
             // panelScreen
             // 
@@ -148,7 +147,7 @@
             this.groupBoxReticle.Size = new System.Drawing.Size(215, 115);
             this.groupBoxReticle.TabIndex = 5;
             this.groupBoxReticle.TabStop = false;
-            this.groupBoxReticle.Text = "Reticle";
+            this.groupBoxReticle.Text = "Calibration Reticle";
             // 
             // btnPaintReticle
             // 
@@ -249,11 +248,11 @@
             this.labelPan.TabIndex = 4;
             this.labelPan.Text = "Pan";
             // 
-            // PanTiltCalibrationControl
+            // PanTiltControl
             // 
             this.Controls.Add(this.groupBoxCaptured);
             this.Controls.Add(this.groupBoxControls);
-            this.Name = "PanTiltCalibrationControl";
+            this.Name = "PanTiltControl";
             this.Size = new System.Drawing.Size(628, 439);
             this.groupBoxCaptured.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).EndInit();

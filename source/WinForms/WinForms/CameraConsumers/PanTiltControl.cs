@@ -19,14 +19,14 @@ using RPi.Pwm;
 
 namespace PiCamCV.WinForms.CameraConsumers
 {
-    public partial class PanTiltCalibrationControl : CameraConsumerUserControl
+    public partial class PanTiltControl : CameraConsumerUserControl
     {
         protected IPanTiltMechanism PanTiltMechanism { get; set; }
         private FaceTrackingPanTiltController _faceTrackingController;
 
         public Point? UserReticle { get; set; }
 
-        public PanTiltCalibrationControl()
+        public PanTiltControl()
         {
             InitializeComponent();
             UserReticle = null;
@@ -95,13 +95,16 @@ namespace PiCamCV.WinForms.CameraConsumers
                     input.Captured = matCaptured;
                     var result = _faceTrackingController.Process(input);
 
-                    foreach (var face in result.Faces)
+                    if (result.IsDetected)
                     {
-                        bgrImage.Draw(face.Region, new Bgr(Color.Yellow), 2);
+                        foreach (var face in result.Faces)
+                        {
+                            bgrImage.Draw(face.Region, new Bgr(Color.Yellow), 2);
+                        }
+
+                        DrawReticle(bgrImage, result.Target, Color.Yellow);
                     }
 
-                    DrawReticle(bgrImage, result.Target, Color.Yellow);   
-                    
                     NotifyStatus("Face tracking took {0}", result.Elapsed.ToHumanReadable());
                 }
 
