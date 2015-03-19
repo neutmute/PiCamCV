@@ -43,7 +43,7 @@ namespace PiCamCV.ConsoleApp
             CapturePi.DoMatMagic("CreateCapture");
 
             var noCaptureGrabs = new[] { Mode.simple, Mode.pantiltjoy };
-            var i2cRequired = new[] { Mode.pantiltface, Mode.pantiltjoy };
+            var i2cRequired = new[] { Mode.pantiltface, Mode.pantiltjoy ,Mode.pantiltcolour };
             CaptureConfig captureConfig = null;
             if (!noCaptureGrabs.Contains(options.Mode))
             {
@@ -53,7 +53,7 @@ namespace PiCamCV.ConsoleApp
                     request.Device = CaptureDevice.Pi;
                 }
 
-                request.Config = new CaptureConfig { Width = 128, Height = 96, Framerate = 10, Monochrome = true };
+                request.Config = new CaptureConfig { Width = 256, Height = 192, Framerate = 10, Monochrome = false };
 
                 capture = CaptureFactory.GetCapture(request);
                 captureConfig = capture.GetCaptureProperties();
@@ -117,6 +117,10 @@ namespace PiCamCV.ConsoleApp
                     if (options.HasColourSettings)
                     {
                         controllerC.Settings = options.ColourSettings;
+                    }
+                    else
+                    {
+                        throw KrakenException.Create("Colour settings not found");
                     }
                     runner = new CameraBasedPanTiltRunner(panTiltMech, capture, controllerC, screen);
                     break;

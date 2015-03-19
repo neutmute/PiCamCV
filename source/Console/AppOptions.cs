@@ -87,6 +87,7 @@ namespace PiCamCV.ConsoleApp
             if (repo.IsPresent)
             {
                 ColourSettings = repo.Read();
+                HasColourSettings = true;
                 Log.Info(m => m("Color detection settings found: {0}", ColourSettings));
             }
             else
