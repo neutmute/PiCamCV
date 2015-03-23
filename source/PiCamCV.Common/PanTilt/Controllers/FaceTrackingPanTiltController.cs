@@ -15,14 +15,29 @@ using PiCamCV.Interfaces;
 
 namespace PiCamCV.ConsoleApp.Runners.PanTilt
 {
+    public class FaceTrackingPanTiltOutput : CameraPanTiltProcessOutput
+    {
+        public List<Face> Faces { get; private set; }
+
+        public bool IsDetected
+        {
+            get { return Faces.Count > 0; }
+        }
+
+        public FaceTrackingPanTiltOutput()
+        {
+            Faces = new List<Face>();
+        }
+    }
+
     /// <summary>
     /// sudo mono picamcv.con.exe -m=pantiltface
     /// </summary>
     public class FaceTrackingPanTiltController : CameraBasedPanTiltController<FaceTrackingPanTiltOutput>
     {
         private readonly FaceDetector _faceDetector;
-        public FaceTrackingPanTiltController(IPanTiltMechanism panTiltMech, CaptureConfig captureConfig, IScreen screen)
-            : base(panTiltMech, captureConfig, screen)
+        public FaceTrackingPanTiltController(IPanTiltMechanism panTiltMech, CaptureConfig captureConfig)
+            : base(panTiltMech, captureConfig)
         {
             var environmentService = new EnvironmentService();
             var haarEyeFile = new FileInfo(environmentService.GetAbsolutePathFromAssemblyRelative("haarcascades/haarcascade_eye.xml"));
@@ -47,7 +62,6 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
                 targetPoint = faceTarget.Region.Center();
             }
 
-            Screen.BeginRepaint();
             var outerResult = ReactToTarget(targetPoint);
             outerResult.Faces.AddRange(result.Faces);
 
@@ -55,8 +69,6 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             {
                 outerResult.CapturedImage = input.Captured.ToImage<Bgr, byte>();
             }
-
-            Screen.WriteLine("Detected Face Count={0}", result.Faces.Count);
             
             return outerResult;
         }

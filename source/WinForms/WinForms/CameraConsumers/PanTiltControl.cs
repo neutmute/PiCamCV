@@ -25,6 +25,8 @@ namespace PiCamCV.WinForms.CameraConsumers
         private FaceTrackingPanTiltController _faceTrackingController;
         private ColourTrackingPanTiltController _colourTrackingController;
         private readonly IColourSettingsRepository _colourSettingsRepo;
+        private Point _centre;
+        private CaptureConfig _captureConfig;
 
         public Point? UserReticle { get; set; }
 
@@ -51,17 +53,17 @@ namespace PiCamCV.WinForms.CameraConsumers
 
         protected override void OnSubscribe()
         {
-            var captureConfig = CameraCapture.GetCaptureProperties();
-            var center = captureConfig.GetCenter();
-            
-            txtReticleX.Text = center.X.ToString();
-            txtReticleY.Text = center.Y.ToString();
+            _captureConfig = CameraCapture.GetCaptureProperties();
+            _centre = _captureConfig.GetCenter();
+
+            txtReticleX.Text = _centre.X.ToString();
+            txtReticleY.Text = _centre.Y.ToString();
 
             InitI2C();
 
             var screen = new TextboxScreen(txtScreen);
-            _faceTrackingController = new FaceTrackingPanTiltController(PanTiltMechanism, captureConfig, screen);
-            _colourTrackingController = new ColourTrackingPanTiltController(PanTiltMechanism, captureConfig, screen);
+            _faceTrackingController = new FaceTrackingPanTiltController(PanTiltMechanism, _captureConfig);
+            _colourTrackingController = new ColourTrackingPanTiltController(PanTiltMechanism, _captureConfig);
             _colourTrackingController.Settings = _colourSettingsRepo.Read();
         }
 
@@ -76,6 +78,11 @@ namespace PiCamCV.WinForms.CameraConsumers
             }
         }
 
+        private void WriteText(Image<Bgr, byte> image, int bottom, string message)
+        {
+            image.Draw(message, new Point(0, bottom), Emgu.CV.CvEnum.FontFace.HersheySimplex, 0.4, new Bgr(Color.White));
+        }
+
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
             using (var matCaptured = new Mat())
@@ -83,22 +90,18 @@ namespace PiCamCV.WinForms.CameraConsumers
                 CameraCapture.Retrieve(matCaptured);
 
                 var bgrImage = matCaptured.ToImage<Bgr, byte>();
-                var captureConfig = CameraCapture.GetCaptureProperties();
-                var centre = captureConfig.GetCenter();
 
-                DrawReticle(bgrImage, centre, Color.Red);
+                DrawReticle(bgrImage, _centre, Color.Red);
 
                 if (UserReticle != null)
                 {
                     DrawReticle(bgrImage, UserReticle.Value, Color.Green);
                 }
-                
+
                 var input = new CameraProcessInput();
-                input.SetCapturedImage = true;
+                input.SetCapturedImage = false;
                 input.Captured = matCaptured;
 
-                Action<int, string> writeTextToImage = (height, message) => bgrImage.Draw(message, new Point(0, height), Emgu.CV.CvEnum.FontFace.HersheySimplex, 0.4, new Bgr(Color.White));
-                
                 if (chkBoxColourTracking.Checked)
                 {
                     var result = _colourTrackingController.Process(input);
@@ -106,13 +109,13 @@ namespace PiCamCV.WinForms.CameraConsumers
                     {
                         DrawReticle(bgrImage, result.Target, Color.Yellow);
                     }
-                    writeTextToImage(captureConfig.Height - 10, "Colour Tracking");
+                    WriteText(bgrImage, _captureConfig.Height - 10, "Colour Tracking");
                     NotifyStatus("Colour tracking took {0}", result.Elapsed.ToHumanReadable());
                 }
 
                 if (chkBoxFaceTracker.Checked)
                 {
-                    writeTextToImage(captureConfig.Height - 50, "Face Tracking");
+                    WriteText(bgrImage, _captureConfig.Height - 50, "Face Tracking");
                     var result = _faceTrackingController.Process(input);
                     if (result.IsDetected)
                     {

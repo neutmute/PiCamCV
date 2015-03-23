@@ -11,28 +11,6 @@ using PiCamCV.Interfaces;
 
 namespace PiCamCV.ConsoleApp.Runners.PanTilt
 {
-    public class ColourTrackingPanTiltOutput : CameraPanTiltProcessOutput
-    {
-
-        public bool IsDetected { get; set; }
-        public double MomentArea { get; set; }
-
-    }
-    public class FaceTrackingPanTiltOutput : CameraPanTiltProcessOutput
-    {
-        public List<Face> Faces { get; private set; }
-
-        public bool IsDetected
-        {
-            get { return Faces.Count > 0; }
-        }
-
-        public FaceTrackingPanTiltOutput()
-        {
-            Faces = new List<Face>();
-        }
-    }
-
     public class CameraPanTiltProcessOutput : CameraProcessOutput
     {
         public PanTiltSetting PanTiltPrior { get; set; }
@@ -59,17 +37,21 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
         where TOutput : CameraPanTiltProcessOutput, new()
     {
+        private readonly CameraModifierStrategy _panTiltModifier;
+
         protected CaptureConfig CaptureConfig { get; private set; }
 
         protected Point CentrePoint { get; private set; }
 
         protected int Ticks { get;set;}
 
-        protected CameraBasedPanTiltController(IPanTiltMechanism panTiltMech, CaptureConfig captureConfig, IScreen screen)
-            : base(panTiltMech, screen)
+        protected CameraBasedPanTiltController(IPanTiltMechanism panTiltMech, CaptureConfig captureConfig)
+            : base(panTiltMech)
         {
             CaptureConfig = captureConfig;
             CentrePoint = CaptureConfig.GetCenter();
+            
+            _panTiltModifier = new CameraModifierStrategy(CaptureConfig, CentrePoint);
 
             Log.InfoFormat("Centre = {0}", CentrePoint);
             Ticks = 0;
@@ -78,25 +60,22 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         }
 
 
-        protected TOutput ReactToTarget(Point targetPoint)
+        protected TOutput ReactToTarget(Point objectOfInterest)
         {
             var output = new TOutput();
-            var moveStrategy = new CameraModifierStrategy(CaptureConfig, Screen, targetPoint, CentrePoint);
-            var newPosition = moveStrategy.CalculateNewSetting(CurrentSetting);
+            
+            _panTiltModifier.Objective = objectOfInterest;
+            var newPosition = _panTiltModifier.CalculateNewSetting(CurrentSetting);
 
-            output.Target = targetPoint;
+            output.Target = objectOfInterest;
             output.PanTiltPrior = CurrentSetting.Clone();
             output.PanTiltNow = newPosition.Clone();
 
-            if (!targetPoint.Equals(CentrePoint))
+            if (!objectOfInterest.Equals(CentrePoint))
             {
                 MoveTo(newPosition);
             }
-
-            Screen.WriteLine("Capture Config {0}", CaptureConfig);
-            Screen.WriteLine("Target {0}", targetPoint);
-            ScreenWritePanTiltSettings();
-
+            
             return output;
         }
 

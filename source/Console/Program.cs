@@ -70,6 +70,7 @@ namespace PiCamCV.ConsoleApp
                 var pwmDevice = pwmDeviceFactory.GetDevice(options.UseFakeDevice);
                 panTiltMech = new PanTiltMechanism(pwmDevice);
                 screen = new ConsoleScreen();
+                screen.Clear();
             }
 
             IRunner runner;
@@ -103,17 +104,17 @@ namespace PiCamCV.ConsoleApp
                     break;
 
                 case Mode.pantiltjoy:
-                    var joyController = new JoystickPanTiltController(panTiltMech, screen);
-                    runner = new TimerRunner(joyController);
+                    var joyController = new JoystickPanTiltController(panTiltMech);
+                    runner = new TimerRunner(joyController, screen);
                     break;
 
                 case Mode.pantiltface:
-                    var controllerF = new FaceTrackingPanTiltController(panTiltMech, captureConfig, screen);
+                    var controllerF = new FaceTrackingPanTiltController(panTiltMech, captureConfig);
                     runner = new CameraBasedPanTiltRunner(panTiltMech, capture, controllerF, screen);
                     break;
 
                 case Mode.pantiltcolour:
-                    var controllerC = new ColourTrackingPanTiltController(panTiltMech, captureConfig, screen);
+                    var controllerC = new ColourTrackingPanTiltController(panTiltMech, captureConfig);
                     if (options.HasColourSettings)
                     {
                         controllerC.Settings = options.ColourSettings;

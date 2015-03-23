@@ -10,13 +10,19 @@ using PiCamCV.Common.Interfaces;
 
 namespace PiCamCV.ConsoleApp.Runners.PanTilt
 {
+    public class ColourTrackingPanTiltOutput : CameraPanTiltProcessOutput
+    {
+        public bool IsDetected { get; set; }
+        public double MomentArea { get; set; }
+
+    }
     public class ColourTrackingPanTiltController : CameraBasedPanTiltController<ColourTrackingPanTiltOutput>
     {
         private readonly ColourDetector _colourDetector;
         public ColourDetectSettings Settings { get; set; }
 
-        public ColourTrackingPanTiltController(IPanTiltMechanism panTiltMech, CaptureConfig captureConfig, IScreen screen)
-            : base(panTiltMech, captureConfig, screen)
+        public ColourTrackingPanTiltController(IPanTiltMechanism panTiltMech, CaptureConfig captureConfig)
+            : base(panTiltMech, captureConfig)
         {
             _colourDetector = new ColourDetector();
         }
@@ -27,7 +33,6 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             colourDetectorInput.SetCapturedImage = input.SetCapturedImage;
             colourDetectorInput.Settings = Settings;
 
-            Screen.BeginRepaint();
             var colourDetectorOutput = _colourDetector.Process(colourDetectorInput);
 
             var targetPoint = CentrePoint;
@@ -35,6 +40,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             {
                 targetPoint = colourDetectorOutput.CentralPoint.ToPoint();
             }
+
             var output = ReactToTarget(targetPoint);
             output.IsDetected = colourDetectorOutput.IsDetected;
             output.MomentArea = colourDetectorOutput.MomentArea;

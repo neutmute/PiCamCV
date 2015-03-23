@@ -21,7 +21,9 @@ namespace UnitTests
             var objective = new Point(128, 120);
             var config = new CaptureConfig{Width=320, Height=240};
             var moqScreen = new Mock<IScreen>();
-            var strategy = new CameraModifierStrategy(config, moqScreen.Object, objective, target);
+            var strategy = new CameraModifierStrategy(config, target);
+
+            strategy.Objective = objective;
             
             var setting = new PanTiltSetting(50,50);
 

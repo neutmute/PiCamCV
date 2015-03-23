@@ -11,28 +11,29 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies
     public class CameraModifierStrategy : IPanTiltModifierStrategy
     {
         private Point _target;
-        private Point _objective;
+
         private readonly IScreen _screen;
         private readonly decimal _xDiffScale, _yDiffScale;
 
         private readonly static ILog Log = LogManager.GetCurrentClassLogger();
 
-        public CameraModifierStrategy(CaptureConfig captureConfig, IScreen screen, Point objective, Point target)
+        public Point Objective { get; set; }
+
+
+        public CameraModifierStrategy(CaptureConfig captureConfig, Point target)
         {
-            _objective = objective;
             _target = target;
-            _screen = screen;
 
             // calibration was done in 320x240. If capture settings different need to scale the calibration
             _xDiffScale = captureConfig.Width /320m;
             _yDiffScale = captureConfig.Height /240m;
         }
-        public PanTiltSetting CalculateNewSetting( PanTiltSetting currentSetting)
+        public PanTiltSetting CalculateNewSetting(PanTiltSetting currentSetting)
         {
             var newSetting = currentSetting.Clone();
 
-            var xDiff = (_target.X - _objective.X) * _xDiffScale;
-            var yDiff = (_target.Y - _objective.Y) * _yDiffScale;
+            var xDiff = (_target.X - Objective.X) * _xDiffScale;
+            var yDiff = (_target.Y - Objective.Y) * _yDiffScale;
 
             const int deadZone = 10;
             /*
@@ -48,7 +49,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies
             var message1 = string.Format(
                 "Target={0}, Objective={1}"
                 , _target
-                , _objective
+                , Objective
                 );
 
             var message2 = string.Format(

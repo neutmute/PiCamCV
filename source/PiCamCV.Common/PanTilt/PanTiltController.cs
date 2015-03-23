@@ -12,7 +12,6 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
     public abstract class PanTiltController
     {
         private readonly static ILog _log = LogManager.GetCurrentClassLogger();
-        protected IScreen Screen { get; private set; }
         protected ILog Log { get { return _log; } }
 
         private IPanTiltMechanism PanTiltMechanism {get;set;}
@@ -28,15 +27,9 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             }
         }
 
-        protected PanTiltController(IPanTiltMechanism panTiltMech, IScreen screen)
+        protected PanTiltController(IPanTiltMechanism panTiltMech)
         {
-            Screen = screen;
             PanTiltMechanism = panTiltMech;
-        }
-        protected void ScreenWritePanTiltSettings()
-        {
-            Screen.WriteLine("Pan  = {0:F}%, {1}pwm", PanServo.CurrentPercent, PanServo.CurrentPwm);
-            Screen.WriteLine("Tilt = {0:F}%, {1}pwm", TiltServo.CurrentPercent, TiltServo.CurrentPwm);
         }
 
         protected void MoveTo(PanTiltSetting newPosition)

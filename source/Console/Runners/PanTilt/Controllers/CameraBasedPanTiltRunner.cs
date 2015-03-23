@@ -16,6 +16,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         protected FpsTracker FpsTracker {get;private set;}
         public ICaptureGrab CameraCapture { get; set; }
 
+        IScreen Screen { get; set; }
         protected CaptureConfig CaptureConfig { get; private set; }
         
         public CameraBasedPanTiltRunner(
@@ -23,9 +24,11 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             , ICaptureGrab captureGrabber
             , IController<CameraPanTiltProcessOutput> controller
             , IScreen screen)
-            : base(panTiltMech, screen)
+            : base(panTiltMech)
         {
             _controller = controller;
+
+            Screen = screen;
 
             FpsTracker = new FpsTracker();
             FpsTracker.ReportEveryNthFrame = 2;
@@ -47,7 +50,13 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
                 var input = new CameraProcessInput();
                 input.Captured = matCaptured;
                 input.SetCapturedImage = false;
-                _controller.Process(input);
+                var output = _controller.Process(input);
+
+                Screen.BeginRepaint();
+                Screen.WriteLine("Processing time: {0} ms", output.Elapsed.TotalMilliseconds);
+                Screen.WriteLine("Pan Tilt Before: {0}", output.PanTiltPrior);
+                Screen.WriteLine("Pan Tilt After: {0}", output.PanTiltNow);
+                Screen.WriteLine("Target: {0}", output.Target);
             }
         }
         

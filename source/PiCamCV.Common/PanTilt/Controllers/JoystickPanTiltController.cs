@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Timers;
 using OpenTK.Input;
 using PiCamCV.Common;
@@ -15,8 +16,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         private JoystickState _currentState;
         private JoystickCapabilities _capabilities;
 
-        public JoystickPanTiltController(IPanTiltMechanism panTiltMechanism, IScreen screen)
-            : base(panTiltMechanism, screen)
+        public JoystickPanTiltController(IPanTiltMechanism panTiltMechanism): base(panTiltMechanism)
         {
             _joystickIndex = 0;
 
@@ -35,19 +35,18 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         }
 
 
-        public void Tick()
+        public string Tick()
         {
             _currentState = Joystick.GetState(_joystickIndex);
 
-            Screen.BeginRepaint();
-
+            var sb = new StringBuilder();
             for (int i = 0; i < 4; i++)
             {
-                ScreenWriteAxis((JoystickAxis)i);
+                sb.AppendLine(GetAxisText((JoystickAxis)i));
             }
             for (int i = 0; i < 1; i++)
             {
-                ScreenWriteButton((JoystickButton)i);
+                sb.AppendLine(GetButtonText((JoystickButton)i));
             }
 
             var panAxis = ReadAxis(JoystickAxis.Axis0);
@@ -56,27 +55,29 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
             var moveStrategy = new JoystickModifierStrategy(panAxis, tiltAxis, throttleAxis);
             var newPosition = moveStrategy.CalculateNewSetting(CurrentSetting);
+            
             MoveTo(newPosition);
 
-            Screen.WriteLine("Throttle Multiplier = {0:F}", moveStrategy.ThrottleMultipler);
-            ScreenWritePanTiltSettings();
+            sb.AppendFormat("Pan Tilt = {0}\r\n", newPosition);
+
+            return sb.ToString();
+        }
+
+        private string GetAxisText(JoystickAxis axis)
+        {
+            var axisValue = _currentState.GetAxis(axis);
+            return string.Format("{0}={1}", axis, axisValue);
+        }
+
+        private string GetButtonText(JoystickButton button)
+        {
+            var buttonValue = _currentState.GetButton(button);
+            return string.Format("{0}={1}", button, buttonValue);
         }
 
         private Decimal ReadAxis(JoystickAxis axis)
         {
             return (Decimal) _currentState.GetAxis(axis);
-        }
-
-        private void ScreenWriteAxis(JoystickAxis axis)
-        {
-            var axisValue = _currentState.GetAxis(axis);
-            Screen.WriteLine("{0}={1}", axis, axisValue);
-        }
-
-        private void ScreenWriteButton(JoystickButton button)
-        {
-            var buttonValue = _currentState.GetButton(button);
-            Screen.WriteLine("{0}={1}", button, buttonValue);
         }
     }
 }

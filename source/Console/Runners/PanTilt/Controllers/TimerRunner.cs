@@ -17,11 +17,13 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
         private readonly int _sampleRateMilliseconds;
         private readonly JoystickPanTiltController _controller;
+        private IScreen _screen;
 
-        public TimerRunner(JoystickPanTiltController controller)
+        public TimerRunner(JoystickPanTiltController controller, IScreen screen)
         {
             _controller = controller;
             _sampleRateMilliseconds = 100;
+            _screen = screen;
         }
 
         public void Run()
@@ -39,7 +41,8 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
         public void Tick()
         {
-            _controller.Tick();
+            _screen.BeginRepaint();
+            _screen.WriteLine(_controller.Tick());
         }
 
     }
