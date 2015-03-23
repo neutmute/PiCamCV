@@ -30,8 +30,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
                     , _capabilities.ButtonCount);
             }
 
-            PanServo.MoveTo(50);
-            TiltServo.MoveTo(50);
+            MoveTo(new PanTiltSetting {PanPercent = 50, TiltPercent = 50});
         }
 
 

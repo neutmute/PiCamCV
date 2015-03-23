@@ -12,7 +12,6 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies
     {
         private Point _target;
 
-        private readonly IScreen _screen;
         private readonly decimal _xDiffScale, _yDiffScale;
 
         private readonly static ILog Log = LogManager.GetCurrentClassLogger();
@@ -46,22 +45,20 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies
             newSetting.PanPercent += xDeflection;
             newSetting.TiltPercent += yDeflection;
 
-            var message1 = string.Format(
-                "Target={0}, Objective={1}"
-                , _target
-                , Objective
-                );
+            //var message1 = string.Format(
+            //    "Target={0}, Objective={1}"
+            //    , _target
+            //    , Objective
+            //    );
 
-            var message2 = string.Format(
-                "Moving {0} -> {1}"
-                , currentSetting
-                , newSetting
-                );
+            //var message2 = string.Format(
+            //    "Moving {0} -> {1}"
+            //    , currentSetting
+            //    , newSetting
+            //    );
 
-            _screen.WriteLine(message1);
-            _screen.WriteLine(message2);
-            Log.Info(message1);
-            Log.Info(message2);
+            //Log.Info(message1);
+            //Log.Info(message2);
 
             return newSetting;
         }
