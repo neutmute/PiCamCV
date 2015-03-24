@@ -32,7 +32,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             PanTiltMechanism = panTiltMech;
         }
 
-        protected void MoveTo(PanTiltSetting newPosition)
+        protected void MoveAbsolute(PanTiltSetting newPosition)
         {
             if (newPosition.PanPercent.HasValue)
             {
@@ -41,6 +41,18 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             if (newPosition.TiltPercent.HasValue)
             {
                 TiltServo.MoveTo(newPosition.TiltPercent.Value);
+            }
+        }
+
+        protected void MoveRelative(PanTiltSetting newPosition)
+        {
+            if (newPosition.PanPercent.HasValue)
+            {
+                PanServo.MoveTo(PanServo.CurrentPercent + newPosition.PanPercent.Value);
+            }
+            if (newPosition.TiltPercent.HasValue)
+            {
+                TiltServo.MoveTo(TiltServo.CurrentPercent + newPosition.TiltPercent.Value);
             }
         }
     }

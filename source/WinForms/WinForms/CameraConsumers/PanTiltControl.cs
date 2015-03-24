@@ -167,5 +167,10 @@ namespace PiCamCV.WinForms.CameraConsumers
                 UserReticle = null;
             }
         }
+
+        private void btnCalibrate_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -56,7 +56,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             Log.InfoFormat("Centre = {0}", CentrePoint);
             Ticks = 0;
 
-            MoveTo(new PanTiltSetting(50, 50));
+            MoveAbsolute(new PanTiltSetting(50, 50));
         }
 
 
@@ -73,7 +73,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
             if (!objectOfInterest.Equals(CentrePoint))
             {
-                MoveTo(newPosition);
+                MoveAbsolute(newPosition);
             }
             
             return output;

@@ -30,7 +30,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
                     , _capabilities.ButtonCount);
             }
 
-            MoveTo(new PanTiltSetting {PanPercent = 50, TiltPercent = 50});
+            MoveAbsolute(new PanTiltSetting {PanPercent = 50, TiltPercent = 50});
         }
 
 
@@ -55,7 +55,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             var moveStrategy = new JoystickModifierStrategy(panAxis, tiltAxis, throttleAxis);
             var newPosition = moveStrategy.CalculateNewSetting(CurrentSetting);
             
-            MoveTo(newPosition);
+            MoveAbsolute(newPosition);
 
             sb.AppendFormat("Pan Tilt = {0}\r\n", newPosition);
 

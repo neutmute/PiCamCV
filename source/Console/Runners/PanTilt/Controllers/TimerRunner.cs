@@ -17,7 +17,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
         private readonly int _sampleRateMilliseconds;
         private readonly JoystickPanTiltController _controller;
-        private IScreen _screen;
+        private readonly IScreen _screen;
 
         public TimerRunner(JoystickPanTiltController controller, IScreen screen)
         {

@@ -92,6 +92,7 @@
     <Compile Include="Interfaces\ICameraConsumer.cs" />
     <Compile Include="Interfaces\ICameraProcessor.cs" />
     <Compile Include="Motors\PanTiltMechanism.cs" />
+    <Compile Include="PanTilt\Controllers\CalibratingPanTiltController.cs" />
     <Compile Include="PanTilt\Controllers\CameraBasedPanTiltController.cs" />
     <Compile Include="PanTilt\Controllers\ColourTrackingPanTiltController.cs" />
     <Compile Include="PanTilt\Controllers\FaceTrackingPanTiltController.cs" />
