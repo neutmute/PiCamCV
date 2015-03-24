@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -12,6 +13,7 @@ using Kraken.Core;
 using PiCamCV.Common;
 using PiCamCV.Common.ExtensionMethods;
 using PiCamCV.Common.Interfaces;
+using PiCamCV.Common.PanTilt.Controllers;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 using PiCamCV.Interfaces;
 using PiCamCV.WinForms.ExtensionMethods;
@@ -24,6 +26,7 @@ namespace PiCamCV.WinForms.CameraConsumers
         protected IPanTiltMechanism PanTiltMechanism { get; set; }
         private FaceTrackingPanTiltController _faceTrackingController;
         private ColourTrackingPanTiltController _colourTrackingController;
+        private CalibratingPanTiltController _calibratingPanTiltController;
         private readonly IColourSettingsRepository _colourSettingsRepo;
         private Point _centre;
         private CaptureConfig _captureConfig;
@@ -35,6 +38,7 @@ namespace PiCamCV.WinForms.CameraConsumers
             InitializeComponent();
             UserReticle = null;
             _colourSettingsRepo = new ColourSettingsRepository();
+
         }
 
         private void btnGoto_Click(object sender, EventArgs e)
@@ -62,9 +66,26 @@ namespace PiCamCV.WinForms.CameraConsumers
             InitI2C();
 
             var screen = new TextboxScreen(txtScreen);
+
+            var colorSettings = _colourSettingsRepo.Read();
             _faceTrackingController = new FaceTrackingPanTiltController(PanTiltMechanism, _captureConfig);
             _colourTrackingController = new ColourTrackingPanTiltController(PanTiltMechanism, _captureConfig);
-            _colourTrackingController.Settings = _colourSettingsRepo.Read();
+            _calibratingPanTiltController = new CalibratingPanTiltController(PanTiltMechanism, screen);
+            _colourTrackingController.Settings = colorSettings;
+            _calibratingPanTiltController.Settings = colorSettings;
+
+            _calibratingPanTiltController.GetCameraCapture = PullImage;
+        }
+
+        private Image<Bgr, byte> PullImage()
+        {
+            Image<Bgr, byte> output;
+            using (var matCaptured = new Mat())
+            {
+                CameraCapture.Retrieve(matCaptured);
+                output = matCaptured.ToImage<Bgr, byte>();
+            }
+            return output;
         }
 
         private void InitI2C()
@@ -170,7 +191,13 @@ namespace PiCamCV.WinForms.CameraConsumers
 
         private void btnCalibrate_Click(object sender, EventArgs e)
         {
+            var calibrationTask = new Task<bool>(() =>
+            {
+                _calibratingPanTiltController.Calibrate();
+                return true;
+            });
 
+            calibrationTask.Start();
         }
     }
 }

@@ -37,7 +37,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
         where TOutput : CameraPanTiltProcessOutput, new()
     {
-        private readonly CameraModifierStrategy _panTiltModifier;
+        private readonly LinearRegressionModifierStrategy _panTiltModifier;
 
         protected CaptureConfig CaptureConfig { get; private set; }
 
@@ -51,7 +51,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             CaptureConfig = captureConfig;
             CentrePoint = CaptureConfig.GetCenter();
             
-            _panTiltModifier = new CameraModifierStrategy(CaptureConfig, CentrePoint);
+            _panTiltModifier = new LinearRegressionModifierStrategy(CaptureConfig, CentrePoint);
 
             Log.InfoFormat("Centre = {0}", CentrePoint);
             Ticks = 0;

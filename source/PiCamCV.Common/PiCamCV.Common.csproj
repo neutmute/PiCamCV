@@ -97,9 +97,10 @@
     <Compile Include="PanTilt\Controllers\ColourTrackingPanTiltController.cs" />
     <Compile Include="PanTilt\Controllers\FaceTrackingPanTiltController.cs" />
     <Compile Include="PanTilt\Controllers\JoystickPanTiltController.cs" />
-    <Compile Include="PanTilt\MoveStrategies\CameraModifierStrategy.cs" />
+    <Compile Include="PanTilt\MoveStrategies\LinearRegressionModifierStrategy.cs" />
     <Compile Include="PanTilt\MoveStrategies\IPanTiltModifierStrategy.cs" />
     <Compile Include="PanTilt\MoveStrategies\JoystickModifierStrategy.cs" />
+    <Compile Include="PanTilt\MoveStrategies\LookupModifierStrategy.cs" />
     <Compile Include="PanTilt\PanTiltController.cs" />
     <Compile Include="PanTilt\PanTiltSetting.cs" />
     <Compile Include="PanTilt\Screen.cs" />

@@ -48,8 +48,7 @@ namespace PiCamCV.Common
     public class ColourDetectorInput : CameraProcessInput
     {
         public ColourDetectSettings Settings { get; set; }
-
-
+        
         public ColourDetectorInput()
         {
             Settings = new ColourDetectSettings();

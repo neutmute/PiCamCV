@@ -8,7 +8,7 @@ using Common.Logging;
 
 namespace PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies
 {
-    public class CameraModifierStrategy : IPanTiltModifierStrategy
+    public class LinearRegressionModifierStrategy : IPanTiltModifierStrategy
     {
         private Point _target;
 
@@ -19,7 +19,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies
         public Point Objective { get; set; }
 
 
-        public CameraModifierStrategy(CaptureConfig captureConfig, Point target)
+        public LinearRegressionModifierStrategy(CaptureConfig captureConfig, Point target)
         {
             _target = target;
 
