@@ -49,7 +49,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             : base(panTiltMech)
         {
             CaptureConfig = captureConfig;
-            CentrePoint = CaptureConfig.GetCenter();
+            CentrePoint = CaptureConfig.Resolution.GetCenter();
             
             _panTiltModifier = new LinearRegressionModifierStrategy(CaptureConfig, CentrePoint);
 

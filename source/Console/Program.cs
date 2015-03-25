@@ -53,7 +53,7 @@ namespace PiCamCV.ConsoleApp
                     request.Device = CaptureDevice.Pi;
                 }
 
-                request.Config = new CaptureConfig { Width = 256, Height = 192, Framerate = 10, Monochrome = false };
+                request.Config = new CaptureConfig { Resolution = new Resolution(256,192), Framerate = 10, Monochrome = false };
 
                 capture = CaptureFactory.GetCapture(request);
                 captureConfig = capture.GetCaptureProperties();
@@ -136,13 +136,11 @@ namespace PiCamCV.ConsoleApp
         private static void SafetyCheckRoi(ConsoleOptions options, CaptureConfig captureProperties)
         {
             if (
-                captureProperties.Width != 0   && 
-                captureProperties.Height != 0  &&
-                options.ColourSettings != null
+                captureProperties.Resolution.IsValid && options.ColourSettings != null
                 )
             {
-                var roiWidthTooBig = options.ColourSettings.Roi.Width >     captureProperties.Width;
-                var roiHeightTooBig = options.ColourSettings.Roi.Height >   captureProperties.Height;
+                var roiWidthTooBig = options.ColourSettings.Roi.Width >     captureProperties.Resolution.Width;
+                var roiHeightTooBig = options.ColourSettings.Roi.Height >   captureProperties.Resolution.Height;
                 if (roiWidthTooBig || roiHeightTooBig)
                 {
                     Log.Warn("ROI is too big! Ignoring");

@@ -80,10 +80,11 @@
     <Compile Include="..\..\Solution Items\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Repositories\CalibrationReadingsRepository.cs" />
     <Compile Include="CameraConsumerBase.cs" />
     <Compile Include="CascadeDetector.cs" />
     <Compile Include="ColourDetector.cs" />
-    <Compile Include="ColourSettingsRepository.cs" />
+    <Compile Include="Repositories\ColourSettingsRepository.cs" />
     <Compile Include="ExtensionMethods\CaptureConfigExtensions.cs" />
     <Compile Include="ExtensionMethods\PointFExtensions.cs" />
     <Compile Include="ExtensionMethods\RangeFExtensions.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="PanTilt\PanTiltSetting.cs" />
     <Compile Include="PanTilt\Screen.cs" />
     <Compile Include="Properties\AssemblyInfoUnique.cs" />
+    <Compile Include="Repositories\FileBasedRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\lib\raspberry-sharp-io\Raspberry.IO.Components\Raspberry.IO.Components.csproj">

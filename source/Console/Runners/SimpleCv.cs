@@ -23,7 +23,7 @@ namespace PiCamCV.ConsoleApp
             Log.Info("Creating capture");
 
 
-            var captureConfig = new CaptureConfig { Width = 640, Height = 480, Framerate = 25, Monochrome = true };
+            var captureConfig = new CaptureConfig { Resolution= new Resolution(640,480) , Framerate = 25, Monochrome = true };
             var piConfig = PiCameraConfig.FromConfig(captureConfig);
 
             IntPtr capture = CvInvokeRaspiCamCV.cvCreateCameraCapture2(0, ref piConfig); // Index doesn't really matter

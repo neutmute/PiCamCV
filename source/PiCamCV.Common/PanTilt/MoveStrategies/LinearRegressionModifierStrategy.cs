@@ -24,8 +24,8 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies
             _target = target;
 
             // calibration was done in 320x240. If capture settings different need to scale the calibration
-            _xDiffScale = captureConfig.Width /320m;
-            _yDiffScale = captureConfig.Height /240m;
+            _xDiffScale = captureConfig.Resolution.Width /320m;
+            _yDiffScale = captureConfig.Resolution.Height / 240m;
         }
         public PanTiltSetting CalculateNewSetting(PanTiltSetting currentSetting)
         {

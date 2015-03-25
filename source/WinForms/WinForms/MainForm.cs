@@ -52,8 +52,8 @@ namespace WinForms
         {
             var config = new CaptureConfig();
             var resComponents = cmbResolution.Text.Split('x');
-            config.Width = Convert.ToInt32(resComponents[0]);
-            config.Height = Convert.ToInt32(resComponents[1]);
+            config.Resolution.Width = Convert.ToInt32(resComponents[0]);
+            config.Resolution.Height = Convert.ToInt32(resComponents[1]);
             config.Bitrate = Convert.ToInt32(txtBitrate.Text);
             config.Framerate = Convert.ToInt32(txtFramerate.Text);
             config.Monochrome = chkMonochrome.Checked;

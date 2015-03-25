@@ -18,6 +18,11 @@ namespace PiCamCV.Common.PanTilt.Controllers
         Vertical
     }
 
+    public class PanTiltCalibrationReadings : Dictionary<Resolution, AxesCalibrationReadings>
+    {
+        
+    }
+
     public class ReadingSet
     {
         public List<Decimal> AllReadings { get; private set; }
@@ -33,12 +38,25 @@ namespace PiCamCV.Common.PanTilt.Controllers
         }
     }
 
-    public class PanTiltCalbrationReadings
+    public class AxesCalibrationReadings
     {
-        public AxisCalibrationReadings Vertical { get;private set; }
-        public AxisCalibrationReadings Horizontal { get; private set; }
+        public AxisCalibrationReadings this[PanTiltAxis axis]
+        {
+            get
+            {
+                switch (axis)
+                {
+                    case PanTiltAxis.Horizontal: return Horizontal;
+                    case PanTiltAxis.Vertical: return Vertical;
+                    default:throw new NotSupportedException();
+                }
+            }
+        }
 
-        public PanTiltCalbrationReadings()
+        protected AxisCalibrationReadings Vertical { get; private set; }
+        protected AxisCalibrationReadings Horizontal { get; private set; }
+
+        public AxesCalibrationReadings()
         {
             Vertical = new AxisCalibrationReadings();
             Horizontal = new AxisCalibrationReadings();
@@ -59,6 +77,9 @@ namespace PiCamCV.Common.PanTilt.Controllers
         }
     }
 
+    /// <summary>
+    /// int = pixel deviation, ReadingSet is the set of servo percentages that move that pixel deviation
+    /// </summary>
     public class AxisCalibrationReadings : Dictionary<int, ReadingSet>
     {
         
@@ -66,28 +87,50 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
     public class CalibratingPanTiltController : PanTiltController
     {
-        private readonly PanTiltCalbrationReadings _readings;
+        private readonly IFileBasedRepository<PanTiltCalibrationReadings> _readingsRepo;
         private readonly IScreen _screen;
+        private AxesCalibrationReadings _currentResolutionReadings;
 
         private readonly ColourDetector _colourDetector;
         public ColourDetectSettings Settings { get; set; }
         public Func<Image<Bgr, byte>> GetCameraCapture { get; set; }
-        public CalibratingPanTiltController(IPanTiltMechanism panTiltMech, IScreen screen) : base(panTiltMech)
+        public CalibratingPanTiltController(IPanTiltMechanism panTiltMech, IFileBasedRepository<PanTiltCalibrationReadings> readingsRepo, IScreen screen)
+            : base(panTiltMech)
         {
             _colourDetector = new ColourDetector();
-            _readings = new PanTiltCalbrationReadings();
+            _readingsRepo = readingsRepo;
             _screen = screen;
         }
 
-        public void Calibrate()
+        public void Calibrate(Resolution resolution)
         {
+            PanTiltCalibrationReadings allReadings;
+            if (_readingsRepo.IsPresent)
+            {
+                allReadings = _readingsRepo.Read();
+            }
+            else
+            {
+                allReadings = new PanTiltCalibrationReadings();
+            }
+
+            if (!allReadings.ContainsKey(resolution))
+            {
+                allReadings.Add(resolution, new AxesCalibrationReadings());
+            }
+
+            _currentResolutionReadings = allReadings[resolution];
+            
             _screen.Clear();
+
             CalibrateHalfAxis(1, PanTiltAxis.Horizontal);
             CalibrateHalfAxis(-1, PanTiltAxis.Horizontal);
             CalibrateHalfAxis(1, PanTiltAxis.Vertical);
             CalibrateHalfAxis(-1, PanTiltAxis.Vertical);
 
-            _readings.CalculateAcceptedReadings();
+            _currentResolutionReadings.CalculateAcceptedReadings();
+
+            _readingsRepo.Write(allReadings);
         }
 
         private void CalibrateHalfAxis(int signMovement, PanTiltAxis axis)
@@ -128,28 +171,25 @@ namespace PiCamCV.Common.PanTilt.Controllers
                 if (foundColour)
                 {
                     Func<PointF, float> getAxisValue;
-                    AxisCalibrationReadings targetAxis;
 
                     if (axis == PanTiltAxis.Horizontal)
                     {
                         getAxisValue = p => p.X;
-                        targetAxis = _readings.Horizontal;
                     }
                     else
                     {
                         getAxisValue = p => p.Y;
-                        targetAxis = _readings.Vertical;
                     }
 
                     var pixelDeviation = Convert.ToInt32(getAxisValue(firstDetection.CentralPoint) - getAxisValue(newDetection.CentralPoint));
-
-                    if (targetAxis.ContainsKey(pixelDeviation))
+                    var axisReadings = _currentResolutionReadings[axis];
+                    if (axisReadings.ContainsKey(pixelDeviation))
                     {
-                        targetAxis[pixelDeviation].AllReadings.Add(accumulatedDeviation);    
+                        axisReadings[pixelDeviation].AllReadings.Add(accumulatedDeviation);    
                     }
                     else
                     {
-                        targetAxis.Add(pixelDeviation, new ReadingSet(accumulatedDeviation));    
+                        axisReadings.Add(pixelDeviation, new ReadingSet(accumulatedDeviation));    
                     }
 
                     _screen.WriteLine("Deviation={0}", pixelDeviation);

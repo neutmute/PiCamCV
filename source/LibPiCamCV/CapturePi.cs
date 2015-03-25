@@ -50,8 +50,8 @@ namespace PiCamCV
            }
            else
            {
-               s.Width = config.Width;
-               s.Height = config.Height;
+               s.Width = config.Resolution.Width;
+               s.Height = config.Resolution.Height;
                s.Bitrate = config.Bitrate;
                s.Framerate = config.Framerate;
                s.Monochrome = config.Monochrome ? 1 : 0;

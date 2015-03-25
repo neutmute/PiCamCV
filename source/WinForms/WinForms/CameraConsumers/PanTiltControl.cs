@@ -58,7 +58,7 @@ namespace PiCamCV.WinForms.CameraConsumers
         protected override void OnSubscribe()
         {
             _captureConfig = CameraCapture.GetCaptureProperties();
-            _centre = _captureConfig.GetCenter();
+            _centre = _captureConfig.Resolution.GetCenter();
 
             txtReticleX.Text = _centre.X.ToString();
             txtReticleY.Text = _centre.Y.ToString();
@@ -70,7 +70,7 @@ namespace PiCamCV.WinForms.CameraConsumers
             var colorSettings = _colourSettingsRepo.Read();
             _faceTrackingController = new FaceTrackingPanTiltController(PanTiltMechanism, _captureConfig);
             _colourTrackingController = new ColourTrackingPanTiltController(PanTiltMechanism, _captureConfig);
-            _calibratingPanTiltController = new CalibratingPanTiltController(PanTiltMechanism, screen);
+            _calibratingPanTiltController = new CalibratingPanTiltController(PanTiltMechanism, new CalibrationReadingsRepository(), screen);
             _colourTrackingController.Settings = colorSettings;
             _calibratingPanTiltController.Settings = colorSettings;
 
@@ -130,13 +130,13 @@ namespace PiCamCV.WinForms.CameraConsumers
                     {
                         DrawReticle(bgrImage, result.Target, Color.Yellow);
                     }
-                    WriteText(bgrImage, _captureConfig.Height - 10, "Colour Tracking");
+                    WriteText(bgrImage, _captureConfig.Resolution.Height - 10, "Colour Tracking");
                     NotifyStatus("Colour tracking took {0}", result.Elapsed.ToHumanReadable());
                 }
 
                 if (chkBoxFaceTracker.Checked)
                 {
-                    WriteText(bgrImage, _captureConfig.Height - 50, "Face Tracking");
+                    WriteText(bgrImage, _captureConfig.Resolution.Height - 50, "Face Tracking");
                     var result = _faceTrackingController.Process(input);
                     if (result.IsDetected)
                     {
@@ -193,7 +193,7 @@ namespace PiCamCV.WinForms.CameraConsumers
         {
             var calibrationTask = new Task<bool>(() =>
             {
-                _calibratingPanTiltController.Calibrate();
+                _calibratingPanTiltController.Calibrate(_captureConfig.Resolution);
                 return true;
             });
 

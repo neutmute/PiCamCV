@@ -75,8 +75,8 @@ namespace PiCamCV.Interfaces
         public static CaptureConfig GetCaptureProperties(this ICaptureGrab capture)
         {
             var settings = new CaptureConfig();
-            settings.Height = Convert.ToInt32(capture.GetCaptureProperty(CapProp.FrameHeight));
-            settings.Width = Convert.ToInt32(capture.GetCaptureProperty(CapProp.FrameWidth));
+            settings.Resolution.Height = Convert.ToInt32(capture.GetCaptureProperty(CapProp.FrameHeight));
+            settings.Resolution.Width = Convert.ToInt32(capture.GetCaptureProperty(CapProp.FrameWidth));
             settings.Framerate = Convert.ToInt32(capture.GetCaptureProperty(CapProp.Fps));
             settings.Monochrome = Convert.ToBoolean(capture.GetCaptureProperty(CapProp.Monochrome));
             return settings;
@@ -84,8 +84,8 @@ namespace PiCamCV.Interfaces
 
         public static void SetCaptureProperties(this ICaptureGrab capture, CaptureConfig properties)
         {
-            capture.SetCaptureProperty(CapProp.FrameHeight, properties.Height);
-            capture.SetCaptureProperty(CapProp.FrameWidth,  properties.Width);
+            capture.SetCaptureProperty(CapProp.FrameHeight, properties.Resolution.Height);
+            capture.SetCaptureProperty(CapProp.FrameWidth,  properties.Resolution.Width);
             capture.SetCaptureProperty(CapProp.Monochrome, properties.Monochrome ? 1 : 0);
         }
     }
