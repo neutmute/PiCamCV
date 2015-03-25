@@ -18,7 +18,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
         Vertical
     }
 
-    public class PanTiltCalibrationReadings : Dictionary<Resolution, AxesCalibrationReadings>
+    public class PanTiltCalibrationReadings : SerializableDictionary<Resolution, AxesCalibrationReadings>
     {
         
     }
@@ -35,6 +35,10 @@ namespace PiCamCV.Common.PanTilt.Controllers
         public ReadingSet()
         {
             AllReadings = new List<decimal>();
+        }
+        public override string ToString()
+        {
+            return string.Format("Accepted={0}, AllReaddings.Count={1}", Accepted, AllReadings);
         }
     }
 
@@ -53,8 +57,8 @@ namespace PiCamCV.Common.PanTilt.Controllers
             }
         }
 
-        protected AxisCalibrationReadings Vertical { get; private set; }
-        protected AxisCalibrationReadings Horizontal { get; private set; }
+        public AxisCalibrationReadings Vertical { get;  set; }
+        public AxisCalibrationReadings Horizontal { get;  set; }
 
         public AxesCalibrationReadings()
         {
@@ -80,9 +84,12 @@ namespace PiCamCV.Common.PanTilt.Controllers
     /// <summary>
     /// int = pixel deviation, ReadingSet is the set of servo percentages that move that pixel deviation
     /// </summary>
-    public class AxisCalibrationReadings : Dictionary<int, ReadingSet>
+    public class AxisCalibrationReadings : SerializableDictionary<int, ReadingSet>
     {
-        
+        public override string ToString()
+        {
+            return string.Format("{0} pixel readings", Keys.Count);
+        }
     }
 
     public class CalibratingPanTiltController : PanTiltController
@@ -114,11 +121,12 @@ namespace PiCamCV.Common.PanTilt.Controllers
                 allReadings = new PanTiltCalibrationReadings();
             }
 
-            if (!allReadings.ContainsKey(resolution))
+            if (allReadings.ContainsKey(resolution))
             {
-                allReadings.Add(resolution, new AxesCalibrationReadings());
+                allReadings.Remove(resolution);
             }
 
+            allReadings.Add(resolution, new AxesCalibrationReadings());
             _currentResolutionReadings = allReadings[resolution];
             
             _screen.Clear();
@@ -131,6 +139,8 @@ namespace PiCamCV.Common.PanTilt.Controllers
             _currentResolutionReadings.CalculateAcceptedReadings();
 
             _readingsRepo.Write(allReadings);
+            _screen.Clear();
+            _screen.WriteLine("Calibration written to disk");
         }
 
         private void CalibrateHalfAxis(int signMovement, PanTiltAxis axis)

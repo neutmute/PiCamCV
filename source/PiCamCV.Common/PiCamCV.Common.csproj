@@ -107,6 +107,7 @@
     <Compile Include="PanTilt\Screen.cs" />
     <Compile Include="Properties\AssemblyInfoUnique.cs" />
     <Compile Include="Repositories\FileBasedRepository.cs" />
+    <Compile Include="SerializableDictionary.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\lib\raspberry-sharp-io\Raspberry.IO.Components\Raspberry.IO.Components.csproj">
