@@ -4,8 +4,7 @@
     {
         public decimal? PanPercent { get; set; }
         public decimal? TiltPercent{get;set;}
-
-
+        
         public PanTiltSetting(decimal pan, decimal tilt)
         {
             PanPercent = pan;

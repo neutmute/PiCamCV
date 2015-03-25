@@ -101,6 +101,9 @@ namespace PiCamCV.Common.PanTilt.Controllers
         private readonly ColourDetector _colourDetector;
         public ColourDetectSettings Settings { get; set; }
         public Func<Image<Bgr, byte>> GetCameraCapture { get; set; }
+
+        public event EventHandler<ColourDetectorProcessOutput> ColourCaptured;
+
         public CalibratingPanTiltController(IPanTiltMechanism panTiltMech, IFileBasedRepository<PanTiltCalibrationReadings> readingsRepo, IScreen screen)
             : base(panTiltMech)
         {
@@ -139,13 +142,14 @@ namespace PiCamCV.Common.PanTilt.Controllers
             _currentResolutionReadings.CalculateAcceptedReadings();
 
             _readingsRepo.Write(allReadings);
+            ResetToCenter();
             _screen.Clear();
             _screen.WriteLine("Calibration written to disk");
         }
 
         private void CalibrateHalfAxis(int signMovement, PanTiltAxis axis)
         {
-            const decimal saccadePercentIncrement = 2m;
+            const decimal saccadePercentIncrement = 0.2m;
             decimal accumulatedDeviation = 0;
             bool foundColour;
             do
@@ -154,9 +158,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
                 var firstDetection = LocateColour();
 
                 accumulatedDeviation += signMovement * saccadePercentIncrement;
-
-                _screen.BeginRepaint();
-
+                
                 var movementRequired = new PanTiltSetting();
                 if (axis == PanTiltAxis.Horizontal)
                 {
@@ -166,12 +168,15 @@ namespace PiCamCV.Common.PanTilt.Controllers
                 {
                     movementRequired.TiltPercent = accumulatedDeviation;
                 }
+                
+                MoveRelative(movementRequired);
+                Task.Delay(1000).Wait();
+                _screen.BeginRepaint();
                 _screen.WriteLine("Sign={0}", signMovement);
                 _screen.WriteLine("Axis={0}", axis);
                 _screen.WriteLine("Saccade={0}", accumulatedDeviation);
-                MoveRelative(movementRequired);
-                
-                Task.Delay(250).Wait();
+
+                _screen.WriteLine("Waiting for servo");
                // Thread.Sleep(100);
                 
                 _screen.WriteLine("Locating...");
@@ -202,7 +207,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
                         axisReadings.Add(pixelDeviation, new ReadingSet(accumulatedDeviation));    
                     }
 
-                    _screen.WriteLine("Deviation={0}", pixelDeviation);
+                    _screen.WriteLine("Deviation={0}->{1}={2}", firstDetection.CentralPoint, newDetection.CentralPoint, pixelDeviation);
                 }
             }
             while (foundColour && Math.Abs(accumulatedDeviation) < 60);
@@ -211,16 +216,31 @@ namespace PiCamCV.Common.PanTilt.Controllers
         private void ResetToCenter()
         {
             MoveAbsolute(new PanTiltSetting(50m, 50m)); // start center
+            Task.Delay(1000).Wait();
         }
 
         private ColourDetectorProcessOutput LocateColour()
         {
             var colourDetectorInput = new ColourDetectorInput();
             colourDetectorInput.Captured = GetCameraCapture().Mat;
-            colourDetectorInput.SetCapturedImage = false;
+            colourDetectorInput.SetCapturedImage = true;
             colourDetectorInput.Settings = Settings;
 
             var colourDetectorOutput = _colourDetector.Process(colourDetectorInput);
+
+            if (ColourCaptured != null)
+            {
+
+                //colourDetectorOutput.CapturedImage.Draw(
+                //    CurrentSetting.ToString()
+                //    , new Point(10, 20)
+                //    , Emgu.CV.CvEnum.FontFace.HersheySimplex
+                //    , 0.4
+                //    , new Bgr(Color.White));
+                
+                ColourCaptured(this, colourDetectorOutput);
+            }
+
             return colourDetectorOutput;
         }
 

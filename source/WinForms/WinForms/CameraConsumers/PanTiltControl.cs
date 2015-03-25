@@ -30,6 +30,7 @@ namespace PiCamCV.WinForms.CameraConsumers
         private readonly IColourSettingsRepository _colourSettingsRepo;
         private Point _centre;
         private CaptureConfig _captureConfig;
+        private bool _calibrationInProgress;
 
         public Point? UserReticle { get; set; }
 
@@ -70,11 +71,24 @@ namespace PiCamCV.WinForms.CameraConsumers
             var colorSettings = _colourSettingsRepo.Read();
             _faceTrackingController = new FaceTrackingPanTiltController(PanTiltMechanism, _captureConfig);
             _colourTrackingController = new ColourTrackingPanTiltController(PanTiltMechanism, _captureConfig);
+
             _calibratingPanTiltController = new CalibratingPanTiltController(PanTiltMechanism, new CalibrationReadingsRepository(), screen);
             _colourTrackingController.Settings = colorSettings;
             _calibratingPanTiltController.Settings = colorSettings;
 
             _calibratingPanTiltController.GetCameraCapture = PullImage;
+            _calibratingPanTiltController.ColourCaptured += _calibratingPanTiltController_ColourCaptured;
+        }
+
+        void _calibratingPanTiltController_ColourCaptured(object sender, ColourDetectorProcessOutput e)
+        {
+            if (e.IsDetected)
+            {
+                DrawReticle(e.CapturedImage, e.CentralPoint.ToPoint(), Color.Yellow);
+            }
+            DrawReticle(e.CapturedImage, _captureConfig.Resolution.GetCenter(), Color.Red);
+            WriteText(e.CapturedImage, 10, _calibratingPanTiltController.CurrentSetting.ToString());
+            imageBoxCaptured.Image = e.CapturedImage;
         }
 
         private Image<Bgr, byte> PullImage()
@@ -106,6 +120,10 @@ namespace PiCamCV.WinForms.CameraConsumers
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
+            if (_calibrationInProgress)
+            {
+                return;
+            }
             using (var matCaptured = new Mat())
             {
                 CameraCapture.Retrieve(matCaptured);
@@ -193,11 +211,14 @@ namespace PiCamCV.WinForms.CameraConsumers
         {
             var calibrationTask = new Task<bool>(() =>
             {
+                _calibrationInProgress = true;
                 _calibratingPanTiltController.Calibrate(_captureConfig.Resolution);
                 return true;
             });
 
+            
             calibrationTask.Start();
+            _calibrationInProgress = false;
         }
     }
 }
