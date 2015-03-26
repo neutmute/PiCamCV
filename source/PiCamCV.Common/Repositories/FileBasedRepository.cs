@@ -20,8 +20,13 @@ namespace PiCamCV.Common
 
         protected FileInfo GetFileInfo()
         {
+            return GetFileInfo(Filename);
+        }
+
+        protected FileInfo GetFileInfo(string filename83)
+        {
             var appData = ExecutionEnvironment.GetApplicationMetadata();
-            var settingsFilename = Path.Combine(appData.ExeFolder, Filename);
+            var settingsFilename = Path.Combine(appData.ExeFolder, filename83);
             var colorSettingsFile = new FileInfo(settingsFilename);
             return colorSettingsFile;
         }

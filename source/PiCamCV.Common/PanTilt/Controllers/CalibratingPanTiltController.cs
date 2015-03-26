@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Emgu.CV;
 using Emgu.CV.Structure;
+using Kraken.Core;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 
 namespace PiCamCV.Common.PanTilt.Controllers
@@ -94,9 +95,10 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
     public class CalibratingPanTiltController : PanTiltController
     {
-        private readonly IFileBasedRepository<PanTiltCalibrationReadings> _readingsRepo;
+        private readonly CalibrationReadingsRepository _readingsRepo;
         private readonly IScreen _screen;
         private AxesCalibrationReadings _currentResolutionReadings;
+        private readonly TimeSpan _ServoSettleTime;
 
         private readonly ColourDetector _colourDetector;
         public ColourDetectSettings Settings { get; set; }
@@ -104,12 +106,21 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
         public event EventHandler<ColourDetectorProcessOutput> ColourCaptured;
 
-        public CalibratingPanTiltController(IPanTiltMechanism panTiltMech, IFileBasedRepository<PanTiltCalibrationReadings> readingsRepo, IScreen screen)
+        public CalibratingPanTiltController(IPanTiltMechanism panTiltMech, CalibrationReadingsRepository readingsRepo, IScreen screen)
             : base(panTiltMech)
         {
             _colourDetector = new ColourDetector();
             _readingsRepo = readingsRepo;
             _screen = screen;
+
+            if (Environment.OSVersion.Platform == PlatformID.Unix)
+            {
+                _ServoSettleTime = TimeSpan.FromMilliseconds(5000);
+            }
+            else
+            {
+                _ServoSettleTime = TimeSpan.FromMilliseconds(0);
+            }
         }
 
         public void Calibrate(Resolution resolution)
@@ -142,20 +153,32 @@ namespace PiCamCV.Common.PanTilt.Controllers
             _currentResolutionReadings.CalculateAcceptedReadings();
 
             _readingsRepo.Write(allReadings);
+            _readingsRepo.ToCsv(allReadings);
+
             ResetToCenter();
             _screen.Clear();
             _screen.WriteLine("Calibration written to disk");
         }
 
+        private void WaitForServo()
+        {
+            _screen.WriteLine("Waiting {0} @ {1}...", _ServoSettleTime.ToHumanReadable(), CurrentSetting);
+            //Task.Delay((int)_ServoSettleTime.TotalMilliseconds).Wait();
+            Thread.Sleep((int) _ServoSettleTime.TotalMilliseconds);
+            _screen.WriteLine("...done waiting", _ServoSettleTime.ToHumanReadable());
+        }
+
         private void CalibrateHalfAxis(int signMovement, PanTiltAxis axis)
         {
-            const decimal saccadePercentIncrement = 0.2m;
+            const decimal saccadePercentIncrement = 4m;
             decimal accumulatedDeviation = 0;
             bool foundColour;
             do
             {
+                _screen.BeginRepaint();
                 ResetToCenter();
                 var firstDetection = LocateColour();
+                _screen.WriteLine("F {0} = {1}", CurrentSetting, firstDetection.CentralPoint);
 
                 accumulatedDeviation += signMovement * saccadePercentIncrement;
                 
@@ -169,18 +192,15 @@ namespace PiCamCV.Common.PanTilt.Controllers
                     movementRequired.TiltPercent = accumulatedDeviation;
                 }
                 
-                MoveRelative(movementRequired);
-                Task.Delay(1000).Wait();
-                _screen.BeginRepaint();
                 _screen.WriteLine("Sign={0}", signMovement);
                 _screen.WriteLine("Axis={0}", axis);
                 _screen.WriteLine("Saccade={0}", accumulatedDeviation);
 
-                _screen.WriteLine("Waiting for servo");
-               // Thread.Sleep(100);
+                MoveRelative(movementRequired);
+                WaitForServo();
                 
-                _screen.WriteLine("Locating...");
                 var newDetection = LocateColour();
+                _screen.WriteLine("N {0} = {1}", CurrentSetting, newDetection.CentralPoint);
                 foundColour = newDetection.IsDetected;
 
                 if (foundColour)
@@ -207,7 +227,10 @@ namespace PiCamCV.Common.PanTilt.Controllers
                         axisReadings.Add(pixelDeviation, new ReadingSet(accumulatedDeviation));    
                     }
 
-                    _screen.WriteLine("Deviation={0}->{1}={2}", firstDetection.CentralPoint, newDetection.CentralPoint, pixelDeviation);
+                    _screen.WriteLine("First={0}", firstDetection.CentralPoint);
+                    _screen.WriteLine("New={0}", newDetection.CentralPoint);
+                    _screen.WriteLine("Deviation={0}", pixelDeviation);
+                    WaitForServo();
                 }
             }
             while (foundColour && Math.Abs(accumulatedDeviation) < 60);
@@ -216,32 +239,30 @@ namespace PiCamCV.Common.PanTilt.Controllers
         private void ResetToCenter()
         {
             MoveAbsolute(new PanTiltSetting(50m, 50m)); // start center
-            Task.Delay(1000).Wait();
+            WaitForServo();
         }
 
         private ColourDetectorProcessOutput LocateColour()
         {
-            var colourDetectorInput = new ColourDetectorInput();
-            colourDetectorInput.Captured = GetCameraCapture().Mat;
-            colourDetectorInput.SetCapturedImage = true;
-            colourDetectorInput.Settings = Settings;
+            var output = new ColourDetectorProcessOutput();
+            var capturedImage = GetCameraCapture();
+            using (var capturedMat = capturedImage.Mat)
+            {
+                var colourDetectorInput = new ColourDetectorInput();
+                colourDetectorInput.Captured = capturedMat;
+                colourDetectorInput.SetCapturedImage = false;
+                colourDetectorInput.Settings = Settings;
 
-            var colourDetectorOutput = _colourDetector.Process(colourDetectorInput);
-
+                output = _colourDetector.Process(colourDetectorInput);
+            }
+         
             if (ColourCaptured != null)
             {
-
-                //colourDetectorOutput.CapturedImage.Draw(
-                //    CurrentSetting.ToString()
-                //    , new Point(10, 20)
-                //    , Emgu.CV.CvEnum.FontFace.HersheySimplex
-                //    , 0.4
-                //    , new Bgr(Color.White));
-                
-                ColourCaptured(this, colourDetectorOutput);
+                output.CapturedImage = capturedImage;
+                ColourCaptured(this, output);
             }
 
-            return colourDetectorOutput;
+            return output;
         }
 
     }
