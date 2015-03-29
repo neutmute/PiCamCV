@@ -104,6 +104,8 @@ namespace PiCamCV.Common.PanTilt.Controllers
         public ColourDetectSettings Settings { get; set; }
         public Func<Image<Bgr, byte>> GetCameraCapture { get; set; }
 
+        public Action<string> WaitStep { get; set; }
+
         public event EventHandler<ColourDetectorProcessOutput> ColourCaptured;
 
         public CalibratingPanTiltController(IPanTiltMechanism panTiltMech, CalibrationReadingsRepository readingsRepo, IScreen screen)
@@ -160,25 +162,36 @@ namespace PiCamCV.Common.PanTilt.Controllers
             _screen.WriteLine("Calibration written to disk");
         }
 
-        private void WaitForServo()
+        private void WaitServo(string reasonFormat, params object[] reasonArgs)
         {
-            _screen.WriteLine("Waiting {0} @ {1}...", _ServoSettleTime.ToHumanReadable(), CurrentSetting);
+            DoStep(reasonFormat, reasonArgs);
+            Thread.Sleep((int)_ServoSettleTime.TotalMilliseconds);
+        }
+
+        private void DoStep(string reasonFormat, params object[] reasonArgs)
+        {
+            var reason = DateTime.Now.ToString("HH:mm:ss fff") + " " + string.Format(reasonFormat, reasonArgs);
+            _screen.WriteLine("Waiting: {0}", reason);
+            //WaitStep(reason);
+            
             //Task.Delay((int)_ServoSettleTime.TotalMilliseconds).Wait();
-            Thread.Sleep((int) _ServoSettleTime.TotalMilliseconds);
-            _screen.WriteLine("...done waiting", _ServoSettleTime.ToHumanReadable());
+            //
+            //_screen.WriteLine("...done waiting", _ServoSettleTime.ToHumanReadable());
         }
 
         private void CalibrateHalfAxis(int signMovement, PanTiltAxis axis)
         {
-            const decimal saccadePercentIncrement = 4m;
+            const decimal saccadePercentIncrement = 0.1m;
             decimal accumulatedDeviation = 0;
             bool foundColour;
             do
             {
                 _screen.BeginRepaint();
                 ResetToCenter();
+                WaitServo("Relocated to center position. About to capture first detection");
                 var firstDetection = LocateColour();
-                _screen.WriteLine("F {0} = {1}", CurrentSetting, firstDetection.CentralPoint);
+
+                DoStep("Center detection @ {0} is {1}", CurrentSetting, firstDetection.CentralPoint);
 
                 accumulatedDeviation += signMovement * saccadePercentIncrement;
                 
@@ -197,10 +210,11 @@ namespace PiCamCV.Common.PanTilt.Controllers
                 _screen.WriteLine("Saccade={0}", accumulatedDeviation);
 
                 MoveRelative(movementRequired);
-                WaitForServo();
+                WaitServo("Settle time after moving to new detection location {0}. About to capture new detection.", movementRequired);
                 
                 var newDetection = LocateColour();
-                _screen.WriteLine("N {0} = {1}", CurrentSetting, newDetection.CentralPoint);
+                DoStep("New detection @ {0} is {1}", CurrentSetting, newDetection.CentralPoint);
+
                 foundColour = newDetection.IsDetected;
 
                 if (foundColour)
@@ -226,12 +240,11 @@ namespace PiCamCV.Common.PanTilt.Controllers
                     {
                         axisReadings.Add(pixelDeviation, new ReadingSet(accumulatedDeviation));    
                     }
-
-                    _screen.WriteLine("First={0}", firstDetection.CentralPoint);
-                    _screen.WriteLine("New={0}", newDetection.CentralPoint);
                     _screen.WriteLine("Deviation={0}", pixelDeviation);
-                    WaitForServo();
                 }
+
+                _screen.WriteLine("First={0}", firstDetection.CentralPoint);
+                _screen.WriteLine("New={0}", newDetection.CentralPoint);
             }
             while (foundColour && Math.Abs(accumulatedDeviation) < 60);
         }
@@ -239,13 +252,20 @@ namespace PiCamCV.Common.PanTilt.Controllers
         private void ResetToCenter()
         {
             MoveAbsolute(new PanTiltSetting(50m, 50m)); // start center
-            WaitForServo();
         }
 
         private ColourDetectorProcessOutput LocateColour()
         {
             var output = new ColourDetectorProcessOutput();
-            var capturedImage = GetCameraCapture();
+            const int captureBufferBurn = 2;    // first image is stale, need to capture the second one
+            Image<Bgr, byte> capturedImage = null;
+            for (int i = 0; i < captureBufferBurn; i++)
+            {
+                capturedImage = GetCameraCapture();
+                //DoStep("Captured {0} image", i);
+            }
+            
+            
             using (var capturedMat = capturedImage.Mat)
             {
                 var colourDetectorInput = new ColourDetectorInput();

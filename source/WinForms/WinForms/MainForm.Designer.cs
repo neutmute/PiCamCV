@@ -48,6 +48,10 @@
             this.chkOpenCL = new System.Windows.Forms.CheckBox();
             this.btnStartStop = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripLabelSettings = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripLabelFrames = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripLabelStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageCameraCapture = new System.Windows.Forms.TabPage();
             this.tabPageFaceDetection = new System.Windows.Forms.TabPage();
@@ -55,16 +59,12 @@
             this.tabPageColourDetect = new System.Windows.Forms.TabPage();
             this.tabPageShapes = new System.Windows.Forms.TabPage();
             this.tabPagePanTiltCalibration = new System.Windows.Forms.TabPage();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripLabelSettings = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripLabelFrames = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripLabelStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelTop.SuspendLayout();
             this.groupBoxRealTime.SuspendLayout();
             this.groupBoxPreCapture.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spinEditCameraIndex)).BeginInit();
-            this.tabControlMain.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            this.tabControlMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelTop
@@ -264,6 +264,42 @@
             // 
             this.openFileDialog.FileName = "openFileDialog1";
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripLabelSettings,
+            this.toolStripLabelFrames,
+            this.toolStripLabelStatus});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 516);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1192, 24);
+            this.statusStrip1.TabIndex = 4;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripLabelSettings
+            // 
+            this.toolStripLabelSettings.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)));
+            this.toolStripLabelSettings.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
+            this.toolStripLabelSettings.Name = "toolStripLabelSettings";
+            this.toolStripLabelSettings.Size = new System.Drawing.Size(60, 19);
+            this.toolStripLabelSettings.Text = "(settings)";
+            // 
+            // toolStripLabelFrames
+            // 
+            this.toolStripLabelFrames.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
+            this.toolStripLabelFrames.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
+            this.toolStripLabelFrames.Name = "toolStripLabelFrames";
+            this.toolStripLabelFrames.Size = new System.Drawing.Size(55, 19);
+            this.toolStripLabelFrames.Text = "(frames)";
+            // 
+            // toolStripLabelStatus
+            // 
+            this.toolStripLabelStatus.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
+            this.toolStripLabelStatus.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripLabelStatus.Name = "toolStripLabelStatus";
+            this.toolStripLabelStatus.Size = new System.Drawing.Size(46, 19);
+            this.toolStripLabelStatus.Text = "(status)";
+            // 
             // tabControlMain
             // 
             this.tabControlMain.Controls.Add(this.tabPageCameraCapture);
@@ -276,15 +312,15 @@
             this.tabControlMain.Location = new System.Drawing.Point(0, 79);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
-            this.tabControlMain.Size = new System.Drawing.Size(1192, 461);
-            this.tabControlMain.TabIndex = 3;
+            this.tabControlMain.Size = new System.Drawing.Size(1192, 437);
+            this.tabControlMain.TabIndex = 5;
             // 
             // tabPageCameraCapture
             // 
             this.tabPageCameraCapture.Location = new System.Drawing.Point(4, 22);
             this.tabPageCameraCapture.Name = "tabPageCameraCapture";
             this.tabPageCameraCapture.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageCameraCapture.Size = new System.Drawing.Size(1184, 435);
+            this.tabPageCameraCapture.Size = new System.Drawing.Size(1184, 411);
             this.tabPageCameraCapture.TabIndex = 0;
             this.tabPageCameraCapture.Text = "Camera Capture";
             this.tabPageCameraCapture.UseVisualStyleBackColor = true;
@@ -335,49 +371,13 @@
             this.tabPagePanTiltCalibration.Text = "Pan Tilt";
             this.tabPagePanTiltCalibration.UseVisualStyleBackColor = true;
             // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripLabelSettings,
-            this.toolStripLabelFrames,
-            this.toolStripLabelStatus});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 516);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1192, 24);
-            this.statusStrip1.TabIndex = 4;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // toolStripLabelSettings
-            // 
-            this.toolStripLabelSettings.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)));
-            this.toolStripLabelSettings.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
-            this.toolStripLabelSettings.Name = "toolStripLabelSettings";
-            this.toolStripLabelSettings.Size = new System.Drawing.Size(60, 19);
-            this.toolStripLabelSettings.Text = "(settings)";
-            // 
-            // toolStripLabelFrames
-            // 
-            this.toolStripLabelFrames.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
-            this.toolStripLabelFrames.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
-            this.toolStripLabelFrames.Name = "toolStripLabelFrames";
-            this.toolStripLabelFrames.Size = new System.Drawing.Size(55, 19);
-            this.toolStripLabelFrames.Text = "(frames)";
-            // 
-            // toolStripLabelStatus
-            // 
-            this.toolStripLabelStatus.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
-            this.toolStripLabelStatus.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripLabelStatus.Name = "toolStripLabelStatus";
-            this.toolStripLabelStatus.Size = new System.Drawing.Size(46, 19);
-            this.toolStripLabelStatus.Text = "(status)";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1192, 540);
-            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tabControlMain);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.panelTop);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
@@ -388,9 +388,9 @@
             this.groupBoxPreCapture.ResumeLayout(false);
             this.groupBoxPreCapture.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spinEditCameraIndex)).EndInit();
-            this.tabControlMain.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.tabControlMain.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -410,16 +410,10 @@
         private System.Windows.Forms.RadioButton radFile;
         private System.Windows.Forms.RadioButton radCamera;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
-        private System.Windows.Forms.TabControl tabControlMain;
-        private System.Windows.Forms.TabPage tabPageCameraCapture;
-        private System.Windows.Forms.TabPage tabPageFaceDetection;
-        private System.Windows.Forms.TabPage tabPageHaarCascade;
-        private System.Windows.Forms.TabPage tabPageColourDetect;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripLabelSettings;
         private System.Windows.Forms.ToolStripStatusLabel toolStripLabelFrames;
         private System.Windows.Forms.ToolStripStatusLabel toolStripLabelStatus;
-        private System.Windows.Forms.TabPage tabPageShapes;
         private System.Windows.Forms.CheckBox chkMonochrome;
         private System.Windows.Forms.ComboBox cmbResolution;
         private System.Windows.Forms.TextBox txtBitrate;
@@ -427,6 +421,12 @@
         private System.Windows.Forms.Label lblBitrate;
         private System.Windows.Forms.TextBox txtFramerate;
         private System.Windows.Forms.Label lblFrames;
+        private System.Windows.Forms.TabControl tabControlMain;
+        private System.Windows.Forms.TabPage tabPageCameraCapture;
+        private System.Windows.Forms.TabPage tabPageFaceDetection;
+        private System.Windows.Forms.TabPage tabPageHaarCascade;
+        private System.Windows.Forms.TabPage tabPageColourDetect;
+        private System.Windows.Forms.TabPage tabPageShapes;
         private System.Windows.Forms.TabPage tabPagePanTiltCalibration;
 
     }

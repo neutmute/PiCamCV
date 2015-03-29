@@ -27,15 +27,15 @@ namespace PiCamCV.Common
                 foreach (var axis in axes)
                 {
                     var axisReading = readings[axis];
-                    sb.AppendFormat("{0}Pixels,Percent", axis);
+                    sb.AppendFormat("{0}Pixels,Percent\r\n", axis);
                     foreach (var pixelDeviation in axisReading.Keys)
                     {
-                        sb.AppendFormat("{0},{1}", pixelDeviation, axisReading[pixelDeviation].Accepted);
+                        sb.AppendFormat("{0},{1}\r\n", pixelDeviation, axisReading[pixelDeviation].Accepted);
                     }
 
                     resolutionCsv = sb.ToString();
                 }
-                var filename = "res_" + resolution.ToString() + ".csv";
+                var filename = "res_" + resolution + ".csv";
                 File.WriteAllText(filename, resolutionCsv);
             }
         }

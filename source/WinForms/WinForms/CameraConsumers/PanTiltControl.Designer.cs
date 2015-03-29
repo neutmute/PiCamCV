@@ -27,7 +27,6 @@
         private System.Windows.Forms.Label labelTilt;
         private System.Windows.Forms.Label labelPan;
         private System.Windows.Forms.GroupBox groupBoxCaptured;
-        private Emgu.CV.UI.ImageBox imageBoxCaptured;
         private System.Windows.Forms.GroupBox groupBoxControls;
 
         private void InitializeComponent()
@@ -35,6 +34,7 @@
             this.components = new System.ComponentModel.Container();
             this.groupBoxCaptured = new System.Windows.Forms.GroupBox();
             this.imageBoxCaptured = new Emgu.CV.UI.ImageBox();
+            this.txtTimeCalibration = new System.Windows.Forms.TextBox();
             this.groupBoxControls = new System.Windows.Forms.GroupBox();
             this.panelScreen = new System.Windows.Forms.Panel();
             this.txtScreen = new System.Windows.Forms.TextBox();
@@ -54,6 +54,7 @@
             this.txtPanPercent = new System.Windows.Forms.TextBox();
             this.labelTilt = new System.Windows.Forms.Label();
             this.labelPan = new System.Windows.Forms.Label();
+            this.btnToCsv = new System.Windows.Forms.Button();
             this.groupBoxCaptured.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).BeginInit();
             this.groupBoxControls.SuspendLayout();
@@ -66,6 +67,7 @@
             // groupBoxCaptured
             // 
             this.groupBoxCaptured.Controls.Add(this.imageBoxCaptured);
+            this.groupBoxCaptured.Controls.Add(this.txtTimeCalibration);
             this.groupBoxCaptured.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBoxCaptured.Location = new System.Drawing.Point(271, 0);
             this.groupBoxCaptured.Name = "groupBoxCaptured";
@@ -79,9 +81,18 @@
             this.imageBoxCaptured.Dock = System.Windows.Forms.DockStyle.Fill;
             this.imageBoxCaptured.Location = new System.Drawing.Point(3, 16);
             this.imageBoxCaptured.Name = "imageBoxCaptured";
-            this.imageBoxCaptured.Size = new System.Drawing.Size(351, 420);
-            this.imageBoxCaptured.TabIndex = 4;
+            this.imageBoxCaptured.Size = new System.Drawing.Size(351, 382);
+            this.imageBoxCaptured.TabIndex = 6;
             this.imageBoxCaptured.TabStop = false;
+            // 
+            // txtTimeCalibration
+            // 
+            this.txtTimeCalibration.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.txtTimeCalibration.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTimeCalibration.Location = new System.Drawing.Point(3, 398);
+            this.txtTimeCalibration.Name = "txtTimeCalibration";
+            this.txtTimeCalibration.Size = new System.Drawing.Size(351, 38);
+            this.txtTimeCalibration.TabIndex = 5;
             // 
             // groupBoxControls
             // 
@@ -117,6 +128,7 @@
             // 
             // groupBoxControllers
             // 
+            this.groupBoxControllers.Controls.Add(this.btnToCsv);
             this.groupBoxControllers.Controls.Add(this.btnCalibrate);
             this.groupBoxControllers.Controls.Add(this.chkBoxColourTracking);
             this.groupBoxControllers.Controls.Add(this.chkBoxFaceTracker);
@@ -272,13 +284,25 @@
             this.labelPan.TabIndex = 4;
             this.labelPan.Text = "Pan";
             // 
+            // btnToCsv
+            // 
+            this.btnToCsv.Location = new System.Drawing.Point(115, 44);
+            this.btnToCsv.Name = "btnToCsv";
+            this.btnToCsv.Size = new System.Drawing.Size(75, 23);
+            this.btnToCsv.TabIndex = 3;
+            this.btnToCsv.Text = "To Csv";
+            this.btnToCsv.UseVisualStyleBackColor = true;
+            this.btnToCsv.Click += new System.EventHandler(this.btnToCsv_Click);
+            // 
             // PanTiltControl
             // 
             this.Controls.Add(this.groupBoxCaptured);
             this.Controls.Add(this.groupBoxControls);
             this.Name = "PanTiltControl";
             this.Size = new System.Drawing.Size(628, 439);
+            this.Load += new System.EventHandler(this.PanTiltControl_Load);
             this.groupBoxCaptured.ResumeLayout(false);
+            this.groupBoxCaptured.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).EndInit();
             this.groupBoxControls.ResumeLayout(false);
             this.panelScreen.ResumeLayout(false);
@@ -305,5 +329,8 @@
         private System.Windows.Forms.TextBox txtScreen;
         private System.Windows.Forms.CheckBox chkBoxColourTracking;
         private System.Windows.Forms.Button btnCalibrate;
+        private Emgu.CV.UI.ImageBox imageBoxCaptured;
+        private System.Windows.Forms.TextBox txtTimeCalibration;
+        private System.Windows.Forms.Button btnToCsv;
     }
 }

@@ -23,6 +23,7 @@ namespace PiCamCV.WinForms.CameraConsumers
 {
     public partial class PanTiltControl : CameraConsumerUserControl
     {
+        private const string TimeFormat = "HH:mm:ss fff";
         protected IPanTiltMechanism PanTiltMechanism { get; set; }
         private FaceTrackingPanTiltController _faceTrackingController;
         private ColourTrackingPanTiltController _colourTrackingController;
@@ -31,6 +32,7 @@ namespace PiCamCV.WinForms.CameraConsumers
         private Point _centre;
         private CaptureConfig _captureConfig;
         private bool _calibrationInProgress;
+        private readonly Timer _timer;
 
         public Point? UserReticle { get; set; }
 
@@ -40,6 +42,14 @@ namespace PiCamCV.WinForms.CameraConsumers
             UserReticle = null;
             _colourSettingsRepo = new ColourSettingsRepository();
 
+            _timer = new Timer();
+            _timer.Interval = 10;
+            _timer.Tick += _timer_Tick;
+        }
+
+        void _timer_Tick(object sender, EventArgs e)
+        {
+            txtTimeCalibration.Text = DateTime.Now.ToString(TimeFormat);
         }
 
         private void btnGoto_Click(object sender, EventArgs e)
@@ -77,7 +87,13 @@ namespace PiCamCV.WinForms.CameraConsumers
             _calibratingPanTiltController.Settings = colorSettings;
 
             _calibratingPanTiltController.GetCameraCapture = PullImage;
+            _calibratingPanTiltController.WaitStep = CalibrationWaitStep;
             _calibratingPanTiltController.ColourCaptured += _calibratingPanTiltController_ColourCaptured;
+        }
+
+        void CalibrationWaitStep(string reason)
+        {
+            MessageBox.Show(reason);
         }
 
         void _calibratingPanTiltController_ColourCaptured(object sender, ColourDetectorProcessOutput e)
@@ -98,6 +114,8 @@ namespace PiCamCV.WinForms.CameraConsumers
             {
                 CameraCapture.Retrieve(matCaptured);
                 output = matCaptured.ToImage<Bgr, byte>();
+                WriteText(output, 30, DateTime.Now.ToString(TimeFormat));
+                imageBoxCaptured.Image = output;
             }
             return output;
         }
@@ -219,6 +237,18 @@ namespace PiCamCV.WinForms.CameraConsumers
             
             calibrationTask.Start();
             _calibrationInProgress = false;
+        }
+
+        private void PanTiltControl_Load(object sender, EventArgs e)
+        {
+            _timer.Enabled = true;
+        }
+
+        private void btnToCsv_Click(object sender, EventArgs e)
+        {
+            var repo = new CalibrationReadingsRepository();
+            var readings = repo.Read();
+            repo.ToCsv(readings);
         }
     }
 }
