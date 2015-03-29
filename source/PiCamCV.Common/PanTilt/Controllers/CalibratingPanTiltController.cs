@@ -95,10 +95,11 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
     public class CalibratingPanTiltController : PanTiltController
     {
+        const decimal saccadePercentIncrement = 0.05m;
         private readonly CalibrationReadingsRepository _readingsRepo;
         private readonly IScreen _screen;
         private AxesCalibrationReadings _currentResolutionReadings;
-        private readonly TimeSpan _ServoSettleTime;
+        private readonly TimeSpan _servoSettleTime;
 
         private readonly ColourDetector _colourDetector;
         public ColourDetectSettings Settings { get; set; }
@@ -117,11 +118,11 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
             if (Environment.OSVersion.Platform == PlatformID.Unix)
             {
-                _ServoSettleTime = TimeSpan.FromMilliseconds(5000);
+                _servoSettleTime = TimeSpan.FromMilliseconds(750);
             }
             else
             {
-                _ServoSettleTime = TimeSpan.FromMilliseconds(0);
+                _servoSettleTime = TimeSpan.FromMilliseconds(0);
             }
         }
 
@@ -165,7 +166,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
         private void WaitServo(string reasonFormat, params object[] reasonArgs)
         {
             DoStep(reasonFormat, reasonArgs);
-            Thread.Sleep((int)_ServoSettleTime.TotalMilliseconds);
+            Thread.Sleep((int)_servoSettleTime.TotalMilliseconds);
         }
 
         private void DoStep(string reasonFormat, params object[] reasonArgs)
@@ -174,14 +175,13 @@ namespace PiCamCV.Common.PanTilt.Controllers
             _screen.WriteLine("Waiting: {0}", reason);
             //WaitStep(reason);
             
-            //Task.Delay((int)_ServoSettleTime.TotalMilliseconds).Wait();
+            //Task.Delay((int)_servoSettleTime.TotalMilliseconds).Wait();
             //
-            //_screen.WriteLine("...done waiting", _ServoSettleTime.ToHumanReadable());
+            //_screen.WriteLine("...done waiting", _servoSettleTime.ToHumanReadable());
         }
 
         private void CalibrateHalfAxis(int signMovement, PanTiltAxis axis)
         {
-            const decimal saccadePercentIncrement = 0.1m;
             decimal accumulatedDeviation = 0;
             bool foundColour;
             do
@@ -230,7 +230,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
                         getAxisValue = p => p.Y;
                     }
 
-                    var pixelDeviation = Convert.ToInt32(getAxisValue(firstDetection.CentralPoint) - getAxisValue(newDetection.CentralPoint));
+                    var pixelDeviation = Convert.ToInt32(getAxisValue(newDetection.CentralPoint) - getAxisValue(firstDetection.CentralPoint));
                     var axisReadings = _currentResolutionReadings[axis];
                     if (axisReadings.ContainsKey(pixelDeviation))
                     {
