@@ -38,8 +38,11 @@
             this.groupBoxControls = new System.Windows.Forms.GroupBox();
             this.panelScreen = new System.Windows.Forms.Panel();
             this.txtScreen = new System.Windows.Forms.TextBox();
-            this.groupBoxControllers = new System.Windows.Forms.GroupBox();
+            this.groupBoxCalibration = new System.Windows.Forms.GroupBox();
+            this.btnInterpolate = new System.Windows.Forms.Button();
+            this.btnToCsv = new System.Windows.Forms.Button();
             this.btnCalibrate = new System.Windows.Forms.Button();
+            this.groupBoxControllers = new System.Windows.Forms.GroupBox();
             this.chkBoxColourTracking = new System.Windows.Forms.CheckBox();
             this.chkBoxFaceTracker = new System.Windows.Forms.CheckBox();
             this.groupBoxReticle = new System.Windows.Forms.GroupBox();
@@ -54,11 +57,11 @@
             this.txtPanPercent = new System.Windows.Forms.TextBox();
             this.labelTilt = new System.Windows.Forms.Label();
             this.labelPan = new System.Windows.Forms.Label();
-            this.btnToCsv = new System.Windows.Forms.Button();
             this.groupBoxCaptured.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).BeginInit();
             this.groupBoxControls.SuspendLayout();
             this.panelScreen.SuspendLayout();
+            this.groupBoxCalibration.SuspendLayout();
             this.groupBoxControllers.SuspendLayout();
             this.groupBoxReticle.SuspendLayout();
             this.groupBoxMoveTo.SuspendLayout();
@@ -97,6 +100,7 @@
             // groupBoxControls
             // 
             this.groupBoxControls.Controls.Add(this.panelScreen);
+            this.groupBoxControls.Controls.Add(this.groupBoxCalibration);
             this.groupBoxControls.Controls.Add(this.groupBoxControllers);
             this.groupBoxControls.Controls.Add(this.groupBoxReticle);
             this.groupBoxControls.Controls.Add(this.groupBoxMoveTo);
@@ -111,10 +115,10 @@
             // 
             this.panelScreen.Controls.Add(this.txtScreen);
             this.panelScreen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelScreen.Location = new System.Drawing.Point(3, 306);
+            this.panelScreen.Location = new System.Drawing.Point(3, 215);
             this.panelScreen.Name = "panelScreen";
-            this.panelScreen.Size = new System.Drawing.Size(265, 130);
-            this.panelScreen.TabIndex = 7;
+            this.panelScreen.Size = new System.Drawing.Size(265, 221);
+            this.panelScreen.TabIndex = 9;
             // 
             // txtScreen
             // 
@@ -123,32 +127,63 @@
             this.txtScreen.Location = new System.Drawing.Point(0, 0);
             this.txtScreen.Multiline = true;
             this.txtScreen.Name = "txtScreen";
-            this.txtScreen.Size = new System.Drawing.Size(265, 130);
+            this.txtScreen.Size = new System.Drawing.Size(265, 221);
             this.txtScreen.TabIndex = 0;
             // 
-            // groupBoxControllers
+            // groupBoxCalibration
             // 
-            this.groupBoxControllers.Controls.Add(this.btnToCsv);
-            this.groupBoxControllers.Controls.Add(this.btnCalibrate);
-            this.groupBoxControllers.Controls.Add(this.chkBoxColourTracking);
-            this.groupBoxControllers.Controls.Add(this.chkBoxFaceTracker);
-            this.groupBoxControllers.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBoxControllers.Location = new System.Drawing.Point(3, 225);
-            this.groupBoxControllers.Name = "groupBoxControllers";
-            this.groupBoxControllers.Size = new System.Drawing.Size(265, 81);
-            this.groupBoxControllers.TabIndex = 6;
-            this.groupBoxControllers.TabStop = false;
-            this.groupBoxControllers.Text = "Controllers";
+            this.groupBoxCalibration.Controls.Add(this.btnInterpolate);
+            this.groupBoxCalibration.Controls.Add(this.btnToCsv);
+            this.groupBoxCalibration.Controls.Add(this.btnCalibrate);
+            this.groupBoxCalibration.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBoxCalibration.Location = new System.Drawing.Point(3, 161);
+            this.groupBoxCalibration.Name = "groupBoxCalibration";
+            this.groupBoxCalibration.Size = new System.Drawing.Size(265, 54);
+            this.groupBoxCalibration.TabIndex = 8;
+            this.groupBoxCalibration.TabStop = false;
+            this.groupBoxCalibration.Text = "Calibration";
+            // 
+            // btnInterpolate
+            // 
+            this.btnInterpolate.Location = new System.Drawing.Point(166, 19);
+            this.btnInterpolate.Name = "btnInterpolate";
+            this.btnInterpolate.Size = new System.Drawing.Size(73, 23);
+            this.btnInterpolate.TabIndex = 6;
+            this.btnInterpolate.Text = "Interpolate";
+            this.btnInterpolate.UseVisualStyleBackColor = true;
+            this.btnInterpolate.Click += new System.EventHandler(this.btnInterpolate_Click);
+            // 
+            // btnToCsv
+            // 
+            this.btnToCsv.Location = new System.Drawing.Point(87, 19);
+            this.btnToCsv.Name = "btnToCsv";
+            this.btnToCsv.Size = new System.Drawing.Size(73, 23);
+            this.btnToCsv.TabIndex = 5;
+            this.btnToCsv.Text = "To Csv";
+            this.btnToCsv.UseVisualStyleBackColor = true;
+            this.btnToCsv.Click += new System.EventHandler(this.btnToCsv_Click);
             // 
             // btnCalibrate
             // 
-            this.btnCalibrate.Location = new System.Drawing.Point(115, 15);
+            this.btnCalibrate.Location = new System.Drawing.Point(6, 19);
             this.btnCalibrate.Name = "btnCalibrate";
             this.btnCalibrate.Size = new System.Drawing.Size(75, 23);
-            this.btnCalibrate.TabIndex = 2;
+            this.btnCalibrate.TabIndex = 4;
             this.btnCalibrate.Text = "Calibrate";
             this.btnCalibrate.UseVisualStyleBackColor = true;
             this.btnCalibrate.Click += new System.EventHandler(this.btnCalibrate_Click);
+            // 
+            // groupBoxControllers
+            // 
+            this.groupBoxControllers.Controls.Add(this.chkBoxColourTracking);
+            this.groupBoxControllers.Controls.Add(this.chkBoxFaceTracker);
+            this.groupBoxControllers.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBoxControllers.Location = new System.Drawing.Point(3, 119);
+            this.groupBoxControllers.Name = "groupBoxControllers";
+            this.groupBoxControllers.Size = new System.Drawing.Size(265, 42);
+            this.groupBoxControllers.TabIndex = 6;
+            this.groupBoxControllers.TabStop = false;
+            this.groupBoxControllers.Text = "Controllers";
             // 
             // chkBoxColourTracking
             // 
@@ -163,7 +198,7 @@
             // chkBoxFaceTracker
             // 
             this.chkBoxFaceTracker.AutoSize = true;
-            this.chkBoxFaceTracker.Location = new System.Drawing.Point(8, 42);
+            this.chkBoxFaceTracker.Location = new System.Drawing.Point(130, 19);
             this.chkBoxFaceTracker.Name = "chkBoxFaceTracker";
             this.chkBoxFaceTracker.Size = new System.Drawing.Size(95, 17);
             this.chkBoxFaceTracker.TabIndex = 0;
@@ -178,18 +213,18 @@
             this.groupBoxReticle.Controls.Add(this.labelReticleX);
             this.groupBoxReticle.Controls.Add(this.labelReticleY);
             this.groupBoxReticle.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBoxReticle.Location = new System.Drawing.Point(3, 116);
+            this.groupBoxReticle.Location = new System.Drawing.Point(3, 66);
             this.groupBoxReticle.Name = "groupBoxReticle";
-            this.groupBoxReticle.Size = new System.Drawing.Size(265, 109);
+            this.groupBoxReticle.Size = new System.Drawing.Size(265, 53);
             this.groupBoxReticle.TabIndex = 5;
             this.groupBoxReticle.TabStop = false;
             this.groupBoxReticle.Text = "Calibration Reticle";
             // 
             // btnPaintReticle
             // 
-            this.btnPaintReticle.Location = new System.Drawing.Point(45, 71);
+            this.btnPaintReticle.Location = new System.Drawing.Point(155, 17);
             this.btnPaintReticle.Name = "btnPaintReticle";
-            this.btnPaintReticle.Size = new System.Drawing.Size(84, 23);
+            this.btnPaintReticle.Size = new System.Drawing.Size(70, 23);
             this.btnPaintReticle.TabIndex = 13;
             this.btnPaintReticle.Text = "Paint";
             this.btnPaintReticle.UseVisualStyleBackColor = true;
@@ -197,22 +232,22 @@
             // 
             // txtReticleY
             // 
-            this.txtReticleY.Location = new System.Drawing.Point(45, 48);
+            this.txtReticleY.Location = new System.Drawing.Point(105, 19);
             this.txtReticleY.Name = "txtReticleY";
-            this.txtReticleY.Size = new System.Drawing.Size(84, 20);
+            this.txtReticleY.Size = new System.Drawing.Size(44, 20);
             this.txtReticleY.TabIndex = 12;
             // 
             // txtReticleX
             // 
-            this.txtReticleX.Location = new System.Drawing.Point(45, 23);
+            this.txtReticleX.Location = new System.Drawing.Point(37, 19);
             this.txtReticleX.Name = "txtReticleX";
-            this.txtReticleX.Size = new System.Drawing.Size(84, 20);
+            this.txtReticleX.Size = new System.Drawing.Size(35, 20);
             this.txtReticleX.TabIndex = 11;
             // 
             // labelReticleX
             // 
             this.labelReticleX.AutoSize = true;
-            this.labelReticleX.Location = new System.Drawing.Point(5, 26);
+            this.labelReticleX.Location = new System.Drawing.Point(5, 22);
             this.labelReticleX.Name = "labelReticleX";
             this.labelReticleX.Size = new System.Drawing.Size(12, 13);
             this.labelReticleX.TabIndex = 9;
@@ -221,7 +256,7 @@
             // labelReticleY
             // 
             this.labelReticleY.AutoSize = true;
-            this.labelReticleY.Location = new System.Drawing.Point(5, 51);
+            this.labelReticleY.Location = new System.Drawing.Point(78, 22);
             this.labelReticleY.Name = "labelReticleY";
             this.labelReticleY.Size = new System.Drawing.Size(12, 13);
             this.labelReticleY.TabIndex = 10;
@@ -237,16 +272,16 @@
             this.groupBoxMoveTo.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBoxMoveTo.Location = new System.Drawing.Point(3, 16);
             this.groupBoxMoveTo.Name = "groupBoxMoveTo";
-            this.groupBoxMoveTo.Size = new System.Drawing.Size(265, 100);
+            this.groupBoxMoveTo.Size = new System.Drawing.Size(265, 50);
             this.groupBoxMoveTo.TabIndex = 4;
             this.groupBoxMoveTo.TabStop = false;
             this.groupBoxMoveTo.Text = "Goto";
             // 
             // btnGoto
             // 
-            this.btnGoto.Location = new System.Drawing.Point(45, 70);
+            this.btnGoto.Location = new System.Drawing.Point(155, 17);
             this.btnGoto.Name = "btnGoto";
-            this.btnGoto.Size = new System.Drawing.Size(84, 23);
+            this.btnGoto.Size = new System.Drawing.Size(70, 23);
             this.btnGoto.TabIndex = 8;
             this.btnGoto.Text = "Go";
             this.btnGoto.UseVisualStyleBackColor = true;
@@ -254,22 +289,22 @@
             // 
             // txtTiltPercent
             // 
-            this.txtTiltPercent.Location = new System.Drawing.Point(45, 44);
+            this.txtTiltPercent.Location = new System.Drawing.Point(105, 19);
             this.txtTiltPercent.Name = "txtTiltPercent";
-            this.txtTiltPercent.Size = new System.Drawing.Size(84, 20);
+            this.txtTiltPercent.Size = new System.Drawing.Size(44, 20);
             this.txtTiltPercent.TabIndex = 7;
             // 
             // txtPanPercent
             // 
-            this.txtPanPercent.Location = new System.Drawing.Point(45, 19);
+            this.txtPanPercent.Location = new System.Drawing.Point(37, 19);
             this.txtPanPercent.Name = "txtPanPercent";
-            this.txtPanPercent.Size = new System.Drawing.Size(84, 20);
+            this.txtPanPercent.Size = new System.Drawing.Size(35, 20);
             this.txtPanPercent.TabIndex = 6;
             // 
             // labelTilt
             // 
             this.labelTilt.AutoSize = true;
-            this.labelTilt.Location = new System.Drawing.Point(5, 47);
+            this.labelTilt.Location = new System.Drawing.Point(78, 22);
             this.labelTilt.Name = "labelTilt";
             this.labelTilt.Size = new System.Drawing.Size(21, 13);
             this.labelTilt.TabIndex = 5;
@@ -284,16 +319,6 @@
             this.labelPan.TabIndex = 4;
             this.labelPan.Text = "Pan";
             // 
-            // btnToCsv
-            // 
-            this.btnToCsv.Location = new System.Drawing.Point(115, 44);
-            this.btnToCsv.Name = "btnToCsv";
-            this.btnToCsv.Size = new System.Drawing.Size(75, 23);
-            this.btnToCsv.TabIndex = 3;
-            this.btnToCsv.Text = "To Csv";
-            this.btnToCsv.UseVisualStyleBackColor = true;
-            this.btnToCsv.Click += new System.EventHandler(this.btnToCsv_Click);
-            // 
             // PanTiltControl
             // 
             this.Controls.Add(this.groupBoxCaptured);
@@ -307,6 +332,7 @@
             this.groupBoxControls.ResumeLayout(false);
             this.panelScreen.ResumeLayout(false);
             this.panelScreen.PerformLayout();
+            this.groupBoxCalibration.ResumeLayout(false);
             this.groupBoxControllers.ResumeLayout(false);
             this.groupBoxControllers.PerformLayout();
             this.groupBoxReticle.ResumeLayout(false);
@@ -325,12 +351,14 @@
         private System.Windows.Forms.Label labelReticleY;
         private System.Windows.Forms.GroupBox groupBoxControllers;
         private System.Windows.Forms.CheckBox chkBoxFaceTracker;
-        private System.Windows.Forms.Panel panelScreen;
-        private System.Windows.Forms.TextBox txtScreen;
         private System.Windows.Forms.CheckBox chkBoxColourTracking;
-        private System.Windows.Forms.Button btnCalibrate;
         private Emgu.CV.UI.ImageBox imageBoxCaptured;
         private System.Windows.Forms.TextBox txtTimeCalibration;
+        private System.Windows.Forms.Panel panelScreen;
+        private System.Windows.Forms.TextBox txtScreen;
+        private System.Windows.Forms.GroupBox groupBoxCalibration;
+        private System.Windows.Forms.Button btnInterpolate;
         private System.Windows.Forms.Button btnToCsv;
+        private System.Windows.Forms.Button btnCalibrate;
     }
 }

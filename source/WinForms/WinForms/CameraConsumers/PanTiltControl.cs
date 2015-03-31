@@ -249,6 +249,18 @@ namespace PiCamCV.WinForms.CameraConsumers
             var repo = new CalibrationReadingsRepository();
             var readings = repo.Read();
             repo.ToCsv(readings);
+            NotifyStatus("Readings CSV written to disk");
         }
+
+        private void btnInterpolate_Click(object sender, EventArgs e)
+        {
+            var repo = new CalibrationReadingsRepository();
+            var readings = repo.Read();
+            readings.Interpolate();
+            repo.Write(readings);
+            NotifyStatus("Missing readings interpolated and written to disk");
+        }
+
+
     }
 }

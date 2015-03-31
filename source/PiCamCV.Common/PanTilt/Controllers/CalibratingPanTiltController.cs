@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using Kraken.Core;
+using PiCamCV.Common.PanTilt.MoveStrategies;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 
 namespace PiCamCV.Common.PanTilt.Controllers
@@ -21,7 +22,43 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
     public class PanTiltCalibrationReadings : SerializableDictionary<Resolution, AxesCalibrationReadings>
     {
-        
+        public void Interpolate()
+        {
+            var regressorFactory = new LinearRegressorFactory();
+            foreach (var key in Keys)
+            {
+                var readings = this[key];
+                var regressorPair = regressorFactory.GetAutoCalibrated(key);
+
+                if (regressorPair == null)
+                {
+                    continue;
+                }
+
+                Action<PanTiltAxis> interpolateAxis = (axis) =>
+                {
+                    var calibrationReadings = readings[axis];
+                    var pixelDeviations = calibrationReadings.Keys.ToList();
+                    pixelDeviations.Sort();
+                    var minimumDeviation = pixelDeviations[0];
+                    var maximumDeviation = pixelDeviations[pixelDeviations.Count - 1];
+
+                    for (int i = minimumDeviation; i < maximumDeviation; i++)
+                    {
+                        if (!calibrationReadings.ContainsKey(i))
+                        {
+                            var readingSet = new ReadingSet();
+                            readingSet.Accepted = regressorPair[axis].Calculate(i);
+                            readingSet.IsInterpolated = true;
+                            calibrationReadings.Add(i, readingSet);
+                        }
+                    }
+                };
+
+                interpolateAxis(PanTiltAxis.Horizontal);
+                interpolateAxis(PanTiltAxis.Vertical);
+            }
+        }
     }
 
     public class ReadingSet
@@ -29,6 +66,9 @@ namespace PiCamCV.Common.PanTilt.Controllers
         public List<Decimal> AllReadings { get; private set; }
 
         public Decimal Accepted { get; set; }
+        
+        public bool IsInterpolated { get; set; }
+
         public ReadingSet(Decimal firstReading)
         {
             AllReadings = new List<decimal> {firstReading};

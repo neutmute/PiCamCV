@@ -27,10 +27,16 @@ namespace PiCamCV.Common
                 foreach (var axis in axes)
                 {
                     var axisReading = readings[axis];
-                    sb.AppendFormat("{0}Pixels,Percent\r\n", axis);
+                    sb.AppendFormat("{0}Pixels,Percent,SampleCount,IsInterpolated\r\n", axis);
                     foreach (var pixelDeviation in axisReading.Keys)
                     {
-                        sb.AppendFormat("{0},{1}\r\n", pixelDeviation, axisReading[pixelDeviation].Accepted);
+                        var readingSet = axisReading[pixelDeviation];
+                        sb.AppendFormat(
+                            "{0},{1},{2},{3}\r\n"
+                            , pixelDeviation
+                            , readingSet.Accepted
+                            , readingSet.AllReadings.Count
+                            , readingSet.IsInterpolated);
                     }
 
                     resolutionCsv = sb.ToString();
