@@ -23,6 +23,10 @@ namespace PiCamCV.Common.PanTilt.MoveStrategies
             }
         }
 
+        /// <summary>
+        /// Linear regression calculated from observation 
+        /// https://github.com/neutmute/PiCamCV/blob/master/docs/panTiltCalibration.xlsx
+        /// </summary>
         public LinearRegressorPair GetHandMeasured320x240()
         {
             return new LinearRegressorPair(0.0933m, 0.0864m, 0.0812m, 0.2091m);
