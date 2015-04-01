@@ -6,6 +6,7 @@ using Emgu.CV.Structure;
 using PiCamCV.Common;
 using PiCamCV.Common.ExtensionMethods;
 using PiCamCV.Common.Interfaces;
+using PiCamCV.Common.PanTilt.MoveStrategies;
 using PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies;
 using PiCamCV.Interfaces;
 
@@ -37,7 +38,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
         where TOutput : CameraPanTiltProcessOutput, new()
     {
-        private readonly LinearRegressionModifierStrategy _panTiltModifier;
+        private readonly CameraBasedModifierStrategy _panTiltModifier;
 
         protected CaptureConfig CaptureConfig { get; private set; }
 
@@ -51,7 +52,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             CaptureConfig = captureConfig;
             CentrePoint = CaptureConfig.Resolution.GetCenter();
             
-            _panTiltModifier = new LinearRegressionModifierStrategy(CaptureConfig, CentrePoint);
+            _panTiltModifier = new AutoCalibratedModifierStrategy(CaptureConfig, CentrePoint);
 
             Log.InfoFormat("Centre = {0}", CentrePoint);
             Ticks = 0;

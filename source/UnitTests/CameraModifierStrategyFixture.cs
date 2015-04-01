@@ -20,7 +20,7 @@ namespace UnitTests
             var target = new Point(160, 120);
             var objective = new Point(128, 120);
             var config = new CaptureConfig{Resolution = new Resolution(320, 240)};
-            var strategy = new LinearRegressionModifierStrategy(config, target);
+            var strategy = new HandCalibratedModifierStrategy(config, target);
 
             strategy.Objective = objective;
             

@@ -70,9 +70,9 @@ namespace PiCamCV.Common.PanTilt.MoveStrategies
             Intercept = intercept;
         }
 
-        public Decimal Calculate(int pixelDeviation)
+        public Decimal Calculate(Decimal pixelDeviation)
         {
-            return (pixelDeviation*XCoefficient) + Intercept;
+            return (pixelDeviation * XCoefficient) + Intercept;
         }
     }
 

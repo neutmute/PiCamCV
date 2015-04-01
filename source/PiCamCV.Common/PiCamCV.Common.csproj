@@ -80,6 +80,8 @@
     <Compile Include="..\..\Solution Items\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="PanTilt\MoveStrategies\CameraBasedModifierStrategy.cs" />
+    <Compile Include="PanTilt\MoveStrategies\AutoCalibratedModifierStrategy.cs" />
     <Compile Include="PanTilt\MoveStrategies\LinearRegressor.cs" />
     <Compile Include="Repositories\CalibrationReadingsRepository.cs" />
     <Compile Include="CameraConsumerBase.cs" />
@@ -99,7 +101,7 @@
     <Compile Include="PanTilt\Controllers\ColourTrackingPanTiltController.cs" />
     <Compile Include="PanTilt\Controllers\FaceTrackingPanTiltController.cs" />
     <Compile Include="PanTilt\Controllers\JoystickPanTiltController.cs" />
-    <Compile Include="PanTilt\MoveStrategies\LinearRegressionModifierStrategy.cs" />
+    <Compile Include="PanTilt\MoveStrategies\HandCalibratedModifierStrategy.cs" />
     <Compile Include="PanTilt\MoveStrategies\IPanTiltModifierStrategy.cs" />
     <Compile Include="PanTilt\MoveStrategies\JoystickModifierStrategy.cs" />
     <Compile Include="PanTilt\MoveStrategies\LookupModifierStrategy.cs" />
