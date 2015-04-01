@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Timers;
 using Emgu.CV.Structure;
 using PiCamCV.Common;
 using PiCamCV.Common.ExtensionMethods;
@@ -19,6 +20,8 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         public PanTiltSetting PanTiltNow { get; set; }
 
         public Point Target { get; set; }
+
+        public bool IsServoInMotion { get; set; }
 
         public override string ToString()
         {
@@ -46,6 +49,10 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
         protected int Ticks { get;set;}
 
+        private readonly TimeSpan _servoSettleTime;
+        private readonly Timer _timerUntilServoSettled;
+        protected bool IsServoInMotion { get; set; }
+
         protected CameraBasedPanTiltController(IPanTiltMechanism panTiltMech, CaptureConfig captureConfig)
             : base(panTiltMech)
         {
@@ -58,6 +65,12 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             Ticks = 0;
 
             MoveAbsolute(new PanTiltSetting(50, 50));
+
+            _servoSettleTime = TimeSpan.FromMilliseconds(500);
+            
+            _timerUntilServoSettled = new Timer(_servoSettleTime.TotalMilliseconds);
+            _timerUntilServoSettled.AutoReset = false;
+            _timerUntilServoSettled.Elapsed += (o, a) => { IsServoInMotion = false; };
         }
 
 
@@ -74,7 +87,12 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
             if (!objectOfInterest.Equals(CentrePoint))
             {
-                MoveAbsolute(newPosition);
+                var moved = MoveAbsolute(newPosition);
+                if (moved)
+                {
+                    _timerUntilServoSettled.Start();
+                    IsServoInMotion = true;
+                }
             }
             
             return output;
@@ -82,6 +100,12 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
         public TOutput Process(CameraProcessInput input)
         {
+            if (IsServoInMotion)
+            {
+                var output = new TOutput();
+                output.IsServoInMotion = true;
+                return output;
+            }
             var stopWatch = Stopwatch.StartNew();
             var result = DoProcess(input);
 

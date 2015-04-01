@@ -167,7 +167,15 @@ namespace PiCamCV.WinForms.CameraConsumers
                         DrawReticle(bgrImage, result.Target, Color.Yellow);
                     }
                     WriteText(bgrImage, _captureConfig.Resolution.Height - 10, "Colour Tracking");
-                    NotifyStatus("Colour tracking took {0}", result.Elapsed.ToHumanReadable());
+
+                    if (result.IsServoInMotion)
+                    {
+                        NotifyStatus("Waiting for servo");
+                    }
+                    else
+                    {
+                        NotifyStatus("Colour tracking took {0}", result.Elapsed.ToHumanReadable());
+                    }
                 }
 
                 if (chkBoxFaceTracker.Checked)
@@ -184,7 +192,14 @@ namespace PiCamCV.WinForms.CameraConsumers
                         DrawReticle(bgrImage, result.Target, Color.Yellow);
                     }
 
-                    NotifyStatus("Face tracking took {0}", result.Elapsed.ToHumanReadable());
+                    if (result.IsServoInMotion)
+                    {
+                        NotifyStatus("Waiting for servo");
+                    }
+                    else
+                    {
+                        NotifyStatus("Face tracking took {0}", result.Elapsed.ToHumanReadable());
+                    }
                 }
 
                 imageBoxCaptured.Image = bgrImage;
