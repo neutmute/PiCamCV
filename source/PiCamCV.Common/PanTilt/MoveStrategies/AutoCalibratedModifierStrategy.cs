@@ -18,6 +18,10 @@ namespace PiCamCV.Common.PanTilt.MoveStrategies
         {
             var readingsRepository = new CalibrationReadingsRepository();
             var readings = readingsRepository.Read();
+            if (!readings.ContainsKey(captureConfig.Resolution))
+            {
+                readings.Add(captureConfig.Resolution, new AxesCalibrationReadings());
+            }
             _calibratedReadings = readings[captureConfig.Resolution];
         }
 

@@ -305,7 +305,6 @@ namespace PiCamCV.Common.PanTilt.Controllers
                 //DoStep("Captured {0} image", i);
             }
             
-            
             using (var capturedMat = capturedImage.Mat)
             {
                 var colourDetectorInput = new ColourDetectorInput();

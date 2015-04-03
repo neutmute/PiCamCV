@@ -49,7 +49,6 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
         protected int Ticks { get;set;}
 
-        private readonly TimeSpan _servoSettleTime;
         private readonly Timer _timerUntilServoSettled;
         protected bool IsServoInMotion { get; set; }
 
@@ -65,12 +64,15 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             Ticks = 0;
 
             MoveAbsolute(new PanTiltSetting(50, 50));
-
-            _servoSettleTime = TimeSpan.FromMilliseconds(500);
             
-            _timerUntilServoSettled = new Timer(_servoSettleTime.TotalMilliseconds);
+            _timerUntilServoSettled = new Timer(300);
             _timerUntilServoSettled.AutoReset = false;
             _timerUntilServoSettled.Elapsed += (o, a) => { IsServoInMotion = false; };
+        }
+
+        public void SetServoSettleTime(int milliseconds)
+        {
+            _timerUntilServoSettled.Interval = milliseconds;
         }
 
 

@@ -276,6 +276,13 @@ namespace PiCamCV.WinForms.CameraConsumers
             NotifyStatus("Missing readings interpolated and written to disk");
         }
 
+        private void spinEditServoSettle_ValueChanged(object sender, EventArgs e)
+        {
+            _colourTrackingController.SetServoSettleTime((int) spinEditServoSettle.Value);
+            _faceTrackingController.SetServoSettleTime((int)spinEditServoSettle.Value);
+
+            NotifyStatus("Servo settle time set to {0}ms", spinEditServoSettle.Value);
+        }
 
     }
 }

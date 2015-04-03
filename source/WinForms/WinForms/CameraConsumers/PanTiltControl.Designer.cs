@@ -43,6 +43,8 @@
             this.btnToCsv = new System.Windows.Forms.Button();
             this.btnCalibrate = new System.Windows.Forms.Button();
             this.groupBoxControllers = new System.Windows.Forms.GroupBox();
+            this.labelServoSettle = new System.Windows.Forms.Label();
+            this.spinEditServoSettle = new System.Windows.Forms.NumericUpDown();
             this.chkBoxColourTracking = new System.Windows.Forms.CheckBox();
             this.chkBoxFaceTracker = new System.Windows.Forms.CheckBox();
             this.groupBoxReticle = new System.Windows.Forms.GroupBox();
@@ -63,6 +65,7 @@
             this.panelScreen.SuspendLayout();
             this.groupBoxCalibration.SuspendLayout();
             this.groupBoxControllers.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spinEditServoSettle)).BeginInit();
             this.groupBoxReticle.SuspendLayout();
             this.groupBoxMoveTo.SuspendLayout();
             this.SuspendLayout();
@@ -115,9 +118,9 @@
             // 
             this.panelScreen.Controls.Add(this.txtScreen);
             this.panelScreen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelScreen.Location = new System.Drawing.Point(3, 215);
+            this.panelScreen.Location = new System.Drawing.Point(3, 297);
             this.panelScreen.Name = "panelScreen";
-            this.panelScreen.Size = new System.Drawing.Size(265, 221);
+            this.panelScreen.Size = new System.Drawing.Size(265, 139);
             this.panelScreen.TabIndex = 9;
             // 
             // txtScreen
@@ -127,7 +130,7 @@
             this.txtScreen.Location = new System.Drawing.Point(0, 0);
             this.txtScreen.Multiline = true;
             this.txtScreen.Name = "txtScreen";
-            this.txtScreen.Size = new System.Drawing.Size(265, 221);
+            this.txtScreen.Size = new System.Drawing.Size(265, 139);
             this.txtScreen.TabIndex = 0;
             // 
             // groupBoxCalibration
@@ -136,7 +139,7 @@
             this.groupBoxCalibration.Controls.Add(this.btnToCsv);
             this.groupBoxCalibration.Controls.Add(this.btnCalibrate);
             this.groupBoxCalibration.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBoxCalibration.Location = new System.Drawing.Point(3, 161);
+            this.groupBoxCalibration.Location = new System.Drawing.Point(3, 243);
             this.groupBoxCalibration.Name = "groupBoxCalibration";
             this.groupBoxCalibration.Size = new System.Drawing.Size(265, 54);
             this.groupBoxCalibration.TabIndex = 8;
@@ -175,15 +178,54 @@
             // 
             // groupBoxControllers
             // 
+            this.groupBoxControllers.Controls.Add(this.labelServoSettle);
+            this.groupBoxControllers.Controls.Add(this.spinEditServoSettle);
             this.groupBoxControllers.Controls.Add(this.chkBoxColourTracking);
             this.groupBoxControllers.Controls.Add(this.chkBoxFaceTracker);
             this.groupBoxControllers.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBoxControllers.Location = new System.Drawing.Point(3, 119);
             this.groupBoxControllers.Name = "groupBoxControllers";
-            this.groupBoxControllers.Size = new System.Drawing.Size(265, 42);
+            this.groupBoxControllers.Size = new System.Drawing.Size(265, 124);
             this.groupBoxControllers.TabIndex = 6;
             this.groupBoxControllers.TabStop = false;
             this.groupBoxControllers.Text = "Controllers";
+            // 
+            // labelServoSettle
+            // 
+            this.labelServoSettle.AutoSize = true;
+            this.labelServoSettle.Location = new System.Drawing.Point(6, 49);
+            this.labelServoSettle.Name = "labelServoSettle";
+            this.labelServoSettle.Size = new System.Drawing.Size(113, 13);
+            this.labelServoSettle.TabIndex = 10;
+            this.labelServoSettle.Text = "Servo Settle Time (ms)";
+            // 
+            // spinEditServoSettle
+            // 
+            this.spinEditServoSettle.Increment = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.spinEditServoSettle.Location = new System.Drawing.Point(166, 42);
+            this.spinEditServoSettle.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.spinEditServoSettle.Minimum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.spinEditServoSettle.Name = "spinEditServoSettle";
+            this.spinEditServoSettle.Size = new System.Drawing.Size(51, 20);
+            this.spinEditServoSettle.TabIndex = 2;
+            this.spinEditServoSettle.Value = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.spinEditServoSettle.ValueChanged += new System.EventHandler(this.spinEditServoSettle_ValueChanged);
             // 
             // chkBoxColourTracking
             // 
@@ -293,6 +335,7 @@
             this.txtTiltPercent.Name = "txtTiltPercent";
             this.txtTiltPercent.Size = new System.Drawing.Size(44, 20);
             this.txtTiltPercent.TabIndex = 7;
+            this.txtTiltPercent.Text = "50";
             // 
             // txtPanPercent
             // 
@@ -300,6 +343,7 @@
             this.txtPanPercent.Name = "txtPanPercent";
             this.txtPanPercent.Size = new System.Drawing.Size(35, 20);
             this.txtPanPercent.TabIndex = 6;
+            this.txtPanPercent.Text = "50";
             // 
             // labelTilt
             // 
@@ -335,6 +379,7 @@
             this.groupBoxCalibration.ResumeLayout(false);
             this.groupBoxControllers.ResumeLayout(false);
             this.groupBoxControllers.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spinEditServoSettle)).EndInit();
             this.groupBoxReticle.ResumeLayout(false);
             this.groupBoxReticle.PerformLayout();
             this.groupBoxMoveTo.ResumeLayout(false);
@@ -360,5 +405,7 @@
         private System.Windows.Forms.Button btnInterpolate;
         private System.Windows.Forms.Button btnToCsv;
         private System.Windows.Forms.Button btnCalibrate;
+        private System.Windows.Forms.Label labelServoSettle;
+        private System.Windows.Forms.NumericUpDown spinEditServoSettle;
     }
 }
