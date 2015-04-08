@@ -63,7 +63,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
     public class ReadingSet
     {
-        public List<Decimal> AllReadings { get; private set; }
+        public List<Decimal> AllReadings { get; set; }
 
         public Decimal Accepted { get; set; }
         
@@ -79,7 +79,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
         }
         public override string ToString()
         {
-            return string.Format("Accepted={0}, AllReaddings.Count={1}", Accepted, AllReadings);
+            return string.Format("Accepted={0}, AllReadings.Count={1}", Accepted, AllReadings);
         }
     }
 

@@ -23,6 +23,7 @@ namespace PiCamCV.WinForms.UserControls
         private FaceDetector _faceDetector;
         private AccessoryOverlay _sunglassOverlay2;
         private AccessoryOverlay _hatOverlay1;
+        private ClassifierParameters _classiferParams;
         
         public FaceDetectionControl()
         {
@@ -38,9 +39,44 @@ namespace PiCamCV.WinForms.UserControls
 
             _sunglassOverlay2 = new AccessoryOverlay(environmentService.GetAbsolutePathFromAssemblyRelative("Resources/Images/sunglasses2.png"));
             _hatOverlay1 = new AccessoryOverlay(environmentService.GetAbsolutePathFromAssemblyRelative("Resources/Images/partyhat.png"));
+
+            _classiferParams = new ClassifierParameters();
+            SetUIClassifierParams(_classiferParams);
         }
 
-        
+        private void SetUIClassifierParams(ClassifierParameters defaultParams)
+        {
+            txtMinSize.Text = defaultParams.MinSize.Width.ToString();
+            txtMaxSize.Text = defaultParams.MaxSize.Width.ToString();
+            txtScale.Text = defaultParams.ScaleFactor.ToString();
+            txtMinNeigh.Text = defaultParams.MinNeighbors.ToString();
+        }
+
+        private ClassifierParameters HarvestClassifierParams()
+        {
+            var classifierParameters = new ClassifierParameters();
+
+            try
+            {
+                var minSizeDimension = Int32.Parse(txtMinSize.Text);
+                var maxSizeDimension = Int32.Parse(txtMaxSize.Text);
+
+                classifierParameters.MinSize = new Size(minSizeDimension, minSizeDimension);
+                classifierParameters.MaxSize = new Size(maxSizeDimension, maxSizeDimension);
+                classifierParameters.ScaleFactor = Double.Parse(txtScale.Text);
+                classifierParameters.MinNeighbors = Int32.Parse(txtMinNeigh.Text);
+            }
+            catch (Exception e)
+            {
+                classifierParameters = _classiferParams;
+                SetUIClassifierParams(classifierParameters);
+                Log.Info(e.Message);
+            }
+
+            return classifierParameters;
+        }
+
+
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
             using (var frame = new Mat())
@@ -50,6 +86,7 @@ namespace PiCamCV.WinForms.UserControls
                 var input = new FaceDetectorInput();
                 input.Captured = frame;
                 input.DetectEyes = chkDetectEyes.Checked;
+                input.ClassifierParams = _classiferParams;
 
                 var result = _faceDetector.Process(input);
                 var imageBgr = result.CapturedImage;
@@ -58,7 +95,18 @@ namespace PiCamCV.WinForms.UserControls
                 {
                     foreach (var face in result.Faces)
                     {
-                        imageBgr.Draw(face.Region, new Bgr(Color.Red), 2);
+                        var rectangleColor = new Bgr(Color.Red);
+                        imageBgr.Draw(face.Region, rectangleColor, 2);
+
+                        if (chkShowRectDimensions.Checked)
+                        {
+                            imageBgr.Draw(
+                                string.Format("{0}x{1}", face.Region.Width, face.Region.Height)
+                                , face.Region.Location
+                                , FontFace.HersheyComplexSmall
+                                , 2
+                                , rectangleColor);
+                        }
 
                         var eyeCount = 0;
                         foreach (Rectangle eye in face.Eyes)
@@ -208,6 +256,11 @@ namespace PiCamCV.WinForms.UserControls
             {
                 return Rectangle.Empty;
             }
+        }
+
+        private void btnSetDetectionParams_Click(object sender, EventArgs e)
+        {
+            _classiferParams = HarvestClassifierParams();
         }
 
         

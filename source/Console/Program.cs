@@ -53,7 +53,7 @@ namespace PiCamCV.ConsoleApp
                     request.Device = CaptureDevice.Pi;
                 }
 
-                request.Config = new CaptureConfig { Resolution = new Resolution(256,192), Framerate = 10, Monochrome = false };
+                request.Config = new CaptureConfig { Resolution = new Resolution(160,120), Framerate = 10, Monochrome = false };
 
                 capture = CaptureFactory.GetCapture(request);
                 captureConfig = capture.GetCaptureProperties();

@@ -9,12 +9,33 @@ using PiCamCV.Common.Interfaces;
 
 namespace PiCamCV.Common
 {
+    public class ClassifierParameters
+    {
+        public double ScaleFactor { get; set; }
+        public int MinNeighbors { get; set; }
+
+        public Size MinSize { get; set; }
+
+        public Size MaxSize { get; set; }
+
+        public ClassifierParameters()
+        {
+            ScaleFactor = 1.1;
+            MinNeighbors = 3;
+            MinSize = new Size(20, 20);
+            MaxSize = new Size();
+        }
+        
+    }
+
     public class FaceDetectorInput : CameraProcessInput
     {
+        public ClassifierParameters ClassifierParams { get; set; }
         public bool DetectEyes { get; set; }
         public FaceDetectorInput()
         {
             DetectEyes = true;
+            ClassifierParams = new ClassifierParameters();
         }
     }
 
@@ -92,10 +113,11 @@ namespace PiCamCV.Common
                 //The second dimension is the index of the rectangle in the specific channel
                 Rectangle[] facesDetected = _faceClassifier.DetectMultiScale(
                    ugray,
-                   1.1,
-                   10,
-                   new Size(20, 20));
-
+                   input.ClassifierParams.ScaleFactor,
+                   input.ClassifierParams.MinNeighbors,
+                   input.ClassifierParams.MinSize,
+                   input.ClassifierParams.MaxSize
+                   );
 
                 result.Faces.AddRange(facesDetected.Select(f => new Face(f)));
 

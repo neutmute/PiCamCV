@@ -65,7 +65,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
             MoveAbsolute(new PanTiltSetting(50, 50));
             
-            _timerUntilServoSettled = new Timer(300);
+            _timerUntilServoSettled = new Timer(150);
             _timerUntilServoSettled.AutoReset = false;
             _timerUntilServoSettled.Elapsed += (o, a) => { IsServoInMotion = false; };
         }
