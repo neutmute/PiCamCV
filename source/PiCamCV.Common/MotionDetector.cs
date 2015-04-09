@@ -21,10 +21,46 @@ namespace PiCamCV.Common
 
         public double Angle { get; set; }
 
+        public int PixelsInMotionCount { get; set; }
+
     }
+
+    public class SubtractorConfig
+    {
+        public int History { get; set; }
+        public float Threshold { get; set; }
+        public bool ShadowDetection { get;set;}
+
+        public SubtractorConfig()
+        {
+            History = 500;
+            Threshold = 16f;
+            ShadowDetection = true;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked // Overflow is fine, just wrap
+            {
+                int hash = 17;
+                // Suitable nullity checks etc, of course :)
+                hash = hash * 23 + History.GetHashCode();
+                hash = hash * 23 + Threshold.GetHashCode();
+                hash = hash * 23 + ShadowDetection.GetHashCode();
+                return hash;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            var otherAsThisType = obj as SubtractorConfig;
+            return otherAsThisType != null && otherAsThisType.GetHashCode() == GetHashCode();
+        }
+    }
+
     public class MotionDetectorInput : CameraProcessInput
     {
-
+        public SubtractorConfig SubtractorConfig { get; set; }
         /// <summary>
         /// Threshold to define a motion area, reduce the value to detect smaller motion
         /// </summary>
@@ -33,11 +69,13 @@ namespace PiCamCV.Common
         public MotionDetectorInput()
         {
             MinimumArea = 100;
+            SubtractorConfig = new SubtractorConfig();
         }
     }
 
     public class MotionDetetorOutput : CameraProcessOutput
     {
+
         public int OverallMotionPixelCount { get; set; }
         public double OverallAngle { get; set; }
 
@@ -54,11 +92,12 @@ namespace PiCamCV.Common
 
     public class MotionDetector : CameraProcessor<MotionDetectorInput, MotionDetetorOutput>
     {
+        private SubtractorConfig _currentSubtractorConfig;
 
-        private Mat _segMask = new Mat();
-        private Mat _forgroundMask = new Mat();
-        private MotionHistory _motionHistory;
-        private BackgroundSubtractor _forgroundDetector;
+        private readonly Mat _segMask = new Mat();
+        private readonly Mat _forgroundMask = new Mat();
+        private readonly MotionHistory _motionHistory;
+        private BackgroundSubtractor _foregroundDetector;
 
         public MotionDetector()
         {
@@ -75,18 +114,28 @@ namespace PiCamCV.Common
             _segMask.Dispose();
             _forgroundMask.Dispose();
             _motionHistory.Dispose();
-            _forgroundDetector.Dispose();
+            _foregroundDetector.Dispose();
         }
 
         protected override MotionDetetorOutput DoProcess(MotionDetectorInput input)
         {
             var output = new MotionDetetorOutput();
-            if (_forgroundDetector == null)
+            if (_foregroundDetector == null || !_currentSubtractorConfig.Equals(input.SubtractorConfig))
             {
-                _forgroundDetector = new BackgroundSubtractorMOG2();
+                if (_foregroundDetector != null)
+                {
+                    _foregroundDetector.Dispose();
+                }
+
+                _foregroundDetector = new BackgroundSubtractorMOG2(
+                    input.SubtractorConfig.History
+                    , input.SubtractorConfig.Threshold
+                    , input.SubtractorConfig.ShadowDetection);
+
+                _currentSubtractorConfig = input.SubtractorConfig;
             }
 
-            _forgroundDetector.Apply(input.Captured, _forgroundMask);
+            _foregroundDetector.Apply(input.Captured, _forgroundMask);
             
             //update the motion history
             _motionHistory.Update(_forgroundMask);
@@ -103,16 +152,13 @@ namespace PiCamCV.Common
             using (var sa = new ScalarArray(255.0/maxValues[0]))
             {
                 CvInvoke.Multiply(_motionHistory.Mask, sa, motionMask, 1, DepthType.Cv8U);
-                //Image<Gray, Byte> motionMask = _motionHistory.Mask.Mul(255.0 / maxValues[0]);
             }
             #endregion
 
             //create the motion image 
             output.MotionImage = new Image<Bgr, byte>(motionMask.Size);
-            //display the motion pixels in blue (first channel)
-            //motionImage[0] = motionMask;
-            CvInvoke.InsertChannel(motionMask, output.MotionImage, 0);
 
+            CvInvoke.InsertChannel(motionMask, output.MotionImage, 0);
             
             Rectangle[] rects;
             using (var boundingRect = new VectorOfRect())
@@ -122,23 +168,25 @@ namespace PiCamCV.Common
             }                           
 
             //iterate through each of the motion component
-            foreach (Rectangle comp in rects)
+            foreach (Rectangle motionComponent in rects)
             {
-                int area = comp.Width * comp.Height;
+                int area = motionComponent.Width * motionComponent.Height;
+
                 //reject the components that have small area;
                 if (area < input.MinimumArea) continue;
 
                 // find the angle and motion pixel count of the specific area
                 double angle, motionPixelCount;
-                _motionHistory.MotionInfo(_forgroundMask, comp, out angle, out motionPixelCount);
+                _motionHistory.MotionInfo(_forgroundMask, motionComponent, out angle, out motionPixelCount);
 
                 //reject the area that contains too few motion
                 if (motionPixelCount < area * 0.05) continue;
 
                 var motionSection = new MotionSection();
                 motionSection.Area = area;
-                motionSection.Region = comp;
+                motionSection.Region = motionComponent;
                 motionSection.Angle = angle;
+                motionSection.PixelsInMotionCount = Convert.ToInt32(motionPixelCount);
 
                 output.MotionSections.Add(motionSection);
             }

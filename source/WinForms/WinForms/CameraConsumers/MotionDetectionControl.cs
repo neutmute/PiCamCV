@@ -16,11 +16,20 @@ namespace PiCamCV.WinForms.CameraConsumers
 {
     public partial class MotionDetectionControl : CameraConsumerUserControl
     {
+        private SubtractorConfig _subtractorConfig;
         private MotionDetector _motionDetector;
+
         public MotionDetectionControl()
         {
             InitializeComponent();
             
+        }
+
+        private void MotionDetectionControl_Load(object sender, EventArgs e)
+        {
+            _subtractorConfig = new SubtractorConfig();
+            _motionDetector = new MotionDetector();
+            SetUIFromSubtractorConfig();
         }
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
@@ -30,6 +39,8 @@ namespace PiCamCV.WinForms.CameraConsumers
                 CameraCapture.Retrieve(frame);
                 var input = new MotionDetectorInput();
                 input.MinimumArea = sliderMinimumArea.Value;
+                input.SubtractorConfig = _subtractorConfig;
+
                 var inputImage = frame.ToImage<Bgr,byte>();
                 input.Captured = frame;
 
@@ -39,7 +50,9 @@ namespace PiCamCV.WinForms.CameraConsumers
 
                 foreach (var motionRegion in output.MotionSections)
                 {
+                    var text = string.Format("A={0}, M={1}", motionRegion.Area, motionRegion.PixelsInMotionCount);
                     inputImage.Draw(motionRegion.Region, bgrRed);
+                    inputImage.Draw(text, motionRegion.Region.Location, Emgu.CV.CvEnum.FontFace.HersheyComplexSmall, .8, bgrRed);
                     DrawMotion(output.MotionImage, motionRegion.Region, motionRegion.Angle, bgrRed);
                 }
 
@@ -78,10 +91,6 @@ namespace PiCamCV.WinForms.CameraConsumers
             CvInvoke.Line(image, line.P1, line.P2, color.MCvScalar);
         }
 
-        private void MotionDetectionControl_Load(object sender, EventArgs e)
-        {
-            _motionDetector = new MotionDetector();
-        }
 
         private void sliderControl1_ValueChanged(object sender, EventArgs e)
         {
@@ -95,5 +104,28 @@ namespace PiCamCV.WinForms.CameraConsumers
             groupBoxMotion.Size = newSize;
         }
 
+        private void btnSetSubtractorConfig_Click(object sender, EventArgs e)
+        {
+            var config = new SubtractorConfig();
+            try
+            {
+                config.History = Int32.Parse(txtBoxHistory.Text);
+                config.Threshold = float.Parse(txtBoxThreshold.Text);
+                config.ShadowDetection = chkBoxShadowDetection.Checked;
+            }
+            catch (Exception ex)
+            {
+                Log.WarnFormat("Failed to set config {0}", ex.Message);
+                SetUIFromSubtractorConfig();
+            }
+            _subtractorConfig = config;
+        }
+
+        private void SetUIFromSubtractorConfig()
+        {
+            txtBoxHistory.Text = _subtractorConfig.History.ToString();
+            txtBoxThreshold.Text = _subtractorConfig.Threshold.ToString();
+            chkBoxShadowDetection.Checked = _subtractorConfig.ShadowDetection;
+        }
     }
 }
