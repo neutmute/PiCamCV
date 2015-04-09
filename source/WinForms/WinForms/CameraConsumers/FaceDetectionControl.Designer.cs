@@ -34,33 +34,23 @@
             this.chkDetectEyes = new System.Windows.Forms.CheckBox();
             this.groupBoxCaptured = new System.Windows.Forms.GroupBox();
             this.imageBox = new Emgu.CV.UI.ImageBox();
-            this.groupBoxDetectionParams = new System.Windows.Forms.GroupBox();
+            this.classifierConfigControl = new PiCamCV.WinForms.UserControls.ClassifierConfigControl();
             this.groupBoxOverlays = new System.Windows.Forms.GroupBox();
             this.chkShowRectDimensions = new System.Windows.Forms.CheckBox();
             this.chkHat = new System.Windows.Forms.CheckBox();
             this.chkSunnies = new System.Windows.Forms.CheckBox();
             this.chkRectangles = new System.Windows.Forms.CheckBox();
-            this.txtMaxSize = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtMinSize = new System.Windows.Forms.TextBox();
-            this.lblMinSize = new System.Windows.Forms.Label();
-            this.txtMinNeigh = new System.Windows.Forms.TextBox();
-            this.lblMinNeigh = new System.Windows.Forms.Label();
-            this.txtScale = new System.Windows.Forms.TextBox();
-            this.lblScale = new System.Windows.Forms.Label();
-            this.btnSetDetectionParams = new System.Windows.Forms.Button();
             this.panelLeft.SuspendLayout();
             this.groupBoxSettings.SuspendLayout();
             this.groupBoxCaptured.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox)).BeginInit();
-            this.groupBoxDetectionParams.SuspendLayout();
             this.groupBoxOverlays.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelLeft
             // 
             this.panelLeft.Controls.Add(this.groupBoxOverlays);
-            this.panelLeft.Controls.Add(this.groupBoxDetectionParams);
+            this.panelLeft.Controls.Add(this.classifierConfigControl);
             this.panelLeft.Controls.Add(this.groupBoxSettings);
             this.panelLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelLeft.Location = new System.Drawing.Point(0, 0);
@@ -111,24 +101,13 @@
             this.imageBox.TabIndex = 6;
             this.imageBox.TabStop = false;
             // 
-            // groupBoxDetectionParams
+            // classifierConfigControl
             // 
-            this.groupBoxDetectionParams.Controls.Add(this.btnSetDetectionParams);
-            this.groupBoxDetectionParams.Controls.Add(this.txtMaxSize);
-            this.groupBoxDetectionParams.Controls.Add(this.label2);
-            this.groupBoxDetectionParams.Controls.Add(this.txtMinSize);
-            this.groupBoxDetectionParams.Controls.Add(this.lblMinSize);
-            this.groupBoxDetectionParams.Controls.Add(this.txtMinNeigh);
-            this.groupBoxDetectionParams.Controls.Add(this.lblMinNeigh);
-            this.groupBoxDetectionParams.Controls.Add(this.txtScale);
-            this.groupBoxDetectionParams.Controls.Add(this.lblScale);
-            this.groupBoxDetectionParams.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBoxDetectionParams.Location = new System.Drawing.Point(0, 66);
-            this.groupBoxDetectionParams.Name = "groupBoxDetectionParams";
-            this.groupBoxDetectionParams.Size = new System.Drawing.Size(138, 157);
-            this.groupBoxDetectionParams.TabIndex = 3;
-            this.groupBoxDetectionParams.TabStop = false;
-            this.groupBoxDetectionParams.Text = "Detection Parameters";
+            this.classifierConfigControl.Dock = System.Windows.Forms.DockStyle.Top;
+            this.classifierConfigControl.Location = new System.Drawing.Point(0, 66);
+            this.classifierConfigControl.Name = "classifierConfigControl";
+            this.classifierConfigControl.Size = new System.Drawing.Size(138, 150);
+            this.classifierConfigControl.TabIndex = 5;
             // 
             // groupBoxOverlays
             // 
@@ -137,10 +116,10 @@
             this.groupBoxOverlays.Controls.Add(this.chkSunnies);
             this.groupBoxOverlays.Controls.Add(this.chkRectangles);
             this.groupBoxOverlays.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBoxOverlays.Location = new System.Drawing.Point(0, 223);
+            this.groupBoxOverlays.Location = new System.Drawing.Point(0, 216);
             this.groupBoxOverlays.Name = "groupBoxOverlays";
             this.groupBoxOverlays.Size = new System.Drawing.Size(138, 111);
-            this.groupBoxOverlays.TabIndex = 4;
+            this.groupBoxOverlays.TabIndex = 6;
             this.groupBoxOverlays.TabStop = false;
             this.groupBoxOverlays.Text = "Overlays";
             // 
@@ -186,80 +165,6 @@
             this.chkRectangles.Text = "Rectangles";
             this.chkRectangles.UseVisualStyleBackColor = true;
             // 
-            // txtMaxSize
-            // 
-            this.txtMaxSize.Location = new System.Drawing.Point(76, 98);
-            this.txtMaxSize.Name = "txtMaxSize";
-            this.txtMaxSize.Size = new System.Drawing.Size(47, 20);
-            this.txtMaxSize.TabIndex = 16;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 101);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(50, 13);
-            this.label2.TabIndex = 15;
-            this.label2.Text = "Max Size";
-            // 
-            // txtMinSize
-            // 
-            this.txtMinSize.Location = new System.Drawing.Point(76, 71);
-            this.txtMinSize.Name = "txtMinSize";
-            this.txtMinSize.Size = new System.Drawing.Size(47, 20);
-            this.txtMinSize.TabIndex = 14;
-            // 
-            // lblMinSize
-            // 
-            this.lblMinSize.AutoSize = true;
-            this.lblMinSize.Location = new System.Drawing.Point(9, 74);
-            this.lblMinSize.Name = "lblMinSize";
-            this.lblMinSize.Size = new System.Drawing.Size(47, 13);
-            this.lblMinSize.TabIndex = 13;
-            this.lblMinSize.Text = "Min Size";
-            // 
-            // txtMinNeigh
-            // 
-            this.txtMinNeigh.Location = new System.Drawing.Point(76, 45);
-            this.txtMinNeigh.Name = "txtMinNeigh";
-            this.txtMinNeigh.Size = new System.Drawing.Size(47, 20);
-            this.txtMinNeigh.TabIndex = 12;
-            // 
-            // lblMinNeigh
-            // 
-            this.lblMinNeigh.AutoSize = true;
-            this.lblMinNeigh.Location = new System.Drawing.Point(9, 48);
-            this.lblMinNeigh.Name = "lblMinNeigh";
-            this.lblMinNeigh.Size = new System.Drawing.Size(61, 13);
-            this.lblMinNeigh.TabIndex = 11;
-            this.lblMinNeigh.Text = "Min. Neigh.";
-            // 
-            // txtScale
-            // 
-            this.txtScale.Location = new System.Drawing.Point(76, 19);
-            this.txtScale.Name = "txtScale";
-            this.txtScale.Size = new System.Drawing.Size(47, 20);
-            this.txtScale.TabIndex = 10;
-            // 
-            // lblScale
-            // 
-            this.lblScale.AutoSize = true;
-            this.lblScale.Location = new System.Drawing.Point(8, 22);
-            this.lblScale.Name = "lblScale";
-            this.lblScale.Size = new System.Drawing.Size(34, 13);
-            this.lblScale.TabIndex = 9;
-            this.lblScale.Text = "Scale";
-            // 
-            // btnSetDetectionParams
-            // 
-            this.btnSetDetectionParams.Location = new System.Drawing.Point(11, 124);
-            this.btnSetDetectionParams.Name = "btnSetDetectionParams";
-            this.btnSetDetectionParams.Size = new System.Drawing.Size(112, 23);
-            this.btnSetDetectionParams.TabIndex = 17;
-            this.btnSetDetectionParams.Text = "Set Parameters";
-            this.btnSetDetectionParams.UseVisualStyleBackColor = true;
-            this.btnSetDetectionParams.Click += new System.EventHandler(this.btnSetDetectionParams_Click);
-            // 
             // FaceDetectionControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -274,8 +179,6 @@
             this.groupBoxSettings.PerformLayout();
             this.groupBoxCaptured.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imageBox)).EndInit();
-            this.groupBoxDetectionParams.ResumeLayout(false);
-            this.groupBoxDetectionParams.PerformLayout();
             this.groupBoxOverlays.ResumeLayout(false);
             this.groupBoxOverlays.PerformLayout();
             this.ResumeLayout(false);
@@ -294,16 +197,7 @@
         private System.Windows.Forms.CheckBox chkHat;
         private System.Windows.Forms.CheckBox chkSunnies;
         private System.Windows.Forms.CheckBox chkRectangles;
-        private System.Windows.Forms.GroupBox groupBoxDetectionParams;
-        private System.Windows.Forms.Button btnSetDetectionParams;
-        private System.Windows.Forms.TextBox txtMaxSize;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtMinSize;
-        private System.Windows.Forms.Label lblMinSize;
-        private System.Windows.Forms.TextBox txtMinNeigh;
-        private System.Windows.Forms.Label lblMinNeigh;
-        private System.Windows.Forms.TextBox txtScale;
-        private System.Windows.Forms.Label lblScale;
+        private ClassifierConfigControl classifierConfigControl;
 
 
     }

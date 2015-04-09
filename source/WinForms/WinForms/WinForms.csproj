@@ -144,6 +144,12 @@
       <DependentUpon>FaceDetectionControl.cs</DependentUpon>
     </Compile>
     <Compile Include="TextboxScreen.cs" />
+    <Compile Include="UserControls\ClassifierConfigControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\ClassifierConfigControl.Designer.cs">
+      <DependentUpon>ClassifierConfigControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\SliderControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -183,6 +189,9 @@
     </Compile>
     <EmbeddedResource Include="CameraConsumers\FaceDetectionControl.resx">
       <DependentUpon>FaceDetectionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\ClassifierConfigControl.resx">
+      <DependentUpon>ClassifierConfigControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\SliderControl.resx">
       <DependentUpon>SliderControl.cs</DependentUpon>

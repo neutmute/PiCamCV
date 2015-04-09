@@ -41,41 +41,13 @@ namespace PiCamCV.WinForms.UserControls
             _hatOverlay1 = new AccessoryOverlay(environmentService.GetAbsolutePathFromAssemblyRelative("Resources/Images/partyhat.png"));
 
             _classiferParams = new ClassifierParameters();
-            SetUIClassifierParams(_classiferParams);
+            classifierConfigControl.ConfigChanged += classifierConfigControl_ConfigChanged;
         }
 
-        private void SetUIClassifierParams(ClassifierParameters defaultParams)
+        void classifierConfigControl_ConfigChanged(object sender, EventArgs e)
         {
-            txtMinSize.Text = defaultParams.MinSize.Width.ToString();
-            txtMaxSize.Text = defaultParams.MaxSize.Width.ToString();
-            txtScale.Text = defaultParams.ScaleFactor.ToString();
-            txtMinNeigh.Text = defaultParams.MinNeighbors.ToString();
+            _classiferParams = classifierConfigControl.GetConfig();
         }
-
-        private ClassifierParameters HarvestClassifierParams()
-        {
-            var classifierParameters = new ClassifierParameters();
-
-            try
-            {
-                var minSizeDimension = Int32.Parse(txtMinSize.Text);
-                var maxSizeDimension = Int32.Parse(txtMaxSize.Text);
-
-                classifierParameters.MinSize = new Size(minSizeDimension, minSizeDimension);
-                classifierParameters.MaxSize = new Size(maxSizeDimension, maxSizeDimension);
-                classifierParameters.ScaleFactor = Double.Parse(txtScale.Text);
-                classifierParameters.MinNeighbors = Int32.Parse(txtMinNeigh.Text);
-            }
-            catch (Exception e)
-            {
-                classifierParameters = _classiferParams;
-                SetUIClassifierParams(classifierParameters);
-                Log.Info(e.Message);
-            }
-
-            return classifierParameters;
-        }
-
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
@@ -257,12 +229,6 @@ namespace PiCamCV.WinForms.UserControls
                 return Rectangle.Empty;
             }
         }
-
-        private void btnSetDetectionParams_Click(object sender, EventArgs e)
-        {
-            _classiferParams = HarvestClassifierParams();
-        }
-
         
     }
 }
