@@ -28,14 +28,12 @@ namespace PiCamCV.Common
         
     }
 
-    public class FaceDetectorInput : CameraProcessInput
+    public class FaceDetectorInput : CascadeDetectorInput
     {
-        public ClassifierParameters ClassifierParams { get; set; }
         public bool DetectEyes { get; set; }
         public FaceDetectorInput()
         {
             DetectEyes = true;
-            ClassifierParams = new ClassifierParameters();
         }
     }
 

@@ -20,6 +20,8 @@ namespace PiCamCV.WinForms.CameraConsumers
     {
         private CascadeDetector _detector;
 
+        private ClassifierParameters _classiferParams;
+
         public HaarCascadeControl()
         {
             InitializeComponent();
@@ -40,6 +42,7 @@ namespace PiCamCV.WinForms.CameraConsumers
             {
                 Log.Error(m => m("Failed to load cascade {0}", cascadeFileInfo.FullName));
             }
+
         }
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
@@ -48,6 +51,7 @@ namespace PiCamCV.WinForms.CameraConsumers
             {
                 CameraCapture.Retrieve(matCaptured);
                 var input = new CascadeDetectorInput {Captured = matCaptured};
+                input.ClassifierParams = _classiferParams;
                 var result = _detector.Process(input);
                 var image = matCaptured.ToImage<Bgr, byte>();
 
@@ -58,6 +62,47 @@ namespace PiCamCV.WinForms.CameraConsumers
 
                 imageBoxCaptured.Image = image;
             }
+        }
+
+        private void HaarCascadeControl_Load(object sender, EventArgs e)
+        {
+
+            _classiferParams = new ClassifierParameters();
+            classifierConfigControl.ConfigChanged += classifierConfigControl_ConfigChanged;
+            SetupComboBox();
+        }
+
+        void classifierConfigControl_ConfigChanged(object sender, EventArgs e)
+        {
+            _classiferParams = classifierConfigControl.GetConfig();
+
+            
+        }
+
+        private void SetupComboBox()
+        {
+            var environmentService = new EnvironmentService();
+            var dummyFile =
+                new FileInfo(environmentService.GetAbsolutePathFromAssemblyRelative("haarcascades/thisdoesnotexist.xml"));
+            var files = dummyFile.Directory.GetFiles("*.xml");
+
+
+            var cascadeFileDictionary = new Dictionary<string, string>();
+
+            foreach (var file in files)
+            {
+                cascadeFileDictionary.Add(file.Name, file.FullName);
+            }
+
+            comboBoxCascade.DataSource = new BindingSource(cascadeFileDictionary, null);
+            comboBoxCascade.DisplayMember = "Key";
+            comboBoxCascade.ValueMember = "Value";
+        }
+
+        private void comboBoxCascade_SelectedValueChanged(object sender, EventArgs e)
+        {
+            // Get combobox selection (in handler)
+            string value = ((KeyValuePair<string, string>)comboBoxCascade.SelectedItem).Value;
         }
     }
 }
