@@ -59,6 +59,7 @@
             this.tabPageColourDetect = new System.Windows.Forms.TabPage();
             this.tabPageShapes = new System.Windows.Forms.TabPage();
             this.tabPagePanTiltCalibration = new System.Windows.Forms.TabPage();
+            this.tabPageMotionDetection = new System.Windows.Forms.TabPage();
             this.panelTop.SuspendLayout();
             this.groupBoxRealTime.SuspendLayout();
             this.groupBoxPreCapture.SuspendLayout();
@@ -307,6 +308,7 @@
             this.tabControlMain.Controls.Add(this.tabPageHaarCascade);
             this.tabControlMain.Controls.Add(this.tabPageColourDetect);
             this.tabControlMain.Controls.Add(this.tabPageShapes);
+            this.tabControlMain.Controls.Add(this.tabPageMotionDetection);
             this.tabControlMain.Controls.Add(this.tabPagePanTiltCalibration);
             this.tabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlMain.Location = new System.Drawing.Point(0, 79);
@@ -329,7 +331,7 @@
             // 
             this.tabPageFaceDetection.Location = new System.Drawing.Point(4, 22);
             this.tabPageFaceDetection.Name = "tabPageFaceDetection";
-            this.tabPageFaceDetection.Size = new System.Drawing.Size(1184, 435);
+            this.tabPageFaceDetection.Size = new System.Drawing.Size(1184, 411);
             this.tabPageFaceDetection.TabIndex = 1;
             this.tabPageFaceDetection.Text = "Face Detection";
             this.tabPageFaceDetection.UseVisualStyleBackColor = true;
@@ -338,7 +340,7 @@
             // 
             this.tabPageHaarCascade.Location = new System.Drawing.Point(4, 22);
             this.tabPageHaarCascade.Name = "tabPageHaarCascade";
-            this.tabPageHaarCascade.Size = new System.Drawing.Size(1184, 435);
+            this.tabPageHaarCascade.Size = new System.Drawing.Size(1184, 411);
             this.tabPageHaarCascade.TabIndex = 3;
             this.tabPageHaarCascade.Text = "Haar Cascade Detection";
             this.tabPageHaarCascade.UseVisualStyleBackColor = true;
@@ -347,7 +349,7 @@
             // 
             this.tabPageColourDetect.Location = new System.Drawing.Point(4, 22);
             this.tabPageColourDetect.Name = "tabPageColourDetect";
-            this.tabPageColourDetect.Size = new System.Drawing.Size(1184, 435);
+            this.tabPageColourDetect.Size = new System.Drawing.Size(1184, 411);
             this.tabPageColourDetect.TabIndex = 2;
             this.tabPageColourDetect.Text = "Colour Detection";
             this.tabPageColourDetect.UseVisualStyleBackColor = true;
@@ -356,7 +358,7 @@
             // 
             this.tabPageShapes.Location = new System.Drawing.Point(4, 22);
             this.tabPageShapes.Name = "tabPageShapes";
-            this.tabPageShapes.Size = new System.Drawing.Size(1184, 435);
+            this.tabPageShapes.Size = new System.Drawing.Size(1184, 411);
             this.tabPageShapes.TabIndex = 4;
             this.tabPageShapes.Text = "Shape Detection";
             this.tabPageShapes.UseVisualStyleBackColor = true;
@@ -366,10 +368,19 @@
             this.tabPagePanTiltCalibration.Location = new System.Drawing.Point(4, 22);
             this.tabPagePanTiltCalibration.Name = "tabPagePanTiltCalibration";
             this.tabPagePanTiltCalibration.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPagePanTiltCalibration.Size = new System.Drawing.Size(1184, 435);
+            this.tabPagePanTiltCalibration.Size = new System.Drawing.Size(1184, 411);
             this.tabPagePanTiltCalibration.TabIndex = 5;
             this.tabPagePanTiltCalibration.Text = "Pan Tilt";
             this.tabPagePanTiltCalibration.UseVisualStyleBackColor = true;
+            // 
+            // tabPageMotionDetection
+            // 
+            this.tabPageMotionDetection.Location = new System.Drawing.Point(4, 22);
+            this.tabPageMotionDetection.Name = "tabPageMotionDetection";
+            this.tabPageMotionDetection.Size = new System.Drawing.Size(1184, 411);
+            this.tabPageMotionDetection.TabIndex = 6;
+            this.tabPageMotionDetection.Text = "Motion Detection";
+            this.tabPageMotionDetection.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -428,6 +439,7 @@
         private System.Windows.Forms.TabPage tabPageColourDetect;
         private System.Windows.Forms.TabPage tabPageShapes;
         private System.Windows.Forms.TabPage tabPagePanTiltCalibration;
+        private System.Windows.Forms.TabPage tabPageMotionDetection;
 
     }
 }

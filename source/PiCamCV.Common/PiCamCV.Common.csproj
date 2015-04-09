@@ -80,6 +80,7 @@
     <Compile Include="..\..\Solution Items\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="MotionDetector.cs" />
     <Compile Include="PanTilt\MoveStrategies\CameraBasedModifierStrategy.cs" />
     <Compile Include="PanTilt\MoveStrategies\AutoCalibratedModifierStrategy.cs" />
     <Compile Include="PanTilt\MoveStrategies\LinearRegressor.cs" />

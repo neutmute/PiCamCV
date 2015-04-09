@@ -110,6 +110,12 @@
     <Compile Include="CameraConsumers\HaarCascadeControl.Designer.cs">
       <DependentUpon>HaarCascadeControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="CameraConsumers\MotionDetectionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CameraConsumers\MotionDetectionControl.Designer.cs">
+      <DependentUpon>MotionDetectionControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="CameraConsumers\ShapeDetectionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -152,6 +158,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CameraConsumers\HaarCascadeControl.resx">
       <DependentUpon>HaarCascadeControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CameraConsumers\MotionDetectionControl.resx">
+      <DependentUpon>MotionDetectionControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CameraConsumers\PanTiltControl.resx">
       <DependentUpon>PanTiltControl.cs</DependentUpon>

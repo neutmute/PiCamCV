@@ -95,6 +95,7 @@ namespace WinForms
             var haarDetection = new HaarCascadeControl();
             var shapeDetection = new ShapeDetectionControl();
             var panTiltCalibration = new PanTiltControl();
+            var motionDetectionControl = new MotionDetectionControl();
 
             _consumers = new List<CameraConsumerUserControl>();
             _consumers.Add(basicCapture);
@@ -103,6 +104,7 @@ namespace WinForms
             _consumers.Add(haarDetection);
             _consumers.Add(shapeDetection);
             _consumers.Add(panTiltCalibration);
+            _consumers.Add(motionDetectionControl);
 
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageCameraCapture, basicCapture));
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageFaceDetection, faceDetection));
@@ -110,6 +112,7 @@ namespace WinForms
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageHaarCascade, haarDetection));
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageShapes, shapeDetection));
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPagePanTiltCalibration, panTiltCalibration));
+            _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageMotionDetection, motionDetectionControl));
             
             tabControlMain.SelectedIndexChanged += tabControlMain_SelectedIndexChanged;
         }
