@@ -40,13 +40,14 @@
             this.imageBoxMasked = new Emgu.CV.UI.ImageBox();
             this.groupBoxMotion = new System.Windows.Forms.GroupBox();
             this.imageBoxMotion = new Emgu.CV.UI.ImageBox();
+            this.sliderMinimumPercentMotion = new PiCamCV.WinForms.UserControls.SliderControl();
             this.groupBoxSubtractorConfig = new System.Windows.Forms.GroupBox();
-            this.labelHistory = new System.Windows.Forms.Label();
-            this.txtBoxHistory = new System.Windows.Forms.TextBox();
+            this.btnSetSubtractorConfig = new System.Windows.Forms.Button();
+            this.chkBoxShadowDetection = new System.Windows.Forms.CheckBox();
             this.txtBoxThreshold = new System.Windows.Forms.TextBox();
             this.labelThreshold = new System.Windows.Forms.Label();
-            this.chkBoxShadowDetection = new System.Windows.Forms.CheckBox();
-            this.btnSetSubtractorConfig = new System.Windows.Forms.Button();
+            this.txtBoxHistory = new System.Windows.Forms.TextBox();
+            this.labelHistory = new System.Windows.Forms.Label();
             this.panelControlOwner.SuspendLayout();
             this.groupBoxSettings.SuspendLayout();
             this.flowLayoutPanel.SuspendLayout();
@@ -72,11 +73,12 @@
             // groupBoxSettings
             // 
             this.groupBoxSettings.Controls.Add(this.groupBoxSubtractorConfig);
+            this.groupBoxSettings.Controls.Add(this.sliderMinimumPercentMotion);
             this.groupBoxSettings.Controls.Add(this.sliderMinimumArea);
             this.groupBoxSettings.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBoxSettings.Location = new System.Drawing.Point(0, 117);
             this.groupBoxSettings.Name = "groupBoxSettings";
-            this.groupBoxSettings.Size = new System.Drawing.Size(200, 220);
+            this.groupBoxSettings.Size = new System.Drawing.Size(200, 349);
             this.groupBoxSettings.TabIndex = 1;
             this.groupBoxSettings.TabStop = false;
             this.groupBoxSettings.Text = "Settings";
@@ -85,17 +87,18 @@
             // 
             this.sliderMinimumArea.Dock = System.Windows.Forms.DockStyle.Top;
             this.sliderMinimumArea.Label = "Minimum Area";
-            this.sliderMinimumArea.LargeChange = 1000;
+            this.sliderMinimumArea.LargeChange = 30;
             this.sliderMinimumArea.Location = new System.Drawing.Point(3, 16);
-            this.sliderMinimumArea.Maximum = 100000;
-            this.sliderMinimumArea.Minimum = 50;
+            this.sliderMinimumArea.Maximum = 500;
+            this.sliderMinimumArea.Minimum = 5;
             this.sliderMinimumArea.Name = "sliderMinimumArea";
             this.sliderMinimumArea.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.sliderMinimumArea.Size = new System.Drawing.Size(194, 53);
-            this.sliderMinimumArea.SmallChange = 100;
+            this.sliderMinimumArea.Size = new System.Drawing.Size(194, 46);
+            this.sliderMinimumArea.SmallChange = 10;
             this.sliderMinimumArea.TabIndex = 0;
-            this.sliderMinimumArea.TickFrequency = 1;
+            this.sliderMinimumArea.TickFrequency = 20;
             this.sliderMinimumArea.Value = 100;
+            this.sliderMinimumArea.ValueChanged += new System.EventHandler(this.sliderMinimumArea_ValueChanged);
             // 
             // sliderSize
             // 
@@ -182,6 +185,22 @@
             this.imageBoxMotion.TabIndex = 4;
             this.imageBoxMotion.TabStop = false;
             // 
+            // sliderMinimumPercentMotion
+            // 
+            this.sliderMinimumPercentMotion.Dock = System.Windows.Forms.DockStyle.Top;
+            this.sliderMinimumPercentMotion.Label = "Minimum Motion in Area (%)";
+            this.sliderMinimumPercentMotion.LargeChange = 30;
+            this.sliderMinimumPercentMotion.Location = new System.Drawing.Point(3, 62);
+            this.sliderMinimumPercentMotion.Maximum = 100;
+            this.sliderMinimumPercentMotion.Minimum = 1;
+            this.sliderMinimumPercentMotion.Name = "sliderMinimumPercentMotion";
+            this.sliderMinimumPercentMotion.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.sliderMinimumPercentMotion.Size = new System.Drawing.Size(194, 46);
+            this.sliderMinimumPercentMotion.SmallChange = 10;
+            this.sliderMinimumPercentMotion.TabIndex = 3;
+            this.sliderMinimumPercentMotion.TickFrequency = 5;
+            this.sliderMinimumPercentMotion.Value = 100;
+            // 
             // groupBoxSubtractorConfig
             // 
             this.groupBoxSubtractorConfig.Controls.Add(this.btnSetSubtractorConfig);
@@ -191,28 +210,31 @@
             this.groupBoxSubtractorConfig.Controls.Add(this.txtBoxHistory);
             this.groupBoxSubtractorConfig.Controls.Add(this.labelHistory);
             this.groupBoxSubtractorConfig.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBoxSubtractorConfig.Location = new System.Drawing.Point(3, 69);
+            this.groupBoxSubtractorConfig.Location = new System.Drawing.Point(3, 108);
             this.groupBoxSubtractorConfig.Name = "groupBoxSubtractorConfig";
             this.groupBoxSubtractorConfig.Size = new System.Drawing.Size(194, 143);
-            this.groupBoxSubtractorConfig.TabIndex = 2;
+            this.groupBoxSubtractorConfig.TabIndex = 4;
             this.groupBoxSubtractorConfig.TabStop = false;
             this.groupBoxSubtractorConfig.Text = "Subtractor Config";
             // 
-            // labelHistory
+            // btnSetSubtractorConfig
             // 
-            this.labelHistory.AutoSize = true;
-            this.labelHistory.Location = new System.Drawing.Point(6, 31);
-            this.labelHistory.Name = "labelHistory";
-            this.labelHistory.Size = new System.Drawing.Size(39, 13);
-            this.labelHistory.TabIndex = 0;
-            this.labelHistory.Text = "History";
+            this.btnSetSubtractorConfig.Location = new System.Drawing.Point(66, 108);
+            this.btnSetSubtractorConfig.Name = "btnSetSubtractorConfig";
+            this.btnSetSubtractorConfig.Size = new System.Drawing.Size(100, 25);
+            this.btnSetSubtractorConfig.TabIndex = 5;
+            this.btnSetSubtractorConfig.Text = "Set";
+            this.btnSetSubtractorConfig.UseVisualStyleBackColor = true;
             // 
-            // txtBoxHistory
+            // chkBoxShadowDetection
             // 
-            this.txtBoxHistory.Location = new System.Drawing.Point(66, 28);
-            this.txtBoxHistory.Name = "txtBoxHistory";
-            this.txtBoxHistory.Size = new System.Drawing.Size(100, 20);
-            this.txtBoxHistory.TabIndex = 1;
+            this.chkBoxShadowDetection.AutoSize = true;
+            this.chkBoxShadowDetection.Location = new System.Drawing.Point(66, 85);
+            this.chkBoxShadowDetection.Name = "chkBoxShadowDetection";
+            this.chkBoxShadowDetection.Size = new System.Drawing.Size(114, 17);
+            this.chkBoxShadowDetection.TabIndex = 4;
+            this.chkBoxShadowDetection.Text = "Shadow Detection";
+            this.chkBoxShadowDetection.UseVisualStyleBackColor = true;
             // 
             // txtBoxThreshold
             // 
@@ -230,25 +252,21 @@
             this.labelThreshold.TabIndex = 2;
             this.labelThreshold.Text = "Threshold";
             // 
-            // chkBoxShadowDetection
+            // txtBoxHistory
             // 
-            this.chkBoxShadowDetection.AutoSize = true;
-            this.chkBoxShadowDetection.Location = new System.Drawing.Point(66, 85);
-            this.chkBoxShadowDetection.Name = "chkBoxShadowDetection";
-            this.chkBoxShadowDetection.Size = new System.Drawing.Size(114, 17);
-            this.chkBoxShadowDetection.TabIndex = 4;
-            this.chkBoxShadowDetection.Text = "Shadow Detection";
-            this.chkBoxShadowDetection.UseVisualStyleBackColor = true;
+            this.txtBoxHistory.Location = new System.Drawing.Point(66, 28);
+            this.txtBoxHistory.Name = "txtBoxHistory";
+            this.txtBoxHistory.Size = new System.Drawing.Size(100, 20);
+            this.txtBoxHistory.TabIndex = 1;
             // 
-            // btnSetSubtractorConfig
+            // labelHistory
             // 
-            this.btnSetSubtractorConfig.Location = new System.Drawing.Point(66, 108);
-            this.btnSetSubtractorConfig.Name = "btnSetSubtractorConfig";
-            this.btnSetSubtractorConfig.Size = new System.Drawing.Size(100, 25);
-            this.btnSetSubtractorConfig.TabIndex = 5;
-            this.btnSetSubtractorConfig.Text = "Set";
-            this.btnSetSubtractorConfig.UseVisualStyleBackColor = true;
-            this.btnSetSubtractorConfig.Click += new System.EventHandler(this.btnSetSubtractorConfig_Click);
+            this.labelHistory.AutoSize = true;
+            this.labelHistory.Location = new System.Drawing.Point(6, 31);
+            this.labelHistory.Name = "labelHistory";
+            this.labelHistory.Size = new System.Drawing.Size(39, 13);
+            this.labelHistory.TabIndex = 0;
+            this.labelHistory.Text = "History";
             // 
             // MotionDetectionControl
             // 
@@ -288,11 +306,12 @@
         private System.Windows.Forms.GroupBox groupBoxSettings;
         private UserControls.SliderControl sliderMinimumArea;
         private System.Windows.Forms.GroupBox groupBoxSubtractorConfig;
+        private System.Windows.Forms.Button btnSetSubtractorConfig;
         private System.Windows.Forms.CheckBox chkBoxShadowDetection;
         private System.Windows.Forms.TextBox txtBoxThreshold;
         private System.Windows.Forms.Label labelThreshold;
         private System.Windows.Forms.TextBox txtBoxHistory;
         private System.Windows.Forms.Label labelHistory;
-        private System.Windows.Forms.Button btnSetSubtractorConfig;
+        private UserControls.SliderControl sliderMinimumPercentMotion;
     }
 }

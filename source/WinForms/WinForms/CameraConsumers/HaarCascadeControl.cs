@@ -19,34 +19,32 @@ namespace PiCamCV.WinForms.CameraConsumers
     public partial class HaarCascadeControl : CameraConsumerUserControl
     {
         private CascadeDetector _detector;
+        private bool _comboBinding;
 
         private ClassifierParameters _classiferParams;
 
         public HaarCascadeControl()
         {
             InitializeComponent();
-
-            //var xmlContent = Resource.GetStringFromEmbedded(typeof(CascadeDetector).Assembly, "PiCamCV.Common.haarcascades.haarcascade_lego_batman4.xml");
-            //var xmlContent =File.ReadAllText(@"C:\CodeOther\PiCamCV\source\WinForms\WinForms\CameraConsumers\FaceDetection\haarcascade_frontalface_default.xml");
-            //var xmlContent = File.ReadAllText(@"C:\CodeOther\PiCamCV\source\PiCamCV.Common\haarcascades\haarcascade_castrillon_mouth.xml");
-            //var xmlContent = File.ReadAllText(@"C:\CodeOther\PiCamCV\source\PiCamCV.Common\haarcascades\haarcascade_lego_batman5.xml");
-
+            
             var environmentService = new EnvironmentService();
             var cascadeFileInfo = new FileInfo(environmentService.GetAbsolutePathFromAssemblyRelative("haarcascades/haarcascade_lego_batman5.xml"));
             if (cascadeFileInfo.Exists)
             {
-                var xmlContent = File.ReadAllText(cascadeFileInfo.FullName);
-                _detector = new CascadeDetector(xmlContent);
+                
             }
             else
             {
                 Log.Error(m => m("Failed to load cascade {0}", cascadeFileInfo.FullName));
             }
-
         }
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
+            if (_detector == null)
+            {
+                return;
+            }
             using (var matCaptured = new Mat())
             {
                 CameraCapture.Retrieve(matCaptured);
@@ -86,23 +84,30 @@ namespace PiCamCV.WinForms.CameraConsumers
                 new FileInfo(environmentService.GetAbsolutePathFromAssemblyRelative("haarcascades/thisdoesnotexist.xml"));
             var files = dummyFile.Directory.GetFiles("*.xml");
 
-
-            var cascadeFileDictionary = new Dictionary<string, string>();
-
-            foreach (var file in files)
-            {
-                cascadeFileDictionary.Add(file.Name, file.FullName);
-            }
-
-            comboBoxCascade.DataSource = new BindingSource(cascadeFileDictionary, null);
-            comboBoxCascade.DisplayMember = "Key";
-            comboBoxCascade.ValueMember = "Value";
+            _comboBinding = true;            
+            comboBoxCascade.DataSource = new BindingSource(files, null);
+            comboBoxCascade.DisplayMember = "Name";
+            comboBoxCascade.ValueMember = "FullName";
+            _comboBinding = false;
         }
 
         private void comboBoxCascade_SelectedValueChanged(object sender, EventArgs e)
         {
-            // Get combobox selection (in handler)
-            string value = ((KeyValuePair<string, string>)comboBoxCascade.SelectedItem).Value;
+            if (_comboBinding)
+            {
+                return;
+            }
+
+            if (_detector != null)
+            {
+                _detector.Dispose();
+                _detector = null;
+            }
+
+            var cascadeFileInfo = (FileInfo)comboBoxCascade.SelectedItem;
+
+            var xmlContent = File.ReadAllText(cascadeFileInfo.FullName);
+            _detector = new CascadeDetector(xmlContent);
         }
     }
 }

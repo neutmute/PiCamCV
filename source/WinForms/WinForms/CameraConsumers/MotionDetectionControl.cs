@@ -38,7 +38,10 @@ namespace PiCamCV.WinForms.CameraConsumers
             {
                 CameraCapture.Retrieve(frame);
                 var input = new MotionDetectorInput();
-                input.MinimumArea = sliderMinimumArea.Value;
+                var minArea = sliderMinimumArea.Value * sliderMinimumArea.Value;
+                
+                input.MinimumArea = minArea;
+                input.MinimumPercentMotionInArea = ((decimal)sliderMinimumPercentMotion.Value)/100;
                 input.SubtractorConfig = _subtractorConfig;
 
                 var inputImage = frame.ToImage<Bgr,byte>();
@@ -95,8 +98,8 @@ namespace PiCamCV.WinForms.CameraConsumers
         private void sliderControl1_ValueChanged(object sender, EventArgs e)
         {
             var defaultSize = new Size(320, 240);
-            var newWidth = sliderSize.Value / 100 * defaultSize.Width;
-            var newHeight = sliderSize.Value / 100 * defaultSize.Height;
+            var newWidth = (sliderSize.Value  * defaultSize.Width)/100;
+            var newHeight = (sliderSize.Value * defaultSize.Height) / 100;
 
             var newSize = new Size(newWidth, newHeight);
             groupBoxCaptured.Size = newSize;
@@ -104,28 +107,18 @@ namespace PiCamCV.WinForms.CameraConsumers
             groupBoxMotion.Size = newSize;
         }
 
-        private void btnSetSubtractorConfig_Click(object sender, EventArgs e)
-        {
-            var config = new SubtractorConfig();
-            try
-            {
-                config.History = Int32.Parse(txtBoxHistory.Text);
-                config.Threshold = float.Parse(txtBoxThreshold.Text);
-                config.ShadowDetection = chkBoxShadowDetection.Checked;
-            }
-            catch (Exception ex)
-            {
-                Log.WarnFormat("Failed to set config {0}", ex.Message);
-                SetUIFromSubtractorConfig();
-            }
-            _subtractorConfig = config;
-        }
-
+       
         private void SetUIFromSubtractorConfig()
         {
             txtBoxHistory.Text = _subtractorConfig.History.ToString();
             txtBoxThreshold.Text = _subtractorConfig.Threshold.ToString();
             chkBoxShadowDetection.Checked = _subtractorConfig.ShadowDetection;
+        }
+
+        private void sliderMinimumArea_ValueChanged(object sender, EventArgs e)
+        {
+            var minArea = sliderMinimumArea.Value * sliderMinimumArea.Value;
+            sliderMinimumArea.Label = "Minimum Area = " + minArea;
         }
     }
 }

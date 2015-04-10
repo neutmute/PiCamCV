@@ -66,9 +66,12 @@ namespace PiCamCV.Common
         /// </summary>
         public int MinimumArea { get; set; }
 
+        public decimal MinimumPercentMotionInArea { get; set; }
+
         public MotionDetectorInput()
         {
             MinimumArea = 100;
+            MinimumPercentMotionInArea = 0.05m;
             SubtractorConfig = new SubtractorConfig();
         }
     }
@@ -81,6 +84,10 @@ namespace PiCamCV.Common
 
         public List<MotionSection> MotionSections { get; private set; }
 
+        public bool IsDetected
+        {
+            get { return MotionSections.Count > 0; }
+        }
 
         public Image<Bgr, byte> ForegroundImage { get; set; }
         public Image<Bgr, byte> MotionImage { get; set; }
@@ -140,8 +147,6 @@ namespace PiCamCV.Common
             //update the motion history
             _motionHistory.Update(_forgroundMask);
 
-            output.ForegroundImage = _forgroundMask.ToImage<Bgr,byte>();
-
             #region get a copy of the motion mask and enhance its color
             double[] minValues, maxValues;
             Point[] minLoc, maxLoc;
@@ -155,8 +160,11 @@ namespace PiCamCV.Common
             }
             #endregion
 
-            //create the motion image 
-            output.MotionImage = new Image<Bgr, byte>(motionMask.Size);
+            if (input.SetCapturedImage)
+            {
+                output.ForegroundImage = _forgroundMask.ToImage<Bgr, byte>();
+                output.MotionImage = new Image<Bgr, byte>(motionMask.Size);
+            }
 
             CvInvoke.InsertChannel(motionMask, output.MotionImage, 0);
             
@@ -176,17 +184,19 @@ namespace PiCamCV.Common
                 if (area < input.MinimumArea) continue;
 
                 // find the angle and motion pixel count of the specific area
-                double angle, motionPixelCount;
-                _motionHistory.MotionInfo(_forgroundMask, motionComponent, out angle, out motionPixelCount);
+                double angle, motionPixelCountDouble;
+                _motionHistory.MotionInfo(_forgroundMask, motionComponent, out angle, out motionPixelCountDouble);
+
+                int motionPixelCount = (int) motionPixelCountDouble;
 
                 //reject the area that contains too few motion
-                if (motionPixelCount < area * 0.05) continue;
+                if (motionPixelCount < area * input.MinimumPercentMotionInArea) continue;
 
                 var motionSection = new MotionSection();
                 motionSection.Area = area;
                 motionSection.Region = motionComponent;
                 motionSection.Angle = angle;
-                motionSection.PixelsInMotionCount = Convert.ToInt32(motionPixelCount);
+                motionSection.PixelsInMotionCount = motionPixelCount;
 
                 output.MotionSections.Add(motionSection);
             }
