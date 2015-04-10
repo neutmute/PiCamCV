@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.panelControlOwner = new System.Windows.Forms.Panel();
             this.groupBoxSettings = new System.Windows.Forms.GroupBox();
-            this.sliderMinimumArea = new PiCamCV.WinForms.UserControls.SliderControl();
             this.sliderSize = new PiCamCV.WinForms.UserControls.SliderControl();
             this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBoxCaptured = new System.Windows.Forms.GroupBox();
@@ -40,7 +39,7 @@
             this.imageBoxMasked = new Emgu.CV.UI.ImageBox();
             this.groupBoxMotion = new System.Windows.Forms.GroupBox();
             this.imageBoxMotion = new Emgu.CV.UI.ImageBox();
-            this.sliderMinimumPercentMotion = new PiCamCV.WinForms.UserControls.SliderControl();
+            this.panelSettingsGroup = new System.Windows.Forms.Panel();
             this.groupBoxSubtractorConfig = new System.Windows.Forms.GroupBox();
             this.btnSetSubtractorConfig = new System.Windows.Forms.Button();
             this.chkBoxShadowDetection = new System.Windows.Forms.CheckBox();
@@ -48,6 +47,9 @@
             this.labelThreshold = new System.Windows.Forms.Label();
             this.txtBoxHistory = new System.Windows.Forms.TextBox();
             this.labelHistory = new System.Windows.Forms.Label();
+            this.sliderMinimumArea = new PiCamCV.WinForms.UserControls.SliderControl();
+            this.sliderMinimumPercentMotion = new PiCamCV.WinForms.UserControls.SliderControl();
+            this.chkRectangleStats = new System.Windows.Forms.CheckBox();
             this.panelControlOwner.SuspendLayout();
             this.groupBoxSettings.SuspendLayout();
             this.flowLayoutPanel.SuspendLayout();
@@ -57,6 +59,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxMasked)).BeginInit();
             this.groupBoxMotion.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxMotion)).BeginInit();
+            this.panelSettingsGroup.SuspendLayout();
             this.groupBoxSubtractorConfig.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,32 +76,14 @@
             // groupBoxSettings
             // 
             this.groupBoxSettings.Controls.Add(this.groupBoxSubtractorConfig);
-            this.groupBoxSettings.Controls.Add(this.sliderMinimumPercentMotion);
-            this.groupBoxSettings.Controls.Add(this.sliderMinimumArea);
+            this.groupBoxSettings.Controls.Add(this.panelSettingsGroup);
             this.groupBoxSettings.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBoxSettings.Location = new System.Drawing.Point(0, 117);
+            this.groupBoxSettings.Location = new System.Drawing.Point(0, 55);
             this.groupBoxSettings.Name = "groupBoxSettings";
-            this.groupBoxSettings.Size = new System.Drawing.Size(200, 349);
+            this.groupBoxSettings.Size = new System.Drawing.Size(200, 401);
             this.groupBoxSettings.TabIndex = 1;
             this.groupBoxSettings.TabStop = false;
             this.groupBoxSettings.Text = "Settings";
-            // 
-            // sliderMinimumArea
-            // 
-            this.sliderMinimumArea.Dock = System.Windows.Forms.DockStyle.Top;
-            this.sliderMinimumArea.Label = "Minimum Area";
-            this.sliderMinimumArea.LargeChange = 30;
-            this.sliderMinimumArea.Location = new System.Drawing.Point(3, 16);
-            this.sliderMinimumArea.Maximum = 500;
-            this.sliderMinimumArea.Minimum = 5;
-            this.sliderMinimumArea.Name = "sliderMinimumArea";
-            this.sliderMinimumArea.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.sliderMinimumArea.Size = new System.Drawing.Size(194, 46);
-            this.sliderMinimumArea.SmallChange = 10;
-            this.sliderMinimumArea.TabIndex = 0;
-            this.sliderMinimumArea.TickFrequency = 20;
-            this.sliderMinimumArea.Value = 100;
-            this.sliderMinimumArea.ValueChanged += new System.EventHandler(this.sliderMinimumArea_ValueChanged);
             // 
             // sliderSize
             // 
@@ -110,10 +95,10 @@
             this.sliderSize.Minimum = 50;
             this.sliderSize.Name = "sliderSize";
             this.sliderSize.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.sliderSize.Size = new System.Drawing.Size(200, 117);
+            this.sliderSize.Size = new System.Drawing.Size(200, 55);
             this.sliderSize.SmallChange = 1;
             this.sliderSize.TabIndex = 0;
-            this.sliderSize.TickFrequency = 1;
+            this.sliderSize.TickFrequency = 20;
             this.sliderSize.Value = 100;
             this.sliderSize.ValueChanged += new System.EventHandler(this.sliderControl1_ValueChanged);
             // 
@@ -185,21 +170,16 @@
             this.imageBoxMotion.TabIndex = 4;
             this.imageBoxMotion.TabStop = false;
             // 
-            // sliderMinimumPercentMotion
+            // panelSettingsGroup
             // 
-            this.sliderMinimumPercentMotion.Dock = System.Windows.Forms.DockStyle.Top;
-            this.sliderMinimumPercentMotion.Label = "Minimum Motion in Area (%)";
-            this.sliderMinimumPercentMotion.LargeChange = 30;
-            this.sliderMinimumPercentMotion.Location = new System.Drawing.Point(3, 62);
-            this.sliderMinimumPercentMotion.Maximum = 100;
-            this.sliderMinimumPercentMotion.Minimum = 1;
-            this.sliderMinimumPercentMotion.Name = "sliderMinimumPercentMotion";
-            this.sliderMinimumPercentMotion.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.sliderMinimumPercentMotion.Size = new System.Drawing.Size(194, 46);
-            this.sliderMinimumPercentMotion.SmallChange = 10;
-            this.sliderMinimumPercentMotion.TabIndex = 3;
-            this.sliderMinimumPercentMotion.TickFrequency = 5;
-            this.sliderMinimumPercentMotion.Value = 100;
+            this.panelSettingsGroup.Controls.Add(this.chkRectangleStats);
+            this.panelSettingsGroup.Controls.Add(this.sliderMinimumPercentMotion);
+            this.panelSettingsGroup.Controls.Add(this.sliderMinimumArea);
+            this.panelSettingsGroup.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelSettingsGroup.Location = new System.Drawing.Point(3, 16);
+            this.panelSettingsGroup.Name = "panelSettingsGroup";
+            this.panelSettingsGroup.Size = new System.Drawing.Size(194, 140);
+            this.panelSettingsGroup.TabIndex = 5;
             // 
             // groupBoxSubtractorConfig
             // 
@@ -210,10 +190,10 @@
             this.groupBoxSubtractorConfig.Controls.Add(this.txtBoxHistory);
             this.groupBoxSubtractorConfig.Controls.Add(this.labelHistory);
             this.groupBoxSubtractorConfig.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBoxSubtractorConfig.Location = new System.Drawing.Point(3, 108);
+            this.groupBoxSubtractorConfig.Location = new System.Drawing.Point(3, 156);
             this.groupBoxSubtractorConfig.Name = "groupBoxSubtractorConfig";
             this.groupBoxSubtractorConfig.Size = new System.Drawing.Size(194, 143);
-            this.groupBoxSubtractorConfig.TabIndex = 4;
+            this.groupBoxSubtractorConfig.TabIndex = 6;
             this.groupBoxSubtractorConfig.TabStop = false;
             this.groupBoxSubtractorConfig.Text = "Subtractor Config";
             // 
@@ -268,6 +248,48 @@
             this.labelHistory.TabIndex = 0;
             this.labelHistory.Text = "History";
             // 
+            // sliderMinimumArea
+            // 
+            this.sliderMinimumArea.Dock = System.Windows.Forms.DockStyle.Top;
+            this.sliderMinimumArea.Label = "Minimum Area";
+            this.sliderMinimumArea.LargeChange = 30;
+            this.sliderMinimumArea.Location = new System.Drawing.Point(0, 0);
+            this.sliderMinimumArea.Maximum = 500;
+            this.sliderMinimumArea.Minimum = 5;
+            this.sliderMinimumArea.Name = "sliderMinimumArea";
+            this.sliderMinimumArea.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.sliderMinimumArea.Size = new System.Drawing.Size(194, 46);
+            this.sliderMinimumArea.SmallChange = 10;
+            this.sliderMinimumArea.TabIndex = 1;
+            this.sliderMinimumArea.TickFrequency = 20;
+            this.sliderMinimumArea.Value = 100;
+            // 
+            // sliderMinimumPercentMotion
+            // 
+            this.sliderMinimumPercentMotion.Dock = System.Windows.Forms.DockStyle.Top;
+            this.sliderMinimumPercentMotion.Label = "Minimum Motion in Area (%)";
+            this.sliderMinimumPercentMotion.LargeChange = 30;
+            this.sliderMinimumPercentMotion.Location = new System.Drawing.Point(0, 46);
+            this.sliderMinimumPercentMotion.Maximum = 100;
+            this.sliderMinimumPercentMotion.Minimum = 1;
+            this.sliderMinimumPercentMotion.Name = "sliderMinimumPercentMotion";
+            this.sliderMinimumPercentMotion.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.sliderMinimumPercentMotion.Size = new System.Drawing.Size(194, 64);
+            this.sliderMinimumPercentMotion.SmallChange = 10;
+            this.sliderMinimumPercentMotion.TabIndex = 5;
+            this.sliderMinimumPercentMotion.TickFrequency = 5;
+            this.sliderMinimumPercentMotion.Value = 100;
+            // 
+            // chkRectangleStats
+            // 
+            this.chkRectangleStats.AutoSize = true;
+            this.chkRectangleStats.Location = new System.Drawing.Point(3, 116);
+            this.chkRectangleStats.Name = "chkRectangleStats";
+            this.chkRectangleStats.Size = new System.Drawing.Size(132, 17);
+            this.chkRectangleStats.TabIndex = 6;
+            this.chkRectangleStats.Text = "Show Rectangle Stats";
+            this.chkRectangleStats.UseVisualStyleBackColor = true;
+            // 
             // MotionDetectionControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -286,6 +308,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxMasked)).EndInit();
             this.groupBoxMotion.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxMotion)).EndInit();
+            this.panelSettingsGroup.ResumeLayout(false);
+            this.panelSettingsGroup.PerformLayout();
             this.groupBoxSubtractorConfig.ResumeLayout(false);
             this.groupBoxSubtractorConfig.PerformLayout();
             this.ResumeLayout(false);
@@ -304,7 +328,6 @@
         private Emgu.CV.UI.ImageBox imageBoxMotion;
         private UserControls.SliderControl sliderSize;
         private System.Windows.Forms.GroupBox groupBoxSettings;
-        private UserControls.SliderControl sliderMinimumArea;
         private System.Windows.Forms.GroupBox groupBoxSubtractorConfig;
         private System.Windows.Forms.Button btnSetSubtractorConfig;
         private System.Windows.Forms.CheckBox chkBoxShadowDetection;
@@ -312,6 +335,9 @@
         private System.Windows.Forms.Label labelThreshold;
         private System.Windows.Forms.TextBox txtBoxHistory;
         private System.Windows.Forms.Label labelHistory;
+        private System.Windows.Forms.Panel panelSettingsGroup;
+        private System.Windows.Forms.CheckBox chkRectangleStats;
         private UserControls.SliderControl sliderMinimumPercentMotion;
+        private UserControls.SliderControl sliderMinimumArea;
     }
 }

@@ -22,7 +22,6 @@ namespace PiCamCV.WinForms.CameraConsumers
         public MotionDetectionControl()
         {
             InitializeComponent();
-            
         }
 
         private void MotionDetectionControl_Load(object sender, EventArgs e)
@@ -55,7 +54,10 @@ namespace PiCamCV.WinForms.CameraConsumers
                 {
                     var text = string.Format("A={0}, M={1}", motionRegion.Area, motionRegion.PixelsInMotionCount);
                     inputImage.Draw(motionRegion.Region, bgrRed);
-                    inputImage.Draw(text, motionRegion.Region.Location, Emgu.CV.CvEnum.FontFace.HersheyComplexSmall, .8, bgrRed);
+                    if (chkRectangleStats.Checked)
+                    {
+                        inputImage.Draw(text, motionRegion.Region.Location, Emgu.CV.CvEnum.FontFace.HersheyComplexSmall, .8, bgrRed);
+                    }
                     DrawMotion(output.MotionImage, motionRegion.Region, motionRegion.Angle, bgrRed);
                 }
 

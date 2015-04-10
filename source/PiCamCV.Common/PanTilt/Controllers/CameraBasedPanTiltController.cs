@@ -67,15 +67,20 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             
             _timerUntilServoSettled = new Timer(150);
             _timerUntilServoSettled.AutoReset = false;
-            _timerUntilServoSettled.Elapsed += (o, a) => { IsServoInMotion = false; };
+            _timerUntilServoSettled.Elapsed += (o, a) =>
+            {
+                PreServoSettle();
+                IsServoInMotion = false; 
+            };
         }
+
+        protected virtual void PreServoSettle(){}
 
         public void SetServoSettleTime(int milliseconds)
         {
             _timerUntilServoSettled.Interval = milliseconds;
         }
-
-
+        
         protected TOutput ReactToTarget(Point objectOfInterest)
         {
             var output = new TOutput();

@@ -97,17 +97,30 @@ namespace PiCamCV.Common
         }
     }
 
+    /// <summary>
+    /// derived from $\emgucv\Emgu.CV.Example\MotionDetection\Form1.cs
+    /// </summary>
     public class MotionDetector : CameraProcessor<MotionDetectorInput, MotionDetetorOutput>
     {
         private SubtractorConfig _currentSubtractorConfig;
 
         private readonly Mat _segMask = new Mat();
         private readonly Mat _forgroundMask = new Mat();
-        private readonly MotionHistory _motionHistory;
+        private MotionHistory _motionHistory;
         private BackgroundSubtractor _foregroundDetector;
 
         public MotionDetector()
         {
+            Reset();
+        }
+
+        public void Reset()
+        {
+            if (_motionHistory != null)
+            {
+                _motionHistory.Dispose();
+                _motionHistory = null;
+            }
             _motionHistory = new MotionHistory(
                 1.0, //in second, the duration of motion history you wants to keep
                 0.05, //in second, maxDelta for cvCalcMotionGradient
@@ -164,19 +177,17 @@ namespace PiCamCV.Common
             {
                 output.ForegroundImage = _forgroundMask.ToImage<Bgr, byte>();
                 output.MotionImage = new Image<Bgr, byte>(motionMask.Size);
+                CvInvoke.InsertChannel(motionMask, output.MotionImage, 0);
             }
-
-            CvInvoke.InsertChannel(motionMask, output.MotionImage, 0);
             
-            Rectangle[] rects;
+            Rectangle[] motionComponents;
             using (var boundingRect = new VectorOfRect())
             {
                 _motionHistory.GetMotionComponents(_segMask, boundingRect);
-                rects = boundingRect.ToArray();
+                motionComponents = boundingRect.ToArray();
             }                           
 
-            //iterate through each of the motion component
-            foreach (Rectangle motionComponent in rects)
+            foreach (Rectangle motionComponent in motionComponents)
             {
                 int area = motionComponent.Width * motionComponent.Height;
 

@@ -26,6 +26,7 @@ namespace PiCamCV.WinForms.CameraConsumers
         private const string TimeFormat = "HH:mm:ss fff";
         protected IPanTiltMechanism PanTiltMechanism { get; set; }
         private FaceTrackingPanTiltController _faceTrackingController;
+        private MotionTrackingPanTiltController _motionTrackingController;
         private ColourTrackingPanTiltController _colourTrackingController;
         private CalibratingPanTiltController _calibratingPanTiltController;
         private readonly IColourSettingsRepository _colourSettingsRepo;
@@ -79,8 +80,12 @@ namespace PiCamCV.WinForms.CameraConsumers
             var screen = new TextboxScreen(txtScreen);
 
             var colorSettings = _colourSettingsRepo.Read();
+
+            // these should be disposed if not null
+
             _faceTrackingController = new FaceTrackingPanTiltController(PanTiltMechanism, _captureConfig);
             _colourTrackingController = new ColourTrackingPanTiltController(PanTiltMechanism, _captureConfig);
+            _motionTrackingController = new MotionTrackingPanTiltController(PanTiltMechanism, _captureConfig);
 
             _calibratingPanTiltController = new CalibratingPanTiltController(PanTiltMechanism, new CalibrationReadingsRepository(), screen);
             _colourTrackingController.Settings = colorSettings;
@@ -159,29 +164,24 @@ namespace PiCamCV.WinForms.CameraConsumers
                 input.SetCapturedImage = false;
                 input.Captured = matCaptured;
 
+                CameraPanTiltProcessOutput output = null;
+
                 if (chkBoxColourTracking.Checked)
                 {
                     var result = _colourTrackingController.Process(input);
+                    output = result;
                     if (result.IsDetected)
                     {
                         DrawReticle(bgrImage, result.Target, Color.Yellow);
                     }
                     WriteText(bgrImage, _captureConfig.Resolution.Height - 10, "Colour Tracking");
-
-                    if (result.IsServoInMotion)
-                    {
-                        NotifyStatus("Waiting for servo");
-                    }
-                    else
-                    {
-                        NotifyStatus("Colour tracking took {0}", result.Elapsed.ToHumanReadable());
-                    }
                 }
 
                 if (chkBoxFaceTracker.Checked)
                 {
                     WriteText(bgrImage, _captureConfig.Resolution.Height - 50, "Face Tracking");
                     var result = _faceTrackingController.Process(input);
+                    output = result;
                     if (result.IsDetected)
                     {
                         foreach (var face in result.Faces)
@@ -191,14 +191,35 @@ namespace PiCamCV.WinForms.CameraConsumers
 
                         DrawReticle(bgrImage, result.Target, Color.Yellow);
                     }
+                }
 
-                    if (result.IsServoInMotion)
+                if (chkBoxMotionTracking.Checked)
+                {
+                    WriteText(bgrImage, _captureConfig.Resolution.Height - 75, "Motion Tracking");
+                    var result = _motionTrackingController.Process(input);
+                    output = result;
+                    if (result.IsDetected)
+                    {
+                        foreach (var motionSection in result.MotionSections)
+                        {
+                            bgrImage.Draw(motionSection.Region, new Bgr(Color.Green));
+                        }
+                        if (result.TargetedMotion != null)
+                        {
+                            bgrImage.Draw(result.TargetedMotion.Region, new Bgr(Color.Red), 2);
+                        }
+                    }
+                }
+
+                if (output != null)
+                {
+                    if (output.IsServoInMotion)
                     {
                         NotifyStatus("Waiting for servo");
                     }
                     else
                     {
-                        NotifyStatus("Face tracking took {0}", result.Elapsed.ToHumanReadable());
+                        NotifyStatus("Tracking took {0}", output.Elapsed.ToHumanReadable());
                     }
                 }
 

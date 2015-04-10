@@ -59,6 +59,7 @@
             this.txtPanPercent = new System.Windows.Forms.TextBox();
             this.labelTilt = new System.Windows.Forms.Label();
             this.labelPan = new System.Windows.Forms.Label();
+            this.chkBoxMotionTracking = new System.Windows.Forms.CheckBox();
             this.groupBoxCaptured.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).BeginInit();
             this.groupBoxControls.SuspendLayout();
@@ -118,9 +119,9 @@
             // 
             this.panelScreen.Controls.Add(this.txtScreen);
             this.panelScreen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelScreen.Location = new System.Drawing.Point(3, 297);
+            this.panelScreen.Location = new System.Drawing.Point(3, 264);
             this.panelScreen.Name = "panelScreen";
-            this.panelScreen.Size = new System.Drawing.Size(265, 139);
+            this.panelScreen.Size = new System.Drawing.Size(265, 172);
             this.panelScreen.TabIndex = 9;
             // 
             // txtScreen
@@ -130,7 +131,7 @@
             this.txtScreen.Location = new System.Drawing.Point(0, 0);
             this.txtScreen.Multiline = true;
             this.txtScreen.Name = "txtScreen";
-            this.txtScreen.Size = new System.Drawing.Size(265, 139);
+            this.txtScreen.Size = new System.Drawing.Size(265, 172);
             this.txtScreen.TabIndex = 0;
             // 
             // groupBoxCalibration
@@ -139,7 +140,7 @@
             this.groupBoxCalibration.Controls.Add(this.btnToCsv);
             this.groupBoxCalibration.Controls.Add(this.btnCalibrate);
             this.groupBoxCalibration.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBoxCalibration.Location = new System.Drawing.Point(3, 243);
+            this.groupBoxCalibration.Location = new System.Drawing.Point(3, 210);
             this.groupBoxCalibration.Name = "groupBoxCalibration";
             this.groupBoxCalibration.Size = new System.Drawing.Size(265, 54);
             this.groupBoxCalibration.TabIndex = 8;
@@ -178,6 +179,7 @@
             // 
             // groupBoxControllers
             // 
+            this.groupBoxControllers.Controls.Add(this.chkBoxMotionTracking);
             this.groupBoxControllers.Controls.Add(this.labelServoSettle);
             this.groupBoxControllers.Controls.Add(this.spinEditServoSettle);
             this.groupBoxControllers.Controls.Add(this.chkBoxColourTracking);
@@ -185,7 +187,7 @@
             this.groupBoxControllers.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBoxControllers.Location = new System.Drawing.Point(3, 119);
             this.groupBoxControllers.Name = "groupBoxControllers";
-            this.groupBoxControllers.Size = new System.Drawing.Size(265, 124);
+            this.groupBoxControllers.Size = new System.Drawing.Size(265, 91);
             this.groupBoxControllers.TabIndex = 6;
             this.groupBoxControllers.TabStop = false;
             this.groupBoxControllers.Text = "Controllers";
@@ -193,7 +195,7 @@
             // labelServoSettle
             // 
             this.labelServoSettle.AutoSize = true;
-            this.labelServoSettle.Location = new System.Drawing.Point(6, 49);
+            this.labelServoSettle.Location = new System.Drawing.Point(126, 19);
             this.labelServoSettle.Name = "labelServoSettle";
             this.labelServoSettle.Size = new System.Drawing.Size(113, 13);
             this.labelServoSettle.TabIndex = 10;
@@ -206,7 +208,7 @@
             0,
             0,
             0});
-            this.spinEditServoSettle.Location = new System.Drawing.Point(166, 42);
+            this.spinEditServoSettle.Location = new System.Drawing.Point(129, 41);
             this.spinEditServoSettle.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -240,7 +242,7 @@
             // chkBoxFaceTracker
             // 
             this.chkBoxFaceTracker.AutoSize = true;
-            this.chkBoxFaceTracker.Location = new System.Drawing.Point(130, 19);
+            this.chkBoxFaceTracker.Location = new System.Drawing.Point(8, 42);
             this.chkBoxFaceTracker.Name = "chkBoxFaceTracker";
             this.chkBoxFaceTracker.Size = new System.Drawing.Size(95, 17);
             this.chkBoxFaceTracker.TabIndex = 0;
@@ -363,6 +365,16 @@
             this.labelPan.TabIndex = 4;
             this.labelPan.Text = "Pan";
             // 
+            // chkBoxMotionTracking
+            // 
+            this.chkBoxMotionTracking.AutoSize = true;
+            this.chkBoxMotionTracking.Location = new System.Drawing.Point(8, 65);
+            this.chkBoxMotionTracking.Name = "chkBoxMotionTracking";
+            this.chkBoxMotionTracking.Size = new System.Drawing.Size(103, 17);
+            this.chkBoxMotionTracking.TabIndex = 11;
+            this.chkBoxMotionTracking.Text = "Motion Tracking";
+            this.chkBoxMotionTracking.UseVisualStyleBackColor = true;
+            // 
             // PanTiltControl
             // 
             this.Controls.Add(this.groupBoxCaptured);
@@ -407,5 +419,6 @@
         private System.Windows.Forms.Button btnCalibrate;
         private System.Windows.Forms.Label labelServoSettle;
         private System.Windows.Forms.NumericUpDown spinEditServoSettle;
+        private System.Windows.Forms.CheckBox chkBoxMotionTracking;
     }
 }

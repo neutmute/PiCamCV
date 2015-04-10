@@ -13,6 +13,8 @@ namespace PiCamCV.Common.PanTilt.Controllers
     {
         public List<MotionSection> MotionSections { get; private set; }
 
+        public MotionSection TargetedMotion { get;set;}
+
         public bool IsDetected
         {
             get { return MotionSections.Count > 0; }
@@ -32,28 +34,38 @@ namespace PiCamCV.Common.PanTilt.Controllers
             : base(panTiltMech, captureConfig)
         {
             _motionDetector = new MotionDetector();
+
+            SetServoSettleTime(200);
         }
 
         protected override MotionTrackingPanTiltOutput DoProcess(CameraProcessInput input)
         {
             var detectorInput = new MotionDetectorInput();
             detectorInput.SetCapturedImage = false;
-            detectorInput.MinimumArea = 2000;
-            detectorInput.MinimumPercentMotionInArea = 0.20m;
+            //detectorInput.MinimumArea = 2000;
+            //detectorInput.MinimumPercentMotionInArea = 0.20m;
+            detectorInput.Captured = input.Captured;
 
             var motionOutput = _motionDetector.Process(detectorInput);
 
             var targetPoint = CentrePoint;
+            MotionSection biggestMotion = null;
             if (motionOutput.IsDetected)
             {
-                motionOutput.MotionSections.Sort((x, y) =>  x.Area.CompareTo(y.Area));
-                var biggestMotion = motionOutput.MotionSections[0];
+                motionOutput.MotionSections.Sort((x, y) =>  y.Area.CompareTo(x.Area));
+                biggestMotion = motionOutput.MotionSections[0];
                 targetPoint = biggestMotion.Region.Center();
             }
 
             var output = ReactToTarget(targetPoint);
             output.MotionSections.AddRange(motionOutput.MotionSections);
+            output.TargetedMotion = biggestMotion;
             return output;
+        }
+
+        protected override void PreServoSettle()
+        {
+            _motionDetector.Reset();
         }
     }
 }
