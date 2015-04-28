@@ -11,24 +11,42 @@ using Emgu.CV;
 using Emgu.CV.Structure;
 using Kraken.Core;
 using PiCamCV.Common;
+using PiCamCV.Common.Repositories;
 
 namespace PiCamCV.WinForms.CameraConsumers
 {
     public partial class MotionDetectionControl : CameraConsumerUserControl
     {
-        private SubtractorConfig _subtractorConfig;
+        private readonly IMotionDetectSettingsRepository _motionSettingsRepo;
+        private MotionDetectSettings _currentSettings;
         private MotionDetector _motionDetector;
 
         public MotionDetectionControl()
         {
             InitializeComponent();
+            _motionSettingsRepo = new MotionDetectSettingRepository();
         }
 
         private void MotionDetectionControl_Load(object sender, EventArgs e)
         {
-            _subtractorConfig = new SubtractorConfig();
+            _currentSettings = new MotionDetectSettings();
             _motionDetector = new MotionDetector();
             SetUIFromSubtractorConfig();
+        }
+
+        public MotionDetectSettings HarvestSettingsFromUI()
+        {
+            var settings = new MotionDetectSettings();
+            
+            var minArea = sliderMinimumArea.Value * sliderMinimumArea.Value;
+            settings.MinimumArea = minArea;
+            settings.MinimumPercentMotionInArea = ((decimal)sliderMinimumPercentMotion.Value) / 100;
+            
+            settings.SubtractorConfig.History = Convert.ToInt32(txtBoxHistory.Text);
+            settings.SubtractorConfig.Threshold = Convert.ToInt32(txtBoxThreshold.Text);
+            settings.SubtractorConfig.ShadowDetection = chkBoxShadowDetection.Checked;
+
+            return settings;
         }
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
@@ -37,14 +55,10 @@ namespace PiCamCV.WinForms.CameraConsumers
             {
                 CameraCapture.Retrieve(frame);
                 var input = new MotionDetectorInput();
-                var minArea = sliderMinimumArea.Value * sliderMinimumArea.Value;
-                
-                input.MinimumArea = minArea;
-                input.MinimumPercentMotionInArea = ((decimal)sliderMinimumPercentMotion.Value)/100;
-                input.SubtractorConfig = _subtractorConfig;
 
                 var inputImage = frame.ToImage<Bgr,byte>();
                 input.Captured = frame;
+                input.Settings = _currentSettings;
 
                 var output = _motionDetector.Process(input);
 
@@ -109,18 +123,59 @@ namespace PiCamCV.WinForms.CameraConsumers
             groupBoxMotion.Size = newSize;
         }
 
+        private void SetUIFromAreaConfig()
+        {
+            sliderMinimumArea.Value =  Convert.ToInt32(Math.Sqrt(_currentSettings.MinimumArea));
+            sliderMinimumPercentMotion.Value = Convert.ToInt32(_currentSettings.MinimumPercentMotionInArea * 100);
+        }
        
         private void SetUIFromSubtractorConfig()
         {
-            txtBoxHistory.Text = _subtractorConfig.History.ToString();
-            txtBoxThreshold.Text = _subtractorConfig.Threshold.ToString();
-            chkBoxShadowDetection.Checked = _subtractorConfig.ShadowDetection;
+            var subtractorConfig = _currentSettings.SubtractorConfig;
+            txtBoxHistory.Text = subtractorConfig.History.ToString();
+            txtBoxThreshold.Text = subtractorConfig.Threshold.ToString();
+            chkBoxShadowDetection.Checked = subtractorConfig.ShadowDetection;
         }
+
+
+        private void btnWrite_Click(object sender, EventArgs e)
+        {
+            _motionSettingsRepo.Write(HarvestSettingsFromUI());
+            NotifyStatus("Wrote settings to respository");
+        }
+
+        private void btnRead_Click(object sender, EventArgs e)
+        {
+            if (_motionSettingsRepo.IsPresent)
+            {
+                _currentSettings = _motionSettingsRepo.Read();
+                SetUIFromSubtractorConfig();
+                SetUIFromAreaConfig();
+
+                NotifyStatus("Read settings from repository");
+            }
+            else
+            {
+                Log.Info("Settings not found");
+            }
+        }
+
 
         private void sliderMinimumArea_ValueChanged(object sender, EventArgs e)
         {
-            var minArea = sliderMinimumArea.Value * sliderMinimumArea.Value;
-            sliderMinimumArea.Label = "Minimum Area = " + minArea;
+            _currentSettings.MinimumArea = sliderMinimumArea.Value * sliderMinimumArea.Value;
+            sliderMinimumArea.Label = "Minimum Area = " + _currentSettings.MinimumArea;
         }
+
+        private void sliderMinimumPercentMotion_ValueChanged(object sender, EventArgs e)
+        {
+            _currentSettings.MinimumPercentMotionInArea = ((decimal)sliderMinimumPercentMotion.Value) / 100;
+        }
+
+        private void btnSetSubtractorConfig_Click(object sender, EventArgs e)
+        {
+            _currentSettings.SubtractorConfig = HarvestSettingsFromUI().SubtractorConfig;
+        }
+
     }
 }

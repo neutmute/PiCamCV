@@ -14,6 +14,7 @@ using PiCamCV.Common;
 using PiCamCV.Common.ExtensionMethods;
 using PiCamCV.Common.Interfaces;
 using PiCamCV.Common.PanTilt.Controllers;
+using PiCamCV.Common.Repositories;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 using PiCamCV.Interfaces;
 using PiCamCV.WinForms.ExtensionMethods;
@@ -30,6 +31,8 @@ namespace PiCamCV.WinForms.CameraConsumers
         private ColourTrackingPanTiltController _colourTrackingController;
         private CalibratingPanTiltController _calibratingPanTiltController;
         private readonly IColourSettingsRepository _colourSettingsRepo;
+
+        private readonly IMotionDetectSettingsRepository _motionSettingsRepo;
         private Point _centre;
         private CaptureConfig _captureConfig;
         private bool _calibrationInProgress;
@@ -80,6 +83,7 @@ namespace PiCamCV.WinForms.CameraConsumers
             var screen = new TextboxScreen(txtScreen);
 
             var colorSettings = _colourSettingsRepo.Read();
+            var motionSettings = _motionSettingsRepo.Read();
 
             // these should be disposed if not null
 
@@ -90,6 +94,7 @@ namespace PiCamCV.WinForms.CameraConsumers
             _calibratingPanTiltController = new CalibratingPanTiltController(PanTiltMechanism, new CalibrationReadingsRepository(), screen);
             _colourTrackingController.Settings = colorSettings;
             _calibratingPanTiltController.Settings = colorSettings;
+            _motionTrackingController.Settings = motionSettings;
 
             _calibratingPanTiltController.GetCameraCapture = PullImage;
             _calibratingPanTiltController.WaitStep = CalibrationWaitStep;

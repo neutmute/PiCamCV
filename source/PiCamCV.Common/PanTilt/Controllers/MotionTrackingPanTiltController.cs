@@ -28,6 +28,8 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
     public class MotionTrackingPanTiltController : CameraBasedPanTiltController<MotionTrackingPanTiltOutput>
     {
+        public MotionDetectSettings Settings { get; set; }
+
         private readonly MotionDetector _motionDetector;
 
         public MotionTrackingPanTiltController(IPanTiltMechanism panTiltMech, CaptureConfig captureConfig)
@@ -42,8 +44,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
         {
             var detectorInput = new MotionDetectorInput();
             detectorInput.SetCapturedImage = false;
-            //detectorInput.MinimumArea = 2000;
-            //detectorInput.MinimumPercentMotionInArea = 0.20m;
+            detectorInput.Settings = Settings;
             detectorInput.Captured = input.Captured;
 
             var motionOutput = _motionDetector.Process(detectorInput);

@@ -112,6 +112,7 @@
     <Compile Include="PanTilt\Screen.cs" />
     <Compile Include="Properties\AssemblyInfoUnique.cs" />
     <Compile Include="Repositories\FileBasedRepository.cs" />
+    <Compile Include="Repositories\MotionDetectSettingRepository.cs" />
     <Compile Include="SerializableDictionary.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -13,6 +13,27 @@ using PiCamCV.Common.Interfaces;
 
 namespace PiCamCV.Common
 {
+    public class MotionDetectSettings
+    {
+         public SubtractorConfig SubtractorConfig { get; set; }
+        /// <summary>
+        /// Threshold to define a motion area, reduce the value to detect smaller motion
+        /// </summary>
+        public int MinimumArea { get; set; }
+
+        /// <summary>
+        /// This doesnt' do what i thought it did at time of naming/use
+        /// </summary>
+        public decimal MinimumPercentMotionInArea { get; set; }
+
+        public MotionDetectSettings()
+        {
+            MinimumArea = 100;
+            MinimumPercentMotionInArea = 0.05m;
+            SubtractorConfig = new SubtractorConfig();
+        }
+    }
+
     public class MotionSection
     {
         public Rectangle Region { get; set; }
@@ -60,19 +81,11 @@ namespace PiCamCV.Common
 
     public class MotionDetectorInput : CameraProcessInput
     {
-        public SubtractorConfig SubtractorConfig { get; set; }
-        /// <summary>
-        /// Threshold to define a motion area, reduce the value to detect smaller motion
-        /// </summary>
-        public int MinimumArea { get; set; }
-
-        public decimal MinimumPercentMotionInArea { get; set; }
+        public MotionDetectSettings Settings { get; set; }
 
         public MotionDetectorInput()
         {
-            MinimumArea = 100;
-            MinimumPercentMotionInArea = 0.05m;
-            SubtractorConfig = new SubtractorConfig();
+            Settings = new MotionDetectSettings();
         }
     }
 
@@ -140,7 +153,10 @@ namespace PiCamCV.Common
         protected override MotionDetetorOutput DoProcess(MotionDetectorInput input)
         {
             var output = new MotionDetetorOutput();
-            if (_foregroundDetector == null || !_currentSubtractorConfig.Equals(input.SubtractorConfig))
+
+            var subtractorConfig = input.Settings.SubtractorConfig;
+
+            if (_foregroundDetector == null || !_currentSubtractorConfig.Equals(subtractorConfig))
             {
                 if (_foregroundDetector != null)
                 {
@@ -148,16 +164,15 @@ namespace PiCamCV.Common
                 }
 
                 _foregroundDetector = new BackgroundSubtractorMOG2(
-                    input.SubtractorConfig.History
-                    , input.SubtractorConfig.Threshold
-                    , input.SubtractorConfig.ShadowDetection);
+                    subtractorConfig.History
+                    , subtractorConfig.Threshold
+                    , subtractorConfig.ShadowDetection);
 
-                _currentSubtractorConfig = input.SubtractorConfig;
+                _currentSubtractorConfig = subtractorConfig;
             }
 
             _foregroundDetector.Apply(input.Captured, _forgroundMask);
             
-            //update the motion history
             _motionHistory.Update(_forgroundMask);
 
             #region get a copy of the motion mask and enhance its color
@@ -192,7 +207,7 @@ namespace PiCamCV.Common
                 int area = motionComponent.Width * motionComponent.Height;
 
                 //reject the components that have small area;
-                if (area < input.MinimumArea) continue;
+                if (area < input.Settings.MinimumArea) continue;
 
                 // find the angle and motion pixel count of the specific area
                 double angle, motionPixelCountDouble;
@@ -201,7 +216,10 @@ namespace PiCamCV.Common
                 int motionPixelCount = (int) motionPixelCountDouble;
 
                 //reject the area that contains too few motion
-                if (motionPixelCount < area * input.MinimumPercentMotionInArea) continue;
+                if (motionPixelCount < area*input.Settings.MinimumPercentMotionInArea)
+                {
+                    continue;
+                }
 
                 var motionSection = new MotionSection();
                 motionSection.Area = area;
