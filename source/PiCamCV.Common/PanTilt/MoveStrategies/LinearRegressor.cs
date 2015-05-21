@@ -16,6 +16,8 @@ namespace PiCamCV.Common.PanTilt.MoveStrategies
             {
                 case 64:
                     return new LinearRegressorPair(0.4706m, 0.1m, 0.4442m, -0.2278m);
+                case 128:
+                    return new LinearRegressorPair(0.2423m, 0.0749m, 0.225m, 0.008m);
                 case 160:
                     return new LinearRegressorPair(0.189m, 0.056m, 0.1784m, 0.0465m);
                 case 320:
