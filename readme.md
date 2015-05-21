@@ -4,7 +4,7 @@ Experiments with [OpenCV](http://www.opencv.org) and the Raspberry Pi using [Emg
 Compatible with USB cameras (Windows and Raspberry Pi) as well as the [Raspberry Pi Camera Module](http://www.raspberrypi.org/products/camera-module/).
 
 ## Build Instructions ##
-See the post [EmguCV with the Raspberry Pi Camera Module](http://spacerazor.wordpress.com/2014/08/30/emgucv-with-the-raspberry-pi-camera-module/).
+See the post [EmguCV with the Raspberry Pi Camera Module](http://blog.turbine51.net/2014/08/30/emgucv-with-the-raspberry-pi-camera-module/).
 
 ## Preliminary Results ##
 ![Mono using OpenCV with the Pi Camera module](https://raw.githubusercontent.com/neutmute/PiCamCV/master/docs/picamcv.png)
