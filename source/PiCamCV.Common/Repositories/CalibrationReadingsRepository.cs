@@ -27,7 +27,7 @@ namespace PiCamCV.Common
                 foreach (var axis in axes)
                 {
                     var axisReading = readings[axis];
-                    sb.AppendFormat("{0}Pixels,Percent,SampleCount,IsInterpolated\r\n", axis);
+                    sb.AppendFormat("{0} Pixels,{0} Percent,SampleCount,IsInterpolated\r\n", axis);
                     foreach (var pixelDeviation in axisReading.Keys)
                     {
                         var readingSet = axisReading[pixelDeviation];

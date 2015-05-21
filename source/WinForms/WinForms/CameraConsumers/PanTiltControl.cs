@@ -45,6 +45,7 @@ namespace PiCamCV.WinForms.CameraConsumers
             InitializeComponent();
             UserReticle = null;
             _colourSettingsRepo = new ColourSettingsRepository();
+            _motionSettingsRepo = new MotionDetectSettingRepository();
 
             _timer = new Timer();
             _timer.Interval = 10;
@@ -282,7 +283,7 @@ namespace PiCamCV.WinForms.CameraConsumers
 
         private void PanTiltControl_Load(object sender, EventArgs e)
         {
-            _timer.Enabled = true;
+            //_timer.Enabled = true;
         }
 
         private void btnToCsv_Click(object sender, EventArgs e)

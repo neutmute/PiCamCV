@@ -135,7 +135,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
     public class CalibratingPanTiltController : PanTiltController
     {
-        const decimal saccadePercentIncrement = 0.05m;
+        const decimal saccadePercentIncrement = 0.3m;
         private readonly CalibrationReadingsRepository _readingsRepo;
         private readonly IScreen _screen;
         private AxesCalibrationReadings _currentResolutionReadings;
