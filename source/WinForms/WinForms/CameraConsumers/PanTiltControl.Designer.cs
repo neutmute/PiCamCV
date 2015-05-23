@@ -43,6 +43,7 @@
             this.btnToCsv = new System.Windows.Forms.Button();
             this.btnCalibrate = new System.Windows.Forms.Button();
             this.groupBoxControllers = new System.Windows.Forms.GroupBox();
+            this.chkBoxMotionTracking = new System.Windows.Forms.CheckBox();
             this.labelServoSettle = new System.Windows.Forms.Label();
             this.spinEditServoSettle = new System.Windows.Forms.NumericUpDown();
             this.chkBoxColourTracking = new System.Windows.Forms.CheckBox();
@@ -59,7 +60,6 @@
             this.txtPanPercent = new System.Windows.Forms.TextBox();
             this.labelTilt = new System.Windows.Forms.Label();
             this.labelPan = new System.Windows.Forms.Label();
-            this.chkBoxMotionTracking = new System.Windows.Forms.CheckBox();
             this.groupBoxCaptured.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).BeginInit();
             this.groupBoxControls.SuspendLayout();
@@ -192,6 +192,16 @@
             this.groupBoxControllers.TabStop = false;
             this.groupBoxControllers.Text = "Controllers";
             // 
+            // chkBoxMotionTracking
+            // 
+            this.chkBoxMotionTracking.AutoSize = true;
+            this.chkBoxMotionTracking.Location = new System.Drawing.Point(8, 65);
+            this.chkBoxMotionTracking.Name = "chkBoxMotionTracking";
+            this.chkBoxMotionTracking.Size = new System.Drawing.Size(103, 17);
+            this.chkBoxMotionTracking.TabIndex = 11;
+            this.chkBoxMotionTracking.Text = "Motion Tracking";
+            this.chkBoxMotionTracking.UseVisualStyleBackColor = true;
+            // 
             // labelServoSettle
             // 
             this.labelServoSettle.AutoSize = true;
@@ -215,7 +225,7 @@
             0,
             0});
             this.spinEditServoSettle.Minimum = new decimal(new int[] {
-            50,
+            5,
             0,
             0,
             0});
@@ -364,16 +374,6 @@
             this.labelPan.Size = new System.Drawing.Size(26, 13);
             this.labelPan.TabIndex = 4;
             this.labelPan.Text = "Pan";
-            // 
-            // chkBoxMotionTracking
-            // 
-            this.chkBoxMotionTracking.AutoSize = true;
-            this.chkBoxMotionTracking.Location = new System.Drawing.Point(8, 65);
-            this.chkBoxMotionTracking.Name = "chkBoxMotionTracking";
-            this.chkBoxMotionTracking.Size = new System.Drawing.Size(103, 17);
-            this.chkBoxMotionTracking.TabIndex = 11;
-            this.chkBoxMotionTracking.Text = "Motion Tracking";
-            this.chkBoxMotionTracking.UseVisualStyleBackColor = true;
             // 
             // PanTiltControl
             // 

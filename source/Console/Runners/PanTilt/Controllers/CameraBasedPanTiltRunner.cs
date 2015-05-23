@@ -53,16 +53,32 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
                 var output = _controller.Process(input);
 
                 Screen.BeginRepaint();
-                Screen.WriteLine("Processing time: {0} ms", output.Elapsed.TotalMilliseconds);
+                Screen.WriteLine("Processing time: {0:N0}ms", output.Elapsed.TotalMilliseconds);
+                Screen.WriteLine("Servo Wait Time: {0:N0}ms", _controller.ServoSettleTime.TotalMilliseconds);
                 Screen.WriteLine("Pan Tilt Before: {0}", output.PanTiltPrior);
-                Screen.WriteLine("Pan Tilt After: {0}", output.PanTiltNow);
+                Screen.WriteLine("Pan Tilt After : {0}", output.PanTiltNow);
                 Screen.WriteLine("Target: {0}", output.Target);
             }
         }
         
         public virtual void HandleKey(ConsoleKeyInfo keyInfo)
         {
-            Log.Info(m => m("Ignoring key {0}", keyInfo.Key));
+            var servoIncrement = TimeSpan.FromMilliseconds(10);
+            switch (keyInfo.Key)
+            {
+                case ConsoleKey.A:
+                    _controller.ServoSettleTime = _controller.ServoSettleTime.Add(servoIncrement);
+                    break;
+                case ConsoleKey.Z:
+                    if (_controller.ServoSettleTime > servoIncrement)
+                    {
+                        _controller.ServoSettleTime = _controller.ServoSettleTime.Add(-servoIncrement);
+                    }
+                    break;
+                default:
+                    Log.Info(m => m("Ignoring key {0}", keyInfo.Key));
+                    break;
+            }
         }
 
         public void Run()

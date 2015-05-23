@@ -37,7 +37,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
         {
             _motionDetector = new MotionDetector();
 
-            SetServoSettleTime(200);
+            ServoSettleTime = TimeSpan.FromMilliseconds(200);
         }
 
         protected override MotionTrackingPanTiltOutput DoProcess(CameraProcessInput input)

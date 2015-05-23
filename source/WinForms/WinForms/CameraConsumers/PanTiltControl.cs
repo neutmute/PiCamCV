@@ -305,8 +305,9 @@ namespace PiCamCV.WinForms.CameraConsumers
 
         private void spinEditServoSettle_ValueChanged(object sender, EventArgs e)
         {
-            _colourTrackingController.SetServoSettleTime((int) spinEditServoSettle.Value);
-            _faceTrackingController.SetServoSettleTime((int)spinEditServoSettle.Value);
+            var settleTime = TimeSpan.FromMilliseconds((int)spinEditServoSettle.Value);
+            _colourTrackingController.ServoSettleTime = settleTime;
+            _faceTrackingController.ServoSettleTime = settleTime;
 
             NotifyStatus("Servo settle time set to {0}ms", spinEditServoSettle.Value);
         }
