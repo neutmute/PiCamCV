@@ -53,6 +53,9 @@
             this.imageBoxMasked = new Emgu.CV.UI.ImageBox();
             this.groupBoxMotion = new System.Windows.Forms.GroupBox();
             this.imageBoxMotion = new Emgu.CV.UI.ImageBox();
+            this.panelBiggestMode = new System.Windows.Forms.Panel();
+            this.ddlBiggestTargeting = new System.Windows.Forms.ComboBox();
+            this.lblTargeting = new System.Windows.Forms.Label();
             this.panelControlOwner.SuspendLayout();
             this.groupBoxSettings.SuspendLayout();
             this.groupBoxRepo.SuspendLayout();
@@ -65,6 +68,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxMasked)).BeginInit();
             this.groupBoxMotion.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxMotion)).BeginInit();
+            this.panelBiggestMode.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelControlOwner
@@ -79,13 +83,16 @@
             // 
             // groupBoxSettings
             // 
+            
             this.groupBoxSettings.Controls.Add(this.groupBoxRepo);
+            
             this.groupBoxSettings.Controls.Add(this.groupBoxSubtractorConfig);
+            this.groupBoxSettings.Controls.Add(this.panelBiggestMode);
             this.groupBoxSettings.Controls.Add(this.panelSettingsGroup);
             this.groupBoxSettings.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBoxSettings.Location = new System.Drawing.Point(0, 55);
             this.groupBoxSettings.Name = "groupBoxSettings";
-            this.groupBoxSettings.Size = new System.Drawing.Size(200, 459);
+            this.groupBoxSettings.Size = new System.Drawing.Size(200, 389);
             this.groupBoxSettings.TabIndex = 1;
             this.groupBoxSettings.TabStop = false;
             this.groupBoxSettings.Text = "Settings";
@@ -330,6 +337,38 @@
             this.imageBoxMotion.TabIndex = 4;
             this.imageBoxMotion.TabStop = false;
             // 
+            // panelBiggestMode
+            // 
+            this.panelBiggestMode.Controls.Add(this.lblTargeting);
+            this.panelBiggestMode.Controls.Add(this.ddlBiggestTargeting);
+            this.panelBiggestMode.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelBiggestMode.Location = new System.Drawing.Point(3, 349);
+            this.panelBiggestMode.Name = "panelBiggestMode";
+            this.panelBiggestMode.Size = new System.Drawing.Size(194, 40);
+            this.panelBiggestMode.TabIndex = 10;
+            // 
+            // ddlBiggestTargeting
+            // 
+            this.ddlBiggestTargeting.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ddlBiggestTargeting.FormattingEnabled = true;
+            this.ddlBiggestTargeting.Items.AddRange(new object[] {
+            "Area",
+            "Pixels"});
+            this.ddlBiggestTargeting.Location = new System.Drawing.Point(66, 6);
+            this.ddlBiggestTargeting.Name = "ddlBiggestTargeting";
+            this.ddlBiggestTargeting.Size = new System.Drawing.Size(121, 21);
+            this.ddlBiggestTargeting.TabIndex = 9;
+            this.ddlBiggestTargeting.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
+            // lblTargeting
+            // 
+            this.lblTargeting.AutoSize = true;
+            this.lblTargeting.Location = new System.Drawing.Point(8, 9);
+            this.lblTargeting.Name = "lblTargeting";
+            this.lblTargeting.Size = new System.Drawing.Size(52, 13);
+            this.lblTargeting.TabIndex = 10;
+            this.lblTargeting.Text = "Targeting";
+            // 
             // MotionDetectionControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -353,6 +392,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxMasked)).EndInit();
             this.groupBoxMotion.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxMotion)).EndInit();
+            this.panelBiggestMode.ResumeLayout(false);
+            this.panelBiggestMode.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -383,5 +424,8 @@
         private System.Windows.Forms.GroupBox groupBoxRepo;
         private System.Windows.Forms.Button btnWrite;
         private System.Windows.Forms.Button btnRead;
+        private System.Windows.Forms.Panel panelBiggestMode;
+        private System.Windows.Forms.Label lblTargeting;
+        private System.Windows.Forms.ComboBox ddlBiggestTargeting;
     }
 }

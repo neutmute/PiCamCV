@@ -13,6 +13,13 @@ using PiCamCV.Common.Interfaces;
 
 namespace PiCamCV.Common
 {
+    public enum BiggestMotionType
+    {
+        Unspecified = 0,
+        Area = 1,
+        Pixels = 2,
+    }
+
     public class MotionDetectSettings
     {
          public SubtractorConfig SubtractorConfig { get; set; }
@@ -20,6 +27,8 @@ namespace PiCamCV.Common
         /// Threshold to define a motion area, reduce the value to detect smaller motion
         /// </summary>
         public int MinimumArea { get; set; }
+
+        public BiggestMotionType BiggestMotionType { get; set; }
 
         /// <summary>
         /// This doesnt' do what i thought it did at time of naming/use
@@ -30,6 +39,7 @@ namespace PiCamCV.Common
         {
             MinimumArea = 100;
             MinimumPercentMotionInArea = 0.05m;
+            BiggestMotionType = BiggestMotionType.Area;
             SubtractorConfig = new SubtractorConfig();
         }
     }
@@ -43,7 +53,6 @@ namespace PiCamCV.Common
         public double Angle { get; set; }
 
         public int PixelsInMotionCount { get; set; }
-
     }
 
     public class SubtractorConfig
@@ -89,13 +98,14 @@ namespace PiCamCV.Common
         }
     }
 
-    public class MotionDetetorOutput : CameraProcessOutput
+    public class MotionDetectorOutput : CameraProcessOutput
     {
-
         public int OverallMotionPixelCount { get; set; }
         public double OverallAngle { get; set; }
 
         public List<MotionSection> MotionSections { get; private set; }
+
+        public MotionSection BiggestMotion { get; set; }
 
         public bool IsDetected
         {
@@ -104,7 +114,8 @@ namespace PiCamCV.Common
 
         public Image<Bgr, byte> ForegroundImage { get; set; }
         public Image<Bgr, byte> MotionImage { get; set; }
-        public MotionDetetorOutput()
+
+        public MotionDetectorOutput()
         {
             MotionSections = new List<MotionSection>();
         }
@@ -113,7 +124,7 @@ namespace PiCamCV.Common
     /// <summary>
     /// derived from $\emgucv\Emgu.CV.Example\MotionDetection\Form1.cs
     /// </summary>
-    public class MotionDetector : CameraProcessor<MotionDetectorInput, MotionDetetorOutput>
+    public class MotionDetector : CameraProcessor<MotionDetectorInput, MotionDetectorOutput>
     {
         private SubtractorConfig _currentSubtractorConfig;
 
@@ -134,6 +145,7 @@ namespace PiCamCV.Common
                 _motionHistory.Dispose();
                 _motionHistory = null;
             }
+
             _motionHistory = new MotionHistory(
                 1.0, //in second, the duration of motion history you wants to keep
                 0.05, //in second, maxDelta for cvCalcMotionGradient
@@ -150,9 +162,9 @@ namespace PiCamCV.Common
             _foregroundDetector.Dispose();
         }
 
-        protected override MotionDetetorOutput DoProcess(MotionDetectorInput input)
+        protected override MotionDetectorOutput DoProcess(MotionDetectorInput input)
         {
-            var output = new MotionDetetorOutput();
+            var output = new MotionDetectorOutput();
 
             var subtractorConfig = input.Settings.SubtractorConfig;
 
@@ -228,6 +240,22 @@ namespace PiCamCV.Common
                 motionSection.PixelsInMotionCount = motionPixelCount;
 
                 output.MotionSections.Add(motionSection);
+            }
+
+            if (output.IsDetected)
+            {
+                switch (input.Settings.BiggestMotionType)
+                {
+                    case BiggestMotionType.Unspecified:
+                        break;
+                    case BiggestMotionType.Area:
+                        output.MotionSections.Sort((x, y) => y.Area.CompareTo(x.Area));
+                        break;
+                    case BiggestMotionType.Pixels:
+                        output.MotionSections.Sort((x, y) => y.PixelsInMotionCount.CompareTo(x.PixelsInMotionCount));
+                        break;
+                }
+                output.BiggestMotion = output.MotionSections.FirstOrDefault();
             }
 
             double overallAngle, overallMotionPixelCount;

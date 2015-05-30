@@ -50,17 +50,20 @@ namespace PiCamCV.Common.PanTilt.Controllers
             var motionOutput = _motionDetector.Process(detectorInput);
 
             var targetPoint = CentrePoint;
-            MotionSection biggestMotion = null;
+            
             if (motionOutput.IsDetected)
             {
-                motionOutput.MotionSections.Sort((x, y) =>  y.Area.CompareTo(x.Area));
-                biggestMotion = motionOutput.MotionSections[0];
-                targetPoint = biggestMotion.Region.Center();
+                targetPoint = motionOutput.BiggestMotion.Region.Center();
             }
-
+            
             var output = ReactToTarget(targetPoint);
             output.MotionSections.AddRange(motionOutput.MotionSections);
-            output.TargetedMotion = biggestMotion;
+
+            if (motionOutput.BiggestMotion != null)
+            {
+                output.TargetedMotion = motionOutput.BiggestMotion;
+            }
+
             return output;
         }
 

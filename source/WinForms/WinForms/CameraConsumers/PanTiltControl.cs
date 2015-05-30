@@ -180,12 +180,12 @@ namespace PiCamCV.WinForms.CameraConsumers
                     {
                         DrawReticle(bgrImage, result.Target, Color.Yellow);
                     }
-                    WriteText(bgrImage, _captureConfig.Resolution.Height - 10, "Colour Tracking");
+                   // WriteText(bgrImage, _captureConfig.Resolution.Height - 10, "Colour Tracking");
                 }
 
                 if (chkBoxFaceTracker.Checked)
                 {
-                    WriteText(bgrImage, _captureConfig.Resolution.Height - 50, "Face Tracking");
+                   // WriteText(bgrImage, _captureConfig.Resolution.Height - 50, "Face Tracking");
                     var result = _faceTrackingController.Process(input);
                     output = result;
                     if (result.IsDetected)
@@ -201,7 +201,7 @@ namespace PiCamCV.WinForms.CameraConsumers
 
                 if (chkBoxMotionTracking.Checked)
                 {
-                    WriteText(bgrImage, _captureConfig.Resolution.Height - 75, "Motion Tracking");
+                   // WriteText(bgrImage, _captureConfig.Resolution.Height - 75, "Motion Tracking");
                     var result = _motionTrackingController.Process(input);
                     output = result;
                     if (result.IsDetected)

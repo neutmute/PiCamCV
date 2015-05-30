@@ -32,6 +32,8 @@ namespace PiCamCV.WinForms.CameraConsumers
             _currentSettings = new MotionDetectSettings();
             _motionDetector = new MotionDetector();
             SetUIFromSubtractorConfig();
+
+            ddlBiggestTargeting.SelectedText = BiggestMotionType.Area.ToString();
         }
 
         public MotionDetectSettings HarvestSettingsFromUI()
@@ -45,6 +47,11 @@ namespace PiCamCV.WinForms.CameraConsumers
             settings.SubtractorConfig.History = Convert.ToInt32(txtBoxHistory.Text);
             settings.SubtractorConfig.Threshold = Convert.ToInt32(txtBoxThreshold.Text);
             settings.SubtractorConfig.ShadowDetection = chkBoxShadowDetection.Checked;
+
+            if (!string.IsNullOrEmpty(ddlBiggestTargeting.SelectedText))
+            {
+                settings.BiggestMotionType = Enumeration.FromValue<BiggestMotionType>(ddlBiggestTargeting.SelectedText);
+            }
 
             return settings;
         }
@@ -63,6 +70,7 @@ namespace PiCamCV.WinForms.CameraConsumers
                 var output = _motionDetector.Process(input);
 
                 var bgrRed = new Bgr(Color.Red);
+                var bgrBlue = new Bgr(Color.Blue);
 
                 foreach (var motionRegion in output.MotionSections)
                 {
@@ -75,8 +83,13 @@ namespace PiCamCV.WinForms.CameraConsumers
                     DrawMotion(output.MotionImage, motionRegion.Region, motionRegion.Angle, bgrRed);
                 }
 
-                DrawMotion(output.MotionImage, new Rectangle(Point.Empty, output.MotionImage.Size), output.OverallAngle,
-                    new Bgr(Color.Green));
+                DrawMotion(output.MotionImage, new Rectangle(Point.Empty, output.MotionImage.Size), output.OverallAngle, new Bgr(Color.Green));
+
+                if (output.BiggestMotion != null)
+                {
+                    var motion = output.BiggestMotion;
+                    inputImage.Draw(motion.Region, bgrBlue);
+                }
 
                 imageBoxCaptured.Image = inputImage;
                 imageBoxMasked.Image = output.ForegroundImage;
@@ -177,5 +190,9 @@ namespace PiCamCV.WinForms.CameraConsumers
             _currentSettings.SubtractorConfig = HarvestSettingsFromUI().SubtractorConfig;
         }
 
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _currentSettings.BiggestMotionType = HarvestSettingsFromUI().BiggestMotionType;
+        }
     }
 }
