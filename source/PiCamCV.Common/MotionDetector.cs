@@ -147,7 +147,7 @@ namespace PiCamCV.Common
             }
 
             _motionHistory = new MotionHistory(
-                1.0, //in second, the duration of motion history you wants to keep
+                1, //in second, the duration of motion history you wants to keep
                 0.05, //in second, maxDelta for cvCalcMotionGradient
                 0.5); //in second, minDelta for cvCalcMotionGradient
         }

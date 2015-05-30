@@ -78,11 +78,14 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             _timerUntilServoSettled.Elapsed += (o, a) =>
             {
                 PreServoSettle();
-                IsServoInMotion = false; 
+                IsServoInMotion = false;
+                PostServoSettle();
             };
         }
 
         protected virtual void PreServoSettle(){}
+
+        protected virtual void PostServoSettle() { }
         
         protected TOutput ReactToTarget(Point objectOfInterest)
         {

@@ -90,7 +90,7 @@ namespace PiCamCV.WinForms.CameraConsumers
 
             _faceTrackingController = new FaceTrackingPanTiltController(PanTiltMechanism, _captureConfig);
             _colourTrackingController = new ColourTrackingPanTiltController(PanTiltMechanism, _captureConfig);
-            _motionTrackingController = new MotionTrackingPanTiltController(PanTiltMechanism, _captureConfig);
+            _motionTrackingController = new MotionTrackingPanTiltController(PanTiltMechanism, _captureConfig, screen);
 
             _calibratingPanTiltController = new CalibratingPanTiltController(PanTiltMechanism, new CalibrationReadingsRepository(), screen);
             _colourTrackingController.Settings = colorSettings;

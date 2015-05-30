@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using PiCamCV.Common.Interfaces;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 using PiCamCV.ExtensionMethods;
@@ -28,16 +29,28 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
     public class MotionTrackingPanTiltController : CameraBasedPanTiltController<MotionTrackingPanTiltOutput>
     {
+        private readonly IScreen _screen;
+
+        private readonly Timer _timerUntilMotionSettled;
         public MotionDetectSettings Settings { get; set; }
 
         private readonly MotionDetector _motionDetector;
 
-        public MotionTrackingPanTiltController(IPanTiltMechanism panTiltMech, CaptureConfig captureConfig)
+        public MotionTrackingPanTiltController(IPanTiltMechanism panTiltMech, CaptureConfig captureConfig, IScreen screen)
             : base(panTiltMech, captureConfig)
         {
+            _screen = screen;
             _motionDetector = new MotionDetector();
 
             ServoSettleTime = TimeSpan.FromMilliseconds(200);
+
+            _timerUntilMotionSettled = new Timer(150);
+            _timerUntilMotionSettled.AutoReset = false;
+            _timerUntilMotionSettled.Elapsed += (o, a) =>
+            {
+                _screen.WriteLine("Motion settled");
+                IsServoInMotion = false;
+            };
         }
 
         protected override MotionTrackingPanTiltOutput DoProcess(CameraProcessInput input)
@@ -55,8 +68,12 @@ namespace PiCamCV.Common.PanTilt.Controllers
             {
                 targetPoint = motionOutput.BiggestMotion.Region.Center();
             }
-            
+
             var output = ReactToTarget(targetPoint);
+            if (IsServoInMotion)
+            {
+                _screen.WriteLine("Reacting to target {0}", targetPoint);
+            }
             output.MotionSections.AddRange(motionOutput.MotionSections);
 
             if (motionOutput.BiggestMotion != null)
@@ -67,9 +84,12 @@ namespace PiCamCV.Common.PanTilt.Controllers
             return output;
         }
 
-        protected override void PreServoSettle()
+        protected override void PostServoSettle()
         {
+            IsServoInMotion = true;
+            _screen.WriteLine("Servo moved, awaiting motion settle");
             _motionDetector.Reset();
+            _timerUntilMotionSettled.Start();
         }
     }
 }
