@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Common.Logging;
 
 namespace WinForms
 {
@@ -15,7 +16,15 @@ namespace WinForms
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            ILog log = LogManager.GetCurrentClassLogger();
+            try
+            {
+                Application.Run(new MainForm());
+            }
+            catch(Exception e)
+            {
+                log.Fatal(e.Message, e);
+            }
         }
     }
 }

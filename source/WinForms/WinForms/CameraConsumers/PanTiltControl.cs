@@ -100,6 +100,8 @@ namespace PiCamCV.WinForms.CameraConsumers
             _calibratingPanTiltController.GetCameraCapture = PullImage;
             _calibratingPanTiltController.WaitStep = CalibrationWaitStep;
             _calibratingPanTiltController.ColourCaptured += _calibratingPanTiltController_ColourCaptured;
+
+            Log.InfoFormat("MotionSettings: {0}", motionSettings);
         }
 
         void CalibrationWaitStep(string reason)
@@ -308,6 +310,7 @@ namespace PiCamCV.WinForms.CameraConsumers
             var settleTime = TimeSpan.FromMilliseconds((int)spinEditServoSettle.Value);
             _colourTrackingController.ServoSettleTime = settleTime;
             _faceTrackingController.ServoSettleTime = settleTime;
+            _motionTrackingController.ServoSettleTime = settleTime;
 
             NotifyStatus("Servo settle time set to {0}ms", spinEditServoSettle.Value);
         }

@@ -9,6 +9,7 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using Emgu.CV.VideoSurveillance;
+using PiCamCV.Common.ExtensionMethods;
 using PiCamCV.Common.Interfaces;
 
 namespace PiCamCV.Common
@@ -28,6 +29,8 @@ namespace PiCamCV.Common
         /// </summary>
         public int MinimumArea { get; set; }
 
+        public int MaximumArea { get; set; }
+
         public BiggestMotionType BiggestMotionType { get; set; }
 
         /// <summary>
@@ -38,9 +41,20 @@ namespace PiCamCV.Common
         public MotionDetectSettings()
         {
             MinimumArea = 100;
+            MaximumArea = int.MaxValue;
             MinimumPercentMotionInArea = 0.05m;
             BiggestMotionType = BiggestMotionType.Area;
             SubtractorConfig = new SubtractorConfig();
+        }
+
+        public override string ToString()
+        {
+            return string.Format(
+                "MinArea={0}, MaxArea={1}, BiggestMotionType={2}, SubtractorConfig=[{3}]"
+                , MinimumArea
+                , MaximumArea
+                , BiggestMotionType
+                , SubtractorConfig);
         }
     }
 
@@ -85,6 +99,15 @@ namespace PiCamCV.Common
         {
             var otherAsThisType = obj as SubtractorConfig;
             return otherAsThisType != null && otherAsThisType.GetHashCode() == GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return string.Format(
+                "History={0}, Threshold={1}, ShadowDetection={2:F}"
+                ,History
+                ,Threshold
+                ,ShadowDetection);
         }
     }
 
@@ -140,16 +163,17 @@ namespace PiCamCV.Common
 
         public void Reset()
         {
-            if (_motionHistory != null)
-            {
-                _motionHistory.Dispose();
-                _motionHistory = null;
-            }
+            MotionHistory oldMotionHistory = _motionHistory;
 
             _motionHistory = new MotionHistory(
                 1, //in second, the duration of motion history you wants to keep
                 0.05, //in second, maxDelta for cvCalcMotionGradient
                 0.5); //in second, minDelta for cvCalcMotionGradient
+
+            if (oldMotionHistory != null)
+            {
+                oldMotionHistory.Dispose();
+            }
         }
 
         protected override void DisposeObject()
@@ -216,10 +240,13 @@ namespace PiCamCV.Common
 
             foreach (Rectangle motionComponent in motionComponents)
             {
-                int area = motionComponent.Width * motionComponent.Height;
+                int area = motionComponent.Area();
 
                 //reject the components that have small area;
-                if (area < input.Settings.MinimumArea) continue;
+                if (area < input.Settings.MinimumArea || area> input.Settings.MaximumArea)
+                {
+                    continue;
+                }
 
                 // find the angle and motion pixel count of the specific area
                 double angle, motionPixelCountDouble;
@@ -228,7 +255,7 @@ namespace PiCamCV.Common
                 int motionPixelCount = (int) motionPixelCountDouble;
 
                 //reject the area that contains too few motion
-                if (motionPixelCount < area*input.Settings.MinimumPercentMotionInArea)
+                if (motionPixelCount < area * input.Settings.MinimumPercentMotionInArea)
                 {
                     continue;
                 }

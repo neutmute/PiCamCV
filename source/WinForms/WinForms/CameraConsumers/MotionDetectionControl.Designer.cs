@@ -41,7 +41,11 @@
             this.labelThreshold = new System.Windows.Forms.Label();
             this.txtBoxHistory = new System.Windows.Forms.TextBox();
             this.labelHistory = new System.Windows.Forms.Label();
+            this.panelBiggestMode = new System.Windows.Forms.Panel();
+            this.lblTargeting = new System.Windows.Forms.Label();
+            this.ddlBiggestTargeting = new System.Windows.Forms.ComboBox();
             this.panelSettingsGroup = new System.Windows.Forms.Panel();
+            this.sliderMaximumArea = new PiCamCV.WinForms.UserControls.SliderControl();
             this.chkRectangleStats = new System.Windows.Forms.CheckBox();
             this.sliderMinimumPercentMotion = new PiCamCV.WinForms.UserControls.SliderControl();
             this.sliderMinimumArea = new PiCamCV.WinForms.UserControls.SliderControl();
@@ -53,13 +57,11 @@
             this.imageBoxMasked = new Emgu.CV.UI.ImageBox();
             this.groupBoxMotion = new System.Windows.Forms.GroupBox();
             this.imageBoxMotion = new Emgu.CV.UI.ImageBox();
-            this.panelBiggestMode = new System.Windows.Forms.Panel();
-            this.ddlBiggestTargeting = new System.Windows.Forms.ComboBox();
-            this.lblTargeting = new System.Windows.Forms.Label();
             this.panelControlOwner.SuspendLayout();
             this.groupBoxSettings.SuspendLayout();
             this.groupBoxRepo.SuspendLayout();
             this.groupBoxSubtractorConfig.SuspendLayout();
+            this.panelBiggestMode.SuspendLayout();
             this.panelSettingsGroup.SuspendLayout();
             this.flowLayoutPanel.SuspendLayout();
             this.groupBoxCaptured.SuspendLayout();
@@ -68,7 +70,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxMasked)).BeginInit();
             this.groupBoxMotion.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxMotion)).BeginInit();
-            this.panelBiggestMode.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelControlOwner
@@ -83,16 +84,14 @@
             // 
             // groupBoxSettings
             // 
-            
             this.groupBoxSettings.Controls.Add(this.groupBoxRepo);
-            
             this.groupBoxSettings.Controls.Add(this.groupBoxSubtractorConfig);
             this.groupBoxSettings.Controls.Add(this.panelBiggestMode);
             this.groupBoxSettings.Controls.Add(this.panelSettingsGroup);
             this.groupBoxSettings.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBoxSettings.Location = new System.Drawing.Point(0, 55);
             this.groupBoxSettings.Name = "groupBoxSettings";
-            this.groupBoxSettings.Size = new System.Drawing.Size(200, 389);
+            this.groupBoxSettings.Size = new System.Drawing.Size(200, 477);
             this.groupBoxSettings.TabIndex = 1;
             this.groupBoxSettings.TabStop = false;
             this.groupBoxSettings.Text = "Settings";
@@ -102,7 +101,7 @@
             this.groupBoxRepo.Controls.Add(this.btnWrite);
             this.groupBoxRepo.Controls.Add(this.btnRead);
             this.groupBoxRepo.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBoxRepo.Location = new System.Drawing.Point(3, 299);
+            this.groupBoxRepo.Location = new System.Drawing.Point(3, 374);
             this.groupBoxRepo.Name = "groupBoxRepo";
             this.groupBoxRepo.Size = new System.Drawing.Size(194, 50);
             this.groupBoxRepo.TabIndex = 7;
@@ -138,7 +137,7 @@
             this.groupBoxSubtractorConfig.Controls.Add(this.txtBoxHistory);
             this.groupBoxSubtractorConfig.Controls.Add(this.labelHistory);
             this.groupBoxSubtractorConfig.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBoxSubtractorConfig.Location = new System.Drawing.Point(3, 156);
+            this.groupBoxSubtractorConfig.Location = new System.Drawing.Point(3, 231);
             this.groupBoxSubtractorConfig.Name = "groupBoxSubtractorConfig";
             this.groupBoxSubtractorConfig.Size = new System.Drawing.Size(194, 143);
             this.groupBoxSubtractorConfig.TabIndex = 6;
@@ -197,23 +196,74 @@
             this.labelHistory.TabIndex = 0;
             this.labelHistory.Text = "History";
             // 
+            // panelBiggestMode
+            // 
+            this.panelBiggestMode.Controls.Add(this.lblTargeting);
+            this.panelBiggestMode.Controls.Add(this.ddlBiggestTargeting);
+            this.panelBiggestMode.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelBiggestMode.Location = new System.Drawing.Point(3, 191);
+            this.panelBiggestMode.Name = "panelBiggestMode";
+            this.panelBiggestMode.Size = new System.Drawing.Size(194, 40);
+            this.panelBiggestMode.TabIndex = 10;
+            // 
+            // lblTargeting
+            // 
+            this.lblTargeting.AutoSize = true;
+            this.lblTargeting.Location = new System.Drawing.Point(8, 9);
+            this.lblTargeting.Name = "lblTargeting";
+            this.lblTargeting.Size = new System.Drawing.Size(52, 13);
+            this.lblTargeting.TabIndex = 10;
+            this.lblTargeting.Text = "Targeting";
+            // 
+            // ddlBiggestTargeting
+            // 
+            this.ddlBiggestTargeting.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ddlBiggestTargeting.FormattingEnabled = true;
+            this.ddlBiggestTargeting.Items.AddRange(new object[] {
+            "Area",
+            "Pixels"});
+            this.ddlBiggestTargeting.Location = new System.Drawing.Point(66, 6);
+            this.ddlBiggestTargeting.Name = "ddlBiggestTargeting";
+            this.ddlBiggestTargeting.Size = new System.Drawing.Size(121, 21);
+            this.ddlBiggestTargeting.TabIndex = 9;
+            this.ddlBiggestTargeting.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
             // panelSettingsGroup
             // 
+            this.panelSettingsGroup.Controls.Add(this.sliderMaximumArea);
             this.panelSettingsGroup.Controls.Add(this.chkRectangleStats);
             this.panelSettingsGroup.Controls.Add(this.sliderMinimumPercentMotion);
             this.panelSettingsGroup.Controls.Add(this.sliderMinimumArea);
             this.panelSettingsGroup.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelSettingsGroup.Location = new System.Drawing.Point(3, 16);
             this.panelSettingsGroup.Name = "panelSettingsGroup";
-            this.panelSettingsGroup.Size = new System.Drawing.Size(194, 140);
+            this.panelSettingsGroup.Size = new System.Drawing.Size(194, 175);
             this.panelSettingsGroup.TabIndex = 5;
+            // 
+            // sliderMaximumArea
+            // 
+            this.sliderMaximumArea.Dock = System.Windows.Forms.DockStyle.Top;
+            this.sliderMaximumArea.Label = "Maximum Area";
+            this.sliderMaximumArea.LargeChange = 30;
+            this.sliderMaximumArea.Location = new System.Drawing.Point(0, 102);
+            this.sliderMaximumArea.Maximum = 700;
+            this.sliderMaximumArea.Minimum = 5;
+            this.sliderMaximumArea.Name = "sliderMaximumArea";
+            this.sliderMaximumArea.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.sliderMaximumArea.Size = new System.Drawing.Size(194, 46);
+            this.sliderMaximumArea.SmallChange = 10;
+            this.sliderMaximumArea.TabIndex = 7;
+            this.sliderMaximumArea.TickFrequency = 50;
+            this.sliderMaximumArea.Value = 100;
+            this.sliderMaximumArea.ValueChanged += new System.EventHandler(this.sliderMaximumArea_ValueChanged);
             // 
             // chkRectangleStats
             // 
             this.chkRectangleStats.AutoSize = true;
-            this.chkRectangleStats.Location = new System.Drawing.Point(3, 116);
+            this.chkRectangleStats.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.chkRectangleStats.Location = new System.Drawing.Point(0, 158);
             this.chkRectangleStats.Name = "chkRectangleStats";
-            this.chkRectangleStats.Size = new System.Drawing.Size(132, 17);
+            this.chkRectangleStats.Size = new System.Drawing.Size(194, 17);
             this.chkRectangleStats.TabIndex = 6;
             this.chkRectangleStats.Text = "Show Rectangle Stats";
             this.chkRectangleStats.UseVisualStyleBackColor = true;
@@ -228,7 +278,7 @@
             this.sliderMinimumPercentMotion.Minimum = 1;
             this.sliderMinimumPercentMotion.Name = "sliderMinimumPercentMotion";
             this.sliderMinimumPercentMotion.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.sliderMinimumPercentMotion.Size = new System.Drawing.Size(194, 64);
+            this.sliderMinimumPercentMotion.Size = new System.Drawing.Size(194, 56);
             this.sliderMinimumPercentMotion.SmallChange = 10;
             this.sliderMinimumPercentMotion.TabIndex = 5;
             this.sliderMinimumPercentMotion.TickFrequency = 5;
@@ -337,38 +387,6 @@
             this.imageBoxMotion.TabIndex = 4;
             this.imageBoxMotion.TabStop = false;
             // 
-            // panelBiggestMode
-            // 
-            this.panelBiggestMode.Controls.Add(this.lblTargeting);
-            this.panelBiggestMode.Controls.Add(this.ddlBiggestTargeting);
-            this.panelBiggestMode.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelBiggestMode.Location = new System.Drawing.Point(3, 349);
-            this.panelBiggestMode.Name = "panelBiggestMode";
-            this.panelBiggestMode.Size = new System.Drawing.Size(194, 40);
-            this.panelBiggestMode.TabIndex = 10;
-            // 
-            // ddlBiggestTargeting
-            // 
-            this.ddlBiggestTargeting.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ddlBiggestTargeting.FormattingEnabled = true;
-            this.ddlBiggestTargeting.Items.AddRange(new object[] {
-            "Area",
-            "Pixels"});
-            this.ddlBiggestTargeting.Location = new System.Drawing.Point(66, 6);
-            this.ddlBiggestTargeting.Name = "ddlBiggestTargeting";
-            this.ddlBiggestTargeting.Size = new System.Drawing.Size(121, 21);
-            this.ddlBiggestTargeting.TabIndex = 9;
-            this.ddlBiggestTargeting.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
-            // 
-            // lblTargeting
-            // 
-            this.lblTargeting.AutoSize = true;
-            this.lblTargeting.Location = new System.Drawing.Point(8, 9);
-            this.lblTargeting.Name = "lblTargeting";
-            this.lblTargeting.Size = new System.Drawing.Size(52, 13);
-            this.lblTargeting.TabIndex = 10;
-            this.lblTargeting.Text = "Targeting";
-            // 
             // MotionDetectionControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -383,6 +401,8 @@
             this.groupBoxRepo.ResumeLayout(false);
             this.groupBoxSubtractorConfig.ResumeLayout(false);
             this.groupBoxSubtractorConfig.PerformLayout();
+            this.panelBiggestMode.ResumeLayout(false);
+            this.panelBiggestMode.PerformLayout();
             this.panelSettingsGroup.ResumeLayout(false);
             this.panelSettingsGroup.PerformLayout();
             this.flowLayoutPanel.ResumeLayout(false);
@@ -392,8 +412,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxMasked)).EndInit();
             this.groupBoxMotion.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxMotion)).EndInit();
-            this.panelBiggestMode.ResumeLayout(false);
-            this.panelBiggestMode.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -418,7 +436,6 @@
         private System.Windows.Forms.TextBox txtBoxHistory;
         private System.Windows.Forms.Label labelHistory;
         private System.Windows.Forms.Panel panelSettingsGroup;
-        private System.Windows.Forms.CheckBox chkRectangleStats;
         private UserControls.SliderControl sliderMinimumPercentMotion;
         private UserControls.SliderControl sliderMinimumArea;
         private System.Windows.Forms.GroupBox groupBoxRepo;
@@ -427,5 +444,7 @@
         private System.Windows.Forms.Panel panelBiggestMode;
         private System.Windows.Forms.Label lblTargeting;
         private System.Windows.Forms.ComboBox ddlBiggestTargeting;
+        private System.Windows.Forms.CheckBox chkRectangleStats;
+        private UserControls.SliderControl sliderMaximumArea;
     }
 }

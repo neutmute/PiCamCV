@@ -41,7 +41,9 @@ namespace PiCamCV.WinForms.CameraConsumers
             var settings = new MotionDetectSettings();
             
             var minArea = sliderMinimumArea.Value * sliderMinimumArea.Value;
+            var maxArea = sliderMaximumArea.Value * sliderMaximumArea.Value;
             settings.MinimumArea = minArea;
+            settings.MaximumArea = maxArea;
             settings.MinimumPercentMotionInArea = ((decimal)sliderMinimumPercentMotion.Value) / 100;
             
             settings.SubtractorConfig.History = Convert.ToInt32(txtBoxHistory.Text);
@@ -127,7 +129,7 @@ namespace PiCamCV.WinForms.CameraConsumers
         private void sliderControl1_ValueChanged(object sender, EventArgs e)
         {
             var defaultSize = new Size(320, 240);
-            var newWidth = (sliderSize.Value  * defaultSize.Width)/100;
+            var newWidth = (sliderSize.Value  * defaultSize.Width) / 100;
             var newHeight = (sliderSize.Value * defaultSize.Height) / 100;
 
             var newSize = new Size(newWidth, newHeight);
@@ -139,6 +141,7 @@ namespace PiCamCV.WinForms.CameraConsumers
         private void SetUIFromAreaConfig()
         {
             sliderMinimumArea.Value =  Convert.ToInt32(Math.Sqrt(_currentSettings.MinimumArea));
+            sliderMaximumArea.Value = Convert.ToInt32(Math.Sqrt(_currentSettings.MaximumArea));
             sliderMinimumPercentMotion.Value = Convert.ToInt32(_currentSettings.MinimumPercentMotionInArea * 100);
         }
        
@@ -184,6 +187,11 @@ namespace PiCamCV.WinForms.CameraConsumers
         {
             _currentSettings.MinimumPercentMotionInArea = ((decimal)sliderMinimumPercentMotion.Value) / 100;
         }
+        private void sliderMaximumArea_ValueChanged(object sender, EventArgs e)
+        {
+            _currentSettings.MaximumArea = sliderMaximumArea.Value * sliderMaximumArea.Value;
+            sliderMaximumArea.Label = "Maximum Area = " + _currentSettings.MaximumArea;
+        }
 
         private void btnSetSubtractorConfig_Click(object sender, EventArgs e)
         {
@@ -194,5 +202,6 @@ namespace PiCamCV.WinForms.CameraConsumers
         {
             _currentSettings.BiggestMotionType = HarvestSettingsFromUI().BiggestMotionType;
         }
+        
     }
 }
