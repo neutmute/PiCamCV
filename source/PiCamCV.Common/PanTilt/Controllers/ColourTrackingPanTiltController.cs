@@ -4,6 +4,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Emgu.CV;
+using Emgu.CV.Structure;
 using PiCamCV.Common;
 using PiCamCV.Common.ExtensionMethods;
 using PiCamCV.Common.Interfaces;
@@ -14,6 +16,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
     {
         public bool IsDetected { get; set; }
         public double MomentArea { get; set; }
+        public Image<Gray, byte> ThresholdImage { get; set; }
 
     }
     public class ColourTrackingPanTiltController : CameraBasedPanTiltController<ColourTrackingPanTiltOutput>
@@ -44,6 +47,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             var output = ReactToTarget(targetPoint);
             output.IsDetected = colourDetectorOutput.IsDetected;
             output.MomentArea = colourDetectorOutput.MomentArea;
+            output.ThresholdImage = colourDetectorOutput.ThresholdImage;
             return output;
         }
     }

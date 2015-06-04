@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using Emgu.CV;
+using Emgu.CV.Structure;
 using Kraken.Core;
 using PiCamCV.Common.ExtensionMethods;
 using PiCamCV.Common.Interfaces;
@@ -17,11 +19,14 @@ namespace PiCamCV.Common.PanTilt.Controllers
         public List<MotionSection> MotionSections { get; private set; }
 
         public MotionSection TargetedMotion { get;set;}
+        public Image<Bgr, byte> ForegroundImage { get; set; }
 
         public bool IsDetected
         {
             get { return MotionSections.Count > 0; }
         }
+
+        
 
         public MotionTrackingPanTiltOutput()
         {
@@ -64,8 +69,8 @@ namespace PiCamCV.Common.PanTilt.Controllers
         protected override MotionTrackingPanTiltOutput DoProcess(CameraProcessInput input)
         {
             var detectorInput = new MotionDetectorInput();
-            detectorInput.SetCapturedImage = false;
             detectorInput.Settings = Settings;
+            detectorInput.SetCapturedImage = input.SetCapturedImage;
             detectorInput.Captured = input.Captured;
 
             var motionOutput = _motionDetector.Process(detectorInput);
@@ -91,6 +96,8 @@ namespace PiCamCV.Common.PanTilt.Controllers
             {
                 output.TargetedMotion = motionOutput.BiggestMotion;
             }
+
+            output.ForegroundImage = motionOutput.ForegroundImage;
 
             return output;
         }

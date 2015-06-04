@@ -26,15 +26,11 @@
         private System.Windows.Forms.TextBox txtPanPercent;
         private System.Windows.Forms.Label labelTilt;
         private System.Windows.Forms.Label labelPan;
-        private System.Windows.Forms.GroupBox groupBoxCaptured;
         private System.Windows.Forms.GroupBox groupBoxControls;
 
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.groupBoxCaptured = new System.Windows.Forms.GroupBox();
-            this.imageBoxCaptured = new Emgu.CV.UI.ImageBox();
-            this.txtTimeCalibration = new System.Windows.Forms.TextBox();
             this.groupBoxControls = new System.Windows.Forms.GroupBox();
             this.panelScreen = new System.Windows.Forms.Panel();
             this.txtScreen = new System.Windows.Forms.TextBox();
@@ -60,8 +56,14 @@
             this.txtPanPercent = new System.Windows.Forms.TextBox();
             this.labelTilt = new System.Windows.Forms.Label();
             this.labelPan = new System.Windows.Forms.Label();
-            this.groupBoxCaptured.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).BeginInit();
+            this.txtTimeCalibration = new System.Windows.Forms.TextBox();
+            this.panelFlowRhs = new System.Windows.Forms.FlowLayoutPanel();
+            this.groupBoxCaptured = new System.Windows.Forms.GroupBox();
+            this.imageBoxCaptured = new Emgu.CV.UI.ImageBox();
+            this.groupBoxFiltered = new System.Windows.Forms.GroupBox();
+            this.imageBoxFiltered = new Emgu.CV.UI.ImageBox();
+            this.groupBoxView = new System.Windows.Forms.GroupBox();
+            this.sliderSize = new PiCamCV.WinForms.UserControls.SliderControl();
             this.groupBoxControls.SuspendLayout();
             this.panelScreen.SuspendLayout();
             this.groupBoxCalibration.SuspendLayout();
@@ -69,40 +71,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.spinEditServoSettle)).BeginInit();
             this.groupBoxReticle.SuspendLayout();
             this.groupBoxMoveTo.SuspendLayout();
+            this.panelFlowRhs.SuspendLayout();
+            this.groupBoxCaptured.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).BeginInit();
+            this.groupBoxFiltered.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imageBoxFiltered)).BeginInit();
+            this.groupBoxView.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // groupBoxCaptured
-            // 
-            this.groupBoxCaptured.Controls.Add(this.imageBoxCaptured);
-            this.groupBoxCaptured.Controls.Add(this.txtTimeCalibration);
-            this.groupBoxCaptured.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxCaptured.Location = new System.Drawing.Point(271, 0);
-            this.groupBoxCaptured.Name = "groupBoxCaptured";
-            this.groupBoxCaptured.Size = new System.Drawing.Size(357, 439);
-            this.groupBoxCaptured.TabIndex = 2;
-            this.groupBoxCaptured.TabStop = false;
-            this.groupBoxCaptured.Text = "Captured";
-            // 
-            // imageBoxCaptured
-            // 
-            this.imageBoxCaptured.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.imageBoxCaptured.Location = new System.Drawing.Point(3, 16);
-            this.imageBoxCaptured.Name = "imageBoxCaptured";
-            this.imageBoxCaptured.Size = new System.Drawing.Size(351, 382);
-            this.imageBoxCaptured.TabIndex = 6;
-            this.imageBoxCaptured.TabStop = false;
-            // 
-            // txtTimeCalibration
-            // 
-            this.txtTimeCalibration.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.txtTimeCalibration.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTimeCalibration.Location = new System.Drawing.Point(3, 398);
-            this.txtTimeCalibration.Name = "txtTimeCalibration";
-            this.txtTimeCalibration.Size = new System.Drawing.Size(351, 38);
-            this.txtTimeCalibration.TabIndex = 5;
             // 
             // groupBoxControls
             // 
+            this.groupBoxControls.Controls.Add(this.groupBoxView);
             this.groupBoxControls.Controls.Add(this.panelScreen);
             this.groupBoxControls.Controls.Add(this.groupBoxCalibration);
             this.groupBoxControls.Controls.Add(this.groupBoxControllers);
@@ -111,15 +90,15 @@
             this.groupBoxControls.Dock = System.Windows.Forms.DockStyle.Left;
             this.groupBoxControls.Location = new System.Drawing.Point(0, 0);
             this.groupBoxControls.Name = "groupBoxControls";
-            this.groupBoxControls.Size = new System.Drawing.Size(271, 439);
+            this.groupBoxControls.Size = new System.Drawing.Size(271, 641);
             this.groupBoxControls.TabIndex = 1;
             this.groupBoxControls.TabStop = false;
             // 
             // panelScreen
             // 
             this.panelScreen.Controls.Add(this.txtScreen);
-            this.panelScreen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelScreen.Location = new System.Drawing.Point(3, 264);
+            this.panelScreen.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelScreen.Location = new System.Drawing.Point(3, 466);
             this.panelScreen.Name = "panelScreen";
             this.panelScreen.Size = new System.Drawing.Size(265, 172);
             this.panelScreen.TabIndex = 9;
@@ -375,16 +354,100 @@
             this.labelPan.TabIndex = 4;
             this.labelPan.Text = "Pan";
             // 
+            // txtTimeCalibration
+            // 
+            this.txtTimeCalibration.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.txtTimeCalibration.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTimeCalibration.Location = new System.Drawing.Point(271, 603);
+            this.txtTimeCalibration.Name = "txtTimeCalibration";
+            this.txtTimeCalibration.Size = new System.Drawing.Size(577, 38);
+            this.txtTimeCalibration.TabIndex = 6;
+            // 
+            // panelFlowRhs
+            // 
+            this.panelFlowRhs.Controls.Add(this.groupBoxCaptured);
+            this.panelFlowRhs.Controls.Add(this.groupBoxFiltered);
+            this.panelFlowRhs.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelFlowRhs.Location = new System.Drawing.Point(271, 0);
+            this.panelFlowRhs.Name = "panelFlowRhs";
+            this.panelFlowRhs.Size = new System.Drawing.Size(577, 571);
+            this.panelFlowRhs.TabIndex = 7;
+            // 
+            // groupBoxCaptured
+            // 
+            this.groupBoxCaptured.Controls.Add(this.imageBoxCaptured);
+            this.groupBoxCaptured.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBoxCaptured.Location = new System.Drawing.Point(3, 3);
+            this.groupBoxCaptured.Name = "groupBoxCaptured";
+            this.groupBoxCaptured.Size = new System.Drawing.Size(577, 261);
+            this.groupBoxCaptured.TabIndex = 3;
+            this.groupBoxCaptured.TabStop = false;
+            this.groupBoxCaptured.Text = "Captured";
+            // 
+            // imageBoxCaptured
+            // 
+            this.imageBoxCaptured.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.imageBoxCaptured.Location = new System.Drawing.Point(3, 16);
+            this.imageBoxCaptured.Name = "imageBoxCaptured";
+            this.imageBoxCaptured.Size = new System.Drawing.Size(571, 242);
+            this.imageBoxCaptured.TabIndex = 6;
+            this.imageBoxCaptured.TabStop = false;
+            // 
+            // groupBoxFiltered
+            // 
+            this.groupBoxFiltered.Controls.Add(this.imageBoxFiltered);
+            this.groupBoxFiltered.Location = new System.Drawing.Point(3, 270);
+            this.groupBoxFiltered.Name = "groupBoxFiltered";
+            this.groupBoxFiltered.Size = new System.Drawing.Size(521, 276);
+            this.groupBoxFiltered.TabIndex = 4;
+            this.groupBoxFiltered.TabStop = false;
+            this.groupBoxFiltered.Text = "Filtered";
+            // 
+            // imageBoxFiltered
+            // 
+            this.imageBoxFiltered.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.imageBoxFiltered.Location = new System.Drawing.Point(3, 16);
+            this.imageBoxFiltered.Name = "imageBoxFiltered";
+            this.imageBoxFiltered.Size = new System.Drawing.Size(515, 257);
+            this.imageBoxFiltered.TabIndex = 7;
+            this.imageBoxFiltered.TabStop = false;
+            // 
+            // groupBoxView
+            // 
+            this.groupBoxView.Controls.Add(this.sliderSize);
+            this.groupBoxView.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBoxView.Location = new System.Drawing.Point(3, 264);
+            this.groupBoxView.Name = "groupBoxView";
+            this.groupBoxView.Size = new System.Drawing.Size(265, 98);
+            this.groupBoxView.TabIndex = 10;
+            this.groupBoxView.TabStop = false;
+            this.groupBoxView.Text = "View";
+            // 
+            // sliderSize
+            // 
+            this.sliderSize.Dock = System.Windows.Forms.DockStyle.Top;
+            this.sliderSize.Label = "Image Scale";
+            this.sliderSize.LargeChange = 5;
+            this.sliderSize.Location = new System.Drawing.Point(3, 16);
+            this.sliderSize.Maximum = 255;
+            this.sliderSize.Minimum = 50;
+            this.sliderSize.Name = "sliderSize";
+            this.sliderSize.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.sliderSize.Size = new System.Drawing.Size(259, 55);
+            this.sliderSize.SmallChange = 1;
+            this.sliderSize.TabIndex = 1;
+            this.sliderSize.TickFrequency = 20;
+            this.sliderSize.Value = 100;
+            this.sliderSize.ValueChanged += new System.EventHandler(this.sliderSize_ValueChanged);
+            // 
             // PanTiltControl
             // 
-            this.Controls.Add(this.groupBoxCaptured);
+            this.Controls.Add(this.panelFlowRhs);
+            this.Controls.Add(this.txtTimeCalibration);
             this.Controls.Add(this.groupBoxControls);
             this.Name = "PanTiltControl";
-            this.Size = new System.Drawing.Size(628, 439);
+            this.Size = new System.Drawing.Size(848, 641);
             this.Load += new System.EventHandler(this.PanTiltControl_Load);
-            this.groupBoxCaptured.ResumeLayout(false);
-            this.groupBoxCaptured.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).EndInit();
             this.groupBoxControls.ResumeLayout(false);
             this.panelScreen.ResumeLayout(false);
             this.panelScreen.PerformLayout();
@@ -396,7 +459,14 @@
             this.groupBoxReticle.PerformLayout();
             this.groupBoxMoveTo.ResumeLayout(false);
             this.groupBoxMoveTo.PerformLayout();
+            this.panelFlowRhs.ResumeLayout(false);
+            this.groupBoxCaptured.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).EndInit();
+            this.groupBoxFiltered.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.imageBoxFiltered)).EndInit();
+            this.groupBoxView.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -409,8 +479,6 @@
         private System.Windows.Forms.GroupBox groupBoxControllers;
         private System.Windows.Forms.CheckBox chkBoxFaceTracker;
         private System.Windows.Forms.CheckBox chkBoxColourTracking;
-        private Emgu.CV.UI.ImageBox imageBoxCaptured;
-        private System.Windows.Forms.TextBox txtTimeCalibration;
         private System.Windows.Forms.Panel panelScreen;
         private System.Windows.Forms.TextBox txtScreen;
         private System.Windows.Forms.GroupBox groupBoxCalibration;
@@ -420,5 +488,13 @@
         private System.Windows.Forms.Label labelServoSettle;
         private System.Windows.Forms.NumericUpDown spinEditServoSettle;
         private System.Windows.Forms.CheckBox chkBoxMotionTracking;
+        private System.Windows.Forms.TextBox txtTimeCalibration;
+        private System.Windows.Forms.FlowLayoutPanel panelFlowRhs;
+        private System.Windows.Forms.GroupBox groupBoxCaptured;
+        private Emgu.CV.UI.ImageBox imageBoxCaptured;
+        private System.Windows.Forms.GroupBox groupBoxFiltered;
+        private Emgu.CV.UI.ImageBox imageBoxFiltered;
+        private System.Windows.Forms.GroupBox groupBoxView;
+        private UserControls.SliderControl sliderSize;
     }
 }

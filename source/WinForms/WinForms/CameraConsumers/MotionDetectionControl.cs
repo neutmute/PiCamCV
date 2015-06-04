@@ -202,6 +202,11 @@ namespace PiCamCV.WinForms.CameraConsumers
         {
             _currentSettings.BiggestMotionType = HarvestSettingsFromUI().BiggestMotionType;
         }
+
+        private void sliderSize_Load(object sender, EventArgs e)
+        {
+
+        }
         
     }
 }

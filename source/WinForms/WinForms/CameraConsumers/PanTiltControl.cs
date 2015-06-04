@@ -169,7 +169,7 @@ namespace PiCamCV.WinForms.CameraConsumers
                 }
 
                 var input = new CameraProcessInput();
-                input.SetCapturedImage = false;
+                input.SetCapturedImage = true;
                 input.Captured = matCaptured;
 
                 CameraPanTiltProcessOutput output = null;
@@ -182,6 +182,8 @@ namespace PiCamCV.WinForms.CameraConsumers
                     {
                         DrawReticle(bgrImage, result.Target, Color.Yellow);
                     }
+
+                    imageBoxFiltered.Image = result.ThresholdImage;
                    // WriteText(bgrImage, _captureConfig.Resolution.Height - 10, "Colour Tracking");
                 }
 
@@ -217,6 +219,7 @@ namespace PiCamCV.WinForms.CameraConsumers
                             bgrImage.Draw(result.TargetedMotion.Region, new Bgr(Color.Red), 2);
                         }
                     }
+                    imageBoxFiltered.Image = result.ForegroundImage;
                 }
 
                 if (output != null)
@@ -313,6 +316,17 @@ namespace PiCamCV.WinForms.CameraConsumers
             _motionTrackingController.ServoSettleTime = settleTime;
 
             NotifyStatus("Servo settle time set to {0}ms", spinEditServoSettle.Value);
+        }
+
+        private void sliderSize_ValueChanged(object sender, EventArgs e)
+        {
+            var defaultSize = new Size(320, 240);
+            var newWidth = (sliderSize.Value * defaultSize.Width) / 100;
+            var newHeight = (sliderSize.Value * defaultSize.Height) / 100;
+
+            var newSize = new Size(newWidth, newHeight);
+            groupBoxCaptured.Size = newSize;
+            groupBoxFiltered.Size = newSize;
         }
 
     }

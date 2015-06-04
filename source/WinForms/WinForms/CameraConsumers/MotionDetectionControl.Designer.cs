@@ -318,6 +318,7 @@
             this.sliderSize.TickFrequency = 20;
             this.sliderSize.Value = 100;
             this.sliderSize.ValueChanged += new System.EventHandler(this.sliderControl1_ValueChanged);
+            this.sliderSize.Load += new System.EventHandler(this.sliderSize_Load);
             // 
             // flowLayoutPanel
             // 
