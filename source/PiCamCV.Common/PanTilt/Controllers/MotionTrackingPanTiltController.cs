@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using Common.Logging;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using Kraken.Core;
@@ -26,8 +28,6 @@ namespace PiCamCV.Common.PanTilt.Controllers
             get { return MotionSections.Count > 0; }
         }
 
-        
-
         public MotionTrackingPanTiltOutput()
         {
             MotionSections = new List<MotionSection>();
@@ -36,12 +36,24 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
     public class MotionTrackingPanTiltController : CameraBasedPanTiltController<MotionTrackingPanTiltOutput>
     {
+        private static readonly ILog _log = LogManager.GetCurrentClassLogger();
+
         private readonly IScreen _screen;
 
         private readonly Timer _timerUntilMotionSettled;
+
+        private Stopwatch _timeToZeroMotion;
+        
         public MotionDetectSettings Settings { get; set; }
 
         private readonly MotionDetector _motionDetector;
+
+        public TimeSpan MotionSettleTime
+        {
+            get { return TimeSpan.FromMilliseconds(_timerUntilMotionSettled.Interval); }
+            set { _timerUntilMotionSettled.Interval = value.TotalMilliseconds; }
+            
+        }
 
         public MotionTrackingPanTiltController(IPanTiltMechanism panTiltMech, CaptureConfig captureConfig, IScreen screen)
             : base(panTiltMech, captureConfig)
@@ -51,7 +63,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
             ServoSettleTime = TimeSpan.FromMilliseconds(200);
 
-            _timerUntilMotionSettled = new Timer(1000);
+            _timerUntilMotionSettled = new Timer(200);
             _timerUntilMotionSettled.AutoReset = false;
             _timerUntilMotionSettled.Elapsed += (o, a) =>
             {
@@ -61,7 +73,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
             ServoSettleTimeChanged += (o, a) =>
             {
-                _screen.WriteLine("Servo settle time changed to {0}", ServoSettleTime.ToHumanReadable());
+                _screen.WriteLine("Servo settle={0}", ServoSettleTime.ToHumanReadable());
                 _timerUntilMotionSettled.Interval = ServoSettleTime.TotalMilliseconds;
             };
         }
@@ -89,6 +101,13 @@ namespace PiCamCV.Common.PanTilt.Controllers
             if (IsServoInMotion)
             {
                 _screen.WriteLine("Reacting to target {0}, size {1}", targetPoint, biggestMotion.Region.Area());
+
+                if (_timeToZeroMotion != null && !motionOutput.IsDetected)
+                {
+                    _timeToZeroMotion.Stop();
+                    _log.InfoFormat("Time to zero motion was {0:F}ms", _timeToZeroMotion.ElapsedMilliseconds);
+                    _timeToZeroMotion = null;
+                }
             }
             output.MotionSections.AddRange(motionOutput.MotionSections);
 
@@ -105,8 +124,10 @@ namespace PiCamCV.Common.PanTilt.Controllers
         protected override void PostServoSettle()
         {
             IsServoInMotion = true;
-            _screen.WriteLine("Servo moved, awaiting motion settle");
+            _screen.WriteLine("Servo moved, waiting {0:F}ms for motion settle", _timerUntilMotionSettled.Interval);
             _motionDetector.Reset();
+            _timeToZeroMotion = new Stopwatch();
+            _timeToZeroMotion.Start();
             _timerUntilMotionSettled.Start();
         }
     }

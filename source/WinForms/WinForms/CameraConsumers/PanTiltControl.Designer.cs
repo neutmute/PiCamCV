@@ -32,6 +32,8 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBoxControls = new System.Windows.Forms.GroupBox();
+            this.groupBoxView = new System.Windows.Forms.GroupBox();
+            this.sliderSize = new PiCamCV.WinForms.UserControls.SliderControl();
             this.panelScreen = new System.Windows.Forms.Panel();
             this.txtScreen = new System.Windows.Forms.TextBox();
             this.groupBoxCalibration = new System.Windows.Forms.GroupBox();
@@ -62,9 +64,10 @@
             this.imageBoxCaptured = new Emgu.CV.UI.ImageBox();
             this.groupBoxFiltered = new System.Windows.Forms.GroupBox();
             this.imageBoxFiltered = new Emgu.CV.UI.ImageBox();
-            this.groupBoxView = new System.Windows.Forms.GroupBox();
-            this.sliderSize = new PiCamCV.WinForms.UserControls.SliderControl();
+            this.spinEditMotionSettle = new System.Windows.Forms.NumericUpDown();
+            this.labelMotoinSettle = new System.Windows.Forms.Label();
             this.groupBoxControls.SuspendLayout();
+            this.groupBoxView.SuspendLayout();
             this.panelScreen.SuspendLayout();
             this.groupBoxCalibration.SuspendLayout();
             this.groupBoxControllers.SuspendLayout();
@@ -76,7 +79,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).BeginInit();
             this.groupBoxFiltered.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxFiltered)).BeginInit();
-            this.groupBoxView.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spinEditMotionSettle)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxControls
@@ -93,6 +96,34 @@
             this.groupBoxControls.Size = new System.Drawing.Size(271, 641);
             this.groupBoxControls.TabIndex = 1;
             this.groupBoxControls.TabStop = false;
+            // 
+            // groupBoxView
+            // 
+            this.groupBoxView.Controls.Add(this.sliderSize);
+            this.groupBoxView.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBoxView.Location = new System.Drawing.Point(3, 264);
+            this.groupBoxView.Name = "groupBoxView";
+            this.groupBoxView.Size = new System.Drawing.Size(265, 81);
+            this.groupBoxView.TabIndex = 10;
+            this.groupBoxView.TabStop = false;
+            this.groupBoxView.Text = "View";
+            // 
+            // sliderSize
+            // 
+            this.sliderSize.Dock = System.Windows.Forms.DockStyle.Top;
+            this.sliderSize.Label = "Image Scale";
+            this.sliderSize.LargeChange = 5;
+            this.sliderSize.Location = new System.Drawing.Point(3, 16);
+            this.sliderSize.Maximum = 255;
+            this.sliderSize.Minimum = 50;
+            this.sliderSize.Name = "sliderSize";
+            this.sliderSize.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.sliderSize.Size = new System.Drawing.Size(259, 55);
+            this.sliderSize.SmallChange = 1;
+            this.sliderSize.TabIndex = 1;
+            this.sliderSize.TickFrequency = 20;
+            this.sliderSize.Value = 100;
+            this.sliderSize.ValueChanged += new System.EventHandler(this.sliderSize_ValueChanged);
             // 
             // panelScreen
             // 
@@ -158,6 +189,8 @@
             // 
             // groupBoxControllers
             // 
+            this.groupBoxControllers.Controls.Add(this.labelMotoinSettle);
+            this.groupBoxControllers.Controls.Add(this.spinEditMotionSettle);
             this.groupBoxControllers.Controls.Add(this.chkBoxMotionTracking);
             this.groupBoxControllers.Controls.Add(this.labelServoSettle);
             this.groupBoxControllers.Controls.Add(this.spinEditServoSettle);
@@ -184,11 +217,12 @@
             // labelServoSettle
             // 
             this.labelServoSettle.AutoSize = true;
-            this.labelServoSettle.Location = new System.Drawing.Point(126, 19);
+            this.labelServoSettle.Location = new System.Drawing.Point(115, 43);
             this.labelServoSettle.Name = "labelServoSettle";
-            this.labelServoSettle.Size = new System.Drawing.Size(113, 13);
+            this.labelServoSettle.Size = new System.Drawing.Size(87, 13);
             this.labelServoSettle.TabIndex = 10;
-            this.labelServoSettle.Text = "Servo Settle Time (ms)";
+            this.labelServoSettle.Text = "Servo Settle (ms)";
+            
             // 
             // spinEditServoSettle
             // 
@@ -197,9 +231,9 @@
             0,
             0,
             0});
-            this.spinEditServoSettle.Location = new System.Drawing.Point(129, 41);
+            this.spinEditServoSettle.Location = new System.Drawing.Point(208, 41);
             this.spinEditServoSettle.Maximum = new decimal(new int[] {
-            1000,
+            10000,
             0,
             0,
             0});
@@ -360,7 +394,7 @@
             this.txtTimeCalibration.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTimeCalibration.Location = new System.Drawing.Point(271, 603);
             this.txtTimeCalibration.Name = "txtTimeCalibration";
-            this.txtTimeCalibration.Size = new System.Drawing.Size(577, 38);
+            this.txtTimeCalibration.Size = new System.Drawing.Size(684, 38);
             this.txtTimeCalibration.TabIndex = 6;
             // 
             // panelFlowRhs
@@ -370,7 +404,7 @@
             this.panelFlowRhs.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelFlowRhs.Location = new System.Drawing.Point(271, 0);
             this.panelFlowRhs.Name = "panelFlowRhs";
-            this.panelFlowRhs.Size = new System.Drawing.Size(577, 571);
+            this.panelFlowRhs.Size = new System.Drawing.Size(684, 571);
             this.panelFlowRhs.TabIndex = 7;
             // 
             // groupBoxCaptured
@@ -412,33 +446,42 @@
             this.imageBoxFiltered.TabIndex = 7;
             this.imageBoxFiltered.TabStop = false;
             // 
-            // groupBoxView
+            // spinEditMotionSettle
             // 
-            this.groupBoxView.Controls.Add(this.sliderSize);
-            this.groupBoxView.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBoxView.Location = new System.Drawing.Point(3, 264);
-            this.groupBoxView.Name = "groupBoxView";
-            this.groupBoxView.Size = new System.Drawing.Size(265, 98);
-            this.groupBoxView.TabIndex = 10;
-            this.groupBoxView.TabStop = false;
-            this.groupBoxView.Text = "View";
+            this.spinEditMotionSettle.Increment = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.spinEditMotionSettle.Location = new System.Drawing.Point(208, 65);
+            this.spinEditMotionSettle.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.spinEditMotionSettle.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.spinEditMotionSettle.Name = "spinEditMotionSettle";
+            this.spinEditMotionSettle.Size = new System.Drawing.Size(51, 20);
+            this.spinEditMotionSettle.TabIndex = 12;
+            this.spinEditMotionSettle.Value = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.spinEditMotionSettle.ValueChanged += new System.EventHandler(this.spinEditMotionSettle_ValueChanged);
             // 
-            // sliderSize
+            // labelMotoinSettle
             // 
-            this.sliderSize.Dock = System.Windows.Forms.DockStyle.Top;
-            this.sliderSize.Label = "Image Scale";
-            this.sliderSize.LargeChange = 5;
-            this.sliderSize.Location = new System.Drawing.Point(3, 16);
-            this.sliderSize.Maximum = 255;
-            this.sliderSize.Minimum = 50;
-            this.sliderSize.Name = "sliderSize";
-            this.sliderSize.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.sliderSize.Size = new System.Drawing.Size(259, 55);
-            this.sliderSize.SmallChange = 1;
-            this.sliderSize.TabIndex = 1;
-            this.sliderSize.TickFrequency = 20;
-            this.sliderSize.Value = 100;
-            this.sliderSize.ValueChanged += new System.EventHandler(this.sliderSize_ValueChanged);
+            this.labelMotoinSettle.AutoSize = true;
+            this.labelMotoinSettle.Location = new System.Drawing.Point(115, 67);
+            this.labelMotoinSettle.Name = "labelMotoinSettle";
+            this.labelMotoinSettle.Size = new System.Drawing.Size(91, 13);
+            this.labelMotoinSettle.TabIndex = 13;
+            this.labelMotoinSettle.Text = "Motion Settle (ms)";
             // 
             // PanTiltControl
             // 
@@ -446,9 +489,10 @@
             this.Controls.Add(this.txtTimeCalibration);
             this.Controls.Add(this.groupBoxControls);
             this.Name = "PanTiltControl";
-            this.Size = new System.Drawing.Size(848, 641);
+            this.Size = new System.Drawing.Size(955, 641);
             this.Load += new System.EventHandler(this.PanTiltControl_Load);
             this.groupBoxControls.ResumeLayout(false);
+            this.groupBoxView.ResumeLayout(false);
             this.panelScreen.ResumeLayout(false);
             this.panelScreen.PerformLayout();
             this.groupBoxCalibration.ResumeLayout(false);
@@ -464,7 +508,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).EndInit();
             this.groupBoxFiltered.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxFiltered)).EndInit();
-            this.groupBoxView.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.spinEditMotionSettle)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -496,5 +540,7 @@
         private Emgu.CV.UI.ImageBox imageBoxFiltered;
         private System.Windows.Forms.GroupBox groupBoxView;
         private UserControls.SliderControl sliderSize;
+        private System.Windows.Forms.NumericUpDown spinEditMotionSettle;
+        private System.Windows.Forms.Label labelMotoinSettle;
     }
 }

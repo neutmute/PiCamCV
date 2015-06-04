@@ -155,10 +155,12 @@ namespace PiCamCV.WinForms.CameraConsumers
             {
                 return;
             }
+
             using (var matCaptured = new Mat())
             {
                 CameraCapture.Retrieve(matCaptured);
 
+                var statusAccumulation = new StringBuilder();
                 var bgrImage = matCaptured.ToImage<Bgr, byte>();
 
                 DrawReticle(bgrImage, _centre, Color.Red);
@@ -184,6 +186,7 @@ namespace PiCamCV.WinForms.CameraConsumers
                     }
 
                     imageBoxFiltered.Image = result.ThresholdImage;
+                    statusAccumulation.AppendFormat("{0} moment area", result.MomentArea);
                    // WriteText(bgrImage, _captureConfig.Resolution.Height - 10, "Colour Tracking");
                 }
 
@@ -201,6 +204,7 @@ namespace PiCamCV.WinForms.CameraConsumers
 
                         DrawReticle(bgrImage, result.Target, Color.Yellow);
                     }
+                    statusAccumulation.AppendFormat("{0} faces detected", result.Faces.Count);
                 }
 
                 if (chkBoxMotionTracking.Checked)
@@ -219,6 +223,8 @@ namespace PiCamCV.WinForms.CameraConsumers
                             bgrImage.Draw(result.TargetedMotion.Region, new Bgr(Color.Red), 2);
                         }
                     }
+
+                    statusAccumulation.AppendFormat("{0} motions", result.MotionSections.Count);
                     imageBoxFiltered.Image = result.ForegroundImage;
                 }
 
@@ -226,12 +232,14 @@ namespace PiCamCV.WinForms.CameraConsumers
                 {
                     if (output.IsServoInMotion)
                     {
-                        NotifyStatus("Waiting for servo");
+                        statusAccumulation.AppendFormat(", Waiting for servo");
                     }
                     else
                     {
-                        NotifyStatus("Tracking took {0}", output.Elapsed.ToHumanReadable());
+
+                        statusAccumulation.AppendFormat(", tracking took {0}", output.Elapsed.ToHumanReadable());
                     }
+                    NotifyStatus(statusAccumulation.ToString());
                 }
 
                 imageBoxCaptured.Image = bgrImage;
@@ -318,6 +326,15 @@ namespace PiCamCV.WinForms.CameraConsumers
             NotifyStatus("Servo settle time set to {0}ms", spinEditServoSettle.Value);
         }
 
+        
+        private void spinEditMotionSettle_ValueChanged(object sender, EventArgs e)
+        {
+            var motionSettleTime = TimeSpan.FromMilliseconds((int)spinEditMotionSettle.Value);
+            _motionTrackingController.MotionSettleTime = motionSettleTime;
+
+            NotifyStatus("Motion settle time set to {0}ms", spinEditMotionSettle.Value);
+        }
+
         private void sliderSize_ValueChanged(object sender, EventArgs e)
         {
             var defaultSize = new Size(320, 240);
@@ -328,6 +345,5 @@ namespace PiCamCV.WinForms.CameraConsumers
             groupBoxCaptured.Size = newSize;
             groupBoxFiltered.Size = newSize;
         }
-
     }
 }
