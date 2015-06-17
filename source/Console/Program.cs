@@ -48,7 +48,7 @@ namespace PiCamCV.ConsoleApp
             if (!noCaptureGrabs.Contains(options.Mode))
             {
                 var request = new CaptureRequest { Device = CaptureDevice.Usb };
-                if (Environment.OSVersion.Platform == PlatformID.Unix)
+                if (EnvironmentService.IsUnix)
                 {
                     request.Device = CaptureDevice.Pi;
                 }

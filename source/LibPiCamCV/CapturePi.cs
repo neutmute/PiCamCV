@@ -204,7 +204,7 @@ namespace PiCamCV
             }
             catch (Exception e)
             {
-                if (Environment.OSVersion.Platform == PlatformID.Unix)
+                if (EnvironmentService.IsUnix)
                 {
                     Log.Fatal(
                         m =>

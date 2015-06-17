@@ -87,7 +87,7 @@ namespace PiCamCV
 
         private static void EmitWarnings(CaptureDevice requestedDevice)
         {
-            if (Environment.OSVersion.Platform == PlatformID.Unix)
+            if (EnvironmentService.IsUnix)
             {
                 if (requestedDevice == CaptureDevice.Usb)
                 {

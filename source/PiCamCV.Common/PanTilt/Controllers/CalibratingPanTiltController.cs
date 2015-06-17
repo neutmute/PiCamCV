@@ -156,7 +156,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
             _readingsRepo = readingsRepo;
             _screen = screen;
 
-            if (Environment.OSVersion.Platform == PlatformID.Unix)
+            if (EnvironmentService.IsUnix)
             {
                 _servoSettleTime = TimeSpan.FromMilliseconds(750);
             }

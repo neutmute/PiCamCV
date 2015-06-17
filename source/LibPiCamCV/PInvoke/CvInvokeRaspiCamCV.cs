@@ -19,6 +19,7 @@ namespace PiCamCV
         public const CallingConvention CvCallingConvention = CallingConvention.Cdecl;
 
 #if (UNIX)
+        // Use this for Pi USB mode: public const string CVLibrary           = "opencv_videoio";
         public const string CVLibrary               = "raspicamcv";
         public const string EntryPointCapture       = "raspiCamCvCreateCameraCapture";
         public const string EntryPointCapture2      = "raspiCamCvCreateCameraCapture2";
@@ -27,10 +28,9 @@ namespace PiCamCV
         public const string EntryPointGetProperty   = "raspiCamCvGetCaptureProperty";
         public const string EntryPointSetProperty   = "raspiCamCvSetCaptureProperty";
 #else
-       // Use this for Pi USB mode public const string CVLibrary           = "opencv_videoio";
-        public const string CVLibrary = "opencv_videoio300";
+        public const string CVLibrary = "cvextern";
         public const string EntryPointCapture = "cvCreateCameraCapture";
-        public const string EntryPointCapture2 = "NOT SUPPORTED";
+        public const string EntryPointCapture2 = "NOT SUPPORTED1";
         public const string EntryPointQuery     = "cvQueryFrame";
         public const string EntryPointRelease   = "cvReleaseCapture";
         public const string EntryPointGetProperty = "cvGetCaptureProperty";

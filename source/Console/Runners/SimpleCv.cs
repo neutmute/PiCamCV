@@ -18,11 +18,12 @@ namespace PiCamCV.ConsoleApp
         public void Run()
         {
             Log.Info("Creating Window");
-            CvInvoke.cvNamedWindow("RaspiCamTest"); //Create the window using the specific name
+            var windowName = "PiCamCVSimpleTest";
+            CvInvoke.NamedWindow(windowName); //Create the window using the specific name
 
             Log.Info("Creating capture");
 
-
+            EnvironmentService.DemandUnix("OpenCV 3.0 deprecated these capture methods. Only supported with PiCamCv on Pi");
             var captureConfig = new CaptureConfig { Resolution= new Resolution(640,480) , Framerate = 25, Monochrome = true };
             var piConfig = PiCameraConfig.FromConfig(captureConfig);
 
@@ -33,12 +34,12 @@ namespace PiCamCV.ConsoleApp
                 IntPtr imagePtr = CvInvokeRaspiCamCV.cvQueryFrame(capture);
                 using (var managedImage = Image<Bgr, Byte>.FromIplImagePtr(imagePtr))
                 {
-                    CvInvoke.cvShowImage("RaspiCamTest", managedImage);
+                    CvInvoke.Imshow(windowName, managedImage);
                 }
 
-            } while (CvInvoke.cvWaitKey(100) < 0);
+            } while (CvInvoke.WaitKey(100) < 0);
 
-            CvInvoke.cvDestroyWindow("RaspiCamTest");
+            CvInvoke.DestroyWindow("RaspiCamTest");
             CvInvokeRaspiCamCV.cvReleaseCapture(ref capture);
         }
     }

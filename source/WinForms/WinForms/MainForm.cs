@@ -202,7 +202,7 @@ namespace WinForms
             }
 
             //var captureDevice = CaptureDevice.Pi;
-            if (Environment.OSVersion.Platform == PlatformID.Unix)
+            if (EnvironmentService.IsUnix)
             {
                 request.Device = CaptureDevice.Pi;
             }
