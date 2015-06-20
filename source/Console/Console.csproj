@@ -47,14 +47,16 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Logging">
-      <HintPath>..\..\packages\Common.Logging.2.2.0\lib\net40\Common.Logging.dll</HintPath>
+    <Reference Include="Common.Logging, Version=3.1.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Common.Logging.3.1.0\lib\net40\Common.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Common.Logging.Core">
-      <HintPath>..\..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
+    <Reference Include="Common.Logging.Core, Version=3.1.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Common.Logging.Core.3.1.0\lib\net40\Common.Logging.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Common.Logging.NLog20">
-      <HintPath>..\..\packages\Common.Logging.NLog20.2.2.0\lib\net40\Common.Logging.NLog20.dll</HintPath>
+    <Reference Include="Common.Logging.NLog21">
+      <HintPath>..\..\packages\Common.Logging.NLog21.3.1.0\lib\net40\Common.Logging.NLog21.dll</HintPath>
     </Reference>
     <Reference Include="Emgu.CV">
       <HintPath>..\..\..\emgu-source\bin\Emgu.CV.dll</HintPath>
@@ -63,12 +65,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\emgu-source\bin\Emgu.Util.dll</HintPath>
     </Reference>
-    <Reference Include="Kraken.Core, Version=4.0.5.26, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Kraken.Core, Version=4.0.5.28, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Kraken.Core.4.5.0.26\lib\net40\Kraken.Core.dll</HintPath>
+      <HintPath>..\..\packages\Kraken.Core.4.5.0.28\lib\net40\Kraken.Core.dll</HintPath>
     </Reference>
-    <Reference Include="NLog">
-      <HintPath>..\..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
+    <Reference Include="NLog, Version=2.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NLog.2.1.0\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK">
       <HintPath>..\..\packages\OpenTK.1.1.1589.5942\lib\NET40\OpenTK.dll</HintPath>
