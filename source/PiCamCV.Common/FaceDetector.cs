@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using Emgu.CV;
+using Kraken.Core;
 using PiCamCV.Common.Interfaces;
 
 namespace PiCamCV.Common
@@ -91,8 +92,9 @@ namespace PiCamCV.Common
         }
         protected override FaceDetectorOutput DoProcess(FaceDetectorInput input)
         {
+            Guard.NullArgument("input", input);
             var result = new FaceDetectorOutput();
-            using (UMat ugray = new UMat())
+            using (var ugray = new UMat())
             {
                 if (input.Captured.NumberOfChannels == 3)
                 {

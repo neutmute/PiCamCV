@@ -29,13 +29,9 @@ namespace PiCamCV.WinForms.CameraConsumers
             
             var environmentService = new EnvironmentService();
             var cascadeFileInfo = new FileInfo(environmentService.GetAbsolutePathFromAssemblyRelative("haarcascades/haarcascade_lego_batman5.xml"));
-            if (cascadeFileInfo.Exists)
+            if (!cascadeFileInfo.Exists)
             {
-                
-            }
-            else
-            {
-                Log.Error(m => m("Failed to load cascade {0}", cascadeFileInfo.FullName));
+                Log.WarnFormat("HaarCascadeControl failed to load cascade {0}", cascadeFileInfo.FullName);
             }
         }
 
