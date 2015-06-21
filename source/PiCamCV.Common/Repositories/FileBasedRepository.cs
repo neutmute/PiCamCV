@@ -1,5 +1,7 @@
 using System.IO;
+using Common.Logging;
 using Kraken.Core;
+using PiCamCV.Common.PanTilt.MoveStrategies;
 
 namespace PiCamCV.Common
 {
@@ -12,6 +14,8 @@ namespace PiCamCV.Common
 
     public abstract class FileBasedRepository<T> : IFileBasedRepository<T>
     {
+        private ILog Log = LogManager.GetLogger<AutoCalibratedModifierStrategy>();
+       
         protected abstract string Filename { get; }
         public bool IsPresent
         {
@@ -44,6 +48,10 @@ namespace PiCamCV.Common
             if (settingsFile.Exists)
             {
                 output = Kelvin<T>.FromXmlFile(settingsFile.FullName);
+            }
+            else
+            {
+                Log.WarnFormat("Settings file '{0}' does not exist", settingsFile.Name);
             }
             return output;
         }

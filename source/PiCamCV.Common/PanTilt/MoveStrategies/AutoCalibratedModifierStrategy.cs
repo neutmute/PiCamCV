@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Logging;
 using PiCamCV.Common.PanTilt.Controllers;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 using PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies;
@@ -13,6 +14,7 @@ namespace PiCamCV.Common.PanTilt.MoveStrategies
     public class AutoCalibratedModifierStrategy : CameraBasedModifierStrategy
     {
         private readonly AxesCalibrationReadings _calibratedReadings;
+        private ILog Log = LogManager.GetLogger<AutoCalibratedModifierStrategy>();
         
         public AutoCalibratedModifierStrategy(CaptureConfig captureConfig, Point target) :base(captureConfig, target)
         {
@@ -21,8 +23,14 @@ namespace PiCamCV.Common.PanTilt.MoveStrategies
             if (!readings.ContainsKey(captureConfig.Resolution))
             {
                 readings.Add(captureConfig.Resolution, new AxesCalibrationReadings());
+                Log.WarnFormat("Failed to load any calibration readings for {0}", captureConfig.Resolution);
             }
             _calibratedReadings = readings[captureConfig.Resolution];
+            Log.InfoFormat(
+                "Using {0} horizontal, {1} vertial calibration readings for {2}"
+                , _calibratedReadings.Horizontal.Count
+                , _calibratedReadings.Vertical.Count
+                , captureConfig.Resolution);
         }
 
 
