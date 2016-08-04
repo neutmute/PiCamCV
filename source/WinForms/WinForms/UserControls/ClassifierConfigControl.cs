@@ -14,7 +14,7 @@ namespace PiCamCV.WinForms.UserControls
 {
     public partial class ClassifierConfigControl : UserControl
     {
-        static ILog Log = LogManager.GetCurrentClassLogger();
+        static ILog Log = LogManager.GetLogger<ClassifierConfigControl>();
         private ClassifierParameters _currentParams;
 
         public event EventHandler ConfigChanged;

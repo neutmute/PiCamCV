@@ -16,7 +16,7 @@ namespace WinForms
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            ILog log = LogManager.GetCurrentClassLogger();
+            ILog log = LogManager.GetLogger("WinForms");
             try
             {
                 Application.Run(new MainForm());

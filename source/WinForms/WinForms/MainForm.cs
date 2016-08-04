@@ -23,7 +23,7 @@ namespace WinForms
 {
     public partial class MainForm : Form
     {
-        protected static ILog Log = LogManager.GetCurrentClassLogger();
+        protected static ILog Log = LogManager.GetLogger<MainForm>();
         private FileInfo _videoFileSource;
         private ICaptureGrab _capture;
         readonly List<KeyValuePair<TabPage, CameraConsumerUserControl>> _tabPageLinks;

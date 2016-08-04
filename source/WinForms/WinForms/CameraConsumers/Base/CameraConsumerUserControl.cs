@@ -26,7 +26,7 @@ namespace PiCamCV.WinForms
     }
     public class CameraConsumerUserControl : UserControl, ICameraConsumer
     {
-        static ILog _Log = LogManager.GetCurrentClassLogger();
+        static ILog _Log = LogManager.GetLogger<CameraConsumerUserControl>();
         protected ILog Log { get { return _Log; } }
 
         public event EventHandler<StatusEventArgs> StatusUpdated;
