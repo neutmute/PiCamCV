@@ -11,7 +11,7 @@ namespace PiCamCV.ConsoleApp.Runners
 {
     public abstract class BaseRunner : IRunner
     {
-        private readonly static ILog _log = LogManager.GetCurrentClassLogger();
+        private readonly static ILog _log = LogManager.GetLogger<BaseRunner>();
         protected ILog Log { get { return _log; } }
 
         public abstract void Run();

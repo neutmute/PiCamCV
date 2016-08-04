@@ -26,7 +26,7 @@ namespace PiCamCV.ConsoleApp
 
     public class ConsoleOptions
     {
-        protected static ILog Log = LogManager.GetCurrentClassLogger();
+        protected static ILog Log = LogManager.GetLogger< ConsoleOptions>();
         public Mode Mode { get; set; }
 
         public bool ShowHelp;

@@ -10,7 +10,7 @@ namespace PiCamCV.ConsoleApp
 {
     public class SimpleCv : IRunner
     {
-        protected static ILog Log = LogManager.GetCurrentClassLogger();
+        protected static ILog Log = LogManager.GetLogger<SimpleCv>();
 
         /// <summary>
         /// c# implementation of https://github.com/robidouille/robidouille/blob/master/raspicam_cv/RaspiCamTest.c

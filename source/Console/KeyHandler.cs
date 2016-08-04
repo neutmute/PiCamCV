@@ -16,7 +16,7 @@ namespace PiCamCV.ConsoleApp
 
     public class KeyHandler
     {
-        protected static ILog Log = LogManager.GetCurrentClassLogger();
+        protected static ILog Log = LogManager.GetLogger<KeyHandler>();
 
         public event EventHandler<ConsoleKeyEventArgs> KeyEvent;
     

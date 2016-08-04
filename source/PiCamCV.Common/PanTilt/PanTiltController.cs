@@ -11,7 +11,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 {
     public abstract class PanTiltController
     {
-        private readonly static ILog _log = LogManager.GetCurrentClassLogger();
+        private readonly static ILog _log = LogManager.GetLogger< PanTiltController>();
         protected ILog Log { get { return _log; } }
 
         private IPanTiltMechanism PanTiltMechanism {get;set;}

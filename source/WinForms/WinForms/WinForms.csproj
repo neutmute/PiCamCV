@@ -56,17 +56,12 @@
     <Reference Include="Common.Logging.NLog21">
       <HintPath>..\..\..\packages\Common.Logging.NLog21.3.1.0\lib\net40\Common.Logging.NLog21.dll</HintPath>
     </Reference>
-    <Reference Include="Emgu.CV">
-      <HintPath>..\..\..\..\emgu-source\bin\Emgu.CV.dll</HintPath>
+    <Reference Include="Emgu.CV.UI, Version=3.0.0.0, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\emgucv\Emgu.CV.UI.dll</HintPath>
     </Reference>
-    <Reference Include="Emgu.CV.UI">
-      <HintPath>..\..\..\..\emgu-source\bin\Emgu.CV.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Emgu.UI">
-      <HintPath>..\..\..\..\emgu-source\bin\Emgu.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Emgu.Util">
-      <HintPath>..\..\..\..\emgu-source\bin\Emgu.Util.dll</HintPath>
+    <Reference Include="Emgu.CV.World">
+      <HintPath>..\..\..\lib\emgucv\Emgu.CV.World.dll</HintPath>
     </Reference>
     <Reference Include="Kraken.Core, Version=4.0.5.28, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

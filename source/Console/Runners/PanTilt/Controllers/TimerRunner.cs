@@ -12,7 +12,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
     /// </summary>
     public class TimerRunner : IRunner
     {
-        private readonly static ILog _log = LogManager.GetCurrentClassLogger();
+        private readonly static ILog _log = LogManager.GetLogger< TimerRunner>();
         protected ILog Log { get { return _log; } }
 
         private readonly int _sampleRateMilliseconds;

@@ -5,7 +5,7 @@ namespace PiCamCV.ConsoleApp.Runners
 {
     public class PwmControlBase
     {
-        private readonly static ILog _Log = LogManager.GetCurrentClassLogger();
+        private readonly static ILog _Log = LogManager.GetLogger< PwmControlBase>();
         //private readonly Dictionary<PwmChannel, PwmComponentBase> _components;
 
         protected ILog Log { get { return _Log; } }

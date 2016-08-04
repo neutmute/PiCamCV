@@ -36,7 +36,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
     public class MotionTrackingPanTiltController : CameraBasedPanTiltController<MotionTrackingPanTiltOutput>
     {
-        private static readonly ILog _log = LogManager.GetCurrentClassLogger();
+        private static readonly ILog _log = LogManager.GetLogger< PanTiltController>();
 
         private readonly IScreen _screen;
 

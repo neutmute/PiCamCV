@@ -22,7 +22,7 @@ namespace PiCamCV.ConsoleApp
     class Program
     {
 
-        protected static ILog Log = LogManager.GetCurrentClassLogger();
+        protected static ILog Log = LogManager.GetLogger("Console");
         static void Main(string[] args)
         {
             var appData = ExecutionEnvironment.GetApplicationMetadata();

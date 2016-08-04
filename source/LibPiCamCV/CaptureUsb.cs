@@ -13,14 +13,14 @@ namespace PiCamCV
         }
 
         public CaptureUsb(int index)
-            : base(new Capture(index))
+            : base(new VideoCapture(index))
         {
         }
     }
     public class CaptureFile : CaptureEmgu
     {
         public CaptureFile(string filename)
-            : base(new Capture(filename))
+            : base(new VideoCapture(filename))
         {
         }
     }
@@ -30,9 +30,9 @@ namespace PiCamCV
     /// </summary>
     public abstract class CaptureEmgu : DisposableObject, ICaptureGrab
     {
-        private readonly Capture _capture;
+        private readonly VideoCapture _capture;
 
-        protected CaptureEmgu(Capture capture)
+        protected CaptureEmgu(VideoCapture capture)
         {
             _capture = capture;
         }

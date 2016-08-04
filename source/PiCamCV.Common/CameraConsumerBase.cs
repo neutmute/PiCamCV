@@ -9,7 +9,7 @@ namespace PiCamCV.Common
 {
     public abstract class CameraConsumerBase : ICameraConsumer
     {
-        private readonly static ILog _Log = LogManager.GetCurrentClassLogger();
+        private readonly static ILog _Log = LogManager.GetLogger<CameraConsumerBase>();
 
         protected ILog Log { get { return _Log; } }
         
