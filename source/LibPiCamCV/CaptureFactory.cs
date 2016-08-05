@@ -50,7 +50,7 @@ namespace PiCamCV
 
     public static class CaptureFactory
     {
-        static readonly ILog Log = LogManager.GetCurrentClassLogger();
+        static readonly ILog Log = LogManager.GetLogger("CaptureFactory");
         public static ICaptureGrab GetCapture(CaptureRequest request)
         {
             Log.Info(m => m("CV Library={0}", CvInvokeRaspiCamCV.CVLibrary));

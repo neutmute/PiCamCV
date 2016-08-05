@@ -66,7 +66,7 @@ namespace PiCamCV
     /// </summary>
     public class CapturePi : UnmanagedObject, ICaptureGrab
     {
-        protected static ILog Log = LogManager.GetCurrentClassLogger();
+        protected static ILog Log = LogManager.GetLogger< CapturePi>();
 
         /// <summary>
         /// the type of flipping
