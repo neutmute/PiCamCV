@@ -93,9 +93,7 @@
     <Compile Include="CameraConsumers\ColourDetectionControl.Designer.cs">
       <DependentUpon>ColourDetectionControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="CameraConsumers\Base\CameraConsumerUserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="CameraConsumers\Base\CameraConsumerUserControl.cs" />
     <Compile Include="CameraConsumers\BasicCaptureControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -125,6 +123,12 @@
     </Compile>
     <Compile Include="CameraConsumers\PanTiltControl.Designer.cs">
       <DependentUpon>PanTiltControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CameraConsumers\TrackingControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CameraConsumers\TrackingControl.Designer.cs">
+      <DependentUpon>TrackingControl.cs</DependentUpon>
     </Compile>
     <Compile Include="ExtensionMethods\ColorExtensions.cs" />
     <Compile Include="Properties\AssemblyInfoUnique.cs" />
@@ -171,6 +175,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CameraConsumers\ShapeDetectionControl.resx">
       <DependentUpon>ShapeDetectionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CameraConsumers\TrackingControl.resx">
+      <DependentUpon>TrackingControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

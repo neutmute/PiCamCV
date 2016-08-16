@@ -58,8 +58,9 @@
             this.tabPageHaarCascade = new System.Windows.Forms.TabPage();
             this.tabPageColourDetect = new System.Windows.Forms.TabPage();
             this.tabPageShapes = new System.Windows.Forms.TabPage();
-            this.tabPagePanTiltCalibration = new System.Windows.Forms.TabPage();
             this.tabPageMotionDetection = new System.Windows.Forms.TabPage();
+            this.tabPagePanTiltCalibration = new System.Windows.Forms.TabPage();
+            this.tabPageTracking = new System.Windows.Forms.TabPage();
             this.panelTop.SuspendLayout();
             this.groupBoxRealTime.SuspendLayout();
             this.groupBoxPreCapture.SuspendLayout();
@@ -310,6 +311,7 @@
             this.tabControlMain.Controls.Add(this.tabPageShapes);
             this.tabControlMain.Controls.Add(this.tabPageMotionDetection);
             this.tabControlMain.Controls.Add(this.tabPagePanTiltCalibration);
+            this.tabControlMain.Controls.Add(this.tabPageTracking);
             this.tabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlMain.Location = new System.Drawing.Point(0, 79);
             this.tabControlMain.Name = "tabControlMain";
@@ -363,6 +365,15 @@
             this.tabPageShapes.Text = "Shape Detection";
             this.tabPageShapes.UseVisualStyleBackColor = true;
             // 
+            // tabPageMotionDetection
+            // 
+            this.tabPageMotionDetection.Location = new System.Drawing.Point(4, 22);
+            this.tabPageMotionDetection.Name = "tabPageMotionDetection";
+            this.tabPageMotionDetection.Size = new System.Drawing.Size(1184, 411);
+            this.tabPageMotionDetection.TabIndex = 6;
+            this.tabPageMotionDetection.Text = "Motion Detection";
+            this.tabPageMotionDetection.UseVisualStyleBackColor = true;
+            // 
             // tabPagePanTiltCalibration
             // 
             this.tabPagePanTiltCalibration.Location = new System.Drawing.Point(4, 22);
@@ -373,14 +384,14 @@
             this.tabPagePanTiltCalibration.Text = "Pan Tilt";
             this.tabPagePanTiltCalibration.UseVisualStyleBackColor = true;
             // 
-            // tabPageMotionDetection
+            // tabPageTracking
             // 
-            this.tabPageMotionDetection.Location = new System.Drawing.Point(4, 22);
-            this.tabPageMotionDetection.Name = "tabPageMotionDetection";
-            this.tabPageMotionDetection.Size = new System.Drawing.Size(1184, 411);
-            this.tabPageMotionDetection.TabIndex = 6;
-            this.tabPageMotionDetection.Text = "Motion Detection";
-            this.tabPageMotionDetection.UseVisualStyleBackColor = true;
+            this.tabPageTracking.Location = new System.Drawing.Point(4, 22);
+            this.tabPageTracking.Name = "tabPageTracking";
+            this.tabPageTracking.Size = new System.Drawing.Size(1184, 411);
+            this.tabPageTracking.TabIndex = 7;
+            this.tabPageTracking.Text = "Tracking";
+            this.tabPageTracking.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -440,7 +451,7 @@
         private System.Windows.Forms.TabPage tabPageShapes;
         private System.Windows.Forms.TabPage tabPagePanTiltCalibration;
         private System.Windows.Forms.TabPage tabPageMotionDetection;
-
+        private System.Windows.Forms.TabPage tabPageTracking;
     }
 }
 

@@ -96,6 +96,7 @@ namespace WinForms
             var shapeDetection = new ShapeDetectionControl();
             var panTiltCalibration = new PanTiltControl();
             var motionDetectionControl = new MotionDetectionControl();
+            var trackingControl = new TrackingControl();
 
             _consumers = new List<CameraConsumerUserControl>();
             _consumers.Add(basicCapture);
@@ -105,6 +106,7 @@ namespace WinForms
             _consumers.Add(shapeDetection);
             _consumers.Add(panTiltCalibration);
             _consumers.Add(motionDetectionControl);
+            _consumers.Add(trackingControl);
 
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageCameraCapture, basicCapture));
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageFaceDetection, faceDetection));
@@ -113,7 +115,8 @@ namespace WinForms
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageShapes, shapeDetection));
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPagePanTiltCalibration, panTiltCalibration));
             _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageMotionDetection, motionDetectionControl));
-            
+            _tabPageLinks.Add(new KeyValuePair<TabPage, CameraConsumerUserControl>(tabPageTracking, trackingControl));
+
             tabControlMain.SelectedIndexChanged += tabControlMain_SelectedIndexChanged;
         }
 
