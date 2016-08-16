@@ -28,6 +28,8 @@ namespace PiCamCV.Common
 
         public string TrackerType { get; set; }
 
+
+        /// <param name="trackerType">Tracker type, The following detector types are supported: "MIL" – TrackerMIL; "BOOSTING" – TrackerBoosting</param>
         public TrackingDetector(string trackerType= "MIL")
         {
             TrackerType = trackerType;
