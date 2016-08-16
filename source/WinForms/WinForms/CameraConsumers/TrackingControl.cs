@@ -8,62 +8,48 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Emgu.CV;
+using Emgu.CV.Structure;
+using Kraken.Core;
+using PiCamCV.Common;
 
 namespace PiCamCV.WinForms.CameraConsumers
 {
     public partial class TrackingControl : CameraConsumerUserControl
     {
+        private TrackingDetector _trackingDetector;
+        Bgr _bgrRed;
+
         public TrackingControl()
         {
             InitializeComponent();
+            _trackingDetector = new TrackingDetector();
+            _bgrRed = new Bgr(Color.Red);
         }
+
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
             using (var frame = new Mat())
             {
-                //CameraCapture.Retrieve(frame);
-                //var input = new MotionDetectorInput();
+                CameraCapture.Retrieve(frame);
+                var input = new TrackingInput();
 
-                //var inputImage = frame.ToImage<Bgr, byte>();
-                //input.Captured = frame;
-                //input.Settings = _currentSettings;
-
-                //var output = _motionDetector.Process(input);
-
-                //var bgrRed = new Bgr(Color.Red);
-                //var bgrBlue = new Bgr(Color.Blue);
-
-                //foreach (var motionRegion in output.MotionSections)
-                //{
-                //    var text = string.Format("A={0}, M={1}", motionRegion.Area, motionRegion.PixelsInMotionCount);
-                //    inputImage.Draw(motionRegion.Region, bgrRed);
-                //    if (chkRectangleStats.Checked)
-                //    {
-                //        inputImage.Draw(text, motionRegion.Region.Location, Emgu.CV.CvEnum.FontFace.HersheyComplexSmall, .8, bgrRed);
-                //    }
-                //    DrawMotion(output.MotionImage, motionRegion.Region, motionRegion.Angle, bgrRed);
-                //}
-
-                //DrawMotion(output.MotionImage, new Rectangle(Point.Empty, output.MotionImage.Size), output.OverallAngle, new Bgr(Color.Green));
-
-                //if (output.BiggestMotion != null)
-                //{
-                //    var motion = output.BiggestMotion;
-                //    inputImage.Draw(motion.Region, bgrBlue);
-                //}
-
-                //imageBoxCaptured.Image = inputImage;
-                //imageBoxMasked.Image = output.ForegroundImage;
-                //imageBoxMotion.Image = output.MotionImage;
-
-                //NotifyStatus(
-                //    "Motion detection took {0}. {1} motions, {2} over all pixel count"
-                //    , output.Elapsed.ToHumanReadable()
-                //    , output.MotionSections.Count
-                //    , output.OverallMotionPixelCount);
+                var inputImage = frame.ToImage<Bgr, byte>();
+                input.Captured = frame;
+                
+                var output = _trackingDetector.Process(input);
+                
+                if (output.ObjectOfInterest != Rectangle.Empty)
+                {
+                    inputImage.Draw(output.ObjectOfInterest, _bgrRed);
+                }
+                imageBoxTracking.Image = inputImage;
+                NotifyStatus($"Tracking took {output.Elapsed.ToHumanReadable()}");
             }
         }
 
-
+        private void imageBoxTracking_MouseDown(object sender, MouseEventArgs e)
+        {
+            //this.imageBoxTracking.FunctionalMode= 
+        }
     }
 }

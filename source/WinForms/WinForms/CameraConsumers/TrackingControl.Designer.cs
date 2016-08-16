@@ -73,6 +73,7 @@
             this.imageBoxTracking.Size = new System.Drawing.Size(559, 455);
             this.imageBoxTracking.TabIndex = 5;
             this.imageBoxTracking.TabStop = false;
+            this.imageBoxTracking.MouseDown += new System.Windows.Forms.MouseEventHandler(this.imageBoxTracking_MouseDown);
             // 
             // TrackingControl
             // 
