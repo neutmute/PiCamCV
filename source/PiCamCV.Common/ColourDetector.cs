@@ -14,13 +14,45 @@ using PiCamCV.Interfaces;
 
 namespace PiCamCV.Common
 {
-    /// <summary>
-    /// Easier to serialise
-    /// </summary>
-    public class ColourDetectSettings
+    public class ThresholdSettings
     {
         public MCvScalar LowThreshold { get; set; }
         public MCvScalar HighThreshold { get; set; }
+
+        public static ThresholdSettings Get(double lowHue, double lowSat, double lowValue, double highHue, double highSat, double highValue)
+        {
+            var s = new ThresholdSettings();
+            s.LowThreshold = GetScalar(lowHue, lowSat, lowValue);
+            s.HighThreshold = GetScalar(highHue, highSat, highValue);
+            return s;
+        }
+
+        public void Absorb(ThresholdSettings s)
+        {
+            LowThreshold = s.LowThreshold;
+            HighThreshold = s.HighThreshold;
+        }
+
+        private static MCvScalar GetScalar(double hue, double sat, double value)
+        {
+            var scalar = new MCvScalar();
+            scalar.V0 = hue;
+            scalar.V1 = sat;
+            scalar.V2 = value;
+            return scalar;
+        }
+
+        public override string ToString()
+        {
+            return $"Low={LowThreshold.ToStringE()}, High={HighThreshold.ToStringE()}";
+        }
+    }
+
+    /// <summary>
+    /// Easier to serialise
+    /// </summary>
+    public class ColourDetectSettings : ThresholdSettings
+    {
 
         /// <summary>
         /// To trigger a detection this criteria must be met.
@@ -36,22 +68,20 @@ namespace PiCamCV.Common
 
         public override string ToString()
         {
-            return string.Format(
-                "Low={0}, High={1}, MomentArea={2}, Roi={3}"
-                , LowThreshold.ToStringE()
-                , HighThreshold.ToStringE()
-                , MomentArea.ToStringE()
-                , Roi);
+            return $"{base.ToString()}, MomentArea={MomentArea.ToStringE()}, Roi={Roi}";
         }
     }
 
     public class ColourDetectorInput : CameraProcessInput
     {
         public ColourDetectSettings Settings { get; set; }
+
+        public int ErodeDilateIterations { get; set; }
         
         public ColourDetectorInput()
         {
             Settings = new ColourDetectSettings();
+            ErodeDilateIterations = 1;
         }
     }
 
@@ -108,16 +138,18 @@ namespace PiCamCV.Common
                 }
 
                 output.ThresholdImage = matThresholded.ToImage<Gray, byte>();
-                const int erodeDilateIterations = 1;
 
-                //morphological opening (remove small objects from the foreground)
-                output.ThresholdImage.Erode(erodeDilateIterations);
-                output.ThresholdImage.Dilate(erodeDilateIterations);
+                if (input.ErodeDilateIterations > 0)
+                {
+                    //morphological opening (remove small objects from the foreground)
+                    output.ThresholdImage = output.ThresholdImage.Erode(input.ErodeDilateIterations);
+                    output.ThresholdImage = output.ThresholdImage.Dilate(input.ErodeDilateIterations);
 
-                //morphological closing (fill small holes in the foreground)
-                output.ThresholdImage.Dilate(erodeDilateIterations);
-                output.ThresholdImage.Erode(erodeDilateIterations);
-                
+                    //morphological closing (fill small holes in the foreground)
+                    output.ThresholdImage = output.ThresholdImage.Dilate(input.ErodeDilateIterations);
+                    output.ThresholdImage = output.ThresholdImage.Erode(input.ErodeDilateIterations);
+                }
+
                 var moments = output.ThresholdImage.GetMoments(true);
                 moments.GetCentralMoment(0, 0);
 

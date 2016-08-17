@@ -111,6 +111,7 @@
     <Compile Include="Repositories\FileBasedRepository.cs" />
     <Compile Include="Repositories\MotionDetectSettingRepository.cs" />
     <Compile Include="SerializableDictionary.cs" />
+    <Compile Include="ThresholdSelector.cs" />
     <Compile Include="TrackingDetector.cs" />
   </ItemGroup>
   <ItemGroup>

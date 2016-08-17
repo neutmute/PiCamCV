@@ -57,6 +57,8 @@
             this.imageBoxCaptured = new Emgu.CV.UI.ImageBox();
             this.groupBoxFiltered = new System.Windows.Forms.GroupBox();
             this.imageBoxFiltered = new Emgu.CV.UI.ImageBox();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.spinDilateIterations = new System.Windows.Forms.NumericUpDown();
             this.panelLeft.SuspendLayout();
             this.panelButtons.SuspendLayout();
             this.groupBoxMoments.SuspendLayout();
@@ -67,6 +69,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).BeginInit();
             this.groupBoxFiltered.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxFiltered)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinDilateIterations)).BeginInit();
             this.SuspendLayout();
             // 
             // panelLeft
@@ -163,6 +166,7 @@
             // 
             // groupBoxRoi
             // 
+            this.groupBoxRoi.Controls.Add(this.progressBar1);
             this.groupBoxRoi.Controls.Add(this.sliderRoiBottom);
             this.groupBoxRoi.Controls.Add(this.sliderRoiTop);
             this.groupBoxRoi.Controls.Add(this.sliderRoiRight);
@@ -254,6 +258,7 @@
             // 
             // groupBoxPresets
             // 
+            this.groupBoxPresets.Controls.Add(this.spinDilateIterations);
             this.groupBoxPresets.Controls.Add(this.btnRedDaylight);
             this.groupBoxPresets.Controls.Add(this.btnRedLights);
             this.groupBoxPresets.Controls.Add(this.btnReset);
@@ -441,6 +446,25 @@
             this.imageBoxFiltered.TabIndex = 6;
             this.imageBoxFiltered.TabStop = false;
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(18, 45);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(8, 21);
+            this.progressBar1.TabIndex = 5;
+            // 
+            // spinDilateIterations
+            // 
+            this.spinDilateIterations.Location = new System.Drawing.Point(12, 49);
+            this.spinDilateIterations.Name = "spinDilateIterations";
+            this.spinDilateIterations.Size = new System.Drawing.Size(47, 20);
+            this.spinDilateIterations.TabIndex = 10;
+            this.spinDilateIterations.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // ColourDetectionControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -461,6 +485,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).EndInit();
             this.groupBoxFiltered.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxFiltered)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinDilateIterations)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -495,5 +520,7 @@
         private UserControls.SliderControl sliderMomentAreaMax;
         private UserControls.SliderControl sliderMomentAreaMin;
         private System.Windows.Forms.Button btnReadSettings;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.NumericUpDown spinDilateIterations;
     }
 }

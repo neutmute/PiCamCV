@@ -42,7 +42,8 @@ namespace PiCamCV.WinForms.CameraConsumers
                 var retrieveElapsed = Stopwatch.StartNew();
                 CameraCapture.Retrieve(matCaptured);
                 retrieveElapsed.Stop();
-                
+
+                _detectorInput.ErodeDilateIterations = (int) spinDilateIterations.Value;
                 _detectorInput.Settings.Roi = GetRegionOfInterestFromControls();
                 _detectorInput.Captured = matCaptured;
 
@@ -175,20 +176,11 @@ namespace PiCamCV.WinForms.CameraConsumers
             UpdateMomentSettingsFromControls();
         }
 
-        private MCvScalar GetScalar(double hue, double sat, double value)
-        {
-            var scalar = new MCvScalar();
-            scalar.V0 = hue;
-            scalar.V1 = sat;
-            scalar.V2 = value;
-            return scalar;
-        }
-
+        
         private void SetThresholdScalars(double lh, double ls, double lv, double hh, double hs, double hv)
         {
-            _detectorInput.Settings.LowThreshold = GetScalar(lh, ls, lv);
-            _detectorInput.Settings.HighThreshold = GetScalar(hh, hs, hv);
-
+            var settings = ThresholdSettings.Get(lh, ls, lv, hh, hs, hv);
+            _detectorInput.Settings.Absorb(settings);
             UpdateThresholdSlidersFromSettings();
         }
 
