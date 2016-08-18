@@ -18,6 +18,9 @@ namespace PiCamCV.Common
         private Rectangle _targetRegion;
         private Mat _input;
 
+        public event EventHandler<ColourDetectorOutput> ColourCheckTick;
+        public Action<ColourDetectorInput> Intercept { get; set; }
+
         public ThresholdSelector()
         {
             _colourDetector = new ColourDetector();
@@ -43,7 +46,7 @@ namespace PiCamCV.Common
 
         int GetDimensionResults(int dimensionMin, int dimensionMax, bool isHighSetting, Func<int, MCvScalar, MCvScalar> scalarUpdator)
         {
-            var results = new Dictionary<int, ColourDetectorProcessOutput>();
+            var results = new Dictionary<int, ColourDetectorOutput>();
 
             for (int i = dimensionMin; i < dimensionMax; i++)
             {
@@ -65,6 +68,15 @@ namespace PiCamCV.Common
                 if (_targetRegion.Contains(detectorOutput.CentralPoint.ToPoint()))
                 {
                     results.Add(i, detectorOutput);
+                }
+
+                if (ColourCheckTick != null)
+                {
+                    ColourCheckTick(this, detectorOutput);
+                }
+                if (Intercept != null)
+                {
+                    Intercept(detectorInput);
                 }
             }
 

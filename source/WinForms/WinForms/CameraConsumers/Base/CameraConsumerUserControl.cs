@@ -21,6 +21,10 @@ namespace PiCamCV.WinForms
             {
                 Message = null;
             }
+            else if (args.Length == 0)
+            {
+                Message = messageFormat;
+            }
             else
             {
                 Message = string.Format(messageFormat, args);

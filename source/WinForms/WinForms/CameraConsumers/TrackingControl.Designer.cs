@@ -36,6 +36,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBoxMain = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.groupBoxOriginal = new System.Windows.Forms.GroupBox();
+            this.groupBoxProcessed = new System.Windows.Forms.GroupBox();
             this.imageBoxTracking = new Emgu.CV.UI.ImageBox();
             this.imageBoxProcessed = new Emgu.CV.UI.ImageBox();
             this.panelLeft.SuspendLayout();
@@ -43,6 +45,8 @@
             this.panel1.SuspendLayout();
             this.groupBoxMain.SuspendLayout();
             this.flowLayoutPanel.SuspendLayout();
+            this.groupBoxOriginal.SuspendLayout();
+            this.groupBoxProcessed.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxTracking)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxProcessed)).BeginInit();
             this.SuspendLayout();
@@ -111,28 +115,50 @@
             // 
             // flowLayoutPanel
             // 
-            this.flowLayoutPanel.Controls.Add(this.imageBoxTracking);
-            this.flowLayoutPanel.Controls.Add(this.imageBoxProcessed);
+            this.flowLayoutPanel.Controls.Add(this.groupBoxOriginal);
+            this.flowLayoutPanel.Controls.Add(this.groupBoxProcessed);
             this.flowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel.Location = new System.Drawing.Point(3, 16);
             this.flowLayoutPanel.Name = "flowLayoutPanel";
             this.flowLayoutPanel.Size = new System.Drawing.Size(636, 455);
             this.flowLayoutPanel.TabIndex = 6;
             // 
+            // groupBoxOriginal
+            // 
+            this.groupBoxOriginal.Controls.Add(this.imageBoxTracking);
+            this.groupBoxOriginal.Location = new System.Drawing.Point(3, 3);
+            this.groupBoxOriginal.Name = "groupBoxOriginal";
+            this.groupBoxOriginal.Size = new System.Drawing.Size(392, 337);
+            this.groupBoxOriginal.TabIndex = 8;
+            this.groupBoxOriginal.TabStop = false;
+            this.groupBoxOriginal.Text = "Raw";
+            // 
+            // groupBoxProcessed
+            // 
+            this.groupBoxProcessed.Controls.Add(this.imageBoxProcessed);
+            this.groupBoxProcessed.Location = new System.Drawing.Point(3, 346);
+            this.groupBoxProcessed.Name = "groupBoxProcessed";
+            this.groupBoxProcessed.Size = new System.Drawing.Size(392, 327);
+            this.groupBoxProcessed.TabIndex = 9;
+            this.groupBoxProcessed.TabStop = false;
+            this.groupBoxProcessed.Text = "Processed";
+            // 
             // imageBoxTracking
             // 
-            this.imageBoxTracking.Location = new System.Drawing.Point(3, 3);
+            this.imageBoxTracking.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.imageBoxTracking.Location = new System.Drawing.Point(3, 16);
             this.imageBoxTracking.Name = "imageBoxTracking";
-            this.imageBoxTracking.Size = new System.Drawing.Size(322, 216);
-            this.imageBoxTracking.TabIndex = 6;
+            this.imageBoxTracking.Size = new System.Drawing.Size(386, 318);
+            this.imageBoxTracking.TabIndex = 7;
             this.imageBoxTracking.TabStop = false;
             // 
             // imageBoxProcessed
             // 
-            this.imageBoxProcessed.Location = new System.Drawing.Point(3, 225);
+            this.imageBoxProcessed.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.imageBoxProcessed.Location = new System.Drawing.Point(3, 16);
             this.imageBoxProcessed.Name = "imageBoxProcessed";
-            this.imageBoxProcessed.Size = new System.Drawing.Size(322, 229);
-            this.imageBoxProcessed.TabIndex = 7;
+            this.imageBoxProcessed.Size = new System.Drawing.Size(386, 308);
+            this.imageBoxProcessed.TabIndex = 8;
             this.imageBoxProcessed.TabStop = false;
             // 
             // TrackingControl
@@ -149,6 +175,8 @@
             this.panel1.ResumeLayout(false);
             this.groupBoxMain.ResumeLayout(false);
             this.flowLayoutPanel.ResumeLayout(false);
+            this.groupBoxOriginal.ResumeLayout(false);
+            this.groupBoxProcessed.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxTracking)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxProcessed)).EndInit();
             this.ResumeLayout(false);
@@ -164,7 +192,9 @@
         private System.Windows.Forms.RadioButton radColourTracking;
         private System.Windows.Forms.RadioButton radTrackingApi;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel;
+        private System.Windows.Forms.GroupBox groupBoxOriginal;
         private Emgu.CV.UI.ImageBox imageBoxTracking;
+        private System.Windows.Forms.GroupBox groupBoxProcessed;
         private Emgu.CV.UI.ImageBox imageBoxProcessed;
     }
 }

@@ -83,9 +83,14 @@ namespace PiCamCV.Common
             Settings = new ColourDetectSettings();
             ErodeDilateIterations = 1;
         }
+
+        public override string ToString()
+        {
+            return Settings.ToString();
+        }
     }
 
-    public class ColourDetectorProcessOutput : CameraProcessOutput
+    public class ColourDetectorOutput : CameraProcessOutput
     {
         /// <summary>
         /// The image that has had the filters applied before moments detected
@@ -112,11 +117,11 @@ namespace PiCamCV.Common
     /// <summary>
     /// Based off http://opencv-srf.blogspot.com.au/2010/09/object-detection-using-color-seperation.html
     /// </summary>
-    public class ColourDetector : CameraProcessor<ColourDetectorInput, ColourDetectorProcessOutput>
+    public class ColourDetector : CameraProcessor<ColourDetectorInput, ColourDetectorOutput>
     {
-        protected override ColourDetectorProcessOutput DoProcess(ColourDetectorInput input)
+        protected override ColourDetectorOutput DoProcess(ColourDetectorInput input)
         {
-            var output = new ColourDetectorProcessOutput();
+            var output = new ColourDetectorOutput();
             using(var hsvFrame = new Mat())
             using(var matThresholded = new Mat())
             {

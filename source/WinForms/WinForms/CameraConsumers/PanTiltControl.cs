@@ -109,7 +109,7 @@ namespace PiCamCV.WinForms.CameraConsumers
             MessageBox.Show(reason);
         }
 
-        void _calibratingPanTiltController_ColourCaptured(object sender, ColourDetectorProcessOutput e)
+        void _calibratingPanTiltController_ColourCaptured(object sender, ColourDetectorOutput e)
         {
             if (e.IsDetected)
             {

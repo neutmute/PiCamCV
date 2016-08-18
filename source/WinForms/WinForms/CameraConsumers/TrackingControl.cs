@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Emgu.CV;
@@ -24,6 +25,7 @@ namespace PiCamCV.WinForms.CameraConsumers
         private Point _mouseDownLocation;
         private Rectangle _seedingRectangle;
         private Rectangle _readyRectangle;
+        private ThresholdSelector _thresholdSelector;
 
         public TrackingControl()
         {
@@ -32,6 +34,7 @@ namespace PiCamCV.WinForms.CameraConsumers
 
             //The following detector types are supported: "MIL" – TrackerMIL; "BOOSTING" – TrackerBoosting
             _trackingDetector = new TrackingDetector("MIL");
+            _thresholdSelector = new ThresholdSelector();
             _bgrRed = new Bgr(Color.Red);
             _bgrBlue = new Bgr(Color.Blue);
             this.Load += TrackingControl_Load;
@@ -40,6 +43,21 @@ namespace PiCamCV.WinForms.CameraConsumers
         private void TrackingControl_Load(object sender, EventArgs e)
         {
             imageBoxTracking.FunctionalMode = ImageBox.FunctionalModeOption.Minimum;
+            imageBoxTracking.MouseDown += imageBoxTracking_MouseDown;
+            imageBoxTracking.MouseUp += imageBoxTracking_MouseUp;
+            imageBoxTracking.MouseMove += imageBoxTracking_MouseMove;
+            _thresholdSelector.ColourCheckTick += ThresholdSelector_ColourCheckTick;
+
+            _thresholdSelector.Intercept = s =>
+            {
+                NotifyStatus($"Tick {s}");
+                Thread.Sleep(250);
+            };
+        }
+
+        private void ThresholdSelector_ColourCheckTick(object sender, ColourDetectorOutput e)
+        {
+            imageBoxProcessed.Image = e.ThresholdImage;
         }
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
@@ -61,7 +79,6 @@ namespace PiCamCV.WinForms.CameraConsumers
                     }
 
                     inputImage.Draw(_seedingRectangle, _bgrBlue);
-                    
                 }
 
                 imageBoxTracking.Image = inputImage;
@@ -73,8 +90,7 @@ namespace PiCamCV.WinForms.CameraConsumers
             ThresholdSettings settings = null;
             if (_readyRectangle != Rectangle.Empty)
             {
-                var thresholdSelector = new ThresholdSelector();
-                settings = thresholdSelector.Select(frame, _readyRectangle);
+                settings = _thresholdSelector.Select(frame, _readyRectangle);
                 _readyRectangle = Rectangle.Empty;
             }
             else

@@ -147,7 +147,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
         public Action<string> WaitStep { get; set; }
 
-        public event EventHandler<ColourDetectorProcessOutput> ColourCaptured;
+        public event EventHandler<ColourDetectorOutput> ColourCaptured;
 
         public CalibratingPanTiltController(IPanTiltMechanism panTiltMech, CalibrationReadingsRepository readingsRepo, IScreen screen)
             : base(panTiltMech)
@@ -294,9 +294,9 @@ namespace PiCamCV.Common.PanTilt.Controllers
             MoveAbsolute(new PanTiltSetting(50m, 50m)); // start center
         }
 
-        private ColourDetectorProcessOutput LocateColour()
+        private ColourDetectorOutput LocateColour()
         {
-            var output = new ColourDetectorProcessOutput();
+            var output = new ColourDetectorOutput();
             const int captureBufferBurn = 2;    // first image is stale, need to capture the second one
             Image<Bgr, byte> capturedImage = null;
             for (int i = 0; i < captureBufferBurn; i++)
