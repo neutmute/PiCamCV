@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Emgu.CV;
+using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Emgu.CV.UI;
 using Kraken.Core;
@@ -51,13 +52,19 @@ namespace PiCamCV.WinForms.CameraConsumers
             _thresholdSelector.Intercept = s =>
             {
                 NotifyStatus($"Tick {s}");
-                Thread.Sleep(250);
+                Thread.Sleep(50);
             };
         }
 
-        private void ThresholdSelector_ColourCheckTick(object sender, ColourDetectorOutput e)
+        private void ThresholdSelector_ColourCheckTick(object sender, AutoThresholdResult e)
         {
-            imageBoxProcessed.Image = e.ThresholdImage;
+            var processed = e.FullOutput.ThresholdImage;
+
+            var enhanced = processed.Mat.ToImage<Bgr, byte>();
+            
+            enhanced.Draw(_readyRectangle, new Bgr(Color.Blue));
+
+            imageBoxProcessed.Image = enhanced;
         }
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)

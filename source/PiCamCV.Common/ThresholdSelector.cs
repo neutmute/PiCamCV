@@ -11,6 +11,15 @@ using PiCamCV.Common.ExtensionMethods;
 
 namespace PiCamCV.Common
 {
+    public class AutoThresholdResult
+    {
+        public int DimensionValue { get; set; }
+
+        public ColourDetectorOutput FullOutput { get; set; }
+
+        public ColourDetectorOutput RoiOutput { get; set; }
+    }
+
     public class ThresholdSelector
     {
         private ThresholdSettings _settings;
@@ -18,7 +27,7 @@ namespace PiCamCV.Common
         private Rectangle _targetRegion;
         private Mat _input;
 
-        public event EventHandler<ColourDetectorOutput> ColourCheckTick;
+        public event EventHandler<AutoThresholdResult> ColourCheckTick;
         public Action<ColourDetectorInput> Intercept { get; set; }
 
         public ThresholdSelector()
@@ -34,19 +43,22 @@ namespace PiCamCV.Common
             const int hueMax = 180;
             
             _settings = ThresholdSettings.Get(0, 0, 0, hueMax, 255, 255);
+            
+            //var highV0 = GetDimensionResults(0, hueMax, true, (i, s) => s.WithV0(i));
+            //_settings.HighThreshold = _settings.HighThreshold.WithV0(highV0);
 
             var lowV0 = GetDimensionResults(0, hueMax, false, (i, s) => s.WithV0(i));
             _settings.LowThreshold = _settings.HighThreshold.WithV0(lowV0);
 
             var highV0 = GetDimensionResults((int)_settings.LowThreshold.V0, hueMax, true, (i, s) => s.WithV0(i));
             _settings.HighThreshold = _settings.HighThreshold.WithV0(highV0);
-            
+
             return _settings;
         }
 
         int GetDimensionResults(int dimensionMin, int dimensionMax, bool isHighSetting, Func<int, MCvScalar, MCvScalar> scalarUpdator)
         {
-            var results = new Dictionary<int, ColourDetectorOutput>();
+            var results = new List<AutoThresholdResult>();
 
             for (int i = dimensionMin; i < dimensionMax; i++)
             {
@@ -63,30 +75,37 @@ namespace PiCamCV.Common
                 {
                     detectorInput.Settings.LowThreshold = scalarUpdator(i, detectorInput.Settings.LowThreshold);
                 }
+                
+                var tickResult = new AutoThresholdResult();
+                tickResult.DimensionValue = i;
+                tickResult.FullOutput = _colourDetector.Process(detectorInput);
 
-                var detectorOutput = _colourDetector.Process(detectorInput);
-                if (_targetRegion.Contains(detectorOutput.CentralPoint.ToPoint()))
-                {
-                    results.Add(i, detectorOutput);
-                }
-
-                if (ColourCheckTick != null)
-                {
-                    ColourCheckTick(this, detectorOutput);
-                }
-                if (Intercept != null)
-                {
-                    Intercept(detectorInput);
-                }
+                detectorInput.Settings.Roi = _targetRegion;
+                tickResult.RoiOutput = _colourDetector.Process(detectorInput);
+                
+                results.Add(tickResult);
+                
+                ColourCheckTick?.Invoke(this, tickResult);
+                Intercept?.Invoke(detectorInput);
             }
 
+            const int percentMomentAreaInRoi = 90;
+            var requiredArea = _targetRegion.Area()*percentMomentAreaInRoi/100;
+
+            // Remove any where region of interest isn't highlighted
+            results.RemoveAll(r =>r.RoiOutput.MomentArea < requiredArea);
+
+            // Pick the smallest thresholded area left in full screen
             var result = results
-                            .Where(r => r.Value.MomentArea <= _targetRegion.Area())
-                            .OrderByDescending(r => r.Value.MomentArea)
-                            .Select(r => r.Key)
+                            .OrderBy(r => r.FullOutput.MomentArea)
                             .FirstOrDefault();
 
-            return result;
+            if (result == null)
+            {
+                return isHighSetting ? dimensionMax : dimensionMin;
+            }
+
+            return result.DimensionValue;
         }
     }
 }
