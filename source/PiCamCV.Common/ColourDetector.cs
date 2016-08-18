@@ -32,7 +32,7 @@ namespace PiCamCV.Common
             LowThreshold = s.LowThreshold;
             HighThreshold = s.HighThreshold;
         }
-
+        
         private static MCvScalar GetScalar(double hue, double sat, double value)
         {
             var scalar = new MCvScalar();
@@ -151,16 +151,18 @@ namespace PiCamCV.Common
                 }
 
                 var moments = output.ThresholdImage.GetMoments(true);
-                moments.GetCentralMoment(0, 0);
+                //moments.GetCentralMoment(0, 0);
 
                 output.MomentArea = moments.M00;
                 if (settings.MomentArea.IsInRange(output.MomentArea))
                 {
-                    var posX = Convert.ToSingle(moments.M10/output.MomentArea);
-                    var posY = Convert.ToSingle(moments.M01/output.MomentArea);
                     output.IsDetected = true;
+                }
 
-                    if (!settings.Roi.IsEmpty)
+                var posX = Convert.ToSingle(moments.M10 / output.MomentArea);
+                var posY = Convert.ToSingle(moments.M01 / output.MomentArea);
+
+                if (!settings.Roi.IsEmpty)
                     {
                         // transpose the detected coordinates to non ROI space
                         posX += settings.Roi.X;
@@ -168,7 +170,6 @@ namespace PiCamCV.Common
                     }
 
                     output.CentralPoint = new PointF(posX, posY);
-                }
             }
             return output;
         }

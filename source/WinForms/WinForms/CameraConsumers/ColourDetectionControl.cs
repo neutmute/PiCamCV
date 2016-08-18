@@ -49,6 +49,8 @@ namespace PiCamCV.WinForms.CameraConsumers
 
                 var output = _colorDetector.Process(_detectorInput);
 
+                DrawReticle(output.CapturedImage, output.CentralPoint.ToPoint(), Color.Aqua);
+
                 if (output.IsDetected)
                 {
                     var radius = 50;

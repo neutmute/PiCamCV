@@ -246,22 +246,6 @@ namespace PiCamCV.WinForms.CameraConsumers
             }
         }
 
-        private void DrawReticle(Image<Bgr, byte> image, Point center, Color colorIn)
-        {
-            const int reticleRadius = 25;
-            var color = colorIn.ToBgr();
-            var topVert = new Point(center.X, center.Y - reticleRadius);
-            var bottomVert = new Point(center.X, center.Y + reticleRadius);
-
-            var leftHoriz = new Point(center.X - reticleRadius, center.Y);
-            var rightHoriz = new Point(center.X + reticleRadius, center.Y);
-
-            var horizontalLine = new LineSegment2D(topVert, bottomVert);
-            var verticalLine = new LineSegment2D(leftHoriz, rightHoriz);
-
-            image.Draw(horizontalLine, color, 1);
-            image.Draw(verticalLine  , color, 1);
-        }
 
         private void btnPaintReticle_Click(object sender, EventArgs e)
         {

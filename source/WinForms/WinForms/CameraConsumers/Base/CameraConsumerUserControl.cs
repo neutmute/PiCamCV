@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using Common.Logging;
 using Emgu.CV;
+using Emgu.CV.Structure;
 using PiCamCV.Common;
 using PiCamCV.Interfaces;
+using PiCamCV.WinForms.ExtensionMethods;
 
 namespace PiCamCV.WinForms
 {
@@ -66,6 +69,23 @@ namespace PiCamCV.WinForms
             {
                 StatusUpdated(this, new StatusEventArgs(messageFormat, args));
             }
+        }
+        
+        protected void DrawReticle(Image<Bgr, byte> image, Point center, Color colorIn)
+        {
+            const int reticleRadius = 25;
+            var color = colorIn.ToBgr();
+            var topVert = new Point(center.X, center.Y - reticleRadius);
+            var bottomVert = new Point(center.X, center.Y + reticleRadius);
+
+            var leftHoriz = new Point(center.X - reticleRadius, center.Y);
+            var rightHoriz = new Point(center.X + reticleRadius, center.Y);
+
+            var horizontalLine = new LineSegment2D(topVert, bottomVert);
+            var verticalLine = new LineSegment2D(leftHoriz, rightHoriz);
+
+            image.Draw(horizontalLine, color, 1);
+            image.Draw(verticalLine, color, 1);
         }
     }
 }

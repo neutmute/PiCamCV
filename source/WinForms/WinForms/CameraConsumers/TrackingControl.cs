@@ -47,33 +47,65 @@ namespace PiCamCV.WinForms.CameraConsumers
             using (var frame = new Mat())
             {
                 CameraCapture.Retrieve(frame);
-                var input = new TrackingInput();
-
-                if (_readyRectangle != Rectangle.Empty)
-                {
-                    input.ObjectOfInterest = _readyRectangle;
-                    input.StartNewTrack = true;
-                    _readyRectangle = Rectangle.Empty;
-                }
-
                 var inputImage = frame.ToImage<Bgr, byte>();
-                input.Captured = frame;
-                
-                var output = _trackingDetector.Process(input);
 
-                if (output.ObjectOfInterest != Rectangle.Empty)
+                if (radTrackingApi.Checked)
                 {
-                    inputImage.Draw(output.ObjectOfInterest, _bgrRed);
+                    inputImage = DoTrackingApi(frame, inputImage);
                 }
-
-                if (_seedingRectangle != Rectangle.Empty)
+                else if (radColourTracking.Checked)
                 {
+                    if (_readyRectangle != Rectangle.Empty)
+                    {
+                        DoColourThresholding(frame);
+                    }
+
                     inputImage.Draw(_seedingRectangle, _bgrBlue);
+                    
                 }
 
                 imageBoxTracking.Image = inputImage;
-                NotifyStatus($"Tracking took {output.Elapsed.ToHumanReadable()}");
             }
+        }
+
+        private void DoColourThresholding(Mat frame)
+        {
+            ThresholdSettings settings = null;
+            if (_readyRectangle != Rectangle.Empty)
+            {
+                var thresholdSelector = new ThresholdSelector();
+                settings = thresholdSelector.Select(frame, _readyRectangle);
+                _readyRectangle = Rectangle.Empty;
+            }
+            else
+            {
+                imageBoxTracking.Image = frame;
+            }
+        }
+
+        private Image<Bgr, byte> DoTrackingApi(Mat frame, Image<Bgr, byte> inputImage)
+        {
+            var input = new TrackingInput();
+
+            if (_readyRectangle != Rectangle.Empty)
+            {
+                input.ObjectOfInterest = _readyRectangle;
+                input.StartNewTrack = true;
+                _readyRectangle = Rectangle.Empty;
+            }
+
+            input.Captured = frame;
+
+            var output = _trackingDetector.Process(input);
+
+            if (output.ObjectOfInterest != Rectangle.Empty)
+            {
+                inputImage.Draw(output.ObjectOfInterest, _bgrRed);
+            }
+            
+            NotifyStatus($"Tracking took {output.Elapsed.ToHumanReadable()}");
+
+            return inputImage;
         }
 
         private void imageBoxTracking_MouseDown(object sender, MouseEventArgs e)
