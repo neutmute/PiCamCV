@@ -37,7 +37,6 @@
             this.sliderMomentAreaMax = new PiCamCV.WinForms.UserControls.SliderControl();
             this.sliderMomentAreaMin = new PiCamCV.WinForms.UserControls.SliderControl();
             this.groupBoxRoi = new System.Windows.Forms.GroupBox();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.sliderRoiBottom = new PiCamCV.WinForms.UserControls.SliderControl();
             this.sliderRoiTop = new PiCamCV.WinForms.UserControls.SliderControl();
             this.sliderRoiRight = new PiCamCV.WinForms.UserControls.SliderControl();
@@ -59,6 +58,9 @@
             this.imageBoxCaptured = new Emgu.CV.UI.ImageBox();
             this.groupBoxFiltered = new System.Windows.Forms.GroupBox();
             this.imageBoxFiltered = new Emgu.CV.UI.ImageBox();
+            this.groupBoxAutotune = new System.Windows.Forms.GroupBox();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.labelPercent = new System.Windows.Forms.Label();
             this.panelLeft.SuspendLayout();
             this.panelButtons.SuspendLayout();
             this.groupBoxMoments.SuspendLayout();
@@ -70,6 +72,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).BeginInit();
             this.groupBoxFiltered.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxFiltered)).BeginInit();
+            this.groupBoxAutotune.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // panelLeft
@@ -166,7 +170,6 @@
             // 
             // groupBoxRoi
             // 
-            this.groupBoxRoi.Controls.Add(this.progressBar1);
             this.groupBoxRoi.Controls.Add(this.sliderRoiBottom);
             this.groupBoxRoi.Controls.Add(this.sliderRoiTop);
             this.groupBoxRoi.Controls.Add(this.sliderRoiRight);
@@ -179,13 +182,6 @@
             this.groupBoxRoi.TabIndex = 9;
             this.groupBoxRoi.TabStop = false;
             this.groupBoxRoi.Text = "Region of Interest";
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(18, 45);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(8, 21);
-            this.progressBar1.TabIndex = 5;
             // 
             // sliderRoiBottom
             // 
@@ -419,10 +415,11 @@
             // 
             this.flowLayoutPanel.Controls.Add(this.groupBoxCaptured);
             this.flowLayoutPanel.Controls.Add(this.groupBoxFiltered);
+            this.flowLayoutPanel.Controls.Add(this.groupBoxAutotune);
             this.flowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel.Location = new System.Drawing.Point(189, 0);
             this.flowLayoutPanel.Name = "flowLayoutPanel";
-            this.flowLayoutPanel.Size = new System.Drawing.Size(628, 731);
+            this.flowLayoutPanel.Size = new System.Drawing.Size(813, 731);
             this.flowLayoutPanel.TabIndex = 8;
             // 
             // groupBoxCaptured
@@ -449,7 +446,7 @@
             // groupBoxFiltered
             // 
             this.groupBoxFiltered.Controls.Add(this.imageBoxFiltered);
-            this.groupBoxFiltered.Location = new System.Drawing.Point(3, 392);
+            this.groupBoxFiltered.Location = new System.Drawing.Point(383, 3);
             this.groupBoxFiltered.Name = "groupBoxFiltered";
             this.groupBoxFiltered.Size = new System.Drawing.Size(371, 373);
             this.groupBoxFiltered.TabIndex = 8;
@@ -465,6 +462,38 @@
             this.imageBoxFiltered.TabIndex = 6;
             this.imageBoxFiltered.TabStop = false;
             // 
+            // groupBoxAutotune
+            // 
+            this.groupBoxAutotune.Controls.Add(this.labelPercent);
+            this.groupBoxAutotune.Controls.Add(this.numericUpDown1);
+            this.groupBoxAutotune.Location = new System.Drawing.Point(3, 392);
+            this.groupBoxAutotune.Name = "groupBoxAutotune";
+            this.groupBoxAutotune.Size = new System.Drawing.Size(372, 219);
+            this.groupBoxAutotune.TabIndex = 9;
+            this.groupBoxAutotune.TabStop = false;
+            this.groupBoxAutotune.Text = "Autotune";
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(102, 25);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(85, 20);
+            this.numericUpDown1.TabIndex = 0;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            80,
+            0,
+            0,
+            0});
+            // 
+            // labelPercent
+            // 
+            this.labelPercent.AutoSize = true;
+            this.labelPercent.Location = new System.Drawing.Point(6, 27);
+            this.labelPercent.Name = "labelPercent";
+            this.labelPercent.Size = new System.Drawing.Size(90, 13);
+            this.labelPercent.TabIndex = 1;
+            this.labelPercent.Text = "Percent Required";
+            // 
             // ColourDetectionControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -472,7 +501,7 @@
             this.Controls.Add(this.flowLayoutPanel);
             this.Controls.Add(this.panelLeft);
             this.Name = "ColourDetectionControl";
-            this.Size = new System.Drawing.Size(817, 731);
+            this.Size = new System.Drawing.Size(1002, 731);
             this.Load += new System.EventHandler(this.ColourDetectionControl_Load);
             this.panelLeft.ResumeLayout(false);
             this.panelButtons.ResumeLayout(false);
@@ -486,6 +515,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).EndInit();
             this.groupBoxFiltered.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxFiltered)).EndInit();
+            this.groupBoxAutotune.ResumeLayout(false);
+            this.groupBoxAutotune.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -520,7 +552,9 @@
         private UserControls.SliderControl sliderMomentAreaMax;
         private UserControls.SliderControl sliderMomentAreaMin;
         private System.Windows.Forms.Button btnReadSettings;
-        private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.NumericUpDown spinDilateIterations;
+        private System.Windows.Forms.GroupBox groupBoxAutotune;
+        private System.Windows.Forms.Label labelPercent;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
     }
 }

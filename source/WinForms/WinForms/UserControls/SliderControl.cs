@@ -66,7 +66,10 @@ namespace PiCamCV.WinForms.UserControls
             get { return _value; }  // cross thread from image grabbed event fix
             set
             {
-                trackBar.Value = value;
+                if (trackBar.IsHandleCreated)
+                {
+                    trackBar.Invoke((MethodInvoker) (() => { trackBar.Value = value; }));
+                }
                 _value = value;
             }
         }

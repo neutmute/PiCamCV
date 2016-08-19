@@ -11,9 +11,11 @@ using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using System.Diagnostics;
+using System.Threading;
 using Kraken.Core;
 using PiCamCV.Common;
 using PiCamCV.Common.ExtensionMethods;
+using PiCamCV.WinForms.CameraConsumers.Base;
 using PiCamCV.WinForms.ExtensionMethods;
 
 namespace PiCamCV.WinForms.CameraConsumers
@@ -24,6 +26,9 @@ namespace PiCamCV.WinForms.CameraConsumers
         private readonly IColourSettingsRepository _colorSettingsRepo;
         private bool _suppressUpdates;
         private bool _captureResized;
+        private ThresholdSelector _thresholdSelector;
+        private ImageBoxSelector _imageBoxSelector;
+        private Rectangle _readyRectangle;
 
         private readonly ColourDetectorInput _detectorInput;
 
@@ -33,7 +38,43 @@ namespace PiCamCV.WinForms.CameraConsumers
             _colorDetector = new ColourDetector();
             _detectorInput = new ColourDetectorInput();
             _colorSettingsRepo = new ColourSettingsRepository();
+            _thresholdSelector = new ThresholdSelector();
+
+            _imageBoxSelector = new ImageBoxSelector();
         }
+        
+        private void ThresholdSelector_ColourCheckTick(object sender, AutoThresholdResult e)
+        {
+            var processed = e.FullOutput.ThresholdImage;
+
+            var enhanced = processed.Mat.ToImage<Bgr, byte>();
+
+            enhanced.Draw(_readyRectangle, new Bgr(Color.Blue));
+
+            imageBoxFiltered.Image = enhanced;
+        }
+
+        private void _imageBoxSelector_SelectionMade(object sender, Rectangle e)
+        {
+            _readyRectangle = e;
+        }
+
+        private void DoAutoThresholding(Mat frame)
+        {
+            ThresholdSettings settings = null;
+            if (_readyRectangle != Rectangle.Empty)
+            {
+                 var autoSelected = _thresholdSelector.Select(frame, _readyRectangle);
+                _detectorInput.Settings.Absorb(autoSelected);
+                UpdateThresholdSlidersFromSettings();
+                _readyRectangle = Rectangle.Empty;
+            }
+            else
+            {
+                imageBoxCaptured.Image = frame;
+            }
+        }
+
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
@@ -43,40 +84,47 @@ namespace PiCamCV.WinForms.CameraConsumers
                 CameraCapture.Retrieve(matCaptured);
                 retrieveElapsed.Stop();
 
-                _detectorInput.ErodeDilateIterations = (int) spinDilateIterations.Value;
-                _detectorInput.Settings.Roi = GetRegionOfInterestFromControls();
-                _detectorInput.Captured = matCaptured;
-
-                var output = _colorDetector.Process(_detectorInput);
-
-                DrawReticle(output.CapturedImage, output.CentralPoint.ToPoint(), Color.Aqua);
-
-                if (output.IsDetected)
+                if (_readyRectangle.IsEmpty)
                 {
-                    var radius = 50;
-                    var circle = new CircleF(output.CentralPoint, radius);
-                    var color = new Bgr(Color.Yellow);
-                    output.CapturedImage.Draw(circle, color, 3);
-                    var ballTextLocation = output.CentralPoint.ToPoint();
-                    ballTextLocation.X += radius;
-                  //  output.CapturedImage.Draw("ball", ballTextLocation, FontFace.HersheyPlain, 3, color);
-                }
+                    _detectorInput.ErodeDilateIterations = (int) spinDilateIterations.Value;
+                    _detectorInput.Settings.Roi = GetRegionOfInterestFromControls();
+                    _detectorInput.Captured = matCaptured;
 
-                if (checkBoxRoi.Checked)
+                    var output = _colorDetector.Process(_detectorInput);
+
+                    DrawReticle(output.CapturedImage, output.CentralPoint.ToPoint(), Color.Aqua);
+
+                    if (output.IsDetected)
+                    {
+                        var radius = 50;
+                        var circle = new CircleF(output.CentralPoint, radius);
+                        var color = new Bgr(Color.Yellow);
+                        output.CapturedImage.Draw(circle, color, 3);
+                        var ballTextLocation = output.CentralPoint.ToPoint();
+                        ballTextLocation.X += radius;
+                        //  output.CapturedImage.Draw("ball", ballTextLocation, FontFace.HersheyPlain, 3, color);
+                    }
+
+                    if (checkBoxRoi.Checked)
+                    {
+                        output.CapturedImage.Draw(_detectorInput.Settings.Roi, Color.Green.ToBgr(), 3);
+                    }
+
+                    imageBoxCaptured.Image = output.CapturedImage;
+                    imageBoxFiltered.Image = output.ThresholdImage;
+
+                    NotifyStatus(
+                        "Retrieved frame in {0}, {1}"
+                        , retrieveElapsed.Elapsed.ToHumanReadable(HumanReadableTimeSpanOptions.Abbreviated)
+                        , output);
+                }
+                else
                 {
-                    output.CapturedImage.Draw(_detectorInput.Settings.Roi, Color.Green.ToBgr(), 3);
+                    DoAutoThresholding(matCaptured);
                 }
-
-
-                imageBoxCaptured.Image = output.CapturedImage;
-                imageBoxFiltered.Image = output.ThresholdImage;
 
                 ResizeImageControls();
 
-                NotifyStatus(
-                    "Retrieved frame in {0}, {1}"
-                    , retrieveElapsed.Elapsed.ToHumanReadable(HumanReadableTimeSpanOptions.Abbreviated)
-                    , output);
             }
         }
 
@@ -141,6 +189,17 @@ namespace PiCamCV.WinForms.CameraConsumers
 
         private void ColourDetectionControl_Load(object sender, EventArgs e)
         {
+            _imageBoxSelector.ConfigureBoxSelections(imageBoxCaptured);
+            _imageBoxSelector.SelectionMade += _imageBoxSelector_SelectionMade;
+
+            _thresholdSelector.ColourCheckTick += ThresholdSelector_ColourCheckTick;
+
+            _thresholdSelector.Intercept = s =>
+            {
+                NotifyStatus($"Tick {s}");
+                Thread.Sleep(40);
+            };
+
             sliderHueMin.ValueChanged += HsvSlider_ValueChanged;
             sliderHueMax.ValueChanged += HsvSlider_ValueChanged;
             sliderSaturationMin.ValueChanged += HsvSlider_ValueChanged;
@@ -150,22 +209,12 @@ namespace PiCamCV.WinForms.CameraConsumers
 
             sliderMomentAreaMin.ValueChanged += MomentSlider_ValueChanged;
             sliderMomentAreaMax.ValueChanged += MomentSlider_ValueChanged;
-
-            sliderRoiBottom.ValueChanged += RoiSlider_ValueChanged;
-            sliderRoiTop.ValueChanged += RoiSlider_ValueChanged;
-            sliderRoiLeft.ValueChanged += RoiSlider_ValueChanged;
-            sliderRoiRight.ValueChanged += RoiSlider_ValueChanged;
-
+            
             sliderHueMax.Maximum = 180;
             sliderHueMin.Maximum = 180;
             sliderMomentAreaMax.Maximum = (int) (640*480*0.25);
 
             btnReset_Click(null, null);
-        }
-
-        private void RoiSlider_ValueChanged(object sender, EventArgs e)
-        {
-
         }
 
         void HsvSlider_ValueChanged(object sender, EventArgs e)
@@ -185,8 +234,7 @@ namespace PiCamCV.WinForms.CameraConsumers
             _detectorInput.Settings.Absorb(settings);
             UpdateThresholdSlidersFromSettings();
         }
-
-
+        
         private void SetMomentArea(float min, float max)
         {
             var momentRange = new RangeF();

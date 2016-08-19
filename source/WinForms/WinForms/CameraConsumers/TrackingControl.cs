@@ -14,6 +14,7 @@ using Emgu.CV.Structure;
 using Emgu.CV.UI;
 using Kraken.Core;
 using PiCamCV.Common;
+using PiCamCV.WinForms.CameraConsumers.Base;
 using Raspberry.IO.GeneralPurpose;
 
 namespace PiCamCV.WinForms.CameraConsumers
@@ -23,10 +24,8 @@ namespace PiCamCV.WinForms.CameraConsumers
         private TrackingDetector _trackingDetector;
         Bgr _bgrRed;
         Bgr _bgrBlue;
-        private Point _mouseDownLocation;
-        private Rectangle _seedingRectangle;
+        private ImageBoxSelector _imageBoxSelector;
         private Rectangle _readyRectangle;
-        private ThresholdSelector _thresholdSelector;
 
         public TrackingControl()
         {
@@ -35,37 +34,23 @@ namespace PiCamCV.WinForms.CameraConsumers
 
             //The following detector types are supported: "MIL" – TrackerMIL; "BOOSTING" – TrackerBoosting
             _trackingDetector = new TrackingDetector("MIL");
-            _thresholdSelector = new ThresholdSelector();
             _bgrRed = new Bgr(Color.Red);
             _bgrBlue = new Bgr(Color.Blue);
+            _imageBoxSelector = new ImageBoxSelector();
             this.Load += TrackingControl_Load;
         }
 
         private void TrackingControl_Load(object sender, EventArgs e)
         {
-            imageBoxTracking.FunctionalMode = ImageBox.FunctionalModeOption.Minimum;
-            imageBoxTracking.MouseDown += imageBoxTracking_MouseDown;
-            imageBoxTracking.MouseUp += imageBoxTracking_MouseUp;
-            imageBoxTracking.MouseMove += imageBoxTracking_MouseMove;
-            _thresholdSelector.ColourCheckTick += ThresholdSelector_ColourCheckTick;
-
-            _thresholdSelector.Intercept = s =>
-            {
-                NotifyStatus($"Tick {s}");
-                Thread.Sleep(50);
-            };
+            _imageBoxSelector.ConfigureBoxSelections(imageBoxTracking);
+            _imageBoxSelector.SelectionMade += _imageBoxSelector_SelectionMade;
         }
 
-        private void ThresholdSelector_ColourCheckTick(object sender, AutoThresholdResult e)
+        private void _imageBoxSelector_SelectionMade(object sender, Rectangle e)
         {
-            var processed = e.FullOutput.ThresholdImage;
-
-            var enhanced = processed.Mat.ToImage<Bgr, byte>();
-            
-            enhanced.Draw(_readyRectangle, new Bgr(Color.Blue));
-
-            imageBoxProcessed.Image = enhanced;
+            _readyRectangle= e;
         }
+
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
@@ -80,32 +65,14 @@ namespace PiCamCV.WinForms.CameraConsumers
                 }
                 else if (radColourTracking.Checked)
                 {
-                    if (_readyRectangle != Rectangle.Empty)
-                    {
-                        DoColourThresholding(frame);
-                    }
-
-                    inputImage.Draw(_seedingRectangle, _bgrBlue);
+                    NotifyStatus("NOOP");
+                    //inputImage.Draw(_imageBoxSelector.SeedingRectangle, _bgrBlue);
                 }
 
                 imageBoxTracking.Image = inputImage;
             }
         }
-
-        private void DoColourThresholding(Mat frame)
-        {
-            ThresholdSettings settings = null;
-            if (_readyRectangle != Rectangle.Empty)
-            {
-                settings = _thresholdSelector.Select(frame, _readyRectangle);
-                _readyRectangle = Rectangle.Empty;
-            }
-            else
-            {
-                imageBoxTracking.Image = frame;
-            }
-        }
-
+        
         private Image<Bgr, byte> DoTrackingApi(Mat frame, Image<Bgr, byte> inputImage)
         {
             var input = new TrackingInput();
@@ -131,32 +98,5 @@ namespace PiCamCV.WinForms.CameraConsumers
             return inputImage;
         }
 
-        private void imageBoxTracking_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                _mouseDownLocation = e.Location;
-            }
-        }
-        
-        private void imageBoxTracking_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (_mouseDownLocation != Point.Empty)
-            {
-                _seedingRectangle = imageBoxTracking.GetRectangle(_mouseDownLocation, e.Location);
-            }
-        }
-
-        private void imageBoxTracking_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                _readyRectangle = imageBoxTracking.GetRectangle(_mouseDownLocation, e.Location);
-                Log.Info("Rectangle ready");
-
-                _mouseDownLocation = Point.Empty;
-                _seedingRectangle = Rectangle.Empty;
-            }
-        }
     }
 }

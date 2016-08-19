@@ -44,11 +44,8 @@ namespace PiCamCV.Common
             
             _settings = ThresholdSettings.Get(0, 0, 0, hueMax, 255, 255);
             
-            //var highV0 = GetDimensionResults(0, hueMax, true, (i, s) => s.WithV0(i));
-            //_settings.HighThreshold = _settings.HighThreshold.WithV0(highV0);
-
             var lowV0 = GetDimensionResults(0, hueMax, false, (i, s) => s.WithV0(i));
-            _settings.LowThreshold = _settings.HighThreshold.WithV0(lowV0);
+            _settings.LowThreshold = _settings.LowThreshold.WithV0(lowV0);
 
             var highV0 = GetDimensionResults((int)_settings.LowThreshold.V0, hueMax, true, (i, s) => s.WithV0(i));
             _settings.HighThreshold = _settings.HighThreshold.WithV0(highV0);

@@ -87,6 +87,7 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="CameraConsumers\AccessoryOverlay.cs" />
+    <Compile Include="CameraConsumers\Base\ImageBoxSelector.cs" />
     <Compile Include="CameraConsumers\ColourDetectionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
