@@ -17,6 +17,7 @@ namespace PiCamCV.WinForms.CameraConsumers.Base
         private Rectangle _readyRectangle;
 
         public event EventHandler<Rectangle> SelectionMade;
+        public event EventHandler<Rectangle> SeedingChange;
 
         public void ConfigureBoxSelections(ImageBox imageBox)
         {
@@ -41,6 +42,10 @@ namespace PiCamCV.WinForms.CameraConsumers.Base
             if (_mouseDownLocation != Point.Empty)
             {
                 SeedingRectangle = _imageBox.GetRectangle(_mouseDownLocation, e.Location);
+                if (SeedingChange != null)
+                {
+                    SeedingChange(this, SeedingRectangle);
+                }
             }
         }
 

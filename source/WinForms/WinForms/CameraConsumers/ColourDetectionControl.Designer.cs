@@ -29,52 +29,135 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.panelLeft = new System.Windows.Forms.Panel();
-            this.panelButtons = new System.Windows.Forms.Panel();
-            this.btnReadSettings = new System.Windows.Forms.Button();
-            this.btnWriteSettingsForConsole = new System.Windows.Forms.Button();
-            this.groupBoxMoments = new System.Windows.Forms.GroupBox();
-            this.sliderMomentAreaMax = new PiCamCV.WinForms.UserControls.SliderControl();
-            this.sliderMomentAreaMin = new PiCamCV.WinForms.UserControls.SliderControl();
-            this.groupBoxRoi = new System.Windows.Forms.GroupBox();
-            this.sliderRoiBottom = new PiCamCV.WinForms.UserControls.SliderControl();
-            this.sliderRoiTop = new PiCamCV.WinForms.UserControls.SliderControl();
-            this.sliderRoiRight = new PiCamCV.WinForms.UserControls.SliderControl();
-            this.sliderRoiLeft = new PiCamCV.WinForms.UserControls.SliderControl();
-            this.checkBoxRoi = new System.Windows.Forms.CheckBox();
-            this.groupBoxPresets = new System.Windows.Forms.GroupBox();
-            this.spinDilateIterations = new System.Windows.Forms.NumericUpDown();
-            this.btnRedDaylight = new System.Windows.Forms.Button();
-            this.btnRedLights = new System.Windows.Forms.Button();
-            this.btnReset = new System.Windows.Forms.Button();
-            this.sliderValueMax = new PiCamCV.WinForms.UserControls.SliderControl();
-            this.sliderValueMin = new PiCamCV.WinForms.UserControls.SliderControl();
-            this.sliderSaturationMax = new PiCamCV.WinForms.UserControls.SliderControl();
-            this.sliderSaturationMin = new PiCamCV.WinForms.UserControls.SliderControl();
-            this.sliderHueMax = new PiCamCV.WinForms.UserControls.SliderControl();
-            this.sliderHueMin = new PiCamCV.WinForms.UserControls.SliderControl();
             this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBoxCaptured = new System.Windows.Forms.GroupBox();
             this.imageBoxCaptured = new Emgu.CV.UI.ImageBox();
             this.groupBoxFiltered = new System.Windows.Forms.GroupBox();
             this.imageBoxFiltered = new Emgu.CV.UI.ImageBox();
             this.groupBoxAutotune = new System.Windows.Forms.GroupBox();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.labelPercent = new System.Windows.Forms.Label();
-            this.panelLeft.SuspendLayout();
-            this.panelButtons.SuspendLayout();
-            this.groupBoxMoments.SuspendLayout();
-            this.groupBoxRoi.SuspendLayout();
-            this.groupBoxPresets.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.spinDilateIterations)).BeginInit();
+            this.spinEditAutoTunePercent = new System.Windows.Forms.NumericUpDown();
+            this.panelLeft = new System.Windows.Forms.Panel();
+            this.panelButtons = new System.Windows.Forms.Panel();
+            this.btnReadSettings = new System.Windows.Forms.Button();
+            this.btnWriteSettingsForConsole = new System.Windows.Forms.Button();
+            this.groupBoxMoments = new System.Windows.Forms.GroupBox();
+            this.groupBoxRoi = new System.Windows.Forms.GroupBox();
+            this.checkBoxRoi = new System.Windows.Forms.CheckBox();
+            this.groupBoxPresets = new System.Windows.Forms.GroupBox();
+            this.spinDilateIterations = new System.Windows.Forms.NumericUpDown();
+            this.btnRedDaylight = new System.Windows.Forms.Button();
+            this.btnRedLights = new System.Windows.Forms.Button();
+            this.btnReset = new System.Windows.Forms.Button();
+            this.sliderMomentAreaMax = new PiCamCV.WinForms.UserControls.SliderControl();
+            this.sliderMomentAreaMin = new PiCamCV.WinForms.UserControls.SliderControl();
+            this.sliderRoiBottom = new PiCamCV.WinForms.UserControls.SliderControl();
+            this.sliderRoiTop = new PiCamCV.WinForms.UserControls.SliderControl();
+            this.sliderRoiRight = new PiCamCV.WinForms.UserControls.SliderControl();
+            this.sliderRoiLeft = new PiCamCV.WinForms.UserControls.SliderControl();
+            this.sliderValueMax = new PiCamCV.WinForms.UserControls.SliderControl();
+            this.sliderValueMin = new PiCamCV.WinForms.UserControls.SliderControl();
+            this.sliderSaturationMax = new PiCamCV.WinForms.UserControls.SliderControl();
+            this.sliderSaturationMin = new PiCamCV.WinForms.UserControls.SliderControl();
+            this.sliderHueMax = new PiCamCV.WinForms.UserControls.SliderControl();
+            this.sliderHueMin = new PiCamCV.WinForms.UserControls.SliderControl();
             this.flowLayoutPanel.SuspendLayout();
             this.groupBoxCaptured.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).BeginInit();
             this.groupBoxFiltered.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxFiltered)).BeginInit();
             this.groupBoxAutotune.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinEditAutoTunePercent)).BeginInit();
+            this.panelLeft.SuspendLayout();
+            this.panelButtons.SuspendLayout();
+            this.groupBoxMoments.SuspendLayout();
+            this.groupBoxRoi.SuspendLayout();
+            this.groupBoxPresets.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spinDilateIterations)).BeginInit();
             this.SuspendLayout();
+            // 
+            // flowLayoutPanel
+            // 
+            this.flowLayoutPanel.Controls.Add(this.groupBoxCaptured);
+            this.flowLayoutPanel.Controls.Add(this.groupBoxFiltered);
+            this.flowLayoutPanel.Controls.Add(this.groupBoxAutotune);
+            this.flowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel.Location = new System.Drawing.Point(189, 0);
+            this.flowLayoutPanel.Name = "flowLayoutPanel";
+            this.flowLayoutPanel.Size = new System.Drawing.Size(813, 731);
+            this.flowLayoutPanel.TabIndex = 8;
+            // 
+            // groupBoxCaptured
+            // 
+            this.groupBoxCaptured.Controls.Add(this.imageBoxCaptured);
+            this.groupBoxCaptured.Location = new System.Drawing.Point(3, 3);
+            this.groupBoxCaptured.Name = "groupBoxCaptured";
+            this.groupBoxCaptured.Size = new System.Drawing.Size(374, 383);
+            this.groupBoxCaptured.TabIndex = 8;
+            this.groupBoxCaptured.TabStop = false;
+            this.groupBoxCaptured.Text = "Captured";
+            // 
+            // imageBoxCaptured
+            // 
+            this.imageBoxCaptured.BackColor = System.Drawing.SystemColors.Control;
+            this.imageBoxCaptured.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.imageBoxCaptured.Location = new System.Drawing.Point(3, 16);
+            this.imageBoxCaptured.Name = "imageBoxCaptured";
+            this.imageBoxCaptured.Size = new System.Drawing.Size(368, 364);
+            this.imageBoxCaptured.TabIndex = 5;
+            this.imageBoxCaptured.TabStop = false;
+            this.imageBoxCaptured.OnZoomScaleChange += new System.EventHandler(this.imageBoxCaptured_OnZoomScaleChange);
+            // 
+            // groupBoxFiltered
+            // 
+            this.groupBoxFiltered.Controls.Add(this.imageBoxFiltered);
+            this.groupBoxFiltered.Location = new System.Drawing.Point(383, 3);
+            this.groupBoxFiltered.Name = "groupBoxFiltered";
+            this.groupBoxFiltered.Size = new System.Drawing.Size(371, 373);
+            this.groupBoxFiltered.TabIndex = 8;
+            this.groupBoxFiltered.TabStop = false;
+            this.groupBoxFiltered.Text = "Filtered";
+            // 
+            // imageBoxFiltered
+            // 
+            this.imageBoxFiltered.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.imageBoxFiltered.Location = new System.Drawing.Point(3, 16);
+            this.imageBoxFiltered.Name = "imageBoxFiltered";
+            this.imageBoxFiltered.Size = new System.Drawing.Size(365, 354);
+            this.imageBoxFiltered.TabIndex = 6;
+            this.imageBoxFiltered.TabStop = false;
+            // 
+            // groupBoxAutotune
+            // 
+            this.groupBoxAutotune.Controls.Add(this.labelPercent);
+            this.groupBoxAutotune.Controls.Add(this.spinEditAutoTunePercent);
+            this.groupBoxAutotune.Location = new System.Drawing.Point(3, 392);
+            this.groupBoxAutotune.Name = "groupBoxAutotune";
+            this.groupBoxAutotune.Size = new System.Drawing.Size(372, 219);
+            this.groupBoxAutotune.TabIndex = 9;
+            this.groupBoxAutotune.TabStop = false;
+            this.groupBoxAutotune.Text = "Autotune";
+            // 
+            // labelPercent
+            // 
+            this.labelPercent.AutoSize = true;
+            this.labelPercent.Location = new System.Drawing.Point(6, 27);
+            this.labelPercent.Name = "labelPercent";
+            this.labelPercent.Size = new System.Drawing.Size(90, 13);
+            this.labelPercent.TabIndex = 1;
+            this.labelPercent.Text = "Percent Required";
+            // 
+            // spinEditAutoTunePercent
+            // 
+            this.spinEditAutoTunePercent.Location = new System.Drawing.Point(102, 25);
+            this.spinEditAutoTunePercent.Name = "spinEditAutoTunePercent";
+            this.spinEditAutoTunePercent.Size = new System.Drawing.Size(85, 20);
+            this.spinEditAutoTunePercent.TabIndex = 0;
+            this.spinEditAutoTunePercent.Value = new decimal(new int[] {
+            80,
+            0,
+            0,
+            0});
             // 
             // panelLeft
             // 
@@ -136,38 +219,6 @@
             this.groupBoxMoments.TabStop = false;
             this.groupBoxMoments.Text = "Moments";
             // 
-            // sliderMomentAreaMax
-            // 
-            this.sliderMomentAreaMax.Dock = System.Windows.Forms.DockStyle.Top;
-            this.sliderMomentAreaMax.Label = "Area Max";
-            this.sliderMomentAreaMax.LargeChange = 200;
-            this.sliderMomentAreaMax.Location = new System.Drawing.Point(3, 56);
-            this.sliderMomentAreaMax.Maximum = 100000;
-            this.sliderMomentAreaMax.Minimum = 0;
-            this.sliderMomentAreaMax.Name = "sliderMomentAreaMax";
-            this.sliderMomentAreaMax.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.sliderMomentAreaMax.Size = new System.Drawing.Size(183, 40);
-            this.sliderMomentAreaMax.SmallChange = 100;
-            this.sliderMomentAreaMax.TabIndex = 5;
-            this.sliderMomentAreaMax.TickFrequency = 1000;
-            this.sliderMomentAreaMax.Value = 0;
-            // 
-            // sliderMomentAreaMin
-            // 
-            this.sliderMomentAreaMin.Dock = System.Windows.Forms.DockStyle.Top;
-            this.sliderMomentAreaMin.Label = "Area Min";
-            this.sliderMomentAreaMin.LargeChange = 5;
-            this.sliderMomentAreaMin.Location = new System.Drawing.Point(3, 16);
-            this.sliderMomentAreaMin.Maximum = 1000;
-            this.sliderMomentAreaMin.Minimum = 0;
-            this.sliderMomentAreaMin.Name = "sliderMomentAreaMin";
-            this.sliderMomentAreaMin.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.sliderMomentAreaMin.Size = new System.Drawing.Size(183, 40);
-            this.sliderMomentAreaMin.SmallChange = 1;
-            this.sliderMomentAreaMin.TabIndex = 4;
-            this.sliderMomentAreaMin.TickFrequency = 1;
-            this.sliderMomentAreaMin.Value = 0;
-            // 
             // groupBoxRoi
             // 
             this.groupBoxRoi.Controls.Add(this.sliderRoiBottom);
@@ -182,70 +233,6 @@
             this.groupBoxRoi.TabIndex = 9;
             this.groupBoxRoi.TabStop = false;
             this.groupBoxRoi.Text = "Region of Interest";
-            // 
-            // sliderRoiBottom
-            // 
-            this.sliderRoiBottom.Dock = System.Windows.Forms.DockStyle.Left;
-            this.sliderRoiBottom.Label = "Bottom";
-            this.sliderRoiBottom.LargeChange = 5;
-            this.sliderRoiBottom.Location = new System.Drawing.Point(95, 125);
-            this.sliderRoiBottom.Maximum = 255;
-            this.sliderRoiBottom.Minimum = 0;
-            this.sliderRoiBottom.Name = "sliderRoiBottom";
-            this.sliderRoiBottom.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.sliderRoiBottom.Size = new System.Drawing.Size(90, 90);
-            this.sliderRoiBottom.SmallChange = 1;
-            this.sliderRoiBottom.TabIndex = 3;
-            this.sliderRoiBottom.TickFrequency = 1;
-            this.sliderRoiBottom.Value = 0;
-            // 
-            // sliderRoiTop
-            // 
-            this.sliderRoiTop.Dock = System.Windows.Forms.DockStyle.Left;
-            this.sliderRoiTop.Label = "Top";
-            this.sliderRoiTop.LargeChange = 5;
-            this.sliderRoiTop.Location = new System.Drawing.Point(3, 125);
-            this.sliderRoiTop.Maximum = 255;
-            this.sliderRoiTop.Minimum = 0;
-            this.sliderRoiTop.Name = "sliderRoiTop";
-            this.sliderRoiTop.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.sliderRoiTop.Size = new System.Drawing.Size(92, 90);
-            this.sliderRoiTop.SmallChange = 1;
-            this.sliderRoiTop.TabIndex = 2;
-            this.sliderRoiTop.TickFrequency = 1;
-            this.sliderRoiTop.Value = 0;
-            // 
-            // sliderRoiRight
-            // 
-            this.sliderRoiRight.Dock = System.Windows.Forms.DockStyle.Top;
-            this.sliderRoiRight.Label = "Right";
-            this.sliderRoiRight.LargeChange = 5;
-            this.sliderRoiRight.Location = new System.Drawing.Point(3, 79);
-            this.sliderRoiRight.Maximum = 255;
-            this.sliderRoiRight.Minimum = 0;
-            this.sliderRoiRight.Name = "sliderRoiRight";
-            this.sliderRoiRight.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.sliderRoiRight.Size = new System.Drawing.Size(183, 46);
-            this.sliderRoiRight.SmallChange = 1;
-            this.sliderRoiRight.TabIndex = 1;
-            this.sliderRoiRight.TickFrequency = 1;
-            this.sliderRoiRight.Value = 0;
-            // 
-            // sliderRoiLeft
-            // 
-            this.sliderRoiLeft.Dock = System.Windows.Forms.DockStyle.Top;
-            this.sliderRoiLeft.Label = "Left";
-            this.sliderRoiLeft.LargeChange = 5;
-            this.sliderRoiLeft.Location = new System.Drawing.Point(3, 33);
-            this.sliderRoiLeft.Maximum = 255;
-            this.sliderRoiLeft.Minimum = 0;
-            this.sliderRoiLeft.Name = "sliderRoiLeft";
-            this.sliderRoiLeft.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.sliderRoiLeft.Size = new System.Drawing.Size(183, 46);
-            this.sliderRoiLeft.SmallChange = 1;
-            this.sliderRoiLeft.TabIndex = 0;
-            this.sliderRoiLeft.TickFrequency = 1;
-            this.sliderRoiLeft.Value = 0;
             // 
             // checkBoxRoi
             // 
@@ -314,6 +301,102 @@
             this.btnReset.Text = "Reset";
             this.btnReset.UseVisualStyleBackColor = true;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            // 
+            // sliderMomentAreaMax
+            // 
+            this.sliderMomentAreaMax.Dock = System.Windows.Forms.DockStyle.Top;
+            this.sliderMomentAreaMax.Label = "Area Max";
+            this.sliderMomentAreaMax.LargeChange = 200;
+            this.sliderMomentAreaMax.Location = new System.Drawing.Point(3, 56);
+            this.sliderMomentAreaMax.Maximum = 100000;
+            this.sliderMomentAreaMax.Minimum = 0;
+            this.sliderMomentAreaMax.Name = "sliderMomentAreaMax";
+            this.sliderMomentAreaMax.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.sliderMomentAreaMax.Size = new System.Drawing.Size(183, 40);
+            this.sliderMomentAreaMax.SmallChange = 100;
+            this.sliderMomentAreaMax.TabIndex = 5;
+            this.sliderMomentAreaMax.TickFrequency = 1000;
+            this.sliderMomentAreaMax.Value = 0;
+            // 
+            // sliderMomentAreaMin
+            // 
+            this.sliderMomentAreaMin.Dock = System.Windows.Forms.DockStyle.Top;
+            this.sliderMomentAreaMin.Label = "Area Min";
+            this.sliderMomentAreaMin.LargeChange = 5;
+            this.sliderMomentAreaMin.Location = new System.Drawing.Point(3, 16);
+            this.sliderMomentAreaMin.Maximum = 1000;
+            this.sliderMomentAreaMin.Minimum = 0;
+            this.sliderMomentAreaMin.Name = "sliderMomentAreaMin";
+            this.sliderMomentAreaMin.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.sliderMomentAreaMin.Size = new System.Drawing.Size(183, 40);
+            this.sliderMomentAreaMin.SmallChange = 1;
+            this.sliderMomentAreaMin.TabIndex = 4;
+            this.sliderMomentAreaMin.TickFrequency = 1;
+            this.sliderMomentAreaMin.Value = 0;
+            // 
+            // sliderRoiBottom
+            // 
+            this.sliderRoiBottom.Dock = System.Windows.Forms.DockStyle.Left;
+            this.sliderRoiBottom.Label = "Bottom";
+            this.sliderRoiBottom.LargeChange = 5;
+            this.sliderRoiBottom.Location = new System.Drawing.Point(95, 125);
+            this.sliderRoiBottom.Maximum = 255;
+            this.sliderRoiBottom.Minimum = 0;
+            this.sliderRoiBottom.Name = "sliderRoiBottom";
+            this.sliderRoiBottom.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.sliderRoiBottom.Size = new System.Drawing.Size(90, 90);
+            this.sliderRoiBottom.SmallChange = 1;
+            this.sliderRoiBottom.TabIndex = 3;
+            this.sliderRoiBottom.TickFrequency = 1;
+            this.sliderRoiBottom.Value = 0;
+            // 
+            // sliderRoiTop
+            // 
+            this.sliderRoiTop.Dock = System.Windows.Forms.DockStyle.Left;
+            this.sliderRoiTop.Label = "Top";
+            this.sliderRoiTop.LargeChange = 5;
+            this.sliderRoiTop.Location = new System.Drawing.Point(3, 125);
+            this.sliderRoiTop.Maximum = 255;
+            this.sliderRoiTop.Minimum = 0;
+            this.sliderRoiTop.Name = "sliderRoiTop";
+            this.sliderRoiTop.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.sliderRoiTop.Size = new System.Drawing.Size(92, 90);
+            this.sliderRoiTop.SmallChange = 1;
+            this.sliderRoiTop.TabIndex = 2;
+            this.sliderRoiTop.TickFrequency = 1;
+            this.sliderRoiTop.Value = 0;
+            // 
+            // sliderRoiRight
+            // 
+            this.sliderRoiRight.Dock = System.Windows.Forms.DockStyle.Top;
+            this.sliderRoiRight.Label = "Right";
+            this.sliderRoiRight.LargeChange = 5;
+            this.sliderRoiRight.Location = new System.Drawing.Point(3, 79);
+            this.sliderRoiRight.Maximum = 255;
+            this.sliderRoiRight.Minimum = 0;
+            this.sliderRoiRight.Name = "sliderRoiRight";
+            this.sliderRoiRight.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.sliderRoiRight.Size = new System.Drawing.Size(183, 46);
+            this.sliderRoiRight.SmallChange = 1;
+            this.sliderRoiRight.TabIndex = 1;
+            this.sliderRoiRight.TickFrequency = 1;
+            this.sliderRoiRight.Value = 0;
+            // 
+            // sliderRoiLeft
+            // 
+            this.sliderRoiLeft.Dock = System.Windows.Forms.DockStyle.Top;
+            this.sliderRoiLeft.Label = "Left";
+            this.sliderRoiLeft.LargeChange = 5;
+            this.sliderRoiLeft.Location = new System.Drawing.Point(3, 33);
+            this.sliderRoiLeft.Maximum = 255;
+            this.sliderRoiLeft.Minimum = 0;
+            this.sliderRoiLeft.Name = "sliderRoiLeft";
+            this.sliderRoiLeft.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.sliderRoiLeft.Size = new System.Drawing.Size(183, 46);
+            this.sliderRoiLeft.SmallChange = 1;
+            this.sliderRoiLeft.TabIndex = 0;
+            this.sliderRoiLeft.TickFrequency = 1;
+            this.sliderRoiLeft.Value = 0;
             // 
             // sliderValueMax
             // 
@@ -411,89 +494,6 @@
             this.sliderHueMin.TickFrequency = 1;
             this.sliderHueMin.Value = 0;
             // 
-            // flowLayoutPanel
-            // 
-            this.flowLayoutPanel.Controls.Add(this.groupBoxCaptured);
-            this.flowLayoutPanel.Controls.Add(this.groupBoxFiltered);
-            this.flowLayoutPanel.Controls.Add(this.groupBoxAutotune);
-            this.flowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel.Location = new System.Drawing.Point(189, 0);
-            this.flowLayoutPanel.Name = "flowLayoutPanel";
-            this.flowLayoutPanel.Size = new System.Drawing.Size(813, 731);
-            this.flowLayoutPanel.TabIndex = 8;
-            // 
-            // groupBoxCaptured
-            // 
-            this.groupBoxCaptured.Controls.Add(this.imageBoxCaptured);
-            this.groupBoxCaptured.Location = new System.Drawing.Point(3, 3);
-            this.groupBoxCaptured.Name = "groupBoxCaptured";
-            this.groupBoxCaptured.Size = new System.Drawing.Size(374, 383);
-            this.groupBoxCaptured.TabIndex = 8;
-            this.groupBoxCaptured.TabStop = false;
-            this.groupBoxCaptured.Text = "Captured";
-            // 
-            // imageBoxCaptured
-            // 
-            this.imageBoxCaptured.BackColor = System.Drawing.SystemColors.Control;
-            this.imageBoxCaptured.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.imageBoxCaptured.Location = new System.Drawing.Point(3, 16);
-            this.imageBoxCaptured.Name = "imageBoxCaptured";
-            this.imageBoxCaptured.Size = new System.Drawing.Size(368, 364);
-            this.imageBoxCaptured.TabIndex = 5;
-            this.imageBoxCaptured.TabStop = false;
-            this.imageBoxCaptured.OnZoomScaleChange += new System.EventHandler(this.imageBoxCaptured_OnZoomScaleChange);
-            // 
-            // groupBoxFiltered
-            // 
-            this.groupBoxFiltered.Controls.Add(this.imageBoxFiltered);
-            this.groupBoxFiltered.Location = new System.Drawing.Point(383, 3);
-            this.groupBoxFiltered.Name = "groupBoxFiltered";
-            this.groupBoxFiltered.Size = new System.Drawing.Size(371, 373);
-            this.groupBoxFiltered.TabIndex = 8;
-            this.groupBoxFiltered.TabStop = false;
-            this.groupBoxFiltered.Text = "Filtered";
-            // 
-            // imageBoxFiltered
-            // 
-            this.imageBoxFiltered.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.imageBoxFiltered.Location = new System.Drawing.Point(3, 16);
-            this.imageBoxFiltered.Name = "imageBoxFiltered";
-            this.imageBoxFiltered.Size = new System.Drawing.Size(365, 354);
-            this.imageBoxFiltered.TabIndex = 6;
-            this.imageBoxFiltered.TabStop = false;
-            // 
-            // groupBoxAutotune
-            // 
-            this.groupBoxAutotune.Controls.Add(this.labelPercent);
-            this.groupBoxAutotune.Controls.Add(this.numericUpDown1);
-            this.groupBoxAutotune.Location = new System.Drawing.Point(3, 392);
-            this.groupBoxAutotune.Name = "groupBoxAutotune";
-            this.groupBoxAutotune.Size = new System.Drawing.Size(372, 219);
-            this.groupBoxAutotune.TabIndex = 9;
-            this.groupBoxAutotune.TabStop = false;
-            this.groupBoxAutotune.Text = "Autotune";
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(102, 25);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(85, 20);
-            this.numericUpDown1.TabIndex = 0;
-            this.numericUpDown1.Value = new decimal(new int[] {
-            80,
-            0,
-            0,
-            0});
-            // 
-            // labelPercent
-            // 
-            this.labelPercent.AutoSize = true;
-            this.labelPercent.Location = new System.Drawing.Point(6, 27);
-            this.labelPercent.Name = "labelPercent";
-            this.labelPercent.Size = new System.Drawing.Size(90, 13);
-            this.labelPercent.TabIndex = 1;
-            this.labelPercent.Text = "Percent Required";
-            // 
             // ColourDetectionControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -503,13 +503,6 @@
             this.Name = "ColourDetectionControl";
             this.Size = new System.Drawing.Size(1002, 731);
             this.Load += new System.EventHandler(this.ColourDetectionControl_Load);
-            this.panelLeft.ResumeLayout(false);
-            this.panelButtons.ResumeLayout(false);
-            this.groupBoxMoments.ResumeLayout(false);
-            this.groupBoxRoi.ResumeLayout(false);
-            this.groupBoxRoi.PerformLayout();
-            this.groupBoxPresets.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.spinDilateIterations)).EndInit();
             this.flowLayoutPanel.ResumeLayout(false);
             this.groupBoxCaptured.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).EndInit();
@@ -517,7 +510,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxFiltered)).EndInit();
             this.groupBoxAutotune.ResumeLayout(false);
             this.groupBoxAutotune.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinEditAutoTunePercent)).EndInit();
+            this.panelLeft.ResumeLayout(false);
+            this.panelButtons.ResumeLayout(false);
+            this.groupBoxMoments.ResumeLayout(false);
+            this.groupBoxRoi.ResumeLayout(false);
+            this.groupBoxRoi.PerformLayout();
+            this.groupBoxPresets.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.spinDilateIterations)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -555,6 +555,6 @@
         private System.Windows.Forms.NumericUpDown spinDilateIterations;
         private System.Windows.Forms.GroupBox groupBoxAutotune;
         private System.Windows.Forms.Label labelPercent;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown spinEditAutoTunePercent;
     }
 }

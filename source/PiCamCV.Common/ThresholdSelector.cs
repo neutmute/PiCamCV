@@ -30,6 +30,10 @@ namespace PiCamCV.Common
         public event EventHandler<AutoThresholdResult> ColourCheckTick;
         public Action<ColourDetectorInput> Intercept { get; set; }
 
+        public int RequiredMomentAreaInRoiPercent { get; set; } = 90;
+
+        public int ErodeDilateIterations { get; set; } = 1;
+
         public ThresholdSelector()
         {
             _colourDetector = new ColourDetector();
@@ -41,14 +45,30 @@ namespace PiCamCV.Common
             _targetRegion = targetRegion;
 
             const int hueMax = 180;
+            const int satValueMax = 255;
             
             _settings = ThresholdSettings.Get(0, 0, 0, hueMax, 255, 255);
             
+            // Hue
             var lowV0 = GetDimensionResults(0, hueMax, false, (i, s) => s.WithV0(i));
             _settings.LowThreshold = _settings.LowThreshold.WithV0(lowV0);
 
             var highV0 = GetDimensionResults((int)_settings.LowThreshold.V0, hueMax, true, (i, s) => s.WithV0(i));
             _settings.HighThreshold = _settings.HighThreshold.WithV0(highV0);
+
+            // Saturation
+            var lowV1 = GetDimensionResults(0, satValueMax, false, (i, s) => s.WithV1(i));
+            _settings.LowThreshold = _settings.LowThreshold.WithV1(lowV1);
+
+            var highV1 = GetDimensionResults((int)_settings.LowThreshold.V1, satValueMax, true, (i, s) => s.WithV1(i));
+            _settings.HighThreshold = _settings.HighThreshold.WithV1(highV1);
+
+            // Value
+            var lowV2 = GetDimensionResults(0, satValueMax, false, (i, s) => s.WithV2(i));
+            _settings.LowThreshold = _settings.LowThreshold.WithV2(lowV2);
+
+            var highV2 = GetDimensionResults((int)_settings.LowThreshold.V2, satValueMax, true, (i, s) => s.WithV2(i));
+            _settings.HighThreshold = _settings.HighThreshold.WithV2(highV2);
 
             return _settings;
         }
@@ -61,6 +81,7 @@ namespace PiCamCV.Common
             {
                 var detectorInput = new ColourDetectorInput();
                 detectorInput.Captured = _input;
+                detectorInput.ErodeDilateIterations = ErodeDilateIterations;
                 detectorInput.Settings.Absorb(_settings);
                 detectorInput.Settings.MomentArea = new RangeF(0, float.MaxValue);
 
@@ -85,9 +106,8 @@ namespace PiCamCV.Common
                 ColourCheckTick?.Invoke(this, tickResult);
                 Intercept?.Invoke(detectorInput);
             }
-
-            const int percentMomentAreaInRoi = 90;
-            var requiredArea = _targetRegion.Area()*percentMomentAreaInRoi/100;
+            
+            var requiredArea = _targetRegion.Area()*RequiredMomentAreaInRoiPercent/100;
 
             // Remove any where region of interest isn't highlighted
             results.RemoveAll(r =>r.RoiOutput.MomentArea < requiredArea);

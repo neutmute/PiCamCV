@@ -64,6 +64,8 @@ namespace PiCamCV.WinForms.CameraConsumers
             ThresholdSettings settings = null;
             if (_readyRectangle != Rectangle.Empty)
             {
+                _thresholdSelector.ErodeDilateIterations = (int)spinDilateIterations.Value;
+                _thresholdSelector.RequiredMomentAreaInRoiPercent = (int) spinEditAutoTunePercent.Value;
                  var autoSelected = _thresholdSelector.Select(frame, _readyRectangle);
                 _detectorInput.Settings.Absorb(autoSelected);
                 UpdateThresholdSlidersFromSettings();
@@ -83,7 +85,7 @@ namespace PiCamCV.WinForms.CameraConsumers
                 var retrieveElapsed = Stopwatch.StartNew();
                 CameraCapture.Retrieve(matCaptured);
                 retrieveElapsed.Stop();
-
+                
                 if (_readyRectangle.IsEmpty)
                 {
                     _detectorInput.ErodeDilateIterations = (int) spinDilateIterations.Value;
@@ -108,6 +110,11 @@ namespace PiCamCV.WinForms.CameraConsumers
                     if (checkBoxRoi.Checked)
                     {
                         output.CapturedImage.Draw(_detectorInput.Settings.Roi, Color.Green.ToBgr(), 3);
+                    }
+
+                    if (!_imageBoxSelector.SeedingRectangle.IsEmpty)
+                    {
+                        output.CapturedImage.Draw(_imageBoxSelector.SeedingRectangle, new Bgr(Color.Chartreuse));
                     }
 
                     imageBoxCaptured.Image = output.CapturedImage;
@@ -197,7 +204,7 @@ namespace PiCamCV.WinForms.CameraConsumers
             _thresholdSelector.Intercept = s =>
             {
                 NotifyStatus($"Tick {s}");
-                Thread.Sleep(40);
+               // Thread.Sleep(20);
             };
 
             sliderHueMin.ValueChanged += HsvSlider_ValueChanged;
@@ -216,7 +223,7 @@ namespace PiCamCV.WinForms.CameraConsumers
 
             btnReset_Click(null, null);
         }
-
+        
         void HsvSlider_ValueChanged(object sender, EventArgs e)
         {
             UpdateThresholdSettingsFromControls();

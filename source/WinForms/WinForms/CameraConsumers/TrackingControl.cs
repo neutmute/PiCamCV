@@ -51,7 +51,6 @@ namespace PiCamCV.WinForms.CameraConsumers
             _readyRectangle= e;
         }
 
-
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
             using (var frame = new Mat())

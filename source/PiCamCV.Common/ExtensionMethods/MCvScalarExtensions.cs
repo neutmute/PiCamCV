@@ -21,7 +21,7 @@ namespace PiCamCV.Common.ExtensionMethods
 
         public static MCvScalar WithV2(this MCvScalar target, double v2)
         {
-            return new MCvScalar(target.V1, target.V1, v2, target.V3);
+            return new MCvScalar(target.V0, target.V1, v2, target.V3);
         }
     }
 }
