@@ -79,18 +79,12 @@ namespace PiCamCV.Common
                 //ImageViewer.Show(imgTrackingImage);
                 //ImageViewer.Show(imgBackProjection);
 
-                output.ObjectOfInterest = CvInvoke.CamShift(output.BackProjection, ref _rectangleSearchWindow, TermCriteria);
+                output.ObjectOfInterest = CvInvoke.CamShift(_backProjection, ref _rectangleSearchWindow, TermCriteria);
             }
 
             output.BackProjection = _backProjection;
+            //output.ObjectOfInterest = _rectangleSearchWindow;
             return output;
-        }
-
-        protected override void DisposeObject()
-        {
-            _histogram.Dispose();
-            _matBackProjectionMask.Dispose();
-            base.DisposeObject();
         }
         
         private void StartNewTrack(Rectangle toTrack, Image<Gray, byte> imgTrackingImage, Image<Gray, byte> imgRoi, CamshiftOutput output)
@@ -106,16 +100,23 @@ namespace PiCamCV.Common
             }
             _trackStarted = true;
         }
-
-        private Rectangle GetIncreasedRectangle(Rectangle original, int increase)
+        
+        protected override void DisposeObject()
         {
-            var increasedRect = new Rectangle(
-                 original.X - increase
-               , original.Y - increase
-               , original.Width + increase
-               , original.Height + increase);
-
-            return increasedRect;
+            _histogram.Dispose();
+            _matBackProjectionMask.Dispose();
+            base.DisposeObject();
         }
+
+        //private Rectangle GetIncreasedRectangle(Rectangle original, int increase)
+        //{
+        //    var increasedRect = new Rectangle(
+        //         original.X - increase
+        //       , original.Y - increase
+        //       , original.Width + increase
+        //       , original.Height + increase);
+
+        //    return increasedRect;
+        //}
     }
 }
