@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.panelLeft = new System.Windows.Forms.Panel();
             this.groupBoxTrackMethod = new System.Windows.Forms.GroupBox();
-            this.radColourTracking = new System.Windows.Forms.RadioButton();
+            this.radCamshift = new System.Windows.Forms.RadioButton();
             this.radTrackingApi = new System.Windows.Forms.RadioButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBoxMain = new System.Windows.Forms.GroupBox();
@@ -62,7 +62,7 @@
             // 
             // groupBoxTrackMethod
             // 
-            this.groupBoxTrackMethod.Controls.Add(this.radColourTracking);
+            this.groupBoxTrackMethod.Controls.Add(this.radCamshift);
             this.groupBoxTrackMethod.Controls.Add(this.radTrackingApi);
             this.groupBoxTrackMethod.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBoxTrackMethod.Location = new System.Drawing.Point(0, 0);
@@ -72,16 +72,16 @@
             this.groupBoxTrackMethod.TabStop = false;
             this.groupBoxTrackMethod.Text = "Tracking Method";
             // 
-            // radColourTracking
+            // radCamshift
             // 
-            this.radColourTracking.AutoSize = true;
-            this.radColourTracking.Location = new System.Drawing.Point(6, 42);
-            this.radColourTracking.Name = "radColourTracking";
-            this.radColourTracking.Size = new System.Drawing.Size(55, 17);
-            this.radColourTracking.TabIndex = 2;
-            this.radColourTracking.TabStop = true;
-            this.radColourTracking.Text = "Colour";
-            this.radColourTracking.UseVisualStyleBackColor = true;
+            this.radCamshift.AutoSize = true;
+            this.radCamshift.Location = new System.Drawing.Point(6, 42);
+            this.radCamshift.Name = "radCamshift";
+            this.radCamshift.Size = new System.Drawing.Size(55, 17);
+            this.radCamshift.TabIndex = 2;
+            this.radCamshift.TabStop = true;
+            this.radCamshift.Text = "Colour";
+            this.radCamshift.UseVisualStyleBackColor = true;
             // 
             // radTrackingApi
             // 
@@ -189,7 +189,7 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.GroupBox groupBoxMain;
         private System.Windows.Forms.GroupBox groupBoxTrackMethod;
-        private System.Windows.Forms.RadioButton radColourTracking;
+        private System.Windows.Forms.RadioButton radCamshift;
         private System.Windows.Forms.RadioButton radTrackingApi;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel;
         private System.Windows.Forms.GroupBox groupBoxOriginal;

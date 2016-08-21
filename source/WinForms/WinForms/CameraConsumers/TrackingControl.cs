@@ -12,8 +12,10 @@ using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Emgu.CV.UI;
+using Emgu.CV.Util;
 using Kraken.Core;
 using PiCamCV.Common;
+using PiCamCV.Common.ExtensionMethods;
 using PiCamCV.WinForms.CameraConsumers.Base;
 using Raspberry.IO.GeneralPurpose;
 
@@ -22,6 +24,7 @@ namespace PiCamCV.WinForms.CameraConsumers
     public partial class TrackingControl : CameraConsumerUserControl
     {
         private TrackingDetector _trackingDetector;
+        private CamshiftDetector _camshiftDetector;
         Bgr _bgrRed;
         Bgr _bgrBlue;
         private ImageBoxSelector _imageBoxSelector;
@@ -34,6 +37,8 @@ namespace PiCamCV.WinForms.CameraConsumers
 
             //The following detector types are supported: "MIL" – TrackerMIL; "BOOSTING" – TrackerBoosting
             _trackingDetector = new TrackingDetector("MIL");
+            _camshiftDetector= new CamshiftDetector();
+
             _bgrRed = new Bgr(Color.Red);
             _bgrBlue = new Bgr(Color.Blue);
             _imageBoxSelector = new ImageBoxSelector();
@@ -62,13 +67,41 @@ namespace PiCamCV.WinForms.CameraConsumers
                 {
                     inputImage = DoTrackingApi(frame, inputImage);
                 }
-                else if (radColourTracking.Checked)
+                else if (radCamshift.Checked)
                 {
-                    NotifyStatus("NOOP");
-                    //inputImage.Draw(_imageBoxSelector.SeedingRectangle, _bgrBlue);
+                    DoCamShift(frame, inputImage);
+                }
+
+                if (!_imageBoxSelector.SeedingRectangle.IsEmpty)
+                {
+                    inputImage.Draw(_imageBoxSelector.SeedingRectangle, new Bgr(Color.Chartreuse));
                 }
 
                 imageBoxTracking.Image = inputImage;
+            }
+        }
+
+        private void DoCamShift(Mat frame, Image<Bgr, byte> inputImage)
+        {
+            var input = new TrackingInput();
+
+            if (_readyRectangle != Rectangle.Empty)
+            {
+                input.ObjectOfInterest = _readyRectangle;
+                input.StartNewTrack = true;
+                _readyRectangle = Rectangle.Empty;
+            }
+
+            input.Captured = frame;
+
+            var output = _camshiftDetector.Process(input);
+
+
+            if (!output.ObjectOfInterest.Equals(RotatedRect.Empty))
+            {
+                var vertices = output.ObjectOfInterest.GetVertices();
+                var points = vertices.ToList().ConvertAll(f => f.ToPoint()).ToArray();
+                CvInvoke.Polylines(inputImage, points, true, new Bgr(Color.Red).MCvScalar, 2);
             }
         }
         
