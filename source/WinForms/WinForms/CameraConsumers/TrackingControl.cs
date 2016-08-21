@@ -69,7 +69,8 @@ namespace PiCamCV.WinForms.CameraConsumers
                 }
                 else if (radCamshift.Checked)
                 {
-                    DoCamShift(frame, inputImage);
+                    var output = DoCamShift(frame, inputImage);
+                    imageBoxProcessed.Image = output.BackProjection;
                 }
 
                 if (!_imageBoxSelector.SeedingRectangle.IsEmpty)
@@ -81,7 +82,7 @@ namespace PiCamCV.WinForms.CameraConsumers
             }
         }
 
-        private void DoCamShift(Mat frame, Image<Bgr, byte> inputImage)
+        private CamshiftOutput DoCamShift(Mat frame, Image<Bgr, byte> inputImage)
         {
             var input = new TrackingInput();
 
@@ -103,6 +104,8 @@ namespace PiCamCV.WinForms.CameraConsumers
                 var points = vertices.ToList().ConvertAll(f => f.ToPoint()).ToArray();
                 CvInvoke.Polylines(inputImage, points, true, new Bgr(Color.Red).MCvScalar, 2);
             }
+
+            return output;
         }
         
         private Image<Bgr, byte> DoTrackingApi(Mat frame, Image<Bgr, byte> inputImage)
