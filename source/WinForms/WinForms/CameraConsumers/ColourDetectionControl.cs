@@ -66,9 +66,12 @@ namespace PiCamCV.WinForms.CameraConsumers
             {
                 _thresholdSelector.ErodeDilateIterations = (int)spinDilateIterations.Value;
                 _thresholdSelector.RequiredMomentAreaInRoiPercent = (int) spinEditAutoTunePercent.Value;
-                 var autoSelected = _thresholdSelector.Select(frame, _readyRectangle);
+
+                var autoSelected = _thresholdSelector.Select(frame, _readyRectangle);
                 _detectorInput.Settings.Absorb(autoSelected);
+
                 UpdateThresholdSlidersFromSettings();
+
                 _readyRectangle = Rectangle.Empty;
             }
             else

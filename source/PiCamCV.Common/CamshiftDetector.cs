@@ -41,7 +41,7 @@ namespace PiCamCV.Common
             _channels = new[] {0};
             _ranges = new float[] { 0, BinSize - 1 };
             _histogramSize = new[] { BinSize };
-            TermCriteria = new MCvTermCriteria { Epsilon = 100 * double.Epsilon, MaxIter = 50 };
+            TermCriteria = new MCvTermCriteria { Epsilon = 100 * double.Epsilon, MaxIter = 10 };
             _trackStarted = false;
         }
 

@@ -77,10 +77,10 @@
             this.radCamshift.AutoSize = true;
             this.radCamshift.Location = new System.Drawing.Point(6, 42);
             this.radCamshift.Name = "radCamshift";
-            this.radCamshift.Size = new System.Drawing.Size(55, 17);
+            this.radCamshift.Size = new System.Drawing.Size(65, 17);
             this.radCamshift.TabIndex = 2;
             this.radCamshift.TabStop = true;
-            this.radCamshift.Text = "Colour";
+            this.radCamshift.Text = "Camshift";
             this.radCamshift.UseVisualStyleBackColor = true;
             // 
             // radTrackingApi
