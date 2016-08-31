@@ -44,6 +44,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         where TOutput : CameraPanTiltProcessOutput, new()
     {
         private readonly CameraBasedModifierStrategy _panTiltModifier;
+
         protected event EventHandler ServoSettleTimeChanged;
 
         protected CaptureConfig CaptureConfig { get; private set; }
@@ -53,6 +54,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         protected int Ticks { get;set;}
 
         private readonly Timer _timerUntilServoSettled;
+
         protected bool IsServoInMotion { get; set; }
 
         public TimeSpan ServoSettleTime
@@ -61,10 +63,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             set
             {
                 _timerUntilServoSettled.Interval = value.TotalMilliseconds;
-                if (ServoSettleTimeChanged != null)
-                {
-                    ServoSettleTimeChanged(this, new EventArgs());
-                }
+                ServoSettleTimeChanged?.Invoke(this, new EventArgs());
             }
         }
 
@@ -118,7 +117,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             
             return output;
         }
-
+        
         public TOutput Process(CameraProcessInput input)
         {
             if (IsServoInMotion)

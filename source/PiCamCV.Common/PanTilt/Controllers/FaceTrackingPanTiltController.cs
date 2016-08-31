@@ -36,6 +36,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
     public class FaceTrackingPanTiltController : CameraBasedPanTiltController<FaceTrackingPanTiltOutput>
     {
         private readonly FaceDetector _faceDetector;
+
         public FaceTrackingPanTiltController(IPanTiltMechanism panTiltMech, CaptureConfig captureConfig)
             : base(panTiltMech, captureConfig)
         {
@@ -71,6 +72,11 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             }
             
             return outerResult;
+        }
+
+        protected override void DisposeObject()
+        {
+            _faceDetector.Dispose();
         }
     }
 }

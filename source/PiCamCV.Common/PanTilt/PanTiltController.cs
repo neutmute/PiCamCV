@@ -3,29 +3,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Common.Logging;
+using Emgu.Util;
 using PiCamCV.Common;
 using PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies;
 using RPi.Pwm.Motors;
 
 namespace PiCamCV.ConsoleApp.Runners.PanTilt
 {
-    public abstract class PanTiltController
+    public abstract class PanTiltController : DisposableObject
     {
         private readonly static ILog _log = LogManager.GetLogger< PanTiltController>();
-        protected ILog Log { get { return _log; } }
+
+        protected ILog Log => _log;
 
         private IPanTiltMechanism PanTiltMechanism {get;set;}
 
-        protected IServoMotor PanServo { get { return PanTiltMechanism.PanServo; } }
-        protected IServoMotor TiltServo { get { return PanTiltMechanism.TiltServo; } }
+        protected IServoMotor PanServo => PanTiltMechanism.PanServo;
 
-        public PanTiltSetting CurrentSetting
-        {
-            get
-            {
-                return new PanTiltSetting {PanPercent = PanServo.CurrentPercent, TiltPercent = TiltServo.CurrentPercent};
-            }
-        }
+        protected IServoMotor TiltServo => PanTiltMechanism.TiltServo;
+
+        public PanTiltSetting CurrentSetting => new PanTiltSetting {PanPercent = PanServo.CurrentPercent, TiltPercent = TiltServo.CurrentPercent};
 
         protected PanTiltController(IPanTiltMechanism panTiltMech)
         {
@@ -62,6 +59,11 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
                 moved |= TiltServo.MoveTo(TiltServo.CurrentPercent + newPosition.TiltPercent.Value);
             }
             return moved;
+        }
+
+        protected override void DisposeObject()
+        {
+            
         }
     }
 }

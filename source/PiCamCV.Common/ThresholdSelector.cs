@@ -76,7 +76,9 @@ namespace PiCamCV.Common
         int GetDimensionResults(int dimensionMin, int dimensionMax, bool isHighSetting, Func<int, MCvScalar, MCvScalar> scalarUpdator)
         {
             var results = new List<AutoThresholdResult>();
-
+            var requiredArea = _targetRegion.Area() * RequiredMomentAreaInRoiPercent / 100;
+            Func<ColourDetectorOutput, bool> meetsMinimumAreaRequired = o => o.MomentArea >= requiredArea;
+            
             for (int i = dimensionMin; i < dimensionMax; i++)
             {
                 var detectorInput = new ColourDetectorInput();
@@ -96,19 +98,23 @@ namespace PiCamCV.Common
                 
                 var tickResult = new AutoThresholdResult();
                 tickResult.DimensionValue = i;
-                tickResult.FullOutput = _colourDetector.Process(detectorInput);
 
                 detectorInput.Settings.Roi = _targetRegion;
                 tickResult.RoiOutput = _colourDetector.Process(detectorInput);
-                
-                results.Add(tickResult);
-                
+
+                // Save processing the full screen if it doesn't meet minimum ROI requirements
+                if (meetsMinimumAreaRequired(tickResult.RoiOutput))
+                {
+                    detectorInput.Settings.Roi = Rectangle.Empty;
+                    tickResult.FullOutput = _colourDetector.Process(detectorInput);
+
+                    results.Add(tickResult);
+                }
+
                 ColourCheckTick?.Invoke(this, tickResult);
                 Intercept?.Invoke(detectorInput);
             }
             
-            var requiredArea = _targetRegion.Area()*RequiredMomentAreaInRoiPercent/100;
-
             // Remove any where region of interest isn't highlighted
             results.RemoveAll(r =>r.RoiOutput.MomentArea < requiredArea);
 

@@ -18,6 +18,8 @@ namespace PiCamCV.Common
         public RotatedRect ObjectOfInterest { get; set; }
 
         public Image<Gray, byte> BackProjection { get; set; }
+
+        public bool HasObjectOfInterest => !ObjectOfInterest.Equals(RotatedRect.Empty);
     }
 
     public class CamshiftDetector : CameraProcessor<TrackingInput, CamshiftOutput>
@@ -50,17 +52,17 @@ namespace PiCamCV.Common
             var output = new CamshiftOutput();
             Image<Gray, byte> grayscaleInput = input.Captured.ToImage<Gray, byte>();
             
-            if (input.StartNewTrack)
+            if (input.Config.StartNewTrack)
             {
                 _trackStarted = false;
-                   _backProjection = grayscaleInput.Copy();
-                var trackingRegion = input.ObjectOfInterest;
+                _backProjection = grayscaleInput.Copy();
+                var trackingRegion = input.Config.ObjectOfInterest;
 
                 grayscaleInput.ROI = trackingRegion;
                 var inputRoiImage = grayscaleInput.Copy();
                 grayscaleInput.ROI = Rectangle.Empty;       //clear the roi
 
-                StartNewTrack(input.ObjectOfInterest, grayscaleInput, inputRoiImage, output);
+                StartNewTrack(input.Config.ObjectOfInterest, grayscaleInput, inputRoiImage, output);
             }
 
             if (_trackStarted)

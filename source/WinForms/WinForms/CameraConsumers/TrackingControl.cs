@@ -88,8 +88,8 @@ namespace PiCamCV.WinForms.CameraConsumers
 
             if (_readyRectangle != Rectangle.Empty)
             {
-                input.ObjectOfInterest = _readyRectangle;
-                input.StartNewTrack = true;
+                input.Config.ObjectOfInterest = _readyRectangle;
+                input.Config.StartNewTrack = true;
                 _readyRectangle = Rectangle.Empty;
             }
 
@@ -114,8 +114,8 @@ namespace PiCamCV.WinForms.CameraConsumers
 
             if (_readyRectangle != Rectangle.Empty)
             {
-                input.ObjectOfInterest = _readyRectangle;
-                input.StartNewTrack = true;
+                input.Config.ObjectOfInterest = _readyRectangle;
+                input.Config.StartNewTrack = true;
                 _readyRectangle = Rectangle.Empty;
             }
 

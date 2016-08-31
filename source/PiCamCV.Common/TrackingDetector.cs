@@ -15,11 +15,17 @@ namespace PiCamCV.Common
         public Rectangle ObjectOfInterest { get; set; }
     }
 
-    public class TrackingInput : CameraProcessInput
+    public class TrackingConfig
     {
+
         public bool StartNewTrack { get; set; }
 
         public Rectangle ObjectOfInterest { get; set; }
+    }
+
+    public class TrackingInput : CameraProcessInput
+    {
+        public TrackingConfig Config { get; set; }
     }
 
     public class TrackingDetector : CameraProcessor<TrackingInput, TrackingOutput>
@@ -37,10 +43,7 @@ namespace PiCamCV.Common
 
         private void Reset()
         {
-            if (_tracker != null)
-            {
-                _tracker.Dispose();
-            }
+            _tracker?.Dispose();
             _tracker = new Tracker(TrackerType);
         }
         
@@ -49,10 +52,10 @@ namespace PiCamCV.Common
         {
             Rectangle boundingBox = Rectangle.Empty;
 
-            if (input.StartNewTrack)
+            if (input.Config.StartNewTrack)
             {
                 Reset();
-                _tracker.Init(input.Captured, input.ObjectOfInterest);
+                _tracker.Init(input.Captured, input.Config.ObjectOfInterest);
                 Log.InfoFormat("Starting tracking");
             }
             else if (_tracker != null)
