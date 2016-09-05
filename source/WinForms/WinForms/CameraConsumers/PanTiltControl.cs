@@ -235,6 +235,11 @@ namespace PiCamCV.WinForms.CameraConsumers
                 {
                     var multimodeOutput = _multimodePanTiltController.Process(input);
                     output = multimodeOutput;
+
+                    if (output.Target != Point.Empty)
+                    {
+                        DrawReticle(bgrImage, output.Target, Color.Yellow);
+                    }
                 }
 
                 if (output != null)
@@ -245,7 +250,6 @@ namespace PiCamCV.WinForms.CameraConsumers
                     }
                     else
                     {
-
                         statusAccumulation.AppendFormat(", tracking took {0}", output.Elapsed.ToHumanReadable());
                     }
                     NotifyStatus(statusAccumulation.ToString());

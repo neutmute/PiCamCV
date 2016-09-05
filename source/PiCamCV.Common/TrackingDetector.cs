@@ -26,6 +26,11 @@ namespace PiCamCV.Common
     public class TrackingInput : CameraProcessInput
     {
         public TrackingConfig Config { get; set; }
+
+        public TrackingInput()
+        {
+            Config = new TrackingConfig();
+        }
     }
 
     public class TrackingDetector : CameraProcessor<TrackingInput, TrackingOutput>
