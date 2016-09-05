@@ -95,8 +95,8 @@ namespace PiCamCV.Common
         
         protected override void DisposeObject()
         {
-            _histogram.Dispose();
-            _matBackProjectionMask.Dispose();
+            _histogram?.Dispose();
+            _matBackProjectionMask?.Dispose();
             base.DisposeObject();
         }
 

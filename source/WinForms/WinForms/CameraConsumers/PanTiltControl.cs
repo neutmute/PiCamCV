@@ -19,6 +19,7 @@ using PiCamCV.ConsoleApp.Runners.PanTilt;
 using PiCamCV.Interfaces;
 using PiCamCV.WinForms.ExtensionMethods;
 using RPi.Pwm;
+using CommandType = PiCamCV.Common.PanTilt.Controllers.CommandType;
 
 namespace PiCamCV.WinForms.CameraConsumers
 {
@@ -336,6 +337,20 @@ namespace PiCamCV.WinForms.CameraConsumers
             var newSize = new Size(newWidth, newHeight);
             groupBoxCaptured.Size = newSize;
             groupBoxFiltered.Size = newSize;
+        }
+
+        private void btnMultimodeCommand_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            switch (e.KeyChar)
+            {
+                case 'f':
+                    _multimodePanTiltController.CommandQueue.Enqueue(PanTiltCommand.Factory(CommandType.CommenceFaceTrack));
+                    break;
+                case 'r':
+                    _multimodePanTiltController.CommandQueue.Enqueue(PanTiltCommand.Factory(CommandType.Recenter));
+                    break;
+            }
+            e.Handled = true;
         }
     }
 }

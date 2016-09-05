@@ -20,6 +20,13 @@ namespace PiCamCV.Common.PanTilt.MoveStrategies
         {
             var readingsRepository = new CalibrationReadingsRepository();
             var readings = readingsRepository.Read();
+
+            if (readings == null)
+            {
+                Log.WarnFormat("No calibration readings found for pan tilt");
+                readings = new PanTiltCalibrationReadings();
+            }
+
             if (!readings.ContainsKey(captureConfig.Resolution))
             {
                 readings.Add(captureConfig.Resolution, new AxesCalibrationReadings());

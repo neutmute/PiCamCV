@@ -41,37 +41,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
             return command;
         }
     }
-
-    //public class ResetTo
-
-    //public class FakeServo : IServoMotor
-    //{
-    //    public decimal CurrentPercent { get; }
-    //    public int CurrentPwm { get; }
-
-    //    public FakeServo()
-    //    {
-    //        CurrentPwm
-    //    }
-
-    //    public bool MoveTo(decimal percent)
-    //    {
-    //        // noop
-    //    }
-    //}
-
-    //public class FakePanTiltMech : IPanTiltMechanism
-    //{
-    //    public IServoMotor PanServo { get; }
-    //    public IServoMotor TiltServo { get; }
-
-    //    public FakePanTiltMech()
-    //    {
-    //        PanServo = new ServoMotor();
-    //    }
-    //}
-
-
+    
     public class MultimodePanTiltController : CameraBasedPanTiltController<CameraPanTiltProcessOutput>
     {
         public ProcessingMode State { get; set; }
@@ -90,31 +60,41 @@ namespace PiCamCV.Common.PanTilt.Controllers
         public MultimodePanTiltController(IPanTiltMechanism panTiltMech, CaptureConfig captureConfig, IScreen screen) : base(panTiltMech, captureConfig)
         {
             CommandQueue = new Queue<PanTiltCommand>();
+            _screen = screen;
             _faceTrackingController = new FaceTrackingPanTiltController(panTiltMech, captureConfig);
             _camshiftTrackingController = new CamshiftPanTiltController(panTiltMech, captureConfig);
             screen.Clear();
             StateToFaceDetect();
+
+            _lastFaceTrack = new FaceTrackingPanTiltOutput();
         }
 
         protected override CameraPanTiltProcessOutput DoProcess(CameraProcessInput input)
         {
             ActionCommand();
-
+            var output = new CameraPanTiltProcessOutput();
             switch (State)
             {
                 case ProcessingMode.FaceDetection:
                     var faceTrackOutput = _faceTrackingController.Process(input);
+
+                    if (!_lastFaceTrack.IsDetected && faceTrackOutput.IsDetected)
+                    {
+                        _screen.WriteLine("Face detected");
+                    }
 
                     if (!faceTrackOutput.IsDetected && _lastFaceTrack.IsDetected)
                     {
                         _screen.WriteLine("Switching to Camshift");
                         // camshift on last known position
                         State = ProcessingMode.CamshiftTrack;
+                        _camshiftTrackingController.TrackConfig = new TrackingConfig();
                         _camshiftTrackingController.TrackConfig.ObjectOfInterest = _lastFaceTrack.Faces.First().Region;
                         _camshiftTrackingController.TrackConfig.StartNewTrack = true;
                     }
 
                     _lastFaceTrack = faceTrackOutput;
+                    output = faceTrackOutput;
                     break;
 
                 case ProcessingMode.CamshiftTrack:
@@ -124,13 +104,15 @@ namespace PiCamCV.Common.PanTilt.Controllers
                     {
                         StateToFaceDetect();
                     }
+
+                    output = camshiftOutput;
                     break;
 
                 case ProcessingMode.ObjectDetect:
                     throw new NotImplementedException();
             }
 
-            return null;
+            return output;
         }
 
         private void StateToFaceDetect()

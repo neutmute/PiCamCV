@@ -67,6 +67,7 @@
             this.imageBoxCaptured = new Emgu.CV.UI.ImageBox();
             this.groupBoxFiltered = new System.Windows.Forms.GroupBox();
             this.imageBoxFiltered = new Emgu.CV.UI.ImageBox();
+            this.btnMultimodeCommand = new System.Windows.Forms.TextBox();
             this.groupBoxControls.SuspendLayout();
             this.panelScreen.SuspendLayout();
             this.groupBoxView.SuspendLayout();
@@ -102,9 +103,9 @@
             // 
             this.panelScreen.Controls.Add(this.txtScreen);
             this.panelScreen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelScreen.Location = new System.Drawing.Point(3, 371);
+            this.panelScreen.Location = new System.Drawing.Point(3, 396);
             this.panelScreen.Name = "panelScreen";
-            this.panelScreen.Size = new System.Drawing.Size(265, 267);
+            this.panelScreen.Size = new System.Drawing.Size(265, 242);
             this.panelScreen.TabIndex = 9;
             // 
             // txtScreen
@@ -114,14 +115,14 @@
             this.txtScreen.Location = new System.Drawing.Point(0, 0);
             this.txtScreen.Multiline = true;
             this.txtScreen.Name = "txtScreen";
-            this.txtScreen.Size = new System.Drawing.Size(265, 267);
+            this.txtScreen.Size = new System.Drawing.Size(265, 242);
             this.txtScreen.TabIndex = 0;
             // 
             // groupBoxView
             // 
             this.groupBoxView.Controls.Add(this.sliderSize);
             this.groupBoxView.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBoxView.Location = new System.Drawing.Point(3, 290);
+            this.groupBoxView.Location = new System.Drawing.Point(3, 315);
             this.groupBoxView.Name = "groupBoxView";
             this.groupBoxView.Size = new System.Drawing.Size(265, 81);
             this.groupBoxView.TabIndex = 10;
@@ -151,7 +152,7 @@
             this.groupBoxCalibration.Controls.Add(this.btnToCsv);
             this.groupBoxCalibration.Controls.Add(this.btnCalibrate);
             this.groupBoxCalibration.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBoxCalibration.Location = new System.Drawing.Point(3, 236);
+            this.groupBoxCalibration.Location = new System.Drawing.Point(3, 261);
             this.groupBoxCalibration.Name = "groupBoxCalibration";
             this.groupBoxCalibration.Size = new System.Drawing.Size(265, 54);
             this.groupBoxCalibration.TabIndex = 8;
@@ -190,6 +191,7 @@
             // 
             // groupBoxControllers
             // 
+            this.groupBoxControllers.Controls.Add(this.btnMultimodeCommand);
             this.groupBoxControllers.Controls.Add(this.chkMultimode);
             this.groupBoxControllers.Controls.Add(this.labelMotoinSettle);
             this.groupBoxControllers.Controls.Add(this.spinEditMotionSettle);
@@ -201,7 +203,7 @@
             this.groupBoxControllers.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBoxControllers.Location = new System.Drawing.Point(3, 119);
             this.groupBoxControllers.Name = "groupBoxControllers";
-            this.groupBoxControllers.Size = new System.Drawing.Size(265, 117);
+            this.groupBoxControllers.Size = new System.Drawing.Size(265, 142);
             this.groupBoxControllers.TabIndex = 6;
             this.groupBoxControllers.TabStop = false;
             this.groupBoxControllers.Text = "Controllers";
@@ -494,6 +496,14 @@
             this.imageBoxFiltered.TabIndex = 7;
             this.imageBoxFiltered.TabStop = false;
             // 
+            // btnMultimodeCommand
+            // 
+            this.btnMultimodeCommand.Location = new System.Drawing.Point(118, 87);
+            this.btnMultimodeCommand.Name = "btnMultimodeCommand";
+            this.btnMultimodeCommand.Size = new System.Drawing.Size(83, 20);
+            this.btnMultimodeCommand.TabIndex = 15;
+            this.btnMultimodeCommand.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.btnMultimodeCommand_KeyPress);
+            // 
             // PanTiltControl
             // 
             this.Controls.Add(this.panelFlowRhs);
@@ -554,5 +564,6 @@
         private System.Windows.Forms.NumericUpDown spinEditMotionSettle;
         private System.Windows.Forms.Label labelMotoinSettle;
         private System.Windows.Forms.CheckBox chkMultimode;
+        private System.Windows.Forms.TextBox btnMultimodeCommand;
     }
 }
