@@ -8,6 +8,7 @@ using Common.Logging;
 using Emgu.CV;
 using Kraken.Core;
 using PiCamCV.Common;
+using PiCamCV.Common.PanTilt.Controllers;
 using PiCamCV.ConsoleApp.Runners;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 using PiCamCV.Interfaces;
@@ -111,6 +112,11 @@ namespace PiCamCV.ConsoleApp
                 case Mode.pantiltface:
                     var controllerF = new FaceTrackingPanTiltController(panTiltMech, captureConfig);
                     runner = new CameraBasedPanTiltRunner(panTiltMech, capture, controllerF, screen);
+                    break;
+
+                case Mode.pantiltmultimode:
+                    var controllerMultimode = new MultimodePanTiltController(panTiltMech, captureConfig, screen);
+                    runner = new CameraBasedPanTiltRunner(panTiltMech, capture, controllerMultimode, screen);
                     break;
 
                 case Mode.pantiltcolour:

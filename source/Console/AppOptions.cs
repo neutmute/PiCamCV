@@ -21,6 +21,7 @@ namespace PiCamCV.ConsoleApp
         pantiltjoy,
         pantiltface,
         pantiltcolour,
+        pantiltmultimode,
         noop
     }
 

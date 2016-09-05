@@ -23,10 +23,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
         public MotionSection TargetedMotion { get;set;}
         public Image<Bgr, byte> ForegroundImage { get; set; }
 
-        public bool IsDetected
-        {
-            get { return MotionSections.Count > 0; }
-        }
+        public bool IsDetected => MotionSections.Count > 0;
 
         public MotionTrackingPanTiltOutput()
         {

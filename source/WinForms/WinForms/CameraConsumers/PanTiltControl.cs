@@ -30,6 +30,7 @@ namespace PiCamCV.WinForms.CameraConsumers
         private MotionTrackingPanTiltController _motionTrackingController;
         private ColourTrackingPanTiltController _colourTrackingController;
         private CalibratingPanTiltController _calibratingPanTiltController;
+        private MultimodePanTiltController _multimodePanTiltController;
         private readonly IColourSettingsRepository _colourSettingsRepo;
 
         private readonly IMotionDetectSettingsRepository _motionSettingsRepo;
@@ -91,12 +92,13 @@ namespace PiCamCV.WinForms.CameraConsumers
             _faceTrackingController = new FaceTrackingPanTiltController(PanTiltMechanism, _captureConfig);
             _colourTrackingController = new ColourTrackingPanTiltController(PanTiltMechanism, _captureConfig);
             _motionTrackingController = new MotionTrackingPanTiltController(PanTiltMechanism, _captureConfig, screen);
+            _multimodePanTiltController = new MultimodePanTiltController(PanTiltMechanism, _captureConfig, screen);
 
             _calibratingPanTiltController = new CalibratingPanTiltController(PanTiltMechanism, new CalibrationReadingsRepository(), screen);
             _colourTrackingController.Settings = colorSettings;
             _calibratingPanTiltController.Settings = colorSettings;
             _motionTrackingController.Settings = motionSettings;
-
+            
             _calibratingPanTiltController.GetCameraCapture = PullImage;
             _calibratingPanTiltController.WaitStep = CalibrationWaitStep;
             _calibratingPanTiltController.ColourCaptured += _calibratingPanTiltController_ColourCaptured;
@@ -226,6 +228,12 @@ namespace PiCamCV.WinForms.CameraConsumers
 
                     statusAccumulation.AppendFormat("{0} motions", result.MotionSections.Count);
                     imageBoxFiltered.Image = result.ForegroundImage;
+                }
+
+                if (chkMultimode.Checked)
+                {
+                    var multimodeOutput = _multimodePanTiltController.Process(input);
+                    output = multimodeOutput;
                 }
 
                 if (output != null)

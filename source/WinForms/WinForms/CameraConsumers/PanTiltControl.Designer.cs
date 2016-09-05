@@ -32,15 +32,18 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBoxControls = new System.Windows.Forms.GroupBox();
-            this.groupBoxView = new System.Windows.Forms.GroupBox();
-            this.sliderSize = new PiCamCV.WinForms.UserControls.SliderControl();
             this.panelScreen = new System.Windows.Forms.Panel();
             this.txtScreen = new System.Windows.Forms.TextBox();
+            this.groupBoxView = new System.Windows.Forms.GroupBox();
+            this.sliderSize = new PiCamCV.WinForms.UserControls.SliderControl();
             this.groupBoxCalibration = new System.Windows.Forms.GroupBox();
             this.btnInterpolate = new System.Windows.Forms.Button();
             this.btnToCsv = new System.Windows.Forms.Button();
             this.btnCalibrate = new System.Windows.Forms.Button();
             this.groupBoxControllers = new System.Windows.Forms.GroupBox();
+            this.chkMultimode = new System.Windows.Forms.CheckBox();
+            this.labelMotoinSettle = new System.Windows.Forms.Label();
+            this.spinEditMotionSettle = new System.Windows.Forms.NumericUpDown();
             this.chkBoxMotionTracking = new System.Windows.Forms.CheckBox();
             this.labelServoSettle = new System.Windows.Forms.Label();
             this.spinEditServoSettle = new System.Windows.Forms.NumericUpDown();
@@ -64,13 +67,12 @@
             this.imageBoxCaptured = new Emgu.CV.UI.ImageBox();
             this.groupBoxFiltered = new System.Windows.Forms.GroupBox();
             this.imageBoxFiltered = new Emgu.CV.UI.ImageBox();
-            this.spinEditMotionSettle = new System.Windows.Forms.NumericUpDown();
-            this.labelMotoinSettle = new System.Windows.Forms.Label();
             this.groupBoxControls.SuspendLayout();
-            this.groupBoxView.SuspendLayout();
             this.panelScreen.SuspendLayout();
+            this.groupBoxView.SuspendLayout();
             this.groupBoxCalibration.SuspendLayout();
             this.groupBoxControllers.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spinEditMotionSettle)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinEditServoSettle)).BeginInit();
             this.groupBoxReticle.SuspendLayout();
             this.groupBoxMoveTo.SuspendLayout();
@@ -79,13 +81,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).BeginInit();
             this.groupBoxFiltered.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxFiltered)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spinEditMotionSettle)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxControls
             // 
-            this.groupBoxControls.Controls.Add(this.groupBoxView);
             this.groupBoxControls.Controls.Add(this.panelScreen);
+            this.groupBoxControls.Controls.Add(this.groupBoxView);
             this.groupBoxControls.Controls.Add(this.groupBoxCalibration);
             this.groupBoxControls.Controls.Add(this.groupBoxControllers);
             this.groupBoxControls.Controls.Add(this.groupBoxReticle);
@@ -97,11 +98,30 @@
             this.groupBoxControls.TabIndex = 1;
             this.groupBoxControls.TabStop = false;
             // 
+            // panelScreen
+            // 
+            this.panelScreen.Controls.Add(this.txtScreen);
+            this.panelScreen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelScreen.Location = new System.Drawing.Point(3, 371);
+            this.panelScreen.Name = "panelScreen";
+            this.panelScreen.Size = new System.Drawing.Size(265, 267);
+            this.panelScreen.TabIndex = 9;
+            // 
+            // txtScreen
+            // 
+            this.txtScreen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtScreen.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtScreen.Location = new System.Drawing.Point(0, 0);
+            this.txtScreen.Multiline = true;
+            this.txtScreen.Name = "txtScreen";
+            this.txtScreen.Size = new System.Drawing.Size(265, 267);
+            this.txtScreen.TabIndex = 0;
+            // 
             // groupBoxView
             // 
             this.groupBoxView.Controls.Add(this.sliderSize);
             this.groupBoxView.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBoxView.Location = new System.Drawing.Point(3, 264);
+            this.groupBoxView.Location = new System.Drawing.Point(3, 290);
             this.groupBoxView.Name = "groupBoxView";
             this.groupBoxView.Size = new System.Drawing.Size(265, 81);
             this.groupBoxView.TabIndex = 10;
@@ -125,32 +145,13 @@
             this.sliderSize.Value = 100;
             this.sliderSize.ValueChanged += new System.EventHandler(this.sliderSize_ValueChanged);
             // 
-            // panelScreen
-            // 
-            this.panelScreen.Controls.Add(this.txtScreen);
-            this.panelScreen.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelScreen.Location = new System.Drawing.Point(3, 466);
-            this.panelScreen.Name = "panelScreen";
-            this.panelScreen.Size = new System.Drawing.Size(265, 172);
-            this.panelScreen.TabIndex = 9;
-            // 
-            // txtScreen
-            // 
-            this.txtScreen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtScreen.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtScreen.Location = new System.Drawing.Point(0, 0);
-            this.txtScreen.Multiline = true;
-            this.txtScreen.Name = "txtScreen";
-            this.txtScreen.Size = new System.Drawing.Size(265, 172);
-            this.txtScreen.TabIndex = 0;
-            // 
             // groupBoxCalibration
             // 
             this.groupBoxCalibration.Controls.Add(this.btnInterpolate);
             this.groupBoxCalibration.Controls.Add(this.btnToCsv);
             this.groupBoxCalibration.Controls.Add(this.btnCalibrate);
             this.groupBoxCalibration.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBoxCalibration.Location = new System.Drawing.Point(3, 210);
+            this.groupBoxCalibration.Location = new System.Drawing.Point(3, 236);
             this.groupBoxCalibration.Name = "groupBoxCalibration";
             this.groupBoxCalibration.Size = new System.Drawing.Size(265, 54);
             this.groupBoxCalibration.TabIndex = 8;
@@ -189,6 +190,7 @@
             // 
             // groupBoxControllers
             // 
+            this.groupBoxControllers.Controls.Add(this.chkMultimode);
             this.groupBoxControllers.Controls.Add(this.labelMotoinSettle);
             this.groupBoxControllers.Controls.Add(this.spinEditMotionSettle);
             this.groupBoxControllers.Controls.Add(this.chkBoxMotionTracking);
@@ -199,10 +201,57 @@
             this.groupBoxControllers.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBoxControllers.Location = new System.Drawing.Point(3, 119);
             this.groupBoxControllers.Name = "groupBoxControllers";
-            this.groupBoxControllers.Size = new System.Drawing.Size(265, 91);
+            this.groupBoxControllers.Size = new System.Drawing.Size(265, 117);
             this.groupBoxControllers.TabIndex = 6;
             this.groupBoxControllers.TabStop = false;
             this.groupBoxControllers.Text = "Controllers";
+            // 
+            // chkMultimode
+            // 
+            this.chkMultimode.AutoSize = true;
+            this.chkMultimode.Location = new System.Drawing.Point(8, 88);
+            this.chkMultimode.Name = "chkMultimode";
+            this.chkMultimode.Size = new System.Drawing.Size(74, 17);
+            this.chkMultimode.TabIndex = 14;
+            this.chkMultimode.Text = "Multimode";
+            this.chkMultimode.UseVisualStyleBackColor = true;
+            // 
+            // labelMotoinSettle
+            // 
+            this.labelMotoinSettle.AutoSize = true;
+            this.labelMotoinSettle.Location = new System.Drawing.Point(115, 67);
+            this.labelMotoinSettle.Name = "labelMotoinSettle";
+            this.labelMotoinSettle.Size = new System.Drawing.Size(91, 13);
+            this.labelMotoinSettle.TabIndex = 13;
+            this.labelMotoinSettle.Text = "Motion Settle (ms)";
+            // 
+            // spinEditMotionSettle
+            // 
+            this.spinEditMotionSettle.Increment = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.spinEditMotionSettle.Location = new System.Drawing.Point(208, 65);
+            this.spinEditMotionSettle.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.spinEditMotionSettle.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.spinEditMotionSettle.Name = "spinEditMotionSettle";
+            this.spinEditMotionSettle.Size = new System.Drawing.Size(51, 20);
+            this.spinEditMotionSettle.TabIndex = 12;
+            this.spinEditMotionSettle.Value = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.spinEditMotionSettle.ValueChanged += new System.EventHandler(this.spinEditMotionSettle_ValueChanged);
             // 
             // chkBoxMotionTracking
             // 
@@ -222,7 +271,6 @@
             this.labelServoSettle.Size = new System.Drawing.Size(87, 13);
             this.labelServoSettle.TabIndex = 10;
             this.labelServoSettle.Text = "Servo Settle (ms)";
-            
             // 
             // spinEditServoSettle
             // 
@@ -432,7 +480,7 @@
             this.groupBoxFiltered.Controls.Add(this.imageBoxFiltered);
             this.groupBoxFiltered.Location = new System.Drawing.Point(3, 270);
             this.groupBoxFiltered.Name = "groupBoxFiltered";
-            this.groupBoxFiltered.Size = new System.Drawing.Size(521, 276);
+            this.groupBoxFiltered.Size = new System.Drawing.Size(574, 276);
             this.groupBoxFiltered.TabIndex = 4;
             this.groupBoxFiltered.TabStop = false;
             this.groupBoxFiltered.Text = "Filtered";
@@ -442,46 +490,9 @@
             this.imageBoxFiltered.Dock = System.Windows.Forms.DockStyle.Fill;
             this.imageBoxFiltered.Location = new System.Drawing.Point(3, 16);
             this.imageBoxFiltered.Name = "imageBoxFiltered";
-            this.imageBoxFiltered.Size = new System.Drawing.Size(515, 257);
+            this.imageBoxFiltered.Size = new System.Drawing.Size(568, 257);
             this.imageBoxFiltered.TabIndex = 7;
             this.imageBoxFiltered.TabStop = false;
-            // 
-            // spinEditMotionSettle
-            // 
-            this.spinEditMotionSettle.Increment = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.spinEditMotionSettle.Location = new System.Drawing.Point(208, 65);
-            this.spinEditMotionSettle.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.spinEditMotionSettle.Minimum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.spinEditMotionSettle.Name = "spinEditMotionSettle";
-            this.spinEditMotionSettle.Size = new System.Drawing.Size(51, 20);
-            this.spinEditMotionSettle.TabIndex = 12;
-            this.spinEditMotionSettle.Value = new decimal(new int[] {
-            300,
-            0,
-            0,
-            0});
-            this.spinEditMotionSettle.ValueChanged += new System.EventHandler(this.spinEditMotionSettle_ValueChanged);
-            // 
-            // labelMotoinSettle
-            // 
-            this.labelMotoinSettle.AutoSize = true;
-            this.labelMotoinSettle.Location = new System.Drawing.Point(115, 67);
-            this.labelMotoinSettle.Name = "labelMotoinSettle";
-            this.labelMotoinSettle.Size = new System.Drawing.Size(91, 13);
-            this.labelMotoinSettle.TabIndex = 13;
-            this.labelMotoinSettle.Text = "Motion Settle (ms)";
             // 
             // PanTiltControl
             // 
@@ -492,12 +503,13 @@
             this.Size = new System.Drawing.Size(955, 641);
             this.Load += new System.EventHandler(this.PanTiltControl_Load);
             this.groupBoxControls.ResumeLayout(false);
-            this.groupBoxView.ResumeLayout(false);
             this.panelScreen.ResumeLayout(false);
             this.panelScreen.PerformLayout();
+            this.groupBoxView.ResumeLayout(false);
             this.groupBoxCalibration.ResumeLayout(false);
             this.groupBoxControllers.ResumeLayout(false);
             this.groupBoxControllers.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spinEditMotionSettle)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinEditServoSettle)).EndInit();
             this.groupBoxReticle.ResumeLayout(false);
             this.groupBoxReticle.PerformLayout();
@@ -508,7 +520,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).EndInit();
             this.groupBoxFiltered.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxFiltered)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spinEditMotionSettle)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -542,5 +553,6 @@
         private UserControls.SliderControl sliderSize;
         private System.Windows.Forms.NumericUpDown spinEditMotionSettle;
         private System.Windows.Forms.Label labelMotoinSettle;
+        private System.Windows.Forms.CheckBox chkMultimode;
     }
 }
