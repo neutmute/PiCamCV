@@ -180,10 +180,10 @@ namespace PiCamCV.Common
         {
             base.DisposeObject();
 
-            _segMask.Dispose();
-            _forgroundMask.Dispose();
-            _motionHistory.Dispose();
-            _foregroundDetector.Dispose();
+            _segMask?.Dispose();
+            _forgroundMask?.Dispose();
+            _motionHistory?.Dispose();
+            _foregroundDetector?.Dispose();
         }
 
         protected override MotionDetectorOutput DoProcess(MotionDetectorInput input)
