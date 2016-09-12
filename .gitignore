@@ -184,3 +184,4 @@ docs/Thumbs.db
 docs/presentations/Thumbs.db
 *.dll
 lib/emgucv/*.XML
+.vs/
