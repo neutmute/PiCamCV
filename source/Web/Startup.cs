@@ -12,6 +12,7 @@ namespace PiCam.Web
     {
         public void Configuration(IAppBuilder app)
         {
+            app.MapSignalR();
         }
     }
 }

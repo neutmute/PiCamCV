@@ -59,6 +59,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "source\UnitTes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "source\Web\Web.csproj", "{9A25DF8F-7A09-41A6-8168-C0F72B5F2DAD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Client", "source\Web.Client\Web.Client.csproj", "{EB0616D4-7DC9-449C-864B-A477A52419C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -310,6 +312,24 @@ Global
 		{9A25DF8F-7A09-41A6-8168-C0F72B5F2DAD}.UnixDebug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{9A25DF8F-7A09-41A6-8168-C0F72B5F2DAD}.UnixDebug|x86.ActiveCfg = Debug|Any CPU
 		{9A25DF8F-7A09-41A6-8168-C0F72B5F2DAD}.UnixDebug|x86.Build.0 = Debug|Any CPU
+		{EB0616D4-7DC9-449C-864B-A477A52419C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB0616D4-7DC9-449C-864B-A477A52419C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB0616D4-7DC9-449C-864B-A477A52419C5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EB0616D4-7DC9-449C-864B-A477A52419C5}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EB0616D4-7DC9-449C-864B-A477A52419C5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EB0616D4-7DC9-449C-864B-A477A52419C5}.Debug|x86.Build.0 = Debug|Any CPU
+		{EB0616D4-7DC9-449C-864B-A477A52419C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB0616D4-7DC9-449C-864B-A477A52419C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB0616D4-7DC9-449C-864B-A477A52419C5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EB0616D4-7DC9-449C-864B-A477A52419C5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{EB0616D4-7DC9-449C-864B-A477A52419C5}.Release|x86.ActiveCfg = Release|Any CPU
+		{EB0616D4-7DC9-449C-864B-A477A52419C5}.Release|x86.Build.0 = Release|Any CPU
+		{EB0616D4-7DC9-449C-864B-A477A52419C5}.UnixDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB0616D4-7DC9-449C-864B-A477A52419C5}.UnixDebug|Any CPU.Build.0 = Debug|Any CPU
+		{EB0616D4-7DC9-449C-864B-A477A52419C5}.UnixDebug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EB0616D4-7DC9-449C-864B-A477A52419C5}.UnixDebug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EB0616D4-7DC9-449C-864B-A477A52419C5}.UnixDebug|x86.ActiveCfg = Debug|Any CPU
+		{EB0616D4-7DC9-449C-864B-A477A52419C5}.UnixDebug|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
