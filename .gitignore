@@ -185,3 +185,7 @@ docs/presentations/Thumbs.db
 *.dll
 lib/emgucv/*.XML
 .vs/
+source/Web/assets/lib/
+source/Web/typescript/typings/
+source/Web/.tscache/
+source/Web/assets/app-ts.*

@@ -1,0 +1,8 @@
+﻿{
+    "filesGlob": [
+        "typescript/**/*.ts"
+    ],
+    "files": [
+        "typescript/typings/index.d.ts"
+    ]
+}

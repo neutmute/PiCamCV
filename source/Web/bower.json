@@ -1,5 +1,14 @@
 {
-  "name": "ASP.NET",
+  "name": "PiCamCV.Web.PC",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "angular": "1.4.4",
+    "angular-resource": "1.4.4",
+    "angular-route": "1.4.4",
+    "angular-sanitize": "1.4.4",
+    "toastr": "2.1.1"
+  },
+  "resolutions": {
+    "angular": ">=1.3.0"
+  }
 }
