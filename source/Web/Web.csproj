@@ -168,7 +168,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Sockets\CameraHub.cs" />
+    <Compile Include="Hubs\CameraHub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -207,6 +207,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="typescript\controllers\cameraController.ts" />
     <TypeScriptCompile Include="typescript\home.ts" />
+    <TypeScriptCompile Include="typescript\models\models.ts" />
     <TypeScriptCompile Include="typescript\services\IErrorHttpInterceptorService.ts" />
     <TypeScriptCompile Include="typescript\services\NotifierService.ts" />
     <TypeScriptCompile Include="typescript\zzApp.ts" />
