@@ -189,3 +189,4 @@ source/Web/assets/lib/
 source/Web/typescript/typings/
 source/Web/.tscache/
 source/Web/assets/app-ts.*
+source/Web/tscommand-*.tmp.txt

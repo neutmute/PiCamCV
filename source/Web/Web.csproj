@@ -194,18 +194,22 @@
     <Content Include="tsconfig.json" />
     <Content Include="typings.json" />
     <Content Include="assets\**\*.*" />
+    <Content Include="typescript\typings\**\*.*" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\" />
-    <Folder Include="assets\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="typescript\controllers\cameraController.ts" />
     <TypeScriptCompile Include="typescript\home.ts" />
+    <TypeScriptCompile Include="typescript\services\IErrorHttpInterceptorService.ts" />
+    <TypeScriptCompile Include="typescript\services\NotifierService.ts" />
+    <TypeScriptCompile Include="typescript\zzApp.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
