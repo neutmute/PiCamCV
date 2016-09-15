@@ -74,6 +74,10 @@ namespace PiCamCV.Interfaces
          */
         public static CaptureConfig GetCaptureProperties(this ICaptureGrab capture)
         {
+            if (capture == null)
+            {
+                return null;
+            }
             var settings = new CaptureConfig();
             settings.Resolution.Height = Convert.ToInt32(capture.GetCaptureProperty(CapProp.FrameHeight));
             settings.Resolution.Width = Convert.ToInt32(capture.GetCaptureProperty(CapProp.FrameWidth));

@@ -35,7 +35,7 @@ namespace Web.Client
                 
                 // POST using the BSON formatter.
                 MediaTypeFormatter bsonFormatter = new BsonMediaTypeFormatter();
-                var result = await client.PostAsync("api/pi", image, bsonFormatter);
+                var result = await client.PostAsync("api/pi/PostImage", image, bsonFormatter);
                 result.EnsureSuccessStatusCode();
             }
         }
