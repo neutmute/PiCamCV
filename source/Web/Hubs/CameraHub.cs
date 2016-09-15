@@ -3,16 +3,10 @@ using System.Threading.Tasks;
 using System.Web;
 using Common.Logging;
 using Microsoft.AspNet.SignalR;
+using PiCamCV.Common.PanTilt.Controllers;
 
 namespace Web
 {
-    public enum PanTiltDirection
-    {
-        Unknown = 0,
-        Pan,
-        Tilt
-    }
-
     public interface ICameraHub
     {
     }
@@ -51,7 +45,7 @@ namespace Web
             Clients.All.ImageReady();
         }
 
-        public void MovePanTilt(PanTiltDirection direction, int units)
+        public void MovePanTilt(PanTiltAxis axis, int units)
         {
             Log.Info("Move request");
         }

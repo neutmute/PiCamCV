@@ -146,12 +146,7 @@ namespace PiCamCV.WinForms.CameraConsumers
                 PanTiltMechanism = new PanTiltMechanism(pwmDevice);
             }
         }
-
-        private void WriteText(Image<Bgr, byte> image, int bottom, string message)
-        {
-            image.Draw(message, new Point(0, bottom), Emgu.CV.CvEnum.FontFace.HersheySimplex, 0.4, new Bgr(Color.White));
-        }
-
+        
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
             if (_calibrationInProgress)

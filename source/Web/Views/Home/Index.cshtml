@@ -1,19 +1,21 @@
 ﻿
-<div class="row" id ="ngController" ng-controller="cameraController as vm">
-    <div class="col-md-4">
-        <h2>PiCamCV</h2>
-        [Insert camera image here]
-    </div>
-    <div class="col-md-4">
-        [Insert buttons here]
 
-        <button type="button" class="btn btn-primary" ng-click="vm.up()">Up</button>
-        <button type="button" class="btn btn-primary" ng-click="vm.down()">Down</button>
-        <button type="button" class="btn btn-primary" ng-click="vm.left()">Left</button>
-        <button type="button" class="btn btn-primary" ng-click="vm.right()">Right</button>
+<div id="ngController" ng-controller="cameraController as vm">
+    <div class="row">
+        <div class="col-md-4">
+            <h2>PiCamCV</h2>
+            [Insert camera image here]
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <button type="button" class="btn btn-primary" ng-click="vm.up()">Up</button>
+            <button type="button" class="btn btn-primary" ng-click="vm.down()">Down</button>
+            <button type="button" class="btn btn-primary" ng-click="vm.left()">Left</button>
+            <button type="button" class="btn btn-primary" ng-click="vm.right()">Right</button>
+        </div>
     </div>
 </div>
-
 @section scripts {
     <script src="~/Scripts/jquery.signalR-2.2.1.min.js"></script>
     <script src="~/signalr/hubs"></script>

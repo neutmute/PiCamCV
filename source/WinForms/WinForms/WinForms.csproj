@@ -113,6 +113,12 @@
     <Compile Include="CameraConsumers\MotionDetectionControl.Designer.cs">
       <DependentUpon>MotionDetectionControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="CameraConsumers\ServerProcessingControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CameraConsumers\ServerProcessingControl.Designer.cs">
+      <DependentUpon>ServerProcessingControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="CameraConsumers\ShapeDetectionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -173,6 +179,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CameraConsumers\PanTiltControl.resx">
       <DependentUpon>PanTiltControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CameraConsumers\ServerProcessingControl.resx">
+      <DependentUpon>ServerProcessingControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CameraConsumers\ShapeDetectionControl.resx">
       <DependentUpon>ShapeDetectionControl.cs</DependentUpon>
@@ -246,6 +255,10 @@
     <ProjectReference Include="..\..\PiCamCV.Common\PiCamCV.Common.csproj">
       <Project>{233c04e5-2565-4e9c-ac8b-eec462268cf8}</Project>
       <Name>PiCamCV.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web.Client\Web.Client.csproj">
+      <Project>{eb0616d4-7dc9-449c-864b-a477a52419c5}</Project>
+      <Name>Web.Client</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

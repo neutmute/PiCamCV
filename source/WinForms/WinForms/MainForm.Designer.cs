@@ -61,6 +61,7 @@
             this.tabPageMotionDetection = new System.Windows.Forms.TabPage();
             this.tabPagePanTiltCalibration = new System.Windows.Forms.TabPage();
             this.tabPageTracking = new System.Windows.Forms.TabPage();
+            this.tabPageServerControl = new System.Windows.Forms.TabPage();
             this.panelTop.SuspendLayout();
             this.groupBoxRealTime.SuspendLayout();
             this.groupBoxPreCapture.SuspendLayout();
@@ -312,6 +313,7 @@
             this.tabControlMain.Controls.Add(this.tabPageMotionDetection);
             this.tabControlMain.Controls.Add(this.tabPagePanTiltCalibration);
             this.tabControlMain.Controls.Add(this.tabPageTracking);
+            this.tabControlMain.Controls.Add(this.tabPageServerControl);
             this.tabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlMain.Location = new System.Drawing.Point(0, 79);
             this.tabControlMain.Name = "tabControlMain";
@@ -393,6 +395,15 @@
             this.tabPageTracking.Text = "Tracking";
             this.tabPageTracking.UseVisualStyleBackColor = true;
             // 
+            // tabPageServerControl
+            // 
+            this.tabPageServerControl.Location = new System.Drawing.Point(4, 22);
+            this.tabPageServerControl.Name = "tabPageServerControl";
+            this.tabPageServerControl.Size = new System.Drawing.Size(1184, 411);
+            this.tabPageServerControl.TabIndex = 8;
+            this.tabPageServerControl.Text = "Server Control";
+            this.tabPageServerControl.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -452,6 +463,7 @@
         private System.Windows.Forms.TabPage tabPagePanTiltCalibration;
         private System.Windows.Forms.TabPage tabPageMotionDetection;
         private System.Windows.Forms.TabPage tabPageTracking;
+        private System.Windows.Forms.TabPage tabPageServerControl;
     }
 }
 

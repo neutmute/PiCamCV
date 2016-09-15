@@ -4,12 +4,16 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Common.Logging;
+using Emgu.CV;
+using Emgu.CV.Structure;
 
 namespace PiCam.Web.Controllers
 {
-    [Authorize]
-    public class ValuesController : ApiController
+    public class PiController : ApiController
     {
+        protected static ILog Log = LogManager.GetLogger< PiController>();
+
         // GET api/values
         public IEnumerable<string> Get()
         {
@@ -23,9 +27,17 @@ namespace PiCam.Web.Controllers
         }
 
         // POST api/values
-        public void Post([FromBody]string value)
+        public void PostImageBytes(byte[] imageBytes)
         {
+            Log.Info("Image bytes received");
         }
+
+        public void PostImage(Image<Bgr, byte> imageBytes)
+        {
+            Log.Info("Image bytes received");
+        }
+
+        
 
         // PUT api/values/5
         public void Put(int id, [FromBody]string value)

@@ -61,7 +61,6 @@ namespace PiCamCV.WinForms.CameraConsumers
 
         private void DoAutoThresholding(Mat frame)
         {
-            ThresholdSettings settings = null;
             if (_readyRectangle != Rectangle.Empty)
             {
                 _thresholdSelector.ErodeDilateIterations = (int)spinDilateIterations.Value;
