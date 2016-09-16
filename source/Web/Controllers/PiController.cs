@@ -7,12 +7,20 @@ using System.Web.Http;
 using Common.Logging;
 using Emgu.CV;
 using Emgu.CV.Structure;
+using Web;
 
 namespace PiCam.Web.Controllers
 {
     public class PiController : ApiController
     {
         protected static ILog Log = LogManager.GetLogger< PiController>();
+        private BrowserHub _browserHub;
+
+        public PiController(BrowserHub browserHub)
+        {
+            _browserHub = browserHub;
+        }
+
 
         // GET api/values
         //public IEnumerable<string> Get()
@@ -32,12 +40,14 @@ namespace PiCam.Web.Controllers
         public void PostImageBytes(byte[] imageBytes)
         {
             Log.Info("Image bytes received");
+            _browserHub.ImageReady();
         }
 
         [Route("api/pi/postImage")]
         public void PostImage(Image<Bgr, byte> imageBytes)
         {
             Log.Info("Image bytes received");
+            _browserHub.ImageReady();
         }
     }
 }
