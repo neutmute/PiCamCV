@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Web;
 using Autofac;
 using Autofac.Integration.SignalR;
+using PiCam.Web.Models;
 using Module = Autofac.Module;
 
 namespace Web.App_Start
@@ -14,6 +15,7 @@ namespace Web.App_Start
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterHubs(Assembly.GetExecutingAssembly());
+            builder.RegisterType<ImageCache>().SingleInstance();
         }
     }
 }

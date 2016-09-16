@@ -9,14 +9,23 @@ module App {
     export class CameraController {
 
         private _browserHub: IBrowserHubProxy;
-        moveUnits :number;
+        moveUnits: number;
+        imageUrl: string;
+        imageCounter:number;
 
         constructor(
             private $scope: ICameraControllerScope, private notifierService: Services.INotifierService
         ) {
             this._browserHub = (<any>$.connection).browserHub;
+            this.imageCounter = 0;
 
-            this._browserHub.client.imageReady = () => console.log("ImageReady!");
+            this._browserHub.client.imageReady = () => {
+                this.imageCounter++;
+                this.imageUrl = "/image?cacheBusterId=" + this.imageCounter;
+                $scope.$apply();
+                console.log("imagr!");
+            };
+
             this.moveUnits= 10;
 
             $.connection.hub.start().done(() => {

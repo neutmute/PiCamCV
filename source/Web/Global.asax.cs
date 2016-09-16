@@ -8,9 +8,11 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Autofac;
+using Autofac.Integration.Mvc;
 using Autofac.Integration.WebApi;
 using Emgu.CV;
 using Emgu.CV.Structure;
+using Web.App_Start;
 
 namespace PiCam.Web
 {
@@ -32,17 +34,27 @@ namespace PiCam.Web
 
             // Get your HttpConfiguration.
             var config = GlobalConfiguration.Configuration;
+            
+            builder.RegisterControllers(typeof(WebApiApplication).Assembly);
 
             // Register your Web API controllers.
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
 
             // OPTIONAL: Register the Autofac filter provider.
             builder.RegisterWebApiFilterProvider(config);
+            builder.RegisterModule(new WebModule());
 
             // Set the dependency resolver to be Autofac.
             var container = builder.Build();
-            config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
+          //config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
 
+            // Set the dependency resolver for Web API.
+            var webApiResolver = new AutofacWebApiDependencyResolver(container);
+            GlobalConfiguration.Configuration.DependencyResolver = webApiResolver;
+
+            // Set the dependency resolver for MVC.
+            var mvcResolver = new AutofacDependencyResolver(container);
+            DependencyResolver.SetResolver(mvcResolver);
         }
 
         /// <summary>
