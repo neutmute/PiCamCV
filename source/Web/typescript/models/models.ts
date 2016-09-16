@@ -10,7 +10,7 @@
         movePanTilt(plane: Direction, units: number): JQueryPromise<void>;
     }
     export interface IBrowserClient {
-        imageReady : () => void;
+        imageReady : (data:string) => void;
     }
     export interface IBrowserHubProxy {
         client: IBrowserClient;

@@ -19,9 +19,9 @@ module App {
             this._browserHub = (<any>$.connection).browserHub;
             this.imageCounter = 0;
 
-            this._browserHub.client.imageReady = () => {
+            this._browserHub.client.imageReady = (s) => {
                 this.imageCounter++;
-                this.imageUrl = "/image?cacheBusterId=" + this.imageCounter;
+                this.imageUrl = s;//"/image?cacheBusterId=" + this.imageCounter;
                 $scope.$apply();
                 console.log("imagr!");
             };

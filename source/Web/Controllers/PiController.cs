@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web.Http;
 using System.Web.Mvc;
 using Common.Logging;
@@ -56,7 +57,9 @@ namespace PiCam.Web.Controllers
             _imageCache.ImageJpeg = jpeg;
             _imageCache.Counter++;
 
-            browserHub.Clients.All.ImageReady();
+            var base64= System.Convert.ToBase64String(jpeg);
+
+            browserHub.Clients.All.ImageReady($"data:image/jpg;base64,{base64}");
 
             image.Dispose();
         }
