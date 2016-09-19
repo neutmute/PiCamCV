@@ -11,19 +11,27 @@ module App {
         private _browserHub: IBrowserHubProxy;
         moveUnits: number;
         imageUrl: string;
-        imageCounter:number;
+        imageCounter: number;
+        consoleScreen:string;
 
         constructor(
             private $scope: ICameraControllerScope, private notifierService: Services.INotifierService
         ) {
             this._browserHub = (<any>$.connection).browserHub;
             this.imageCounter = 0;
+            this.consoleScreen = '';
 
             this._browserHub.client.imageReady = (s) => {
                 this.imageCounter++;
                 this.imageUrl = s;//"/image?cacheBusterId=" + this.imageCounter;
                 $scope.$apply();
                 console.log("imagr!");
+            };
+
+            this._browserHub.client.writeLine = (s) => {
+                console.log(s);
+                this.consoleScreen += s + "\r\n";
+                $scope.$apply();
             };
 
             this.moveUnits= 10;

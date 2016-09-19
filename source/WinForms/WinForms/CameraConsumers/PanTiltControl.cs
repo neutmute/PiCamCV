@@ -86,6 +86,7 @@ namespace PiCamCV.WinForms.CameraConsumers
 
 
             var screen = new TextboxScreen(txtScreen);
+            var remoteScreen = new RemoteTextboxScreen(CameraHubProxy, txtScreen);
 
             var colorSettings = _colourSettingsRepo.Read();
             var motionSettings = _motionSettingsRepo.Read();
@@ -95,7 +96,7 @@ namespace PiCamCV.WinForms.CameraConsumers
             _faceTrackingController = new FaceTrackingPanTiltController(PanTiltMechanism, _captureConfig);
             _colourTrackingController = new ColourTrackingPanTiltController(PanTiltMechanism, _captureConfig);
             _motionTrackingController = new MotionTrackingPanTiltController(PanTiltMechanism, _captureConfig, screen);
-            _multimodePanTiltController = new MultimodePanTiltController(PanTiltMechanism, _captureConfig, screen, CameraHubProxy);
+            _multimodePanTiltController = new MultimodePanTiltController(PanTiltMechanism, _captureConfig, remoteScreen, CameraHubProxy);
 
             _calibratingPanTiltController = new CalibratingPanTiltController(PanTiltMechanism, new CalibrationReadingsRepository(), screen);
             _colourTrackingController.Settings = colorSettings;

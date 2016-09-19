@@ -1,18 +1,34 @@
 ﻿
 
-<div id="ngController" ng-controller="cameraController as vm">
+<div class="row" id="ngController" ng-controller="cameraController as vm">
     <div class="row">
-        <div class="col-md-4">
-            <h2>PiCamCV</h2>
-            <img ng-src="{{vm.imageUrl}}" />
+        <div class="col-xs-12">
+            <h2>hack</h2>
         </div>
     </div>
+
     <div class="row">
-        <div class="col-md-4">
-            <button type="button" class="btn btn-primary" ng-click="vm.up()">Up</button>
-            <button type="button" class="btn btn-primary" ng-click="vm.down()">Down</button>
-            <button type="button" class="btn btn-primary" ng-click="vm.left()">Left</button>
-            <button type="button" class="btn btn-primary" ng-click="vm.right()">Right</button>
+        <div class="col-xs-6">
+
+            <div class="row">
+                <div class="col-md-4">
+                    <img ng-src="{{vm.imageUrl}}"/>
+                    <span ng-hide="vm.imageUrl">Waiting...</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-primary" ng-click="vm.up()">Up</button>
+                    <button type="button" class="btn btn-primary" ng-click="vm.down()">Down</button>
+                    <button type="button" class="btn btn-primary" ng-click="vm.left()">Left</button>
+                    <button type="button" class="btn btn-primary" ng-click="vm.right()">Right</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-6">
+            <textarea rows="10" class="form-control" ng-model="vm.console"></textarea>
         </div>
     </div>
 </div>

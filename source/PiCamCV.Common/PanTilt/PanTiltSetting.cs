@@ -26,7 +26,7 @@
 
         public override string ToString()
         {
-            return string.Format("Pan={0:N2}%, Tilt={1:N2}%", PanPercent, TiltPercent);
+            return $"Pan={PanPercent:N2}%, Tilt={TiltPercent:N2}%";
         }
     }
 }

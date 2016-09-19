@@ -26,7 +26,7 @@ namespace PiCam.Web.Controllers
 
         public void SendToBrowser(string message)
         {
-            BrowserHubContext.Clients.All.SendStatus(message);
+            BrowserHubContext.Clients.All.WriteLine(message);
         }
     }
 }

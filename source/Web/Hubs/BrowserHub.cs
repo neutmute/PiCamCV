@@ -21,10 +21,10 @@ namespace Web
             return base.OnConnected();
         }
 
-        public void ImageReady(string message = null)
-        {
-            Clients.All.ImageReady(message);
-        }
+        //public void ImageReady(string message = null)
+        //{
+        //    Clients.All.ImageReady(message);
+        //}
 
         public void MovePanTilt(PanTiltAxis axis, int units)
         {

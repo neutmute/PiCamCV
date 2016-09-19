@@ -159,7 +159,8 @@
     <Compile Include="CameraConsumers\FaceDetectionControl.Designer.cs">
       <DependentUpon>FaceDetectionControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="TextboxScreen.cs" />
+    <Compile Include="Screens\RemoteTextboxScreen.cs" />
+    <Compile Include="Screens\TextboxScreen.cs" />
     <Compile Include="UserControls\ClassifierConfigControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
