@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Common.Logging;
 using Microsoft.AspNet.SignalR;
+using PiCam.Web.Controllers;
 
 namespace Web
 {
@@ -12,18 +13,28 @@ namespace Web
     
     public interface IBrowserHub
     {
-        
-        void ImageReady();
+        void ImageReady(string message = null);
     }
 
     public class CameraHub : Hub<IBrowserHub>
     {
         private static readonly ILog Log = LogManager.GetLogger<BrowserHub>();
+        private MessageBus _messageBus;
+
+        public CameraHub(MessageBus messageBus)
+        {
+            _messageBus = messageBus;
+        }
 
         public override Task OnConnected()
         {
             Log.Info($"CameraHub connection from {Context.ConnectionId}");
             return base.OnConnected();
+        }
+
+        public void MessageToServer(string message)
+        {
+            _messageBus.SendToBrowser(message);
         }
     }
 }

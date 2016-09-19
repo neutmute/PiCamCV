@@ -12,6 +12,8 @@ using Autofac.Integration.Mvc;
 using Autofac.Integration.WebApi;
 using Emgu.CV;
 using Emgu.CV.Structure;
+using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Infrastructure;
 using Web.App_Start;
 
 namespace PiCam.Web
@@ -55,6 +57,11 @@ namespace PiCam.Web
             // Set the dependency resolver for MVC.
             var mvcResolver = new AutofacDependencyResolver(container);
             DependencyResolver.SetResolver(mvcResolver);
+
+            // signalr 
+            GlobalHost.DependencyResolver = new Autofac.Integration.SignalR.AutofacDependencyResolver(container);
+
+            //builder.RegisterInstance(resolver.Resolve<IConnectionManager>());
         }
 
         /// <summary>

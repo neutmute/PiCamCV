@@ -14,7 +14,10 @@ namespace PiCamCV.Common.PanTilt.Controllers
     {
         FaceDetection
         ,CamshiftTrack
-        ,ObjectDetect
+        ,ColourObjectTrack
+        //,MultiTrack
+        ,CamshiftSelect
+        ,ColourObjectSelect  
     }
 
     public enum CommandType
@@ -108,7 +111,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
                     output = camshiftOutput;
                     break;
 
-                case ProcessingMode.ObjectDetect:
+                case ProcessingMode.CamshiftSelect:
                     throw new NotImplementedException();
             }
 

@@ -8,7 +8,7 @@ namespace Web
 {
     public class BrowserHub : Hub<IBrowserHub>
     {
-        private Guid _guid;
+        private Guid _guid = Guid.NewGuid();
         private static readonly ILog Log = LogManager.GetLogger<BrowserHub>();
 
         public BrowserHub()
@@ -21,9 +21,9 @@ namespace Web
             return base.OnConnected();
         }
 
-        public void ImageReady()
+        public void ImageReady(string message = null)
         {
-            Clients.All.ImageReady();
+            Clients.All.ImageReady(message);
         }
 
         public void MovePanTilt(PanTiltAxis axis, int units)

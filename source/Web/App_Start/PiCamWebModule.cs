@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Web;
 using Autofac;
 using Autofac.Integration.SignalR;
+using Microsoft.AspNet.SignalR.Infrastructure;
+using PiCam.Web.Controllers;
 using PiCam.Web.Models;
 using Module = Autofac.Module;
 
@@ -16,6 +18,9 @@ namespace Web.App_Start
         {
             builder.RegisterHubs(Assembly.GetExecutingAssembly());
             builder.RegisterType<ImageCache>().SingleInstance();
+
+            var messageBus = new MessageBus();
+            builder.RegisterInstance(messageBus).SingleInstance();
         }
     }
 }

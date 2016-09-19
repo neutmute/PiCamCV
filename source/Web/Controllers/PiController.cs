@@ -10,6 +10,7 @@ using Common.Logging;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Infrastructure;
 using PiCam.Web.Models;
 using Web;
 
@@ -19,10 +20,14 @@ namespace PiCam.Web.Controllers
     {
         protected static ILog Log = LogManager.GetLogger< PiController>();
         private ImageCache _imageCache;
+        private IConnectionManager _connectionManager;
+
+        internal IHubContext BrowserHubContext { get; set; }
 
         public PiController(ImageCache imageCache)
         {
             _imageCache = imageCache;
+            BrowserHubContext  = GlobalHost.ConnectionManager.GetHubContext<BrowserHub>();
         }
 
         // GET api/values
@@ -51,15 +56,15 @@ namespace PiCam.Web.Controllers
         public void PostImage(Image<Bgr, byte> image)
         {
             Log.Info("Image bytes received");
-            var browserHub = GlobalHost.ConnectionManager.GetHubContext<BrowserHub>();
+            
             var jpeg = image.ToJpegData();
 
             _imageCache.ImageJpeg = jpeg;
             _imageCache.Counter++;
 
-            var base64= System.Convert.ToBase64String(jpeg);
+            var base64 = Convert.ToBase64String(jpeg);
 
-            browserHub.Clients.All.ImageReady($"data:image/jpg;base64,{base64}");
+            BrowserHubContext.Clients.All.ImageReady($"data:image/jpg;base64,{base64}");
 
             image.Dispose();
         }

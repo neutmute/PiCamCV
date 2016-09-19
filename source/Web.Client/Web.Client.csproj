@@ -56,11 +56,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config.cs" />
+    <Compile Include="CameraHubProxy.cs" />
     <Compile Include="PiServerClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PiCamCV.Common\PiCamCV.Common.csproj">
+      <Project>{233c04e5-2565-4e9c-ac8b-eec462268cf8}</Project>
+      <Name>PiCamCV.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
