@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PiCamCV.Common.Interfaces;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 
 namespace Web.Client
 {
     public class RemoteScreen : IScreen
     {
-        private CameraHubProxy _cameraHubProxy;
+        private ICameraToServerBus _cameraHubProxy;
 
-        public RemoteScreen(CameraHubProxy cameraHubProxy)
+        public RemoteScreen(ICameraToServerBus cameraHubProxy)
         {
             _cameraHubProxy = cameraHubProxy;
         }
@@ -26,14 +27,14 @@ namespace Web.Client
             WriteLine("--REPAINT--");
         }
 
-        public void WriteLine(string format, params object[] args)
+        public virtual void WriteLine(string format, params object[] args)
         {
             var message = format;
             if (args.Length > 0)
             {
                 message = string.Format(format, args);
             }
-            _cameraHubProxy.NotifyMessage(message);
+            _cameraHubProxy.Message(message);
         }
     }
 }

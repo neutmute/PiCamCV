@@ -32,7 +32,7 @@ namespace Web
             return base.OnConnected();
         }
 
-        public void MessageToServer(string message)
+        public void Message(string message)
         {
             _messageBus.SendToBrowser(message);
         }

@@ -4,14 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR.Client;
+using PiCamCV.Common.Interfaces;
 using PiCamCV.Common.PanTilt.Controllers;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 
 namespace Web.Client
 {
-    
-    public class CameraHubProxy : IDisposable
+
+    public class CameraHubProxy : IDisposable, IServerToCameraBus, ICameraToServerBus
     {
+
+        //public static CameraHubProxy Instance
+        //{
+            
+        //}
+
         private IHubProxy _proxy;
         private HubConnection _connection;
         
@@ -20,6 +27,12 @@ namespace Web.Client
         public event EventHandler<PanTiltSetting> MoveAbsolute;
 
         public event EventHandler<PanTiltSetting> MoveRelative;
+
+
+        public void InvokeMoveAbsolute(PanTiltSetting setting)
+        {
+            MoveAbsolute?.Invoke(this, setting);
+        }
 
         public void Connect()
         {
@@ -45,10 +58,7 @@ namespace Web.Client
                 SetMode?.Invoke(this, param);
             });
 
-            _proxy.On<PanTiltSetting>("moveAbsolute", param =>
-            {
-                MoveAbsolute?.Invoke(this, param);
-            });
+            _proxy.On<PanTiltSetting>("moveAbsolute", InvokeMoveAbsolute);
 
             _proxy.On<PanTiltSetting>("moveRelative", param =>
             {
@@ -56,7 +66,7 @@ namespace Web.Client
             });
         }
 
-        public void NotifyMessage(string message)
+        public void Message(string message)
         {
             _proxy.Invoke<string>("Message", message).ContinueWith(task => {
                 if (task.IsFaulted)

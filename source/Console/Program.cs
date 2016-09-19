@@ -14,6 +14,7 @@ using PiCamCV.ConsoleApp.Runners.PanTilt;
 using PiCamCV.Interfaces;
 using Raspberry.IO.Components.Controllers.Pca9685;
 using RPi.Pwm;
+using Web.Client;
 
 namespace PiCamCV.ConsoleApp
 {
@@ -115,7 +116,10 @@ namespace PiCamCV.ConsoleApp
                     break;
 
                 case Mode.pantiltmultimode:
-                    var controllerMultimode = new MultimodePanTiltController(panTiltMech, captureConfig, screen);
+                    var cameraHubProxy = new CameraHubProxy();
+                    cameraHubProxy.Connect();
+                    var remoteScreen = new RemoveConsoleScreen(cameraHubProxy);
+                    var controllerMultimode = new MultimodePanTiltController(panTiltMech, captureConfig, remoteScreen, cameraHubProxy);
                     runner = new CameraBasedPanTiltRunner(panTiltMech, capture, controllerMultimode, screen);
                     break;
 

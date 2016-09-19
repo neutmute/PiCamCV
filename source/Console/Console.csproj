@@ -98,6 +98,7 @@
     <Compile Include="KeyHandler.cs" />
     <Compile Include="Runners\NoopRunner.cs" />
     <Compile Include="Runners\PanTilt\ConsoleScreen.cs" />
+    <Compile Include="Runners\PanTilt\RemoteConsoleScreen.cs" />
     <Compile Include="Runners\ServoSort\PwmControlBase.cs" />
     <Compile Include="Runners\ServoSort\ServoSortPwmControl.cs" />
     <Compile Include="Runners\ServoSort\ServoSorter.cs" />
@@ -139,6 +140,10 @@
     <ProjectReference Include="..\PiCamCV.Common\PiCamCV.Common.csproj">
       <Project>{233c04e5-2565-4e9c-ac8b-eec462268cf8}</Project>
       <Name>PiCamCV.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Web.Client\Web.Client.csproj">
+      <Project>{eb0616d4-7dc9-449c-864b-a477a52419c5}</Project>
+      <Name>Web.Client</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

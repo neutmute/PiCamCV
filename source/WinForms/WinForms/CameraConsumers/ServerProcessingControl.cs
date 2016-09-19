@@ -37,7 +37,7 @@ namespace PiCamCV.WinForms.CameraConsumers
 
             var captureConfig = CameraCapture.GetCaptureProperties();
 
-            _multimodePanTiltController = new MultimodePanTiltController(PanTiltMechanism, captureConfig, screen);
+            _multimodePanTiltController = new MultimodePanTiltController(PanTiltMechanism, captureConfig, screen, CameraHubProxy);
         }
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)

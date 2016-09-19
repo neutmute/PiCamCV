@@ -21,7 +21,7 @@ using PiCamCV.WinForms.CameraConsumers.Base;
 using PiCamCV.WinForms.ExtensionMethods;
 using RPi.Pwm;
 using Web.Client;
-using CommandType = PiCamCV.Common.PanTilt.Controllers.CommandType;
+//using CommandType = PiCamCV.Common.PanTilt.Controllers.CommandType;
 
 namespace PiCamCV.WinForms.CameraConsumers
 {
@@ -95,7 +95,7 @@ namespace PiCamCV.WinForms.CameraConsumers
             _faceTrackingController = new FaceTrackingPanTiltController(PanTiltMechanism, _captureConfig);
             _colourTrackingController = new ColourTrackingPanTiltController(PanTiltMechanism, _captureConfig);
             _motionTrackingController = new MotionTrackingPanTiltController(PanTiltMechanism, _captureConfig, screen);
-            _multimodePanTiltController = new MultimodePanTiltController(PanTiltMechanism, _captureConfig, screen);
+            _multimodePanTiltController = new MultimodePanTiltController(PanTiltMechanism, _captureConfig, screen, CameraHubProxy);
 
             _calibratingPanTiltController = new CalibratingPanTiltController(PanTiltMechanism, new CalibrationReadingsRepository(), screen);
             _colourTrackingController.Settings = colorSettings;
@@ -335,10 +335,12 @@ namespace PiCamCV.WinForms.CameraConsumers
             switch (e.KeyChar)
             {
                 case 'f':
-                    _multimodePanTiltController.CommandQueue.Enqueue(PanTiltCommand.Factory(CommandType.CommenceFaceTrack));
+                    
+                    //_multimodePanTiltController.CommandQueue.Enqueue(PanTiltCommand.Factory(CommandType.CommenceFaceTrack));
                     break;
                 case 'r':
-                    _multimodePanTiltController.CommandQueue.Enqueue(PanTiltCommand.Factory(CommandType.Recenter));
+                    CameraHubProxy.InvokeMoveAbsolute(new PanTiltSetting(50, 50));
+                    //_multimodePanTiltController.CommandQueue.Enqueue(PanTiltCommand.Factory(CommandType.Recenter));
                     break;
             }
             e.Handled = true;
