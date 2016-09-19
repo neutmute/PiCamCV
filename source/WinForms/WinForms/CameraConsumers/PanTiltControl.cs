@@ -17,16 +17,17 @@ using PiCamCV.Common.PanTilt.Controllers;
 using PiCamCV.Common.Repositories;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 using PiCamCV.Interfaces;
+using PiCamCV.WinForms.CameraConsumers.Base;
 using PiCamCV.WinForms.ExtensionMethods;
 using RPi.Pwm;
+using Web.Client;
 using CommandType = PiCamCV.Common.PanTilt.Controllers.CommandType;
 
 namespace PiCamCV.WinForms.CameraConsumers
 {
-    public partial class PanTiltControl : CameraConsumerUserControl
+    public partial class PanTiltControl : PanTiltBaseUserControl
     {
         private const string TimeFormat = "HH:mm:ss fff";
-        protected IPanTiltMechanism PanTiltMechanism { get; set; }
         private FaceTrackingPanTiltController _faceTrackingController;
         private MotionTrackingPanTiltController _motionTrackingController;
         private ColourTrackingPanTiltController _colourTrackingController;
@@ -48,7 +49,7 @@ namespace PiCamCV.WinForms.CameraConsumers
             UserReticle = null;
             _colourSettingsRepo = new ColourSettingsRepository();
             _motionSettingsRepo = new MotionDetectSettingRepository();
-
+            
             _timer = new Timer();
             _timer.Interval = 10;
             _timer.Tick += _timer_Tick;
@@ -75,13 +76,14 @@ namespace PiCamCV.WinForms.CameraConsumers
 
         protected override void OnSubscribe()
         {
+            base.OnSubscribe();
+
             _captureConfig = CameraCapture.GetCaptureProperties();
             _centre = _captureConfig.Resolution.GetCenter();
 
             txtReticleX.Text = _centre.X.ToString();
             txtReticleY.Text = _centre.Y.ToString();
 
-            InitI2C();
 
             var screen = new TextboxScreen(txtScreen);
 
@@ -136,16 +138,6 @@ namespace PiCamCV.WinForms.CameraConsumers
             return output;
         }
 
-        private void InitI2C()
-        {
-            Log.Info("Initialising I2C bus");
-            if (PanTiltMechanism == null)
-            {
-                var pwmDeviceFactory = new Pca9685DeviceFactory();
-                var pwmDevice = pwmDeviceFactory.GetDevice();
-                PanTiltMechanism = new PanTiltMechanism(pwmDevice);
-            }
-        }
         
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {

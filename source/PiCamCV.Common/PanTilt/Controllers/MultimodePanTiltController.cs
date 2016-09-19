@@ -122,7 +122,6 @@ namespace PiCamCV.Common.PanTilt.Controllers
         {
             _screen.WriteLine("Switching to Face Detection");
             State = ProcessingMode.FaceDetection;
-
         }
 
         private void ActionCommand()

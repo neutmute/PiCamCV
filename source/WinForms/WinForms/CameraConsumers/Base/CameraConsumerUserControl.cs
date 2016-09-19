@@ -43,13 +43,11 @@ namespace PiCamCV.WinForms
 
         public void Subscribe()
         {
-
             if (CameraCapture != null)
             {
                 CameraCapture.ImageGrabbed += ImageGrabbedHandler;
             }
             OnSubscribe();
-            
         }
 
         protected virtual void OnSubscribe() { }
@@ -91,6 +89,7 @@ namespace PiCamCV.WinForms
             image.Draw(horizontalLine, color, 1);
             image.Draw(verticalLine, color, 1);
         }
+
         protected void WriteText(Image<Bgr, byte> image, int bottom, string message)
         {
             image.Draw(message, new Point(0, bottom), Emgu.CV.CvEnum.FontFace.HersheySimplex, 0.4, new Bgr(Color.White));

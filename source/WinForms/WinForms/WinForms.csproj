@@ -45,6 +45,10 @@
     <ApplicationIcon>pi.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Common.Logging, Version=3.1.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Common.Logging.3.1.0\lib\net40\Common.Logging.dll</HintPath>
@@ -88,6 +92,9 @@
     </Compile>
     <Compile Include="CameraConsumers\AccessoryOverlay.cs" />
     <Compile Include="CameraConsumers\Base\ImageBoxSelector.cs" />
+    <Compile Include="CameraConsumers\Base\PanTiltBaseUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="CameraConsumers\ColourDetectionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

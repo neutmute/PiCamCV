@@ -9,21 +9,37 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Emgu.CV;
 using Emgu.CV.Structure;
+using PiCamCV.Common;
+using PiCamCV.Common.PanTilt.Controllers;
+using PiCamCV.Interfaces;
+using PiCamCV.WinForms.CameraConsumers.Base;
 using Web.Client;
 
 namespace PiCamCV.WinForms.CameraConsumers
 {
-    public partial class ServerProcessingControl : CameraConsumerUserControl
+    public partial class ServerProcessingControl : PanTiltBaseUserControl
     {
         private PiServerClient _server;
         private Task _postTask;
+        private MultimodePanTiltController _multimodePanTiltController;
 
         public ServerProcessingControl()
         {
             InitializeComponent();
             _server = new PiServerClient();
         }
-        
+
+        protected override void OnSubscribe()
+        {
+            base.OnSubscribe();
+
+            var screen = new RemoteScreen(CameraHubProxy);
+
+            var captureConfig = CameraCapture.GetCaptureProperties();
+
+            _multimodePanTiltController = new MultimodePanTiltController(PanTiltMechanism, captureConfig, screen);
+        }
+
         public override void ImageGrabbedHandler(object sender, EventArgs e)
         {
             if (_postTask != null && !_postTask.IsCompleted)
