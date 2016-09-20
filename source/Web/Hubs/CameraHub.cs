@@ -4,19 +4,23 @@ using System.Web;
 using Common.Logging;
 using Microsoft.AspNet.SignalR;
 using PiCam.Web.Controllers;
+using PiCamCV.ConsoleApp.Runners.PanTilt;
 
 namespace Web
 {
     public interface ICameraHub
     {
+        void MoveRelative(PanTiltSetting setting);
     }
     
     public interface IBrowserHub
     {
-        void ImageReady(string message = null);
+        void WriteLine(string message);
+
+        void ImageReady(string base64encodedImage = null);
     }
 
-    public class CameraHub : Hub<IBrowserHub>
+    public class CameraHub : Hub<ICameraHub>
     {
         private static readonly ILog Log = LogManager.GetLogger<BrowserHub>();
         private MessageBus _messageBus;
@@ -28,13 +32,14 @@ namespace Web
 
         public override Task OnConnected()
         {
-            Log.Info($"CameraHub connection from {Context.ConnectionId}");
+            var ip = Context.Request.Environment["server.RemoteIpAddress"];
+            Log.Info($"CameraHub connection from {Context.ConnectionId}, {ip}");
             return base.OnConnected();
         }
 
         public void Message(string message)
         {
-            _messageBus.SendToBrowser(message);
+            _messageBus.SendToBrowser(message); 
         }
     }
 }

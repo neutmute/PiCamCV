@@ -20,7 +20,13 @@ namespace Web.App_Start
             builder.RegisterType<ImageCache>().SingleInstance();
 
             var messageBus = new MessageBus();
-            builder.RegisterInstance(messageBus).SingleInstance();
+            builder
+                .RegisterInstance(messageBus)
+                .AsSelf();
+
+            builder
+                .RegisterType(typeof(TestService))
+                .AsSelf();
         }
     }
 }

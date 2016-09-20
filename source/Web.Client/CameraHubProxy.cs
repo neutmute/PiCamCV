@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR.Client;
@@ -59,6 +60,8 @@ namespace Web.Client
             });
 
             _proxy.On<PanTiltSetting>("moveAbsolute", InvokeMoveAbsolute);
+
+            _proxy.On<string>("writeLine", (s) => Console.WriteLine(s));
 
             _proxy.On<PanTiltSetting>("moveRelative", param =>
             {

@@ -65,6 +65,7 @@ namespace PiCam.Web.Controllers
             var base64 = Convert.ToBase64String(jpeg);
 
             BrowserHubContext.Clients.All.ImageReady($"data:image/jpg;base64,{base64}");
+            //BrowserHubContext.Clients.All.WriteLine($"foo!");
 
             image.Dispose();
         }

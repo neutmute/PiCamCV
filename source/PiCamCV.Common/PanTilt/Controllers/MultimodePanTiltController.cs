@@ -79,7 +79,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
         {
             _serverToCameraBus.SetMode += (s, e) => { State = e; };
             _serverToCameraBus.MoveAbsolute += (s, e) => { MoveAbsolute(e); _screen.WriteLine($"Move Absolute {e}");};
-            _serverToCameraBus.MoveRelative += (s, e) => { MoveRelative(e); };
+            _serverToCameraBus.MoveRelative += (s, e) => { MoveRelative(e); _screen.WriteLine("moving..."); };
         }
         
 

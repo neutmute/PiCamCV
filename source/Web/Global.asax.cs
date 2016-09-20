@@ -62,6 +62,8 @@ namespace PiCam.Web
             GlobalHost.DependencyResolver = new Autofac.Integration.SignalR.AutofacDependencyResolver(container);
 
             //builder.RegisterInstance(resolver.Resolve<IConnectionManager>());
+
+
         }
 
         /// <summary>

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Autofac.Integration.SignalR;
+using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
 using Owin;
 
@@ -12,6 +14,9 @@ namespace PiCam.Web
     {
         public void Configuration(IAppBuilder app)
         {
+           
+            
+            //app.MapSignalR(new HubConfiguration{EnableDetailedErrors=false, Resolver=null});
             app.MapSignalR();
         }
     }
