@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Emgu.CV;
+using Emgu.CV.Structure;
 using PiCamCV.Common.PanTilt.Controllers;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 
@@ -13,7 +15,7 @@ namespace PiCamCV.Common.Interfaces
         event EventHandler<ProcessingMode> SetMode;
         event EventHandler<PanTiltSetting> MoveAbsolute;
         event EventHandler<PanTiltSetting> MoveRelative;
-        //void NotifyMessage(string message);
+        event EventHandler<TimeSpan> SetImageTransmitPeriod;
     }
 
     public interface ICameraToServerBus
@@ -21,5 +23,6 @@ namespace PiCamCV.Common.Interfaces
         void ScreenWriteLine(string message);
 
         void ScreenClear();
+        
     }
 }

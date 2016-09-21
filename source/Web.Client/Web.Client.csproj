@@ -58,7 +58,7 @@
   <ItemGroup>
     <Compile Include="Config.cs" />
     <Compile Include="CameraHubProxy.cs" />
-    <Compile Include="PiServerClient.cs" />
+    <Compile Include="BsonPostImageTransmitter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteScreen.cs" />
   </ItemGroup>

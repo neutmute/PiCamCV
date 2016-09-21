@@ -14,11 +14,12 @@ namespace PiCamCV.Common.Interfaces
     public class CameraProcessOutput
     {
         public Image<Bgr, byte> CapturedImage { get; set; }
+
         public TimeSpan Elapsed { get; internal set; }
 
         public override string ToString()
         {
-            return string.Format("Elapsed={0}", Elapsed.ToHumanReadable());
+            return $"Elapsed={Elapsed.ToHumanReadable()}";
         }
     }
 

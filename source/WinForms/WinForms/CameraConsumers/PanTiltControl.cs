@@ -83,10 +83,11 @@ namespace PiCamCV.WinForms.CameraConsumers
 
             txtReticleX.Text = _centre.X.ToString();
             txtReticleY.Text = _centre.Y.ToString();
-
-
+            
             var screen = new TextboxScreen(txtScreen);
             var remoteScreen = new RemoteTextboxScreen(CameraHubProxy, txtScreen);
+            var piServerClient = new BsonPostImageTransmitter();
+            var imageTransmitter = new RemoteImageSender(piServerClient, CameraHubProxy);
 
             var colorSettings = _colourSettingsRepo.Read();
             var motionSettings = _motionSettingsRepo.Read();
@@ -96,7 +97,7 @@ namespace PiCamCV.WinForms.CameraConsumers
             _faceTrackingController = new FaceTrackingPanTiltController(PanTiltMechanism, _captureConfig);
             _colourTrackingController = new ColourTrackingPanTiltController(PanTiltMechanism, _captureConfig);
             _motionTrackingController = new MotionTrackingPanTiltController(PanTiltMechanism, _captureConfig, screen);
-            _multimodePanTiltController = new MultimodePanTiltController(PanTiltMechanism, _captureConfig, remoteScreen, CameraHubProxy);
+            _multimodePanTiltController = new MultimodePanTiltController(PanTiltMechanism, _captureConfig, remoteScreen, CameraHubProxy, imageTransmitter);
 
             _calibratingPanTiltController = new CalibratingPanTiltController(PanTiltMechanism, new CalibrationReadingsRepository(), screen);
             _colourTrackingController.Settings = colorSettings;

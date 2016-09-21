@@ -49,23 +49,26 @@ namespace PiCamCV.Common.PanTilt.Controllers
     {
         public ProcessingMode State { get; set; }
 
-       // public Queue<PanTiltCommand> CommandQueue { get; private set; }
-
-        private IScreen _screen;
+        private readonly IScreen _screen;
         private readonly FaceTrackingPanTiltController _faceTrackingController;
         private readonly CamshiftPanTiltController _camshiftTrackingController;
-        private FaceTrackingPanTiltOutput _lastFaceTrack;
         private readonly IServerToCameraBus _serverToCameraBus;
-
+        private readonly IOutputProcessor[] _outputPipelines;
+        private FaceTrackingPanTiltOutput _lastFaceTrack;
 
         /// <summary>
         /// sudo mono picamcv.con.exe -m=pantiltmultimode
         /// </summary>
-        public MultimodePanTiltController(IPanTiltMechanism panTiltMech, CaptureConfig captureConfig, IScreen screen, IServerToCameraBus serverToCameraBus) : base(panTiltMech, captureConfig)
+        public MultimodePanTiltController(
+            IPanTiltMechanism panTiltMech
+            , CaptureConfig captureConfig
+            , IScreen screen
+            , IServerToCameraBus serverToCameraBus
+            , params IOutputProcessor[] outputPipelines) : base(panTiltMech, captureConfig)
         {
-           // CommandQueue = new Queue<PanTiltCommand>();
             _screen = screen;
             _serverToCameraBus = serverToCameraBus;
+            _outputPipelines = outputPipelines;
             _faceTrackingController = new FaceTrackingPanTiltController(panTiltMech, captureConfig);
             _camshiftTrackingController = new CamshiftPanTiltController(panTiltMech, captureConfig);
             screen.Clear();
@@ -79,13 +82,12 @@ namespace PiCamCV.Common.PanTilt.Controllers
         {
             _serverToCameraBus.SetMode += (s, e) => { State = e; };
             _serverToCameraBus.MoveAbsolute += (s, e) => { MoveAbsolute(e); _screen.WriteLine($"Move Absolute {e}");};
-            _serverToCameraBus.MoveRelative += (s, e) => { MoveRelative(e); _screen.WriteLine("moving..."); };
+            _serverToCameraBus.MoveRelative += (s, e) => { MoveRelative(e); _screen.WriteLine("Move Relative {e}"); };
         }
         
 
         protected override CameraPanTiltProcessOutput DoProcess(CameraProcessInput input)
         {
-           // ActionCommand();
             var output = new CameraPanTiltProcessOutput();
             switch (State)
             {
@@ -126,6 +128,11 @@ namespace PiCamCV.Common.PanTilt.Controllers
                     throw new NotImplementedException();
             }
 
+            foreach (var outputPipeline in _outputPipelines)
+            {
+                outputPipeline.Process(output);
+            }
+
             return output;
         }
 
@@ -134,27 +141,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
             _screen.WriteLine("Switching to Face Detection");
             State = ProcessingMode.FaceDetection;
         }
-
-        //private void ActionCommand()
-        //{
-        //    //if (CommandQueue.Count > 0)
-        //    while(CommandQueue.Count > 0)
-        //    {
-        //        var command = CommandQueue.Dequeue();
-        //        _screen.WriteLine($"Command: {command}");
-        //        switch (command.Type)
-        //        {
-        //            case CommandType.Recenter:
-        //                PanServo.MoveTo(50);
-        //                TiltServo.MoveTo(50);
-        //                break;
-        //            case CommandType.CommenceFaceTrack:
-        //                State = ProcessingMode.FaceDetection;
-        //                break;
-        //        }
-        //    }
-        //}
-
+        
         protected override void DisposeObject()
         {
             base.DisposeObject();

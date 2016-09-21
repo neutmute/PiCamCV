@@ -4,6 +4,8 @@ using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
+using Emgu.CV;
+using Emgu.CV.Structure;
 using Microsoft.AspNet.SignalR.Client;
 using PiCamCV.Common.Interfaces;
 using PiCamCV.Common.PanTilt.Controllers;
@@ -24,12 +26,14 @@ namespace Web.Client
 
         public event EventHandler<PanTiltSetting> MoveRelative;
 
+        public event EventHandler<TimeSpan> SetImageTransmitPeriod;
+
 
         public void InvokeMoveAbsolute(PanTiltSetting setting)
         {
             MoveAbsolute?.Invoke(this, setting);
         }
-
+        
         public void Connect()
         {
             _connection = new HubConnection($"http://{Config.ServerHost}:{Config.ServerPort}/");
@@ -58,10 +62,10 @@ namespace Web.Client
 
             _proxy.On<string>("writeLine", (s) => Console.WriteLine(s));
 
-            _proxy.On<PanTiltSetting>("moveRelative", param =>
-            {
-                MoveRelative?.Invoke(this, param);
-            });
+            _proxy.On<PanTiltSetting>("moveRelative", param =>{MoveRelative?.Invoke(this, param);});
+
+            _proxy.On<TimeSpan>("setImageTransmitPeriod", ts => SetImageTransmitPeriod?.Invoke(this, ts));
+
         }
 
         public void ScreenWriteLine(string message)
@@ -72,6 +76,11 @@ namespace Web.Client
         public void ScreenClear()
         {
             _proxy.Invoke("ScreenClear");
+        }
+
+        public void SendImage(Image<Bgr, byte> image)
+        {
+            throw new NotImplementedException();
         }
 
         public void Dispose()

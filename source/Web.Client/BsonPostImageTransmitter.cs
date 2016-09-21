@@ -8,22 +8,23 @@ using System.Text;
 using System.Threading.Tasks;
 using Emgu.CV;
 using Emgu.CV.Structure;
+using PiCamCV.Common.Interfaces;
 
 namespace Web.Client
 {
-    public class PiServerClient
+    public class BsonPostImageTransmitter : IImageTransmitter
     {
         public string RootUrl { get; set; }
 
-        public PiServerClient()
+        public BsonPostImageTransmitter()
         {
-            RootUrl = "http://localhost:4091";
+            RootUrl = $"http://{Config.ServerHost}:{Config.ServerPort}";
         }
 
         /// <summary>
         /// http://www.asp.net/web-api/overview/formats-and-model-binding/bson-support-in-web-api-21
         /// </summary>
-        public async Task PostBson(Image<Bgr, byte> image)
+        public async Task Transmit(Image<Bgr, byte> image)
         {
             using (HttpClient client = new HttpClient())
             {

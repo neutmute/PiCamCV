@@ -40,8 +40,7 @@ namespace PiCamCV.ConsoleApp
             }
 
             ICaptureGrab capture = null;
-
-
+            
             CapturePi.DoMatMagic("CreateCapture");
 
             var noCaptureGrabs = new[] { Mode.simple, Mode.pantiltjoy };
@@ -119,7 +118,9 @@ namespace PiCamCV.ConsoleApp
                     var cameraHubProxy = new CameraHubProxy();
                     cameraHubProxy.Connect();
                     var remoteScreen = new RemoveConsoleScreen(cameraHubProxy);
-                    var controllerMultimode = new MultimodePanTiltController(panTiltMech, captureConfig, remoteScreen, cameraHubProxy);
+                    var piServerClient = new BsonPostImageTransmitter();
+                    var imageTransmitter = new RemoteImageSender(piServerClient, cameraHubProxy);
+                    var controllerMultimode = new MultimodePanTiltController(panTiltMech, captureConfig, remoteScreen, cameraHubProxy, imageTransmitter);
                     runner = new CameraBasedPanTiltRunner(panTiltMech, capture, controllerMultimode, screen);
                     break;
 

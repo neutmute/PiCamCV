@@ -25,7 +25,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
         public override string ToString()
         {
-            return string.Format("PositionPrior={0}, Target={1}, PositionNow={2}", PanTiltPrior, Target, PanTiltNow);
+            return $"PositionPrior={PanTiltPrior}, Target={Target}, PositionNow={PanTiltNow}";
         }
     }
 
