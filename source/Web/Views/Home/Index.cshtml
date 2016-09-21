@@ -28,7 +28,25 @@
         </div>
 
         <div class="col-md-6">
-            <textarea rows="10" class="form-control" ng-model="vm.consoleScreen"></textarea>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#tabLog" aria-controls="home" role="tab" data-toggle="tab">Log</a></li>
+                <li role="presentation"><a href="#tabSettings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+                <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
+                <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="tabLog">
+                    <textarea rows="10" class="form-control" ng-model="vm.consoleScreen"></textarea>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="tabSettings">
+                    settings here
+                </div>
+                <div role="tabpanel" class="tab-pane" id="messages">...</div>
+                <div role="tabpanel" class="tab-pane" id="settings">...</div>
+            </div>
+            
         </div>
     </div>
 </div>

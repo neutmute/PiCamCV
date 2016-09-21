@@ -52,12 +52,15 @@ namespace PiCamCV.WinForms
 
         protected virtual void OnSubscribe() { }
 
+        protected virtual void OnUnsubscribe() { }
+
         public void Unsubscribe()
         {
             if (CameraCapture != null)
             {
                 CameraCapture.ImageGrabbed -= ImageGrabbedHandler;
             }
+            OnUnsubscribe();
         }
         
         protected void InvokeUI(Action action)

@@ -30,11 +30,7 @@ namespace PiCamCV.WinForms.CameraConsumers
 
         protected override void OnSubscribe()
         {
-            //base.OnSubscribe();
-            //var captureConfig = CameraCapture.GetCaptureProperties();
-            //var screen = new RemoteScreen(CameraHubProxy);
-            //_multimodePanTiltController = new MultimodePanTiltController(PanTiltMechanism, captureConfig, screen, CameraHubProxy, imageTransmitter, imageTransmitter);
-
+            base.OnSubscribe();
             _bsonPoster = new BsonPostImageTransmitter();
         }
 

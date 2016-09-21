@@ -74,6 +74,12 @@ namespace PiCamCV.WinForms.CameraConsumers
             }
         }
 
+        //protected override void OnUnsubscribe()
+        //{
+        //    base.OnUnsubscribe();
+        //    _multimodePanTiltController?.Dispose();
+        //}
+
         protected override void OnSubscribe()
         {
             base.OnSubscribe();
@@ -93,11 +99,19 @@ namespace PiCamCV.WinForms.CameraConsumers
             var motionSettings = _motionSettingsRepo.Read();
 
             // these should be disposed if not null
-
+            
             _faceTrackingController = new FaceTrackingPanTiltController(PanTiltMechanism, _captureConfig);
             _colourTrackingController = new ColourTrackingPanTiltController(PanTiltMechanism, _captureConfig);
             _motionTrackingController = new MotionTrackingPanTiltController(PanTiltMechanism, _captureConfig, screen);
+
+            if (_multimodePanTiltController != null)
+            {
+                // don't resubscribe and get duplicate events on cameraHubProxy
+                _multimodePanTiltController.Unsubscribe();
+            }
+
             _multimodePanTiltController = new MultimodePanTiltController(PanTiltMechanism, _captureConfig, remoteScreen, CameraHubProxy, imageTransmitter);
+
 
             _calibratingPanTiltController = new CalibratingPanTiltController(PanTiltMechanism, new CalibrationReadingsRepository(), screen);
             _colourTrackingController.Settings = colorSettings;
@@ -111,7 +125,7 @@ namespace PiCamCV.WinForms.CameraConsumers
             Log.InfoFormat("MotionSettings: {0}", motionSettings);
         }
 
-        void CalibrationWaitStep(string reason)
+        protected void CalibrationWaitStep(string reason)
         {
             MessageBox.Show(reason);
         }

@@ -56,6 +56,8 @@ namespace PiCamCV.Common.PanTilt.Controllers
         private readonly IOutputProcessor[] _outputPipelines;
         private FaceTrackingPanTiltOutput _lastFaceTrack;
 
+        private Action _unsubscribeBus;
+
         /// <summary>
         /// sudo mono picamcv.con.exe -m=pantiltmultimode
         /// </summary>
@@ -77,12 +79,24 @@ namespace PiCamCV.Common.PanTilt.Controllers
             _lastFaceTrack = new FaceTrackingPanTiltOutput();
             InitController();
         }
-
+        
         private void InitController()
         {
-            _serverToCameraBus.SetMode += (s, e) => { State = e; };
-            _serverToCameraBus.MoveAbsolute += (s, e) => { MoveAbsolute(e); _screen.WriteLine($"Move Absolute {e}");};
-            _serverToCameraBus.MoveRelative += (s, e) => { MoveRelative(e); _screen.WriteLine("Move Relative {e}"); };
+
+            EventHandler<ProcessingMode> setModeHandler = (s, e) => { State = e; };
+            EventHandler<PanTiltSetting> moveAbsHandler = (s, e) => { MoveAbsolute(e); _screen.WriteLine($"Move Absolute {e}"); };
+            EventHandler<PanTiltSetting> moveRelHandler = (s, e) => { MoveRelative(e); _screen.WriteLine($"Move Relative {e}"); };
+
+            _serverToCameraBus.SetMode += setModeHandler;
+            _serverToCameraBus.MoveAbsolute += moveAbsHandler;
+            _serverToCameraBus.MoveRelative += moveRelHandler;
+
+            _unsubscribeBus = () =>
+            {
+                _serverToCameraBus.SetMode -= setModeHandler;
+                _serverToCameraBus.MoveAbsolute -= moveAbsHandler;
+                _serverToCameraBus.MoveRelative -= moveRelHandler;
+            };
         }
         
 
@@ -147,6 +161,12 @@ namespace PiCamCV.Common.PanTilt.Controllers
             base.DisposeObject();
             _faceTrackingController.Dispose();
             _camshiftTrackingController.Dispose();
+            _unsubscribeBus();
+        }
+
+        public void Unsubscribe()
+        {
+            _unsubscribeBus();
         }
     }
 }
