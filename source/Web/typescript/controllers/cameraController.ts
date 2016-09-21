@@ -15,7 +15,8 @@ module App {
         consoleScreen:string;
 
         constructor(
-            private $scope: ICameraControllerScope, private notifierService: Services.INotifierService
+            private $scope: ICameraControllerScope
+            , private notifierService: Services.INotifierService
         ) {
             this._browserHub = (<any>$.connection).browserHub;
             this.imageCounter = 0;
@@ -25,12 +26,25 @@ module App {
                 this.imageCounter++;
                 this.imageUrl = s;//"/image?cacheBusterId=" + this.imageCounter;
                 $scope.$apply();
-                console.log("imagr!");
             };
 
-            this._browserHub.client.writeLine = (s) => {
+            this._browserHub.client.screenWriteLine = (s) => {
                 console.log(s);
                 this.consoleScreen += s + "\r\n";
+                $scope.$apply();
+            };
+
+            this._browserHub.client.toast = (s) => {
+                this.notifierService.success(s);
+            };
+
+            this._browserHub.client.screenClear = () => {
+                this.consoleScreen = '';
+                $scope.$apply();
+            };
+
+            this._browserHub.client.screenWriteLine = (s) => {
+                this.consoleScreen = s + "\r\n" + this.consoleScreen;
                 $scope.$apply();
             };
 

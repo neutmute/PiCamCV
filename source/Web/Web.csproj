@@ -184,16 +184,20 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="App_Start\PiCamWebModule.cs" />
+    <Compile Include="Brokers\CameraClient.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImageController.cs" />
-    <Compile Include="Controllers\PiBroker.cs" />
+    <Compile Include="Brokers\PiBroker.cs" />
     <Compile Include="Controllers\PiController.cs" />
     <Compile Include="Controllers\TestService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Brokers\BrowserClient.cs" />
     <Compile Include="Hubs\BrowserHub.cs" />
     <Compile Include="Hubs\CameraHub.cs" />
+    <Compile Include="Brokers\ICameraClient.cs" />
+    <Compile Include="Brokers\IBrowserClient.cs" />
     <Compile Include="Models\ImageCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

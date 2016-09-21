@@ -19,28 +19,12 @@ namespace PiCam.Web.Controllers
     public class PiController : ApiController
     {
         protected static ILog Log = LogManager.GetLogger< PiController>();
-        private ImageCache _imageCache;
-        private IConnectionManager _connectionManager;
-
-        internal IHubContext BrowserHubContext { get; set; }
+        private readonly ImageCache _imageCache;
 
         public PiController(ImageCache imageCache)
         {
             _imageCache = imageCache;
-            BrowserHubContext  = GlobalHost.ConnectionManager.GetHubContext<BrowserHub>();
         }
-
-        // GET api/values
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
-
-        //// GET api/values/5
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
 
         //// POST api/values
         //[HttpPost]
@@ -64,8 +48,7 @@ namespace PiCam.Web.Controllers
 
             var base64 = Convert.ToBase64String(jpeg);
 
-            BrowserHubContext.Clients.All.ImageReady($"data:image/jpg;base64,{base64}");
-            //BrowserHubContext.Clients.All.WriteLine($"foo!");
+            PiBroker.Instance.Browsers.ImageReady(base64);
 
             image.Dispose();
         }

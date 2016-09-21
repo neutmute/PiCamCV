@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Common.Logging;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using PiCamCV.Common.PanTilt.Controllers;
@@ -13,8 +14,11 @@ namespace PiCam.Web.Controllers
     public class PiBroker
     {
         private readonly static Lazy<PiBroker> _instance = new Lazy<PiBroker>(() => new PiBroker(
-            GlobalHost.ConnectionManager.GetHubContext<CameraHub>().Clients
-            , GlobalHost.ConnectionManager.GetHubContext<BrowserHub>().Clients));
+            new CameraClient(GlobalHost.ConnectionManager.GetHubContext<CameraHub>().Clients)
+            , new BrowserClient(GlobalHost.ConnectionManager.GetHubContext<BrowserHub>().Clients)));
+
+
+        private static readonly ILog Log = LogManager.GetLogger<PiBroker>();
 
         private string _cameraIp;
 
@@ -22,35 +26,33 @@ namespace PiCam.Web.Controllers
 
         public static PiBroker Instance => _instance.Value;
 
-        private IHubConnectionContext<dynamic> CameraClients { get;set;}
+        public ICameraClient Camera { get;set;}
 
-        private IHubConnectionContext<dynamic> BrowserClients { get; set; }
+        public IBrowserClient Browsers { get; set; }
 
-        private PiBroker(
-            IHubConnectionContext<dynamic> cameraClients
-            , IHubConnectionContext<dynamic> browserClients)
+        private PiBroker(ICameraClient cameraClient, IBrowserClient browserClients)
         {
-            CameraClients = cameraClients;
-            BrowserClients = browserClients;
+            Camera = cameraClient;
+            Browsers = browserClients;
         }
 
         public void BrowserConnected(string connectionId, string ip)
         {
-            BrowserWriteLine($"Hello {connectionId} from {ip}.");
-            BrowserWriteLine(IsCameraConnected ? $"Camera is connected from {_cameraIp}" : "Waiting for a camera to connect");
+            var camMsg = IsCameraConnected ? $"Camera is connected from {_cameraIp}" : "Waiting for a camera to connect";
+            var msg = $"Hello {connectionId} from {ip}.\r\n{camMsg}";
+            Browsers.Toast(msg);
         }
+        
 
         public void CameraConnected(string ip)
         {
             _cameraIp = ip;
-            BrowserWriteLine($"Camera has connected from {ip}");
+            var msg = $"Camera has connected from {ip}";
+            Log.Info(msg);
+            Browsers.Toast(msg);
         }
 
-        public void BrowserWriteLine(string message)
-        {
-            BrowserClients.All.WriteLine(message);
-        }
-
+        
         public void CameraMoveRelative(PanTiltAxis axis, int units)
         {
             var setting = new PanTiltSetting();
@@ -64,7 +66,7 @@ namespace PiCam.Web.Controllers
                     break;
             }
 
-            CameraClients.All.MoveRelative(setting);
+            Camera.MoveRelative(setting);
         }
 
     }

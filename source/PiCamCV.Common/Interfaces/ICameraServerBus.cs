@@ -18,6 +18,8 @@ namespace PiCamCV.Common.Interfaces
 
     public interface ICameraToServerBus
     {
-        void Message(string message);
+        void ScreenWriteLine(string message);
+
+        void ScreenClear();
     }
 }

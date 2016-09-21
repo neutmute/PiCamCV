@@ -19,7 +19,7 @@ namespace Web.Client
 
         public void Clear()
         {
-            WriteLine("--CLEAR--");
+            _cameraHubProxy.ScreenClear();
         }
 
         public void BeginRepaint()
@@ -34,7 +34,7 @@ namespace Web.Client
             {
                 message = string.Format(format, args);
             }
-            _cameraHubProxy.Message(message);
+            _cameraHubProxy.ScreenWriteLine(message);
         }
     }
 }

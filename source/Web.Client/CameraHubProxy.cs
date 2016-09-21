@@ -14,6 +14,7 @@ namespace Web.Client
 
     public class CameraHubProxy : IDisposable, IServerToCameraBus, ICameraToServerBus
     {
+
         private IHubProxy _proxy;
         private HubConnection _connection;
         
@@ -63,18 +64,14 @@ namespace Web.Client
             });
         }
 
-        public void Message(string message)
+        public void ScreenWriteLine(string message)
         {
-            _proxy.Invoke<string>("Message", message).ContinueWith(task => {
-                if (task.IsFaulted)
-                {
-                    //Console.WriteLine("There was an error calling send: {0}",task.Exception.GetBaseException());
-                }
-                else
-                {
-                    //Console.WriteLine(task.Result);
-                }
-            });
+            _proxy.Invoke<string>("ScreenWriteLine", message);
+        }
+
+        public void ScreenClear()
+        {
+            _proxy.Invoke("ScreenClear");
         }
 
         public void Dispose()

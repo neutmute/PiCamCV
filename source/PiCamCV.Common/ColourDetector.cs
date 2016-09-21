@@ -129,6 +129,11 @@ namespace PiCamCV.Common
 
                 var settings = input.Settings;
 
+                if (settings == null)
+                {
+                    return output;
+                }
+
                 if (!settings.Roi.IsEmpty)
                 {
                     inputMat = new Mat(inputMat, settings.Roi);

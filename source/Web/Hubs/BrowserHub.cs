@@ -8,7 +8,7 @@ using MessageBus = Microsoft.AspNet.SignalR.Messaging.MessageBus;
 
 namespace Web
 {
-    public class BrowserHub : Hub<IBrowserHub>
+    public class BrowserHub : Hub<IBrowserClient>
     {
         private PiBroker _broker;
 

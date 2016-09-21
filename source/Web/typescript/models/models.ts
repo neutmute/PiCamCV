@@ -17,8 +17,11 @@
     }
     export interface IBrowserClient {
         imageReady: (data: string) => void;
-        writeLine:(message: string)=>void;
+        screenWriteLine: (message: string) => void;
+        toast: (message: string) => void;
+        screenClear: () => void;
     }
+
     export interface IBrowserHubProxy {
         client: IBrowserClient;
         server: IBrowserServer;
