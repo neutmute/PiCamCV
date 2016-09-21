@@ -36,8 +36,9 @@ namespace Web
 
         public override Task OnConnected()
         {
-            var ip = Context.Request.Environment["server.RemoteIpAddress"];
+            var ip = Context.Request.Environment["server.RemoteIpAddress"]?.ToString();
             Log.Info($"CameraHub connection from {Context.ConnectionId}, {ip}");
+            _broker.CameraConnected(ip);
             return base.OnConnected();
         }
 

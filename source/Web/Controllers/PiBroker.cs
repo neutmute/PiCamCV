@@ -16,6 +16,10 @@ namespace PiCam.Web.Controllers
             GlobalHost.ConnectionManager.GetHubContext<CameraHub>().Clients
             , GlobalHost.ConnectionManager.GetHubContext<BrowserHub>().Clients));
 
+        private string _cameraIp;
+
+        private bool IsCameraConnected => !string.IsNullOrEmpty(_cameraIp);
+
         public static PiBroker Instance => _instance.Value;
 
         private IHubConnectionContext<dynamic> CameraClients { get;set;}
@@ -28,6 +32,18 @@ namespace PiCam.Web.Controllers
         {
             CameraClients = cameraClients;
             BrowserClients = browserClients;
+        }
+
+        public void BrowserConnected(string connectionId, string ip)
+        {
+            BrowserWriteLine($"Hello {connectionId} from {ip}.");
+            BrowserWriteLine(IsCameraConnected ? $"Camera is connected from {_cameraIp}" : "Waiting for a camera to connect");
+        }
+
+        public void CameraConnected(string ip)
+        {
+            _cameraIp = ip;
+            BrowserWriteLine($"Camera has connected from {ip}");
         }
 
         public void BrowserWriteLine(string message)

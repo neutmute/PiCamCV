@@ -58,7 +58,6 @@ module App {
         }
 
         private movePanTilt(plane: Direction, units: number): JQueryPromise<void> {
-            this._browserHub.server.hello("sdf");
             return this._browserHub.server.movePanTilt(plane, units);
         }
     }

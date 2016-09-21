@@ -186,7 +186,6 @@
     <Compile Include="App_Start\PiCamWebModule.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImageController.cs" />
-    <Compile Include="Controllers\MessageBus.cs" />
     <Compile Include="Controllers\PiBroker.cs" />
     <Compile Include="Controllers\PiController.cs" />
     <Compile Include="Controllers\TestService.cs" />

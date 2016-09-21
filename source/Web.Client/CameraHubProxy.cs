@@ -14,12 +14,6 @@ namespace Web.Client
 
     public class CameraHubProxy : IDisposable, IServerToCameraBus, ICameraToServerBus
     {
-
-        //public static CameraHubProxy Instance
-        //{
-            
-        //}
-
         private IHubProxy _proxy;
         private HubConnection _connection;
         

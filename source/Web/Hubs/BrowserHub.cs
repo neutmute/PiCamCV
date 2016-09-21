@@ -10,8 +10,6 @@ namespace Web
 {
     public class BrowserHub : Hub<IBrowserHub>
     {
-        private Guid _guid = Guid.NewGuid();
-        private static readonly ILog Log = LogManager.GetLogger<BrowserHub>();
         private PiBroker _broker;
 
         public BrowserHub() : this(PiBroker.Instance)
@@ -26,9 +24,8 @@ namespace Web
 
         public override Task OnConnected()
         {
-            var ip = Context.Request.Environment["server.RemoteIpAddress"];
-            Log.Info($"BrowserHub connection from {Context.ConnectionId}, {ip}");
-            Clients.All.WriteLine($"Hello {Context.ConnectionId}, {ip}");
+            var ip = Context.Request.Environment["server.RemoteIpAddress"]?.ToString();
+            _broker.BrowserConnected(Context.ConnectionId, ip);
             return base.OnConnected();
         }
 
@@ -42,9 +39,8 @@ namespace Web
         //    Log.Info("Hello!");
         //}
 
-        public void movePanTilt(PanTiltAxis axis, int units)
+        public void MovePanTilt(PanTiltAxis axis, int units)
         {
-            Log.Info("Move request");
             _broker.CameraMoveRelative(axis,units);
         }
     }
