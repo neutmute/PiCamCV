@@ -23,11 +23,15 @@ namespace Web
     public class CameraHub : Hub<ICameraHub>
     {
         private static readonly ILog Log = LogManager.GetLogger<BrowserHub>();
-        private MessageBus _messageBus;
+        private PiBroker _broker;
 
-        public CameraHub(MessageBus messageBus)
+        public CameraHub(): this(PiBroker.Instance)
         {
-            _messageBus = messageBus;
+        }
+
+        public CameraHub(PiBroker broker)
+        {
+            _broker = broker;
         }
 
         public override Task OnConnected()
@@ -39,7 +43,7 @@ namespace Web
 
         public void Message(string message)
         {
-            _messageBus.SendToBrowser(message); 
+            _broker.BrowserWriteLine(message); 
         }
     }
 }

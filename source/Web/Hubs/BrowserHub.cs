@@ -12,13 +12,16 @@ namespace Web
     {
         private Guid _guid = Guid.NewGuid();
         private static readonly ILog Log = LogManager.GetLogger<BrowserHub>();
-        private MessageBus _messageBus;
+        private PiBroker _broker;
 
-        //public BrowserHub(MessageBus messageBus)
-        public BrowserHub(TestService messageBus)
-        // public BrowserHub()
+        public BrowserHub() : this(PiBroker.Instance)
         {
-        //    _messageBus = messageBus;
+            
+        }
+
+        public BrowserHub(PiBroker broker)
+        {
+            _broker = broker;
         }
 
         public override Task OnConnected()
@@ -39,9 +42,10 @@ namespace Web
         //    Log.Info("Hello!");
         //}
 
-        //public void movePanTilt(PanTiltAxis axis, int units)
-        //{
-        //    Log.Info("Move request");
-        //}
+        public void movePanTilt(PanTiltAxis axis, int units)
+        {
+            Log.Info("Move request");
+            _broker.CameraMoveRelative(axis,units);
+        }
     }
 }

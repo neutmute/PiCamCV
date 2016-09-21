@@ -19,14 +19,14 @@ namespace Web.App_Start
             builder.RegisterHubs(Assembly.GetExecutingAssembly());
             builder.RegisterType<ImageCache>().SingleInstance();
 
-            var messageBus = new MessageBus();
-            builder
-                .RegisterInstance(messageBus)
-                .AsSelf();
+            //var messageBus = new MessageBus();
+            //builder
+            //    .RegisterInstance(messageBus)
+            //    .AsSelf();
 
-            builder
-                .RegisterType(typeof(TestService))
-                .AsSelf();
+            //builder
+            //    .RegisterType(typeof(TestService))
+            //    .AsSelf();
         }
     }
 }
