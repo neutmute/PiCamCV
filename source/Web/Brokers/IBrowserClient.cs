@@ -1,4 +1,6 @@
-﻿namespace Web
+﻿using PiCam.Web.Models;
+
+namespace Web
 {
     public interface IBrowserClient
     {
@@ -9,5 +11,7 @@
         void Toast(string message);
 
         void ImageReady(string base64encodedImage = null);
+
+        void InformSettings(SystemSettings settings);
     }
 }

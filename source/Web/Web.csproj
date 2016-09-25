@@ -198,6 +198,7 @@
     <Compile Include="Hubs\CameraHub.cs" />
     <Compile Include="Brokers\ICameraClient.cs" />
     <Compile Include="Brokers\IBrowserClient.cs" />
+    <Compile Include="Models\BrowserSettings.cs" />
     <Compile Include="Models\ImageCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

@@ -5,6 +5,7 @@ using System.Web;
 using Common.Logging;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
+using PiCam.Web.Models;
 using PiCamCV.Common.PanTilt.Controllers;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 using Web;
@@ -21,6 +22,7 @@ namespace PiCam.Web.Controllers
         private static readonly ILog Log = LogManager.GetLogger<PiBroker>();
 
         private string _cameraIp;
+        public SystemSettings SystemSettings { get; set; }
 
         private bool IsCameraConnected => !string.IsNullOrEmpty(_cameraIp);
 
@@ -34,6 +36,7 @@ namespace PiCam.Web.Controllers
         {
             Camera = cameraClient;
             Browsers = browserClients;
+            SystemSettings = new SystemSettings {JpegCompression= 90, TransmitImageEveryMilliseconds = 200};
         }
 
         public void BrowserConnected(string connectionId, string ip)
@@ -41,6 +44,7 @@ namespace PiCam.Web.Controllers
             var camMsg = IsCameraConnected ? $"Camera is connected from {_cameraIp}" : "Waiting for a camera to connect";
             var msg = $"Hello {connectionId} from {ip}.\r\n{camMsg}";
             Browsers.Toast(msg);
+            Browsers.InformSettings(SystemSettings);
         }
         
 
@@ -50,9 +54,17 @@ namespace PiCam.Web.Controllers
             var msg = $"Camera has connected from {ip}";
             Log.Info(msg);
             Browsers.Toast(msg);
+            Camera.SetImageTransmitPeriod(TimeSpan.FromMilliseconds(SystemSettings.TransmitImageEveryMilliseconds));
         }
 
-        
+        public void ChangeSettings(SystemSettings settings)
+        {
+            SystemSettings = settings;
+            Camera.SetImageTransmitPeriod(TimeSpan.FromMilliseconds(settings.TransmitImageEveryMilliseconds));
+            Browsers.InformSettings(SystemSettings);
+        }
+
+
         public void CameraMoveRelative(PanTiltAxis axis, int units)
         {
             var setting = new PanTiltSetting();

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.SignalR.Hubs;
+using PiCam.Web.Models;
 
 namespace Web
 {
@@ -29,6 +30,11 @@ namespace Web
         public void ImageReady(string base64encodedImage = null)
         {
             _clients.All.ImageReady($"data:image/jpg;base64,{base64encodedImage}");
+        }
+
+        public void InformSettings(SystemSettings settings)
+        {
+            _clients.All.toast(settings);
         }
     }
 }

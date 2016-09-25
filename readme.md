@@ -1,6 +1,6 @@
 
 #PiCamCV#
-Experiments with [OpenCV](http://www.opencv.org) and the Raspberry Pi using [EmguCV](http://www.emgu.com/) and C#.
+Playing with [OpenCV](http://www.opencv.org) and the Raspberry Pi using [EmguCV](http://www.emgu.com/) and C#.
  
 Compatible with USB cameras (Windows and Raspberry Pi) as well as the [Raspberry Pi Camera Module](http://www.raspberrypi.org/products/camera-module/).
 

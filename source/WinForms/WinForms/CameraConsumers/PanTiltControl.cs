@@ -104,13 +104,26 @@ namespace PiCamCV.WinForms.CameraConsumers
             _colourTrackingController = new ColourTrackingPanTiltController(PanTiltMechanism, _captureConfig);
             _motionTrackingController = new MotionTrackingPanTiltController(PanTiltMechanism, _captureConfig, screen);
 
-            if (_multimodePanTiltController != null)
+            if (_multimodePanTiltController == null)
+            {
+                CameraHubProxy.SetImageTransmitPeriod += (o, ts) =>
+                {
+                    remoteScreen.WriteLine($"Camera received transmission period {ts.ToHumanReadable()}");
+                    imageTransmitter.SendEveryPeriod = ts;
+                };
+            }
+            else
             {
                 // don't resubscribe and get duplicate events on cameraHubProxy
                 _multimodePanTiltController.Unsubscribe();
             }
 
-            _multimodePanTiltController = new MultimodePanTiltController(PanTiltMechanism, _captureConfig, remoteScreen, CameraHubProxy, imageTransmitter);
+            _multimodePanTiltController = new MultimodePanTiltController(
+                PanTiltMechanism
+                , _captureConfig
+                , remoteScreen
+                , CameraHubProxy
+                , imageTransmitter);
 
 
             _calibratingPanTiltController = new CalibratingPanTiltController(PanTiltMechanism, new CalibrationReadingsRepository(), screen);
@@ -123,6 +136,11 @@ namespace PiCamCV.WinForms.CameraConsumers
             _calibratingPanTiltController.ColourCaptured += _calibratingPanTiltController_ColourCaptured;
 
             Log.InfoFormat("MotionSettings: {0}", motionSettings);
+        }
+
+        private void CameraHubProxy_SetImageTransmitPeriod(object sender, TimeSpan e)
+        {
+            throw new NotImplementedException();
         }
 
         protected void CalibrationWaitStep(string reason)

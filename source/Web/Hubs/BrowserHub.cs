@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Common.Logging;
 using Microsoft.AspNet.SignalR;
 using PiCam.Web.Controllers;
+using PiCam.Web.Models;
 using PiCamCV.Common.PanTilt.Controllers;
 using MessageBus = Microsoft.AspNet.SignalR.Messaging.MessageBus;
 
@@ -42,6 +43,11 @@ namespace Web
         public void MovePanTilt(PanTiltAxis axis, int units)
         {
             _broker.CameraMoveRelative(axis,units);
+        }
+
+        public void ChangeSettings(SystemSettings settings)
+        {
+            _broker.ChangeSettings(settings);
         }
     }
 }

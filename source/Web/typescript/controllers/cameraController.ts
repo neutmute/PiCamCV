@@ -12,7 +12,8 @@ module App {
         moveUnits: number;
         imageUrl: string;
         imageCounter: number;
-        consoleScreen:string;
+        consoleScreen: string;
+        systemSettings: ISystemSettings;
 
         constructor(
             private $scope: ICameraControllerScope
@@ -21,6 +22,8 @@ module App {
             this._browserHub = (<any>$.connection).browserHub;
             this.imageCounter = 0;
             this.consoleScreen = '';
+            this.moveUnits = 10;
+            this.systemSettings = <ISystemSettings>{};
 
             this._browserHub.client.imageReady = (s) => {
                 this.imageCounter++;
@@ -48,7 +51,11 @@ module App {
                 $scope.$apply();
             };
 
-            this.moveUnits= 10;
+            this._browserHub.client.informSettings = (settings) => {
+                this.systemSettings = settings;
+                //this.notifierService("System settings received");
+                $scope.$apply();
+            };
 
             $.connection.hub.start().done(() => {
                 console.log("joined");
@@ -69,6 +76,10 @@ module App {
 
         right(): void {
             this.movePanTilt(Direction.Pan, -this.moveUnits);
+        }
+
+        changeSettings(): void {
+            this._browserHub.server.changeSettings(this.systemSettings);
         }
 
         private movePanTilt(plane: Direction, units: number): JQueryPromise<void> {

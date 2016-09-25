@@ -32,8 +32,8 @@
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#tabLog" aria-controls="home" role="tab" data-toggle="tab">Log</a></li>
                 <li role="presentation"><a href="#tabSettings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
-                <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
-                <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+                <li role="presentation"><a href="#control" aria-controls="control" role="tab" data-toggle="tab">Control</a></li>
+                
             </ul>
 
             <div class="tab-content">
@@ -41,10 +41,27 @@
                     <textarea rows="10" class="form-control" ng-model="vm.consoleScreen"></textarea>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="tabSettings">
-                    settings here
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Send Image Every (ms)</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" ng-model="vm.systemSettings.transmitImageEveryMilliseconds">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">JPEG Compression (%)</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" ng-model="vm.systemSettings.jpegCompression">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-4 col-sm-4">
+                                <button type="submit" class="btn btn-default" ng-click="vm.changeSettings()">Send</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <div role="tabpanel" class="tab-pane" id="messages">...</div>
-                <div role="tabpanel" class="tab-pane" id="settings">...</div>
+                <div role="tabpanel" class="tab-pane" id="control">...</div>
             </div>
             
         </div>

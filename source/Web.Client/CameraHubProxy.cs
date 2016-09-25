@@ -78,10 +78,10 @@ namespace Web.Client
             _proxy.Invoke("ScreenClear");
         }
 
-        public void SendImage(Image<Bgr, byte> image)
-        {
-            throw new NotImplementedException();
-        }
+        //public void SendImage(Image<Bgr, byte> image)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public void Dispose()
         {

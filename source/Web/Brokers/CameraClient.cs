@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNet.SignalR.Hubs;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 
@@ -15,6 +16,11 @@ namespace Web
         public void MoveRelative(PanTiltSetting setting)
         {
             _clients.All.MoveRelative(setting);
+        }
+
+        public void SetImageTransmitPeriod(TimeSpan transmitPeriod)
+        {
+            _clients.All.SetImageTransmitPeriod(transmitPeriod);
         }
     }
 }

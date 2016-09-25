@@ -39,9 +39,9 @@ namespace PiCam.Web.Controllers
         [System.Web.Mvc.Route("api/pi/postImage")]
         public void PostImage(Image<Bgr, byte> image)
         {
-            Log.Info("Image bytes received");
+            //Log.Info("Image bytes received");
             
-            var jpeg = image.ToJpegData();
+            var jpeg = image.ToJpegData(PiBroker.Instance.SystemSettings.JpegCompression);
 
             _imageCache.ImageJpeg = jpeg;
             _imageCache.Counter++;
