@@ -62,6 +62,7 @@ namespace PiCam.Web.Controllers
             SystemSettings = settings;
             Camera.SetImageTransmitPeriod(TimeSpan.FromMilliseconds(settings.TransmitImageEveryMilliseconds));
             Browsers.InformSettings(SystemSettings);
+            Browsers.Toast("New settings received");
         }
 
 

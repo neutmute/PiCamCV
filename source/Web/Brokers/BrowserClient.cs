@@ -34,7 +34,8 @@ namespace Web
 
         public void InformSettings(SystemSettings settings)
         {
-            _clients.All.toast(settings);
+            var json = new { jpegCompression = settings.JpegCompression, transmitImageEveryMilliseconds = settings.TransmitImageEveryMilliseconds};
+            _clients.All.informSettings(json);
         }
     }
 }
