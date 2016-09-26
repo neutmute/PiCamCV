@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.SignalR.Hubs;
+using Newtonsoft.Json;
 using PiCam.Web.Models;
 
 namespace Web
@@ -29,13 +30,12 @@ namespace Web
 
         public void ImageReady(string base64encodedImage = null)
         {
-            _clients.All.ImageReady($"data:image/jpg;base64,{base64encodedImage}");
+            _clients.All.ImageReady(base64encodedImage);
         }
 
         public void InformSettings(SystemSettings settings)
         {
-            var json = new { jpegCompression = settings.JpegCompression, transmitImageEveryMilliseconds = settings.TransmitImageEveryMilliseconds};
-            _clients.All.informSettings(json);
+            _clients.All.informSettings(settings);
         }
     }
 }

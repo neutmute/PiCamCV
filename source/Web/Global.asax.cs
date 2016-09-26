@@ -14,6 +14,9 @@ using Emgu.CV;
 using Emgu.CV.Structure;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Infrastructure;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using PiCam.Web.Configs;
 using Web.App_Start;
 
 namespace PiCam.Web
@@ -30,25 +33,39 @@ namespace PiCam.Web
 
 
             TestEmguCVLoad();
+            
+            RegisterAutofac();
 
+            // Attempt to force camel case
+            HttpConfiguration config = GlobalConfiguration.Configuration;
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            config.Formatters.JsonFormatter.UseDataContractJsonSerializer = false;
+        }
 
+        private static void RegisterAutofac()
+        {
             var builder = new ContainerBuilder();
 
             // Get your HttpConfiguration.
             var config = GlobalConfiguration.Configuration;
-            
-            builder.RegisterControllers(typeof(WebApiApplication).Assembly);
+
+            builder.RegisterControllers(typeof (WebApiApplication).Assembly);
 
             // Register your Web API controllers.
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
 
-            // OPTIONAL: Register the Autofac filter provider.
+            //Register the Autofac filter provider.
             builder.RegisterWebApiFilterProvider(config);
             builder.RegisterModule(new WebModule());
 
+            // SignalR to use camelCase
+            var settings = new JsonSerializerSettings();
+            settings.ContractResolver = new SignalRContractResolver();
+            var serializer = JsonSerializer.Create(settings);
+            builder.RegisterInstance(serializer).As<JsonSerializer>();
+
             // Set the dependency resolver to be Autofac.
             var container = builder.Build();
-          //config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
 
             // Set the dependency resolver for Web API.
             var webApiResolver = new AutofacWebApiDependencyResolver(container);
@@ -61,9 +78,7 @@ namespace PiCam.Web
             // signalr 
             GlobalHost.DependencyResolver = new Autofac.Integration.SignalR.AutofacDependencyResolver(container);
 
-            //builder.RegisterInstance(resolver.Resolve<IConnectionManager>());
-
-
+            
         }
 
         /// <summary>

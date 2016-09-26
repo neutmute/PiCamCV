@@ -29,6 +29,8 @@
         jpegCompression :number;
 
         transmitImageEveryMilliseconds: number;
+
+        transmitImageViaSignalR :boolean;
     }
 
     export interface IBrowserHubProxy {

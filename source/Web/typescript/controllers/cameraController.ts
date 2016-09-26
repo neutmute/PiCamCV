@@ -27,7 +27,15 @@ module App {
 
             this._browserHub.client.imageReady = (s) => {
                 this.imageCounter++;
-                this.imageUrl = s;//"/image?cacheBusterId=" + this.imageCounter;
+                if (s) {
+                    // image content embedded
+                    this.imageUrl = s;
+                }
+                else
+                {
+                    // need to request image binary
+                    this.imageUrl = "/image?cacheBusterId=" + this.imageCounter;
+                }
                 $scope.$apply();
             };
 

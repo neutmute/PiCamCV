@@ -26,29 +26,16 @@ namespace PiCam.Web.Controllers
             _imageCache = imageCache;
         }
 
-        //// POST api/values
-        //[HttpPost]
-        //[Route("api/pi/postImageBytes")]
-        //public void PostImageBytes(byte[] image)
-        //{
-        //    Log.Info("Image bytes received");
-        //    _browserHub.ImageReady();
-        //}
-        
-
         [System.Web.Mvc.Route("api/pi/postImage")]
         public void PostImage(Image<Bgr, byte> image)
         {
-            //Log.Info("Image bytes received");
-            
             var jpeg = image.ToJpegData(PiBroker.Instance.SystemSettings.JpegCompression);
-
+            
+            // left this here as it was a pain to inject into the pibroker
             _imageCache.ImageJpeg = jpeg;
             _imageCache.Counter++;
 
-            var base64 = Convert.ToBase64String(jpeg);
-
-            PiBroker.Instance.Browsers.ImageReady(base64);
+            PiBroker.Instance.ImageReceived(jpeg);
 
             image.Dispose();
         }

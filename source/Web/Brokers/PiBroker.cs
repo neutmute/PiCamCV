@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Common.Logging;
+using Emgu.CV;
+using Emgu.CV.Structure;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using PiCam.Web.Models;
@@ -55,6 +57,17 @@ namespace PiCam.Web.Controllers
             Log.Info(msg);
             Browsers.Toast(msg);
             Camera.SetImageTransmitPeriod(TimeSpan.FromMilliseconds(SystemSettings.TransmitImageEveryMilliseconds));
+        }
+
+        public void ImageReceived(byte[] jpeg)
+        {
+            string signalRContent = null;
+            if (SystemSettings.TransmitImageViaSignalR)
+            {
+                var base64Image = Convert.ToBase64String(jpeg);
+                signalRContent = $"data:image/jpg;base64,{base64Image}";
+            }
+            Browsers.ImageReady(signalRContent);
         }
 
         public void ChangeSettings(SystemSettings settings)

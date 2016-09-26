@@ -185,6 +185,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="App_Start\PiCamWebModule.cs" />
     <Compile Include="Brokers\CameraClient.cs" />
+    <Compile Include="Configs\SignalRContractResolver.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImageController.cs" />
     <Compile Include="Brokers\PiBroker.cs" />
