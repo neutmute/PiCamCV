@@ -22,6 +22,8 @@ namespace PiCam.Web.Controllers
             new CameraClient(GlobalHost.ConnectionManager.GetHubContext<CameraHub>().Clients)
             , new BrowserClient(GlobalHost.ConnectionManager.GetHubContext<BrowserHub>().Clients)));
 
+        private bool _firstImageReceived = false;
+        private Size _imageSize = Size.Empty;
 
         public static ImageCache ImageCache { get; set; }
 
@@ -61,25 +63,36 @@ namespace PiCam.Web.Controllers
             Log.Info(msg);
             Browsers.Toast(msg);
             Camera.SetImageTransmitPeriod(TimeSpan.FromMilliseconds(SystemSettings.TransmitImageEveryMilliseconds));
+
+            _firstImageReceived = false;
+        }
+
+        private Rectangle GetRegionOfInterest()
+        {
+            var percentSize = 40m / 100;
+
+            var roiRect = new Rectangle(
+                  Convert.ToInt32(_imageSize.Width * percentSize)
+                , Convert.ToInt32(_imageSize.Height * percentSize)
+                , Convert.ToInt32(_imageSize.Width * percentSize)
+                , Convert.ToInt32(_imageSize.Width * percentSize));
+
+            return roiRect;
         }
 
         public void ImageReceived(Image<Bgr, byte> image)
         {
-            if (SystemSettings.ShowRegionOfInterest)
+            if (!_firstImageReceived)
             {
-                var imageRect = new Rectangle(0,0,image.Width, image.Height);
-                var percentSize = 40m/100;
-
-                var roiRect = new Rectangle(
-                      Convert.ToInt32( image.Width * percentSize)
-                    , Convert.ToInt32( image.Height * percentSize)
-                    , Convert.ToInt32( image.Width * percentSize)
-                    , Convert.ToInt32( image.Width * percentSize));
-
-                //var region = new Region(roiRect);
-                image.Draw(roiRect, Color.Blue.ToBgr(), 2);
+                _imageSize = image.Size;
+                _firstImageReceived = true;
             }
 
+            if (SystemSettings.ShowRegionOfInterest)
+            {
+                var roiRect = GetRegionOfInterest();
+                image.Draw(roiRect, Color.Blue.ToBgr(), 2);
+            }
 
             var jpeg = image.ToJpegData(SystemSettings.JpegCompression);
 
@@ -100,10 +113,10 @@ namespace PiCam.Web.Controllers
         {
             SystemSettings = settings;
             Camera.SetImageTransmitPeriod(TimeSpan.FromMilliseconds(settings.TransmitImageEveryMilliseconds));
+            Camera.SetRegionOfInterest(GetRegionOfInterest());
             Browsers.InformSettings(SystemSettings);
             Browsers.Toast("New settings received");
         }
-
 
         public void CameraMoveRelative(PanTiltAxis axis, int units)
         {
@@ -123,7 +136,7 @@ namespace PiCam.Web.Controllers
 
         public void StartColourTrack()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

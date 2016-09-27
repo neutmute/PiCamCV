@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace PiCamCV.Common.Interfaces
         event EventHandler<PanTiltSetting> MoveAbsolute;
         event EventHandler<PanTiltSetting> MoveRelative;
         event EventHandler<TimeSpan> SetImageTransmitPeriod;
+        event EventHandler<Rectangle> SetRegionOfInterest;
     }
 
     public interface ICameraToServerBus

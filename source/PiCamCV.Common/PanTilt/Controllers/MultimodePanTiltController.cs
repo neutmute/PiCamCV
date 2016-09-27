@@ -19,31 +19,6 @@ namespace PiCamCV.Common.PanTilt.Controllers
         ,CamshiftSelect
         ,ColourObjectSelect  
     }
-
-    //public enum CommandType
-    //{
-    //    Unknown
-    //    ,Recenter
-    //    ,CommenceFaceTrack
-    //    ,CommenceCamshiftDetect
-    //}
-
-    //public class PanTiltCommand
-    //{
-    //    public CommandType Type { get; set; }
-
-    //    public override string ToString()
-    //    {
-    //        return Type.ToString();
-    //    }
-
-    //    public static PanTiltCommand Factory(CommandType type)
-    //    {
-    //        var command = new PanTiltCommand();
-    //        command.Type = type;
-    //        return command;
-    //    }
-    //}
     
     public class MultimodePanTiltController : CameraBasedPanTiltController<CameraPanTiltProcessOutput>
     {
@@ -54,6 +29,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
         private readonly CamshiftPanTiltController _camshiftTrackingController;
         private readonly IServerToCameraBus _serverToCameraBus;
         private readonly IOutputProcessor[] _outputPipelines;
+        private Rectangle _regionOfInterest = Rectangle.Empty;
         private FaceTrackingPanTiltOutput _lastFaceTrack;
 
         private Action _unsubscribeBus;
@@ -82,20 +58,22 @@ namespace PiCamCV.Common.PanTilt.Controllers
         
         private void InitController()
         {
-
             EventHandler<ProcessingMode> setModeHandler = (s, e) => { State = e; };
             EventHandler<PanTiltSetting> moveAbsHandler = (s, e) => { MoveAbsolute(e); _screen.WriteLine($"Move Absolute {e}"); };
             EventHandler<PanTiltSetting> moveRelHandler = (s, e) => { MoveRelative(e); _screen.WriteLine($"Move Relative {e}"); };
+            EventHandler<Rectangle> setRoiHandler = (s, e) => { _regionOfInterest =e; _screen.WriteLine("ROI set"); };
 
             _serverToCameraBus.SetMode += setModeHandler;
             _serverToCameraBus.MoveAbsolute += moveAbsHandler;
             _serverToCameraBus.MoveRelative += moveRelHandler;
+            _serverToCameraBus.SetRegionOfInterest += setRoiHandler;
 
             _unsubscribeBus = () =>
             {
                 _serverToCameraBus.SetMode -= setModeHandler;
                 _serverToCameraBus.MoveAbsolute -= moveAbsHandler;
                 _serverToCameraBus.MoveRelative -= moveRelHandler;
+                _serverToCameraBus.SetRegionOfInterest -= setRoiHandler;
             };
         }
         
