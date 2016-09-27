@@ -21,6 +21,8 @@ namespace PiCam.Web.Controllers
             , new BrowserClient(GlobalHost.ConnectionManager.GetHubContext<BrowserHub>().Clients)));
 
 
+        public static ImageCache ImageCache { get; set; }
+
         private static readonly ILog Log = LogManager.GetLogger<PiBroker>();
 
         private string _cameraIp;
@@ -59,8 +61,14 @@ namespace PiCam.Web.Controllers
             Camera.SetImageTransmitPeriod(TimeSpan.FromMilliseconds(SystemSettings.TransmitImageEveryMilliseconds));
         }
 
-        public void ImageReceived(byte[] jpeg)
+        public void ImageReceived(Image<Bgr, byte> image)
         {
+            var jpeg = image.ToJpegData(SystemSettings.JpegCompression);
+
+            // left this here as it was a pain to inject into the pibroker
+            ImageCache.ImageJpeg = jpeg;
+            ImageCache.Counter++;
+            
             string signalRContent = null;
             if (SystemSettings.TransmitImageViaSignalR)
             {

@@ -19,24 +19,11 @@ namespace PiCam.Web.Controllers
     public class PiController : ApiController
     {
         protected static ILog Log = LogManager.GetLogger< PiController>();
-        private readonly ImageCache _imageCache;
-
-        public PiController(ImageCache imageCache)
-        {
-            _imageCache = imageCache;
-        }
-
+        
         [System.Web.Mvc.Route("api/pi/postImage")]
         public void PostImage(Image<Bgr, byte> image)
         {
-            var jpeg = image.ToJpegData(PiBroker.Instance.SystemSettings.JpegCompression);
-            
-            // left this here as it was a pain to inject into the pibroker
-            _imageCache.ImageJpeg = jpeg;
-            _imageCache.Counter++;
-
-            PiBroker.Instance.ImageReceived(jpeg);
-
+            PiBroker.Instance.ImageReceived(image);
             image.Dispose();
         }
     }

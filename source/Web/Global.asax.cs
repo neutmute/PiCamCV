@@ -17,6 +17,8 @@ using Microsoft.AspNet.SignalR.Infrastructure;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using PiCam.Web.Configs;
+using PiCam.Web.Controllers;
+using PiCam.Web.Models;
 using Web.App_Start;
 
 namespace PiCam.Web
@@ -78,7 +80,9 @@ namespace PiCam.Web
             // signalr 
             GlobalHost.DependencyResolver = new Autofac.Integration.SignalR.AutofacDependencyResolver(container);
 
-            
+            // Poke in the singleton
+            var imageCache = container.Resolve<ImageCache>();
+            PiBroker.ImageCache = imageCache;
         }
 
         /// <summary>

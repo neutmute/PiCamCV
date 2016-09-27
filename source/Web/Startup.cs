@@ -14,9 +14,6 @@ namespace PiCam.Web
     {
         public void Configuration(IAppBuilder app)
         {
-            //app.MapSignalR(new HubConfiguration{EnableDetailedErrors=false, Resolver=null});
-            //var config = new HubConfiguration();
-            //config.Resolver =
             app.MapSignalR();
         }
     }
