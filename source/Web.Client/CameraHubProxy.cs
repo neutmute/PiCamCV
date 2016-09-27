@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
@@ -28,6 +29,8 @@ namespace Web.Client
 
         public event EventHandler<TimeSpan> SetImageTransmitPeriod;
 
+        public event EventHandler<Rectangle> SetRegionOfInterest;
+
 
         public void InvokeMoveAbsolute(PanTiltSetting setting)
         {
@@ -53,10 +56,7 @@ namespace Web.Client
             }).Wait();
 
 
-            _proxy.On<ProcessingMode>("setMode", param =>
-            {
-                SetMode?.Invoke(this, param);
-            });
+            _proxy.On<ProcessingMode>("setMode", param =>{SetMode?.Invoke(this, param);});
 
             _proxy.On<PanTiltSetting>("moveAbsolute", InvokeMoveAbsolute);
 
@@ -65,6 +65,8 @@ namespace Web.Client
             _proxy.On<PanTiltSetting>("moveRelative", param =>{MoveRelative?.Invoke(this, param);});
 
             _proxy.On<TimeSpan>("setImageTransmitPeriod", ts => SetImageTransmitPeriod?.Invoke(this, ts));
+
+            _proxy.On<Rectangle>("setRegionOfInterest", r => SetRegionOfInterest?.Invoke(this, r));
 
         }
 

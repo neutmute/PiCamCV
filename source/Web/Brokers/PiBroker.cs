@@ -136,7 +136,7 @@ namespace PiCam.Web.Controllers
 
         public void StartColourTrack()
         {
-            
+            Camera.SetMode(ProcessingMode.ColourObjectSelect);   
         }
     }
 }

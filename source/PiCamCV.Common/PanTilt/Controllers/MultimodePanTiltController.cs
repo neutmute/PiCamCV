@@ -4,6 +4,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Emgu.CV;
+using Emgu.CV.Structure;
 using PiCamCV.Common.Interfaces;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 using RPi.Pwm.Motors;
@@ -27,6 +29,9 @@ namespace PiCamCV.Common.PanTilt.Controllers
         private readonly IScreen _screen;
         private readonly FaceTrackingPanTiltController _faceTrackingController;
         private readonly CamshiftPanTiltController _camshiftTrackingController;
+        private readonly ColourTrackingPanTiltController _colourTrackingController;
+        private readonly ThresholdSelector _thresholdSelector;
+        private ColourDetectorInput _colourDetectorInput;
         private readonly IServerToCameraBus _serverToCameraBus;
         private readonly IOutputProcessor[] _outputPipelines;
         private Rectangle _regionOfInterest = Rectangle.Empty;
@@ -47,21 +52,40 @@ namespace PiCamCV.Common.PanTilt.Controllers
             _screen = screen;
             _serverToCameraBus = serverToCameraBus;
             _outputPipelines = outputPipelines;
+
             _faceTrackingController = new FaceTrackingPanTiltController(panTiltMech, captureConfig);
             _camshiftTrackingController = new CamshiftPanTiltController(panTiltMech, captureConfig);
+            _colourTrackingController = new ColourTrackingPanTiltController(panTiltMech, captureConfig);
+
+            _thresholdSelector = new ThresholdSelector();
+            _thresholdSelector.ColourCheckTick += thresholdSelector_ColourCheckTick;
+
+            _colourDetectorInput = new ColourDetectorInput();
+            _colourDetectorInput.SetCapturedImage = true;
+
             screen.Clear();
             StateToFaceDetect();
 
             _lastFaceTrack = new FaceTrackingPanTiltOutput();
             InitController();
         }
-        
+
+        private void thresholdSelector_ColourCheckTick(object sender, AutoThresholdResult e)
+        {
+            if (e.DimensionValue % 5 == 0)
+            { 
+                // Transmit the thresholded value
+                e.FullOutput.CapturedImage = new Image<Bgr, byte>(new Image<Gray, byte>[] {e. FullOutput.ThresholdImage, e.FullOutput.ThresholdImage , e.FullOutput.ThresholdImage });
+                ProcessOutputPipeline(e.FullOutput);
+            }
+        }
+
         private void InitController()
         {
             EventHandler<ProcessingMode> setModeHandler = (s, e) => { State = e; };
             EventHandler<PanTiltSetting> moveAbsHandler = (s, e) => { MoveAbsolute(e); _screen.WriteLine($"Move Absolute {e}"); };
             EventHandler<PanTiltSetting> moveRelHandler = (s, e) => { MoveRelative(e); _screen.WriteLine($"Move Relative {e}"); };
-            EventHandler<Rectangle> setRoiHandler = (s, e) => { _regionOfInterest =e; _screen.WriteLine("ROI set"); };
+            EventHandler<Rectangle> setRoiHandler = (s, e) => { _regionOfInterest = e; _screen.WriteLine("ROI set"); };
 
             _serverToCameraBus.SetMode += setModeHandler;
             _serverToCameraBus.MoveAbsolute += moveAbsHandler;
@@ -83,6 +107,12 @@ namespace PiCamCV.Common.PanTilt.Controllers
             var output = new CameraPanTiltProcessOutput();
             switch (State)
             {
+                case ProcessingMode.ColourObjectTrack:
+                    _colourDetectorInput.Captured = input.Captured;
+                    var colourOutput = _colourTrackingController.Process(_colourDetectorInput);
+                    output = colourOutput;
+                    break;
+
                 case ProcessingMode.FaceDetection:
                     var faceTrackOutput = _faceTrackingController.Process(input);
 
@@ -116,16 +146,25 @@ namespace PiCamCV.Common.PanTilt.Controllers
                     output = camshiftOutput;
                     break;
 
+                case ProcessingMode.ColourObjectSelect:
+                    //_colourDetectorInput.Settings. = _thresholdSelector.Select(input.Captured, _regionOfInterest);
+                    break;
+
                 case ProcessingMode.CamshiftSelect:
                     throw new NotImplementedException();
             }
 
+            ProcessOutputPipeline(output);
+            
+            return output;
+        }
+
+        private void ProcessOutputPipeline(CameraProcessOutput output)
+        {
             foreach (var outputPipeline in _outputPipelines)
             {
                 outputPipeline.Process(output);
             }
-
-            return output;
         }
 
         private void StateToFaceDetect()

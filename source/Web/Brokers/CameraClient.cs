@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using Microsoft.AspNet.SignalR.Hubs;
+using PiCamCV.Common.PanTilt.Controllers;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 
 namespace Web
@@ -27,6 +28,11 @@ namespace Web
         public void SetRegionOfInterest(Rectangle roi)
         {
             _clients.All.SetRegionOfInterest(roi);
+        }
+
+        public void SetMode(ProcessingMode mode)
+        {
+            _clients.All.SetMode(mode);
         }
     }
 }

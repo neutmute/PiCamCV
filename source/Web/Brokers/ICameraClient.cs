@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using PiCamCV.Common.PanTilt.Controllers;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 
 namespace Web
@@ -11,5 +12,7 @@ namespace Web
         void SetImageTransmitPeriod(TimeSpan transmitPeriod);
 
         void SetRegionOfInterest(Rectangle roi);
+
+        void SetMode(ProcessingMode mode);
     }
 }
