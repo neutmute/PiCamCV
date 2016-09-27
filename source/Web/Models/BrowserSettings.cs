@@ -17,6 +17,6 @@ namespace PiCam.Web.Models
         /// 
         /// Which is better for latency/througpout? Find out empirically
         /// </summary>
-        public bool TransmitImageViaSignalR { get; set; }
+        public bool TransmitImageViaSignalR { get; set; } = true;
     }
 }
