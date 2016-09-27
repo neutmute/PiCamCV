@@ -66,6 +66,12 @@ namespace PiCamCV.Common
         /// </summary>
         public Rectangle Roi { get; set; }
 
+        public void Accept(ThresholdSettings settings)
+        {
+            HighThreshold = settings.HighThreshold;
+            LowThreshold = settings.LowThreshold;
+        }
+
         public override string ToString()
         {
             return $"{base.ToString()}, MomentArea={MomentArea.ToStringE()}, Roi={Roi}";

@@ -62,6 +62,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
             _colourDetectorInput = new ColourDetectorInput();
             _colourDetectorInput.SetCapturedImage = true;
+            _colourDetectorInput.Settings.MomentArea = new RangeF(200, 10000);
 
             screen.Clear();
             StateToFaceDetect();
@@ -75,9 +76,14 @@ namespace PiCamCV.Common.PanTilt.Controllers
             if (e.DimensionValue % 5 == 0)
             { 
                 // Transmit the thresholded value
-                e.FullOutput.CapturedImage = new Image<Bgr, byte>(new Image<Gray, byte>[] {e. FullOutput.ThresholdImage, e.FullOutput.ThresholdImage , e.FullOutput.ThresholdImage });
+                e.FullOutput.CapturedImage = GetBgr(e.FullOutput.ThresholdImage);
                 ProcessOutputPipeline(e.FullOutput);
             }
+        }
+
+        private Image<Bgr, byte> GetBgr(Image<Gray, byte>  input)
+        {
+            return new Image<Bgr, byte>(new Image<Gray, byte>[] {input, input, input});
         }
 
         private void InitController()
@@ -110,6 +116,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
                 case ProcessingMode.ColourObjectTrack:
                     _colourDetectorInput.Captured = input.Captured;
                     var colourOutput = _colourTrackingController.Process(_colourDetectorInput);
+                    colourOutput.CapturedImage = GetBgr(colourOutput.ThresholdImage);
                     output = colourOutput;
                     break;
 
