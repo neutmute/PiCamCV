@@ -59,7 +59,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
             _thresholdSelector = new ThresholdSelector();
             _thresholdSelector.ColourCheckTick += thresholdSelector_ColourCheckTick;
-
+            
             _colourDetectorInput = new ColourDetectorInput();
             _colourDetectorInput.SetCapturedImage = true;
             _colourDetectorInput.Settings.MomentArea = new RangeF(200, 10000);
@@ -73,11 +73,11 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
         private void thresholdSelector_ColourCheckTick(object sender, AutoThresholdResult e)
         {
+            // Inform the server of what we are doing
             if (e.DimensionValue % 5 == 0)
-            { 
-                // Transmit the thresholded value
-                e.FullOutput.CapturedImage = GetBgr(e.FullOutput.ThresholdImage);
-                ProcessOutputPipeline(e.FullOutput);
+            {
+                e.RoiOutput.CapturedImage = GetBgr(e.RoiOutput.ThresholdImage);
+                ProcessOutputPipeline(e.RoiOutput);
             }
         }
 
@@ -154,7 +154,10 @@ namespace PiCamCV.Common.PanTilt.Controllers
                     break;
 
                 case ProcessingMode.ColourObjectSelect:
-                    //_colourDetectorInput.Settings. = _thresholdSelector.Select(input.Captured, _regionOfInterest);
+                    var thresholdSettings = _thresholdSelector.Select(input.Captured, _regionOfInterest);
+                    _screen.WriteLine($"Threshold settings: {thresholdSettings}");
+                    _colourDetectorInput.SetCapturedImage = true;
+                    _colourDetectorInput.Settings.Accept(thresholdSettings);
                     break;
 
                 case ProcessingMode.CamshiftSelect:

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.SignalR.Hubs;
+﻿using System;
+using Microsoft.AspNet.SignalR.Hubs;
 using Newtonsoft.Json;
 using PiCam.Web.Models;
 
@@ -15,7 +16,8 @@ namespace Web
         
         public void ScreenWriteLine(string message)
         {
-            _clients.All.ScreenWriteLine(message);
+            var now = DateTimeOffset.UtcNow.AddHours(11); //AEST hack
+            _clients.All.ScreenWriteLine($"{now.ToString("HH:mm:ss.ff")} {message}");
         }
 
         public void ScreenClear()

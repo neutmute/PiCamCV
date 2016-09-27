@@ -71,17 +71,24 @@ namespace PiCam.Web.Controllers
         {
             var percentSize = 40m / 100;
 
+            var squareLength = _imageSize.Width*percentSize;
+
             var roiRect = new Rectangle(
-                  Convert.ToInt32(_imageSize.Width * percentSize)
-                , Convert.ToInt32(_imageSize.Height * percentSize)
-                , Convert.ToInt32(_imageSize.Width * percentSize)
-                , Convert.ToInt32(_imageSize.Width * percentSize));
+                  Convert.ToInt32((_imageSize.Width - squareLength) / 2)
+                , Convert.ToInt32((_imageSize.Height - squareLength) / 2)
+                , Convert.ToInt32(squareLength)
+                , Convert.ToInt32(squareLength));
 
             return roiRect;
         }
 
         public void ImageReceived(Image<Bgr, byte> image)
         {
+            if (image == null)
+            {
+                Browsers.ScreenWriteLine("null image. bug.");
+            }
+
             if (!_firstImageReceived)
             {
                 _imageSize = image.Size;
