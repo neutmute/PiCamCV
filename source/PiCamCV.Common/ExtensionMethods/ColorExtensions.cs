@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using Emgu.CV.Structure;
 
-namespace PiCamCV.WinForms.ExtensionMethods
+namespace PiCamCV.Common.ExtensionMethods
 {
     public static class ColorExtensions
     {

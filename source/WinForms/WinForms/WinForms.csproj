@@ -144,7 +144,6 @@
     <Compile Include="CameraConsumers\TrackingControl.Designer.cs">
       <DependentUpon>TrackingControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="ExtensionMethods\ColorExtensions.cs" />
     <Compile Include="Properties\AssemblyInfoUnique.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -305,6 +304,9 @@
     <Content Include="Resources\Images\sunglasses2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ExtensionMethods\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

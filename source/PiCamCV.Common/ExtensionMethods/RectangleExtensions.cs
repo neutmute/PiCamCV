@@ -13,5 +13,14 @@ namespace PiCamCV.Common.ExtensionMethods
         {
             return target.Width*target.Height;
         }
+
+        public static Point Center(this Rectangle rectangle)
+        {
+            var midHeight = rectangle.Height / 2;
+            var midWidth = rectangle.Width / 2;
+
+            var point = new Point(rectangle.Left + midWidth, rectangle.Top + midHeight);
+            return point;
+        }
     }
 }

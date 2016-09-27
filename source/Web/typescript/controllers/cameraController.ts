@@ -93,5 +93,9 @@ module App {
         private movePanTilt(plane: Direction, units: number): JQueryPromise<void> {
             return this._browserHub.server.movePanTilt(plane, units);
         }
+
+        private startColourTrack(): JQueryPromise<void> {
+            return this._browserHub.server.startColourTrack();
+        }
     }
 }

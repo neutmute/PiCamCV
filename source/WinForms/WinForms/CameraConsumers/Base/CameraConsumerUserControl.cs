@@ -7,8 +7,8 @@ using Common.Logging;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using PiCamCV.Common;
+using PiCamCV.Common.ExtensionMethods;
 using PiCamCV.Interfaces;
-using PiCamCV.WinForms.ExtensionMethods;
 
 namespace PiCamCV.WinForms
 {

@@ -14,7 +14,8 @@
     export interface IBrowserServer {
         hello(message: string): JQueryPromise<void>;
         movePanTilt(plane: Direction, units: number): JQueryPromise<void>;
-        changeSettings(settings:ISystemSettings): JQueryPromise<void>;
+        changeSettings(settings: ISystemSettings): JQueryPromise<void>;
+        startColourTrack(): JQueryPromise<void>;
     }
 
     export interface IBrowserClient {
@@ -30,7 +31,9 @@
 
         transmitImageEveryMilliseconds: number;
 
-        transmitImageViaSignalR :boolean;
+        transmitImageViaSignalR: boolean;
+
+        showRegionOfInterest:boolean;
     }
 
     export interface IBrowserHubProxy {

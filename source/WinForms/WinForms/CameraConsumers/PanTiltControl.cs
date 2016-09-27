@@ -18,7 +18,6 @@ using PiCamCV.Common.Repositories;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 using PiCamCV.Interfaces;
 using PiCamCV.WinForms.CameraConsumers.Base;
-using PiCamCV.WinForms.ExtensionMethods;
 using RPi.Pwm;
 using Web.Client;
 //using CommandType = PiCamCV.Common.PanTilt.Controllers.CommandType;

@@ -77,6 +77,7 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="CamshiftDetector.cs" />
+    <Compile Include="ExtensionMethods\ColorExtensions.cs" />
     <Compile Include="ExtensionMethods\MCvScalarExtensions.cs" />
     <Compile Include="ExtensionMethods\RectangleExtensions.cs" />
     <Compile Include="Interfaces\ICameraServerBus.cs" />

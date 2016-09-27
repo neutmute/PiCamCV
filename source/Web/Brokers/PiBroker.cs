@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using Common.Logging;
@@ -8,6 +9,7 @@ using Emgu.CV.Structure;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using PiCam.Web.Models;
+using PiCamCV.Common.ExtensionMethods;
 using PiCamCV.Common.PanTilt.Controllers;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 using Web;
@@ -63,6 +65,22 @@ namespace PiCam.Web.Controllers
 
         public void ImageReceived(Image<Bgr, byte> image)
         {
+            if (SystemSettings.ShowRegionOfInterest)
+            {
+                var imageRect = new Rectangle(0,0,image.Width, image.Height);
+                var percentSize = 40m/100;
+
+                var roiRect = new Rectangle(
+                      Convert.ToInt32( image.Width * percentSize)
+                    , Convert.ToInt32( image.Height * percentSize)
+                    , Convert.ToInt32( image.Width * percentSize)
+                    , Convert.ToInt32( image.Width * percentSize));
+
+                //var region = new Region(roiRect);
+                image.Draw(roiRect, Color.Blue.ToBgr(), 2);
+            }
+
+
             var jpeg = image.ToJpegData(SystemSettings.JpegCompression);
 
             // left this here as it was a pain to inject into the pibroker
@@ -103,5 +121,9 @@ namespace PiCam.Web.Controllers
             Camera.MoveRelative(setting);
         }
 
+        public void StartColourTrack()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -16,7 +16,6 @@ using Kraken.Core;
 using PiCamCV.Common;
 using PiCamCV.Common.ExtensionMethods;
 using PiCamCV.WinForms.CameraConsumers.Base;
-using PiCamCV.WinForms.ExtensionMethods;
 
 namespace PiCamCV.WinForms.CameraConsumers
 {

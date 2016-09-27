@@ -49,5 +49,10 @@ namespace Web
         {
             _broker.ChangeSettings(settings);
         }
+
+        public void StartColourTrack()
+        {
+            _broker.StartColourTrack();
+        }
     }
 }

@@ -14,7 +14,6 @@ using Emgu.CV.Structure;
 using Emgu.CV.UI;
 using Kraken.Core;
 using PiCamCV.Common;
-using PiCamCV.WinForms.ExtensionMethods;
 
 namespace PiCamCV.WinForms.UserControls
 {

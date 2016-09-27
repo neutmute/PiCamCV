@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using PiCamCV.Common;
+using PiCamCV.Common.ExtensionMethods;
 using PiCamCV.Common.Interfaces;
 using PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies;
 using PiCamCV.ExtensionMethods;
