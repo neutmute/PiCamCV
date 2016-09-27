@@ -28,12 +28,11 @@
         </div>
 
         <div class="col-md-6">
-            <!-- Nav tabs -->
+            
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#tabLog" aria-controls="home" role="tab" data-toggle="tab">Log</a></li>
                 <li role="presentation"><a href="#tabSettings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
                 <li role="presentation"><a href="#control" aria-controls="control" role="tab" data-toggle="tab">Control</a></li>
-                
             </ul>
 
             <div class="tab-content">
@@ -41,38 +40,64 @@
                     <textarea rows="10" class="form-control" ng-model="vm.consoleScreen"></textarea>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="tabSettings">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">Send Image Every (ms)</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" ng-model="vm.systemSettings.transmitImageEveryMilliseconds">
+                   
+                    <fieldset>
+                        <legend><h4>Camera to Server</h4></legend>
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Send Image Every</label>
+                                <div class="col-sm-4">
+                                    @*<input type="text" class="form-control" ng-model="vm.systemSettings.transmitImageEveryMilliseconds">*@
+
+                                    <input id="modelValue" type="range" ng-model="vm.systemSettings.transmitImageEveryMilliseconds" min="0" step="5"
+                                           max="1000">
+                                    <span>{{vm.systemSettings.transmitImageEveryMilliseconds}}ms</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">Send Image to Browser via SignalR</label>
-                            <div class="col-sm-4">
-                                <input type="checkbox"  ng-model="vm.systemSettings.transmitImageViaSignalR">
+                        </form>
+                    </fieldset>
+                    <fieldset>
+                        <legend>
+                            <h4>Server to Browser</h4>
+                        </legend>
+                        <form class="form-horizontal">
+                          
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Image via SignalR</label>
+                                <div class="col-sm-4">
+                                    <input type="checkbox" ng-model="vm.systemSettings.transmitImageViaSignalR">
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">JPEG Compression (%)</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" ng-model="vm.systemSettings.jpegCompression">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">JPEG Compression</label>
+                                <div class="col-sm-4">
+                                    <input id="modelValue" type="range" ng-model="vm.systemSettings.jpegCompression" min="1" step="1"
+                                           max="100">
+                                    <span>{{vm.systemSettings.jpegCompression}}%</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-offset-4 col-sm-4">
-                                <button type="submit" class="btn btn-default" ng-click="vm.changeSettings()">Send</button>
+                            <div class="form-group">
+                                <div class="col-sm-offset-4 col-sm-4">
+                                    <button type="submit" class="btn btn-default" ng-click="vm.changeSettings()">Save</button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </fieldset>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="control">
                     <form class="form-horizontal">
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">Show Object Colour Training box</label>
+                            <label class="col-sm-4 control-label">Show Colour Training Target</label>
                             <div class="col-sm-4">
                                 <input type="checkbox" ng-change="vm.changeSettings()" ng-model="vm.systemSettings.showRegionOfInterest">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Target Size</label>
+                            <div class="col-sm-4">
+                                <input id="modelValue" ng-change="vm.changeSettings()" type="range" ng-model="vm.systemSettings.regionOfInterestPercent" min="1" step="1"
+                                       max="100">
+                                <span>{{vm.systemSettings.regionOfInterestPercent}}%</span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -83,7 +108,7 @@
                     </form>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </div>

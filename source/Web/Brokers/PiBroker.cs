@@ -69,7 +69,7 @@ namespace PiCam.Web.Controllers
 
         private Rectangle GetRegionOfInterest()
         {
-            var percentSize = 40m / 100;
+            var percentSize = SystemSettings.RegionOfInterestPercent / 100m;
 
             var squareLength = _imageSize.Width*percentSize;
 
@@ -87,6 +87,7 @@ namespace PiCam.Web.Controllers
             if (image == null)
             {
                 Browsers.ScreenWriteLine("null image. bug.");
+                return;
             }
 
             if (!_firstImageReceived)
@@ -118,11 +119,18 @@ namespace PiCam.Web.Controllers
 
         public void ChangeSettings(SystemSettings settings)
         {
+            var roiPercentChanged = settings.RegionOfInterestPercent != SystemSettings.RegionOfInterestPercent;
+
             SystemSettings = settings;
             Camera.SetImageTransmitPeriod(TimeSpan.FromMilliseconds(settings.TransmitImageEveryMilliseconds));
             Camera.SetRegionOfInterest(GetRegionOfInterest());
+            
             Browsers.InformSettings(SystemSettings);
-            Browsers.Toast("New settings received");
+
+            if (!roiPercentChanged) // don't spam
+            {
+                Browsers.Toast("New settings received");
+            }
         }
 
         public void CameraMoveRelative(PanTiltAxis axis, int units)

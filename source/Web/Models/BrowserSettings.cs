@@ -20,5 +20,7 @@ namespace PiCam.Web.Models
         public bool TransmitImageViaSignalR { get; set; } = true;
 
         public bool ShowRegionOfInterest { get; set; }
+
+        public int RegionOfInterestPercent { get; set; } = 40;
     }
 }

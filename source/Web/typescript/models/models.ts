@@ -33,7 +33,9 @@
 
         transmitImageViaSignalR: boolean;
 
-        showRegionOfInterest:boolean;
+        showRegionOfInterest: boolean;
+
+        regionOfInterestPercent:boolean;
     }
 
     export interface IBrowserHubProxy {
