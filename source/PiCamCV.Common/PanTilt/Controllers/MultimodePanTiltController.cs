@@ -14,12 +14,13 @@ namespace PiCamCV.Common.PanTilt.Controllers
 {
     public enum ProcessingMode
     {
-        FaceDetection
+        Unknown = 0
+        ,FaceDetection
         ,CamshiftTrack
         ,ColourObjectTrack
-        //,MultiTrack
         ,CamshiftSelect
-        ,ColourObjectSelect  
+        ,ColourObjectSelect
+        ,Autonomous
     }
     
     public class MultimodePanTiltController : CameraBasedPanTiltController<CameraPanTiltProcessOutput>

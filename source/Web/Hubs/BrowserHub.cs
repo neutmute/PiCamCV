@@ -50,9 +50,9 @@ namespace Web
             _broker.ChangeSettings(settings);
         }
 
-        public void StartColourTrack()
+        public void SetMode(ProcessingMode mode)
         {
-            _broker.StartColourTrack();
+            _broker.SetMode(mode);
         }
     }
 }

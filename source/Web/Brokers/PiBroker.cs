@@ -155,9 +155,10 @@ namespace PiCam.Web.Controllers
             Camera.MoveRelative(setting);
         }
 
-        public void StartColourTrack()
+        public void SetMode(ProcessingMode mode)
         {
-            Camera.SetMode(ProcessingMode.ColourObjectSelect);   
+            Camera.SetMode(mode);
+            Browsers.Toast($"Changing mode to {mode}");
         }
 
         public void SetCameraLocalIp(string ipCsv)

@@ -95,7 +95,15 @@ module App {
         }
 
         private startColourTrack(): JQueryPromise<void> {
-            return this._browserHub.server.startColourTrack();
+            return this._browserHub.server.setMode(ProcessingMode.ColourObjectSelect);
+        }
+
+        private startFaceTrack(): JQueryPromise<void> {
+            return this._browserHub.server.setMode(ProcessingMode.FaceDetection);
+        }
+
+        private startAutonomousTrack(): JQueryPromise<void> {
+            return this._browserHub.server.setMode(ProcessingMode.Autonomous);
         }
     }
 }

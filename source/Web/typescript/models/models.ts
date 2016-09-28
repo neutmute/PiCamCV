@@ -11,11 +11,21 @@
         tiltPercent?: number;
     }
 
+    export enum ProcessingMode {
+        Unknown = 0
+        , FaceDetection
+        , CamshiftTrack
+        , ColourObjectTrack
+        , CamshiftSelect
+        , ColourObjectSelect
+        , Autonomous
+    }
+
     export interface IBrowserServer {
         hello(message: string): JQueryPromise<void>;
         movePanTilt(plane: Direction, units: number): JQueryPromise<void>;
         changeSettings(settings: ISystemSettings): JQueryPromise<void>;
-        startColourTrack(): JQueryPromise<void>;
+        setMode(mode: ProcessingMode): JQueryPromise<void>;
     }
 
     export interface IBrowserClient {

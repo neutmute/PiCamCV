@@ -134,14 +134,15 @@ namespace PiCamCV.WinForms.CameraConsumers
             _calibratingPanTiltController.WaitStep = CalibrationWaitStep;
             _calibratingPanTiltController.ColourCaptured += _calibratingPanTiltController_ColourCaptured;
 
+            // default check states
+            chkBoxColourTracking.Checked = false;
+            chkBoxFaceTracker.Checked = false;
+            chkBoxMotionTracking.Checked = false;
+            chkMultimode.Checked = true;
+
             Log.InfoFormat("MotionSettings: {0}", motionSettings);
         }
-
-        private void CameraHubProxy_SetImageTransmitPeriod(object sender, TimeSpan e)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         protected void CalibrationWaitStep(string reason)
         {
             MessageBox.Show(reason);
