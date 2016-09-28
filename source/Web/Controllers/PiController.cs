@@ -23,8 +23,11 @@ namespace PiCam.Web.Controllers
         [System.Web.Mvc.Route("api/pi/postImage")]
         public void PostImage(Image<Bgr, byte> image)
         {
-            PiBroker.Instance.ImageReceived(image);
-            image.Dispose();
+            if (image != null) // null sometimes while doing thresholding
+            {
+                PiBroker.Instance.ImageReceived(image);
+                image.Dispose();
+            }
         }
     }
 }

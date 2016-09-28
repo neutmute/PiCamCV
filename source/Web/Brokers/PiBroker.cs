@@ -87,19 +87,14 @@ namespace PiCam.Web.Controllers
 
         public void ImageReceived(Image<Bgr, byte> image)
         {
-            if (image == null)
-            {
-                Browsers.ScreenWriteLine("null image. bug.");
-                return;
-            }
-
             if (!_firstImageReceived)
             {
                 _imageSize = image.Size;
                 _firstImageReceived = true;
             }
 
-            if (SystemSettings.ShowRegionOfInterest)
+            var isFullImage = _imageSize == image.Size; // its not a full image while training the color threshold
+            if (isFullImage && SystemSettings.ShowRegionOfInterest)
             {
                 var roiRect = GetRegionOfInterest();
                 image.Draw(roiRect, Color.Blue.ToBgr(), 2);
@@ -123,11 +118,19 @@ namespace PiCam.Web.Controllers
         public void ChangeSettings(SystemSettings settings)
         {
             var roiPercentChanged = settings.RegionOfInterestPercent != SystemSettings.RegionOfInterestPercent;
+            var transmitFrequencyChanged = settings.TransmitImageEveryMilliseconds != SystemSettings.TransmitImageEveryMilliseconds;
 
             SystemSettings = settings;
-            Camera.SetImageTransmitPeriod(TimeSpan.FromMilliseconds(settings.TransmitImageEveryMilliseconds));
-            Camera.SetRegionOfInterest(GetRegionOfInterest());
-            
+
+            if (transmitFrequencyChanged)
+            {
+                Camera.SetImageTransmitPeriod(TimeSpan.FromMilliseconds(settings.TransmitImageEveryMilliseconds));
+            }
+            if (roiPercentChanged)
+            {
+                Camera.SetRegionOfInterest(GetRegionOfInterest());
+            }
+
             Browsers.InformSettings(SystemSettings);
 
             if (!roiPercentChanged) // don't spam

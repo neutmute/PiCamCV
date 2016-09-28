@@ -44,6 +44,10 @@ namespace PiCamCV.WinForms.CameraConsumers
         
         private void ThresholdSelector_ColourCheckTick(object sender, AutoThresholdResult e)
         {
+            if (e.FullOutput ==null || e.FullOutput.ThresholdImage == null)
+            {
+                return;
+            }
             var processed = e.FullOutput.ThresholdImage;
 
             var enhanced = processed.Mat.ToImage<Bgr, byte>();

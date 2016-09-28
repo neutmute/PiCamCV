@@ -115,6 +115,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
             {
                 case ProcessingMode.ColourObjectTrack:
                     _colourDetectorInput.Captured = input.Captured;
+                    _colourTrackingController.Settings = _colourDetectorInput.Settings;
                     var colourOutput = _colourTrackingController.Process(_colourDetectorInput);
                     colourOutput.CapturedImage = GetBgr(colourOutput.ThresholdImage);
                     output = colourOutput;
@@ -154,10 +155,14 @@ namespace PiCamCV.Common.PanTilt.Controllers
                     break;
 
                 case ProcessingMode.ColourObjectSelect:
+                    _screen.WriteLine($"Threshold training for {_thresholdSelector.RequiredMomentAreaInRoiPercent}% ROI coverage");
                     var thresholdSettings = _thresholdSelector.Select(input.Captured, _regionOfInterest);
                     _screen.WriteLine($"Threshold settings: {thresholdSettings}");
                     _colourDetectorInput.SetCapturedImage = true;
                     _colourDetectorInput.Settings.Accept(thresholdSettings);
+
+                    // Change state
+                    State = ProcessingMode.ColourObjectTrack;
                     break;
 
                 case ProcessingMode.CamshiftSelect:

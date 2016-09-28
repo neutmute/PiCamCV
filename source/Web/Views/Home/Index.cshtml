@@ -92,6 +92,9 @@
                                 <input type="checkbox" ng-change="vm.changeSettings()" ng-model="vm.systemSettings.showRegionOfInterest">
                             </div>
                         </div>
+
+                        <p class="bg-warning" ng-show="vm.systemSettings.showRegionOfInterest">Aim to fill the entire box with the target colour</p>
+
                         <div class="form-group">
                             <label class="col-sm-4 control-label">Target Size</label>
                             <div class="col-sm-4">
