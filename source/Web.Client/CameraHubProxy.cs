@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,6 +56,7 @@ namespace Web.Client
 
             }).Wait();
 
+            InformIp();
 
             _proxy.On<ProcessingMode>("setMode", param =>{SetMode?.Invoke(this, param);});
 
@@ -79,7 +81,18 @@ namespace Web.Client
         {
             _proxy.Invoke("ScreenClear");
         }
-        
+
+        public void InformIp()
+        {
+            var networkService= new NetworkService();
+            var allIps = new List<string>();
+            allIps.AddRange(networkService.GetAllLocalIPv4(NetworkInterfaceType.Ethernet));
+            allIps.AddRange(networkService.GetAllLocalIPv4(NetworkInterfaceType.Wireless80211));
+            
+            var allIpCsv = string.Join(",", allIps);
+            _proxy.Invoke("InformIp", allIpCsv);
+        }
+
         public void Dispose()
         {
             _connection?.Stop();

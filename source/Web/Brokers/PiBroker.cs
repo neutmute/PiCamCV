@@ -29,10 +29,13 @@ namespace PiCam.Web.Controllers
 
         private static readonly ILog Log = LogManager.GetLogger<PiBroker>();
 
-        private string _cameraIp;
+        private string _cameraExternalIp;
+
+        public string CameraInteralIpCsv { get; set; }
+
         public SystemSettings SystemSettings { get; set; }
 
-        private bool IsCameraConnected => !string.IsNullOrEmpty(_cameraIp);
+        private bool IsCameraConnected => !string.IsNullOrEmpty(_cameraExternalIp);
 
         public static PiBroker Instance => _instance.Value;
 
@@ -49,7 +52,7 @@ namespace PiCam.Web.Controllers
 
         public void BrowserConnected(string connectionId, string ip)
         {
-            var camMsg = IsCameraConnected ? $"Camera is connected from {_cameraIp}" : "Waiting for a camera to connect";
+            var camMsg = IsCameraConnected ? $"Camera is connected from {_cameraExternalIp}" : "Waiting for a camera to connect";
             var msg = $"Hello {connectionId} from {ip}.\r\n{camMsg}";
             Browsers.Toast(msg);
             Browsers.InformSettings(SystemSettings);
@@ -58,7 +61,7 @@ namespace PiCam.Web.Controllers
 
         public void CameraConnected(string ip)
         {
-            _cameraIp = ip;
+            _cameraExternalIp = ip;
             var msg = $"Camera has connected from {ip}";
             Log.Info(msg);
             Browsers.Toast(msg);
@@ -152,6 +155,12 @@ namespace PiCam.Web.Controllers
         public void StartColourTrack()
         {
             Camera.SetMode(ProcessingMode.ColourObjectSelect);   
+        }
+
+        public void SetCameraLocalIp(string ipCsv)
+        {
+            CameraInteralIpCsv= ipCsv;
+            Browsers.Toast($"Camera local IPs are {ipCsv}");
         }
     }
 }

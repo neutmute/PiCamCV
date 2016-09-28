@@ -31,10 +31,15 @@ namespace Web
         {
             _broker.Browsers.ScreenClear();
         }
-
+        
         public void ScreenWriteLine(string message)
         {
             _broker.Browsers.ScreenWriteLine(message);
+        }
+
+        public void InformIp(string ipCsv)
+        {
+            _broker.SetCameraLocalIp(ipCsv);
         }
     }
 }
