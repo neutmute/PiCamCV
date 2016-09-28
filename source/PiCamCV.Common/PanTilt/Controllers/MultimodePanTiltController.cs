@@ -165,6 +165,9 @@ namespace PiCamCV.Common.PanTilt.Controllers
                     // Change state
                     State = ProcessingMode.ColourObjectTrack;
                     break;
+                
+                case ProcessingMode.Autonomous:
+                    break;
 
                 case ProcessingMode.CamshiftSelect:
                     throw new NotImplementedException();
