@@ -79,7 +79,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
         }
         public override string ToString()
         {
-            return string.Format("Accepted={0}, AllReadings.Count={1}", Accepted, AllReadings);
+            return $"Accepted={Accepted}, AllReadings.Count={AllReadings}";
         }
     }
 
@@ -129,7 +129,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
     {
         public override string ToString()
         {
-            return string.Format("{0} pixel readings", Keys.Count);
+            return $"{Keys.Count} pixel readings";
         }
     }
 

@@ -11,10 +11,7 @@ namespace PiCamCV.Common
 {
     public class CalibrationReadingsRepository : FileBasedRepository<PanTiltCalibrationReadings>
     {
-        protected override string Filename
-        {
-            get { return "calibration_readings.settings.xml"; }
-        }
+        protected override string Filename => "calibration_readings.settings.xml";
 
         public void ToCsv(PanTiltCalibrationReadings calibrationReadings)
         {
