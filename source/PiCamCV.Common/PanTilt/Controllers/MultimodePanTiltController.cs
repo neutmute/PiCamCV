@@ -40,6 +40,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
         private FaceTrackingPanTiltOutput _lastFaceTrack;
 
         private FaceTrackStateManager _faceTrackManager;
+        private AutonomousTrackStateManager _autonomousManager;
 
         private Action _unsubscribeBus;
 
@@ -69,6 +70,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
             _colourDetectorInput.Settings.MomentArea = new RangeF(200, 10000);
 
             _faceTrackManager = new FaceTrackStateManager(screen);
+            _autonomousManager = new AutonomousTrackStateManager(screen);
 
             screen.Clear();
             StateToFaceDetect();
@@ -168,6 +170,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
                     break;
                 
                 case ProcessingMode.Autonomous:
+                    nextState = _autonomousManager.AcceptInput(input);
                     break;
 
                 case ProcessingMode.CamshiftSelect:
