@@ -61,6 +61,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "source\Web\Web.cspro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Client", "source\Web.Client\Web.Client.csproj", "{EB0616D4-7DC9-449C-864B-A477A52419C5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{96D49710-083F-4E4A-BF44-3A9B6879DE71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PiCamCV.Common.Tests", "tests\PiCamCV.Common.Tests\PiCamCV.Common.Tests.csproj", "{30D99970-9601-43C0-8DEB-8A4717A8A739}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -330,6 +334,24 @@ Global
 		{EB0616D4-7DC9-449C-864B-A477A52419C5}.UnixDebug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{EB0616D4-7DC9-449C-864B-A477A52419C5}.UnixDebug|x86.ActiveCfg = Debug|Any CPU
 		{EB0616D4-7DC9-449C-864B-A477A52419C5}.UnixDebug|x86.Build.0 = Debug|Any CPU
+		{30D99970-9601-43C0-8DEB-8A4717A8A739}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30D99970-9601-43C0-8DEB-8A4717A8A739}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30D99970-9601-43C0-8DEB-8A4717A8A739}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{30D99970-9601-43C0-8DEB-8A4717A8A739}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{30D99970-9601-43C0-8DEB-8A4717A8A739}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{30D99970-9601-43C0-8DEB-8A4717A8A739}.Debug|x86.Build.0 = Debug|Any CPU
+		{30D99970-9601-43C0-8DEB-8A4717A8A739}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30D99970-9601-43C0-8DEB-8A4717A8A739}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30D99970-9601-43C0-8DEB-8A4717A8A739}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{30D99970-9601-43C0-8DEB-8A4717A8A739}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{30D99970-9601-43C0-8DEB-8A4717A8A739}.Release|x86.ActiveCfg = Release|Any CPU
+		{30D99970-9601-43C0-8DEB-8A4717A8A739}.Release|x86.Build.0 = Release|Any CPU
+		{30D99970-9601-43C0-8DEB-8A4717A8A739}.UnixDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30D99970-9601-43C0-8DEB-8A4717A8A739}.UnixDebug|Any CPU.Build.0 = Debug|Any CPU
+		{30D99970-9601-43C0-8DEB-8A4717A8A739}.UnixDebug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{30D99970-9601-43C0-8DEB-8A4717A8A739}.UnixDebug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{30D99970-9601-43C0-8DEB-8A4717A8A739}.UnixDebug|x86.ActiveCfg = Debug|Any CPU
+		{30D99970-9601-43C0-8DEB-8A4717A8A739}.UnixDebug|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -346,5 +368,6 @@ Global
 		{AEECAE23-D46E-4F64-91B3-C0B50BC2483E} = {6F830243-359A-48B3-8923-E15828EE8545}
 		{ACE64F17-87E5-43E7-97A0-BDDE19059C61} = {77EDE7DA-CF27-4550-B777-3239D7F23496}
 		{689CB6C4-3D23-45DA-8E00-87C28AEA32D0} = {77EDE7DA-CF27-4550-B777-3239D7F23496}
+		{30D99970-9601-43C0-8DEB-8A4717A8A739} = {96D49710-083F-4E4A-BF44-3A9B6879DE71}
 	EndGlobalSection
 EndGlobal

@@ -86,10 +86,11 @@
     <Compile Include="PanTilt\Controllers\MultimodePanTiltController.cs" />
     <Compile Include="PanTilt\Controllers\MotionTrackingPanTiltController.cs" />
     <Compile Include="PanTilt\Controllers\CamshiftPanTiltController.cs" />
+    <Compile Include="PanTilt\Controllers\multimode\StateManager.cs" />
     <Compile Include="PanTilt\MoveStrategies\CameraBasedModifierStrategy.cs" />
     <Compile Include="PanTilt\MoveStrategies\AutoCalibratedModifierStrategy.cs" />
     <Compile Include="PanTilt\MoveStrategies\LinearRegressor.cs" />
-    <Compile Include="PanTilt\TimeTarget.cs" />
+    <Compile Include="PanTilt\Controllers\multimode\TimeTarget.cs" />
     <Compile Include="Repositories\CalibrationReadingsRepository.cs" />
     <Compile Include="CameraConsumerBase.cs" />
     <Compile Include="CascadeDetector.cs" />

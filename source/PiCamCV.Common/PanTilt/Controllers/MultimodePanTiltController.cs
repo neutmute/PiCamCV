@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using PiCamCV.Common.Interfaces;
+using PiCamCV.Common.PanTilt.Controllers.multimode;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 using RPi.Pwm.Motors;
 
@@ -38,6 +39,8 @@ namespace PiCamCV.Common.PanTilt.Controllers
         private Rectangle _regionOfInterest = Rectangle.Empty;
         private FaceTrackingPanTiltOutput _lastFaceTrack;
 
+        private FaceTrackStateManager _faceTrackManager;
+
         private Action _unsubscribeBus;
 
         /// <summary>
@@ -64,6 +67,8 @@ namespace PiCamCV.Common.PanTilt.Controllers
             _colourDetectorInput = new ColourDetectorInput();
             _colourDetectorInput.SetCapturedImage = true;
             _colourDetectorInput.Settings.MomentArea = new RangeF(200, 10000);
+
+            _faceTrackManager = new FaceTrackStateManager(screen);
 
             screen.Clear();
             StateToFaceDetect();
@@ -112,6 +117,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
         protected override CameraPanTiltProcessOutput DoProcess(CameraProcessInput input)
         {
             var output = new CameraPanTiltProcessOutput();
+            ProcessingMode nextState = State;
             switch (State)
             {
                 case ProcessingMode.ColourObjectTrack:
@@ -125,22 +131,17 @@ namespace PiCamCV.Common.PanTilt.Controllers
                 case ProcessingMode.FaceDetection:
                     var faceTrackOutput = _faceTrackingController.Process(input);
 
-                    if (!_lastFaceTrack.IsDetected && faceTrackOutput.IsDetected)
-                    {
-                        _screen.WriteLine("Face detected");
-                    }
-
-                    if (!faceTrackOutput.IsDetected && _lastFaceTrack.IsDetected)
-                    {
-                        _screen.WriteLine("Switching to Camshift");
-                        // camshift on last known position
-                        State = ProcessingMode.CamshiftTrack;
-                        _camshiftTrackingController.TrackConfig = new TrackingConfig();
-                        _camshiftTrackingController.TrackConfig.ObjectOfInterest = _lastFaceTrack.Faces.First().Region;
-                        _camshiftTrackingController.TrackConfig.StartNewTrack = true;
-                    }
-
-                    _lastFaceTrack = faceTrackOutput;
+                    nextState =  _faceTrackManager.AcceptScan(faceTrackOutput);
+                    //if (!faceTrackOutput.IsDetected && _lastFaceTrack.IsDetected)
+                    //{
+                    //    _screen.WriteLine("Switching to Camshift");
+                    //    // camshift on last known position
+                    //    State = ProcessingMode.CamshiftTrack;
+                    //    _camshiftTrackingController.TrackConfig = new TrackingConfig();
+                    //    _camshiftTrackingController.TrackConfig.ObjectOfInterest = _lastFaceTrack.Faces.First().Region;
+                    //    _camshiftTrackingController.TrackConfig.StartNewTrack = true;
+                    //}
+                    //_lastFaceTrack = faceTrackOutput;
                     output = faceTrackOutput;
                     break;
 
@@ -174,7 +175,13 @@ namespace PiCamCV.Common.PanTilt.Controllers
             }
 
             ProcessOutputPipeline(output);
-            
+
+            if (nextState != State)
+            {
+                _screen.WriteLine($"Changing to {nextState}");
+                State = nextState;
+            }
+
             return output;
         }
 
