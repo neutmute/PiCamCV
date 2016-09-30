@@ -30,9 +30,9 @@ namespace PiCamCV.Common.PanTilt
             return new PanTiltSetting {PanPercent = nextPan, TiltPercent = nextTilt};
         }
 
-        ///// <summary>
-        ///// https://www.wolframalpha.com/input/?i=10*(-(+x%2F6-1)%5E2%2B1)
-        ///// </summary>
+        /// <summary>
+        /// https://www.wolframalpha.com/input/?i=10*(-(+x%2F6-1)%5E2%2B1)
+        /// </summary>
         public decimal GetParabolaFunction(decimal originalAxis, decimal targetAxis)
         {
             var axisToTravel =  targetAxis - originalAxis;

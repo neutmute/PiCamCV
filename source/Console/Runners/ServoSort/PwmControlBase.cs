@@ -6,7 +6,7 @@ namespace PiCamCV.ConsoleApp.Runners
     public class PwmControlBase
     {
         private readonly static ILog _Log = LogManager.GetLogger< PwmControlBase>();
-        //private readonly Dictionary<PwmChannel, PwmComponentBase> _components;
+        
 
         protected ILog Log { get { return _Log; } }
 
@@ -15,7 +15,6 @@ namespace PiCamCV.ConsoleApp.Runners
         protected PwmControlBase(IPwmDevice pwmDevice)
         {
             PwmDevice = pwmDevice;
-            // _components = new Dictionary<PwmChannel, PwmComponentBase>();
         }
     }
 }

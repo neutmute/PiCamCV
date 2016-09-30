@@ -70,12 +70,15 @@ namespace PiCamCV.Common.PanTilt.Controllers
             _colourDetectorInput.Settings.MomentArea = new RangeF(200, 10000);
 
             _faceTrackManager = new FaceTrackStateManager(screen);
-            _autonomousManager = new AutonomousTrackStateManager(screen);
+            _autonomousManager = new AutonomousTrackStateManager(this, screen);
 
             screen.Clear();
             StateToFaceDetect();
 
             _lastFaceTrack = new FaceTrackingPanTiltOutput();
+
+            _autonomousManager.IsFaceFound = i => _faceTrackingController.Process(i).IsDetected;
+
             InitController();
         }
 
@@ -183,6 +186,11 @@ namespace PiCamCV.Common.PanTilt.Controllers
             {
                 _screen.WriteLine($"Changing to {nextState}");
                 State = nextState;
+                if (nextState == ProcessingMode.Autonomous)
+                {
+                    // Reset the timers
+                    _autonomousManager.Reset();
+                }
             }
 
             return output;

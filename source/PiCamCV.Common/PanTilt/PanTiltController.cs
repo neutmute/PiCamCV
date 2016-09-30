@@ -10,7 +10,18 @@ using RPi.Pwm.Motors;
 
 namespace PiCamCV.ConsoleApp.Runners.PanTilt
 {
-    public abstract class PanTiltController : DisposableObject
+    public interface IPanTiltController
+    {
+        PanTiltSetting CurrentSetting { get; }
+
+        /// <returns>True if moved, false if move not required</returns>
+        bool MoveAbsolute(PanTiltSetting newPosition);
+
+        /// <returns>True if moved, false if move not required</returns>
+        bool MoveRelative(PanTiltSetting newPosition);
+    }
+
+    public abstract class PanTiltController : DisposableObject, IPanTiltController
     {
         private readonly static ILog _log = LogManager.GetLogger< PanTiltController>();
 
@@ -31,7 +42,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
 
         /// <returns>True if moved, false if move not required</returns>
-        protected bool MoveAbsolute(PanTiltSetting newPosition)
+        public bool MoveAbsolute(PanTiltSetting newPosition)
         {
             var moved = false;
             if (newPosition.PanPercent.HasValue)
@@ -47,7 +58,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
 
         /// <returns>True if moved, false if move not required</returns>
-        protected bool MoveRelative(PanTiltSetting newPosition)
+        public bool MoveRelative(PanTiltSetting newPosition)
         {
             bool moved = false;
             if (newPosition.PanPercent.HasValue)
