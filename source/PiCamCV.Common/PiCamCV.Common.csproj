@@ -82,6 +82,7 @@
     <Compile Include="ExtensionMethods\RectangleExtensions.cs" />
     <Compile Include="Interfaces\ICameraServerBus.cs" />
     <Compile Include="Interfaces\IImageTransmitter.cs" />
+    <Compile Include="Interfaces\IStopWatch.cs" />
     <Compile Include="MotionDetector.cs" />
     <Compile Include="PanTilt\Controllers\MultimodePanTiltController.cs" />
     <Compile Include="PanTilt\Controllers\MotionTrackingPanTiltController.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Repositories\FileBasedRepository.cs" />
     <Compile Include="Repositories\MotionDetectSettingRepository.cs" />
     <Compile Include="SerializableDictionary.cs" />
+    <Compile Include="StopwatchWrapper.cs" />
     <Compile Include="ThresholdSelector.cs" />
     <Compile Include="TrackingDetector.cs" />
   </ItemGroup>

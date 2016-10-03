@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PiCamCV.Common.Interfaces;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 
 namespace PiCamCV.Common.PanTilt
@@ -14,13 +15,23 @@ namespace PiCamCV.Common.PanTilt
 
         public PanTiltSetting Target { get; set; }
 
+        /// <summary>
+        /// How long to take to reach the target
+        /// </summary>
         public TimeSpan TimeSpan { get; set; }
 
-        private Stopwatch _stopWatch;
+        public bool TargetReached => _stopWatch.Elapsed >= TimeSpan;
+
+        private readonly IStopwatch _stopWatch;
+
+        public TimeTarget(IStopwatch stopwatch)
+        {
+            _stopWatch = stopwatch;
+        }
 
         public TimeTarget()
         {
-            _stopWatch = Stopwatch.StartNew();
+            _stopWatch = StopwatchWrapper.StartNew();
         }
 
         public PanTiltSetting GetNextPosition()
