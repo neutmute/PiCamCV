@@ -18,10 +18,10 @@ namespace PiCamCV.Common.Tests.PanTilt.Controllers.multimode
 
         public PanTiltSetting Setting { get; set; }
 
-        public string ToWolframPoint(PanTiltAxis axis)
+        public string ToCsv(PanTiltAxis axis)
         {
             var yValue = axis == PanTiltAxis.Horizontal ? Setting.PanPercent : Setting.TiltPercent;
-            return $"{{{TimeSpan.TotalMilliseconds},{yValue}}}";
+            return $"{TimeSpan.TotalMilliseconds},{yValue}";
         }
     }
 
@@ -69,9 +69,7 @@ namespace PiCamCV.Common.Tests.PanTilt.Controllers.multimode
             var tickEveryMs = Convert.ToInt32(sut.TimeSpan.TotalMilliseconds/resolution);
             var time = TimeSpan.FromSeconds(0);
             var tick = TimeSpan.FromMilliseconds(tickEveryMs);
-
-            var wolframListPlotFormat = $"ListPlot[{{!!POINTS!!}}]";
-
+            
             for (var timeMs = 0; timeMs <= sut.TimeSpan.TotalMilliseconds; timeMs += tickEveryMs)
             {
                 var result = new PanTiltTime();
@@ -85,15 +83,15 @@ namespace PiCamCV.Common.Tests.PanTilt.Controllers.multimode
                 
             }
 
-            var wolframPointsPan = results.ConvertAll(p => p.ToWolframPoint(PanTiltAxis.Horizontal));
-            var wolframPointsTilt = results.ConvertAll(p => p.ToWolframPoint(PanTiltAxis.Vertical));
+            var panPoints = results.ConvertAll(p => p.ToCsv(PanTiltAxis.Horizontal));
+            var tiltPoints = results.ConvertAll(p => p.ToCsv(PanTiltAxis.Vertical));
 
-            var wolframPlotPan = wolframListPlotFormat.Replace("!!POINTS!!", string.Join(",", wolframPointsPan));
-            var wolframPlotTilt = wolframListPlotFormat.Replace("!!POINTS!!", string.Join(",", wolframPointsTilt));
+            var csvPan = string.Join("\r\n", panPoints);
+            var csvTilt = string.Join("\r\n", tiltPoints);
 
-            Console.WriteLine($"Wolfram Pan:\r\n{wolframPlotPan}");
+            Console.WriteLine($"Wolfram Pan:\r\n{csvPan}");
 
-            Console.WriteLine($"Wolfram Tilt:\r\n{wolframPlotTilt}");
+            Console.WriteLine($"Wolfram Tilt:\r\n{csvTilt}");
         }
     }
 }
