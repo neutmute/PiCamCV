@@ -21,6 +21,7 @@ namespace Web.Client
 
         private IHubProxy _proxy;
         private HubConnection _connection;
+        private bool _connected;
         
         public event EventHandler<ProcessingMode> SetMode;
 
@@ -52,10 +53,12 @@ namespace Web.Client
                 else
                 {
                     Console.WriteLine("Connected");
+                    _connected = true;
                 }
 
             }).Wait();
 
+            
             InformIp();
 
             _proxy.On<ProcessingMode>("setMode", param =>{SetMode?.Invoke(this, param);});
@@ -74,16 +77,28 @@ namespace Web.Client
 
         public void ScreenWriteLine(string message)
         {
+            if (!_connected)
+            {
+                return;
+            }
             _proxy.Invoke<string>("ScreenWriteLine", message);
         }
 
         public void ScreenClear()
         {
+            if (!_connected)
+            {
+                return;
+            }
             _proxy.Invoke("ScreenClear");
         }
 
         public void InformIp()
         {
+            if (!_connected)
+            {
+                return;
+            }
             var networkService= new NetworkService();
             var allIps = new List<string>();
             allIps.AddRange(networkService.GetAllLocalIPv4(NetworkInterfaceType.Ethernet));

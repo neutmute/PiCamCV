@@ -72,13 +72,7 @@ namespace PiCamCV.WinForms.CameraConsumers
                 PanTiltMechanism.TiltServo.MoveTo(tiltPercent);
             }
         }
-
-        //protected override void OnUnsubscribe()
-        //{
-        //    base.OnUnsubscribe();
-        //    _multimodePanTiltController?.Dispose();
-        //}
-
+        
         protected override void OnSubscribe()
         {
             base.OnSubscribe();
@@ -368,13 +362,11 @@ namespace PiCamCV.WinForms.CameraConsumers
         {
             switch (e.KeyChar)
             {
-                case 'f':
-                    
-                    //_multimodePanTiltController.CommandQueue.Enqueue(PanTiltCommand.Factory(CommandType.CommenceFaceTrack));
+                case 'a':
+                    _multimodePanTiltController.SetMode(ProcessingMode.Autonomous);
                     break;
                 case 'r':
                     CameraHubProxy.InvokeMoveAbsolute(new PanTiltSetting(50, 50));
-                    //_multimodePanTiltController.CommandQueue.Enqueue(PanTiltCommand.Factory(CommandType.Recenter));
                     break;
             }
             e.Handled = true;

@@ -26,7 +26,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
     
     public class MultimodePanTiltController : CameraBasedPanTiltController<CameraPanTiltProcessOutput>
     {
-        public ProcessingMode State { get; set; }
+        public ProcessingMode State { get; private set; }
 
         private readonly IScreen _screen;
         private readonly FaceTrackingPanTiltController _faceTrackingController;
@@ -194,6 +194,12 @@ namespace PiCamCV.Common.PanTilt.Controllers
             }
 
             return output;
+        }
+
+        public void SetMode(ProcessingMode mode)
+        {
+            State = mode;
+            _screen.WriteLine($"Mode changed to {mode}");
         }
 
         private void ProcessOutputPipeline(CameraProcessOutput output)

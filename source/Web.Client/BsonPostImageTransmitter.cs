@@ -36,8 +36,17 @@ namespace Web.Client
                 
                 // POST using the BSON formatter.
                 MediaTypeFormatter bsonFormatter = new BsonMediaTypeFormatter();
-                var result = await client.PostAsync("api/pi/PostImage", image, bsonFormatter);
-                result.EnsureSuccessStatusCode();
+                try
+                {
+                    var result = await client.PostAsync("api/pi/PostImage", image, bsonFormatter);
+                    result.EnsureSuccessStatusCode();
+                    //return result; 
+                }
+                catch (Exception httpEx)
+                {
+                    Console.WriteLine(httpEx.Message);
+                    //return default(HttpResponseMessage);
+                }
             }
         }
     }

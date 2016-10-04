@@ -42,7 +42,7 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
             IPanTiltController panTiltController
             ,IScreen screen) : base(screen)
         {
-            screen = _screen;
+            _screen = screen;
             _panTiltController = panTiltController;
             Reset();
         }
