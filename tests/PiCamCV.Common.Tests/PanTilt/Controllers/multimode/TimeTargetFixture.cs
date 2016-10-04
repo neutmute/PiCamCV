@@ -87,9 +87,9 @@ namespace PiCamCV.Common.Tests.PanTilt.Controllers.multimode
             var csvPan = string.Join("\r\n", panPoints);
             var csvTilt = string.Join("\r\n", tiltPoints);
 
-            Console.WriteLine($"Wolfram Pan:\r\n{csvPan}");
+            Console.WriteLine($"Pan:\r\n{csvPan}");
 
-            Console.WriteLine($"Wolfram Tilt:\r\n{csvTilt}");
+            Console.WriteLine($"Tilt:\r\n{csvTilt}");
         }
     }
 }

@@ -18,6 +18,7 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
         private TimeSpan _nextSmoothPursuit;
         private int _nextSmoothPursuitSpeed;
         private TimeTarget _timeTarget;
+        private IScreen _screen;
 
         private Random _random;
 
@@ -37,8 +38,11 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
             ,SmoothPursuit
         }
 
-        public AutonomousTrackStateManager(IPanTiltController panTiltController, IScreen screen) : base(screen)
+        public AutonomousTrackStateManager(
+            IPanTiltController panTiltController
+            ,IScreen screen) : base(screen)
         {
+            screen = _screen;
             _panTiltController = panTiltController;
             Reset();
         }
@@ -64,6 +68,12 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
             _timeSinceLastSmoothPursuit.Restart();
             _timeTarget = new TimeTarget();
             _timeTarget.Original = _panTiltController.CurrentSetting;
+            
+            var nextPan = Convert.ToDecimal(_random.Next(0, 100));
+            var nextTilt = Convert.ToDecimal(_random.Next(0, 100));
+
+            _timeTarget.Target = new PanTiltSetting(nextPan, nextTilt);
+
         }
 
         public ProcessingMode AcceptInput(CameraProcessInput input)
@@ -79,14 +89,27 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
 
             if (_timeSinceLastColourSample.Elapsed > _sampleColourEvery)
             {
-                // do sample and test
+                //_screen.WriteLine("TODO: colour sample");
                 _timeSinceLastColourSample.Restart();
             }
 
             if (_timeSinceLastSmoothPursuit.Elapsed > _nextSmoothPursuit)
             {
-                // init smooth pursuit
-                DecideNextSmoothPursuit();
+                _screen.WriteLine($"Starting smooth pursuit to {_timeTarget.Target}");
+                _internalState = AutonomousState.SmoothPursuit;
+            }
+
+            if (_internalState == AutonomousState.SmoothPursuit)
+            {
+                var nextPosition = _timeTarget.GetNextPosition();
+                _panTiltController.MoveAbsolute(nextPosition);
+
+                if (_timeTarget.TimeTargetReached)
+                {
+                    DecideNextSmoothPursuit();
+                    _screen.WriteLine("Smooth pursuit target reached");
+                    _internalState = AutonomousState.Waiting;
+                }
             }
 
             return ProcessingMode.Autonomous;
