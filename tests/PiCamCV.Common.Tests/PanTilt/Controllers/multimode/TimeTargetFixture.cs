@@ -78,9 +78,7 @@ namespace PiCamCV.Common.Tests.PanTilt.Controllers.multimode
                 result.TimeSpan = time;
                 result.Setting = sut.GetNextPosition();
 
-                results.Add(result);
-
-                
+                results.Add(result);                
             }
 
             var panPoints = results.ConvertAll(p => p.ToCsv(PanTiltAxis.Horizontal));

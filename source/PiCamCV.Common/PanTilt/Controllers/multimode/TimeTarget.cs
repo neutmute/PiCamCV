@@ -20,7 +20,7 @@ namespace PiCamCV.Common.PanTilt
         /// </summary>
         public TimeSpan TimeSpan { get; set; }
 
-        public bool TargetReached => _stopWatch.Elapsed >= TimeSpan;
+        public bool TimeTargetReached => _stopWatch.Elapsed >= TimeSpan;
 
         private readonly IStopwatch _stopWatch;
 
@@ -36,8 +36,8 @@ namespace PiCamCV.Common.PanTilt
 
         public PanTiltSetting GetNextPosition()
         {
-            var nextPan = GetParabolaFunction(Original.PanPercent.Value, Target.PanPercent.Value);
-            var nextTilt = GetParabolaFunction(Original.TiltPercent.Value, Target.TiltPercent.Value);
+            var nextPan = Original.PanPercent.Value + GetParabolaFunction(Original.PanPercent.Value, Target.PanPercent.Value);
+            var nextTilt = Original.TiltPercent.Value + GetParabolaFunction(Original.TiltPercent.Value, Target.TiltPercent.Value);
             return new PanTiltSetting {PanPercent = nextPan, TiltPercent = nextTilt};
         }
 
@@ -47,9 +47,16 @@ namespace PiCamCV.Common.PanTilt
         public decimal GetParabolaFunction(decimal originalAxis, decimal targetAxis)
         {
             var axisToTravel =  targetAxis - originalAxis;
-            var xDivisorMinusOne = Convert.ToDecimal((_stopWatch.ElapsedMilliseconds / TimeSpan.TotalMilliseconds) - 1);
-            var output = axisToTravel*(-xDivisorMinusOne*xDivisorMinusOne) + 1;
-            return output;
+            if (TimeTargetReached)
+            {
+                return axisToTravel;
+            }
+            else
+            {
+                var xDivisorMinusOne = Convert.ToDecimal((_stopWatch.ElapsedMilliseconds/TimeSpan.TotalMilliseconds) - 1);
+                var output = axisToTravel*((-xDivisorMinusOne*xDivisorMinusOne) + 1);
+                return output;
+            }
         }
     }
 }
