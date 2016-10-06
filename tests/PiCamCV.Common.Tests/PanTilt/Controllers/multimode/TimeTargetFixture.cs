@@ -37,6 +37,10 @@ namespace PiCamCV.Common.Tests.PanTilt.Controllers.multimode
         public long ElapsedMilliseconds => Convert.ToInt64(_elapsed.TotalMilliseconds);
 
         public TimeSpan Elapsed => _elapsed;
+        public void Restart()
+        {
+            
+        }
     }
 
     public class TimeTargetFixture : Fixture

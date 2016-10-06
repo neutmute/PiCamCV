@@ -20,6 +20,8 @@ namespace PiCamCV.Common.PanTilt
         /// </summary>
         public TimeSpan TimeSpan { get; set; }
 
+        public int Ticks { get; private set; }
+
         public bool TimeTargetReached => _stopWatch.Elapsed >= TimeSpan;
 
         private readonly IStopwatch _stopWatch;
@@ -34,10 +36,20 @@ namespace PiCamCV.Common.PanTilt
             _stopWatch = StopwatchWrapper.StartNew();
         }
 
+        public void Start(PanTiltSetting setting)
+        {
+            Original = setting;
+            _stopWatch.Restart();
+            Ticks = 0;
+        }
+
         public PanTiltSetting GetNextPosition()
         {
             var nextPan = Original.PanPercent.Value + GetParabolaFunction(Original.PanPercent.Value, Target.PanPercent.Value);
             var nextTilt = Original.TiltPercent.Value + GetParabolaFunction(Original.TiltPercent.Value, Target.TiltPercent.Value);
+
+            Ticks++;
+
             return new PanTiltSetting {PanPercent = nextPan, TiltPercent = nextTilt};
         }
 

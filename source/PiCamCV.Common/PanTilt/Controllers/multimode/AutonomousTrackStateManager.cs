@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Kraken.Core;
 using PiCamCV.Common.Interfaces;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 
@@ -16,7 +17,6 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
         private TimeSpan _sampleColourEvery = TimeSpan.FromMilliseconds(2000);
 
         private TimeSpan _nextSmoothPursuit;
-        private int _nextSmoothPursuitSpeed;
         private TimeTarget _timeTarget;
         private IScreen _screen;
 
@@ -63,11 +63,12 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
 
         private void DecideNextSmoothPursuit()
         {
-            _nextSmoothPursuit = TimeSpan.FromSeconds(_random.Next(3, 20));
-            _nextSmoothPursuitSpeed = _random.Next(3, 10);
+            _nextSmoothPursuit = TimeSpan.FromSeconds(_random.Next(8, 20));
+            var nextSmoothPursuitSpeedSeconds = _random.Next(3, 10);
             _timeSinceLastSmoothPursuit.Restart();
             _timeTarget = new TimeTarget();
             _timeTarget.Original = _panTiltController.CurrentSetting;
+            _timeTarget.TimeSpan = TimeSpan.FromSeconds(nextSmoothPursuitSpeedSeconds);
             
             var nextPan = Convert.ToDecimal(_random.Next(0, 100));
             var nextTilt = Convert.ToDecimal(_random.Next(0, 100));
@@ -93,9 +94,10 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
                 _timeSinceLastColourSample.Restart();
             }
 
-            if (_timeSinceLastSmoothPursuit.Elapsed > _nextSmoothPursuit)
+            if (_internalState == AutonomousState.Waiting && _timeSinceLastSmoothPursuit.Elapsed > _nextSmoothPursuit)
             {
-                _screen.WriteLine($"Starting smooth pursuit to {_timeTarget.Target}");
+                _timeTarget.Start(_panTiltController.CurrentSetting);
+                _screen.WriteLine($"Starting smooth pursuit {_timeTarget.Original} to {_timeTarget.Target} over {_timeTarget.TimeSpan.ToHumanReadable()}");
                 _internalState = AutonomousState.SmoothPursuit;
             }
 
@@ -103,6 +105,11 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
             {
                 var nextPosition = _timeTarget.GetNextPosition();
                 _panTiltController.MoveAbsolute(nextPosition);
+
+                if (_timeTarget.Ticks % 10 == 0)
+                {
+                    _screen.WriteLine($"Abs=>{nextPosition}");
+                }
 
                 if (_timeTarget.TimeTargetReached)
                 {

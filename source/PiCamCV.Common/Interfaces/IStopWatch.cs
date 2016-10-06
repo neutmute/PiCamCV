@@ -13,6 +13,8 @@ namespace PiCamCV.Common.Interfaces
         long ElapsedMilliseconds { get; }
 
         TimeSpan Elapsed { get; }
+
+        void Restart();
     }
 
     

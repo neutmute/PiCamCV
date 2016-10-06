@@ -1,4 +1,5 @@
 using System.Drawing;
+using Kraken.Core;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 
 namespace PiCamCV.Common.PanTilt.Controllers.multimode
@@ -27,7 +28,7 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
             
             if (LastDetection != Point.Empty && TimeSinceLastDetection > AbandonDetectionAfterMissing)
             {
-                Screen.WriteLine("Face lost. Resuming autonomous.");
+                Screen.WriteLine($"Face deemed lost afer {AbandonDetectionAfterMissing.ToHumanReadable()}");
                 return ProcessingMode.Autonomous;
             }
 

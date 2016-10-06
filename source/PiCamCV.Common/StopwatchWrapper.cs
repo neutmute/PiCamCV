@@ -29,6 +29,10 @@ namespace PiCamCV.Common
             return wrapper;
         }
 
+        public void Restart()
+        {
+            _realWatch.Restart();
+        }
         
     }
 }
