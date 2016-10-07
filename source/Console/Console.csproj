@@ -98,12 +98,17 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="UnitsNet, Version=3.10.0.235, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\raspberry-sharp-io\packages\UnitsNet.3.10.0\lib\net35\UnitsNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Solution Items\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AppOptions.cs" />
+    <Compile Include="FakePanTilt.cs" />
     <Compile Include="IRunner.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfoUnique.cs" />

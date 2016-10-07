@@ -74,7 +74,7 @@ namespace PiCamCV.ConsoleApp
             if (i2cRequired.Contains(options.Mode))
             {
                 var pwmDeviceFactory = new Pca9685DeviceFactory();
-                var pwmDevice = pwmDeviceFactory.GetDevice(options.UseFakeDevice);
+                var pwmDevice = new FakePanTilt(); //  pwmDeviceFactory.GetDevice(options.UseFakeDevice);
                 panTiltMech = new PanTiltMechanism(pwmDevice);
                 screen = new ConsoleScreen();
                 screen.Clear();
