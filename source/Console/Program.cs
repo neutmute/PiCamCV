@@ -12,7 +12,6 @@ using PiCamCV.Common.PanTilt.Controllers;
 using PiCamCV.ConsoleApp.Runners;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 using PiCamCV.Interfaces;
-using Raspberry.IO.Components.Controllers.Pca9685;
 using RPi.Pwm;
 using Web.Client;
 
@@ -30,8 +29,8 @@ namespace PiCamCV.ConsoleApp
     /// </summary>
     class Program
     {
-
         protected static ILog Log = LogManager.GetLogger("Console");
+
         static void Main(string[] args)
         {
             var appData = ExecutionEnvironment.GetApplicationMetadata();
@@ -51,7 +50,7 @@ namespace PiCamCV.ConsoleApp
             CapturePi.DoMatMagic("CreateCapture");
 
             var noCaptureGrabs = new[] { Mode.simple, Mode.pantiltjoy };
-            var i2cRequired = new[] { Mode.pantiltface, Mode.pantiltjoy ,Mode.pantiltcolour };
+            var i2cRequired = new[] { Mode.pantiltface, Mode.pantiltjoy ,Mode.pantiltcolour, Mode.pantiltmultimode };
             CaptureConfig captureConfig = null;
             if (!noCaptureGrabs.Contains(options.Mode))
             {
@@ -79,6 +78,10 @@ namespace PiCamCV.ConsoleApp
                 panTiltMech = new PanTiltMechanism(pwmDevice);
                 screen = new ConsoleScreen();
                 screen.Clear();
+            }
+            else
+            {
+                Log.Info("Pan Tilt is not required");
             }
 
             IRunner runner;
