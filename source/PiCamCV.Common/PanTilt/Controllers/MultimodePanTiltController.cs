@@ -24,7 +24,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
         ,Autonomous
     }
     
-    public class MultimodePanTiltController : CameraBasedPanTiltController<CameraPanTiltProcessOutput>
+    public class MultimodePanTiltController : CameraBasedPanTiltController<CameraPanTiltProcessOutput>, IKeyHandler
     {
         public ProcessingMode State { get; private set; }
 
@@ -41,6 +41,8 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
         private FaceTrackStateManager _faceTrackManager;
         private AutonomousTrackStateManager _autonomousManager;
+        private EventHandler<PanTiltSetting> _moveAbsHandler;
+        private EventHandler<PanTiltSetting> _moveRelHandler;
 
         private Action _unsubscribeBus;
 
@@ -73,7 +75,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
             _autonomousManager = new AutonomousTrackStateManager(this, screen);
 
             screen.Clear();
-            StateToFaceDetect();
+            SetMode(ProcessingMode.Autonomous);
 
             _lastFaceTrack = new FaceTrackingPanTiltOutput();
 
@@ -99,21 +101,21 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
         private void InitController()
         {
+            _moveAbsHandler = (s, e) => { MoveAbsolute(e); _screen.WriteLine($"Move Absolute {e}"); };
+            _moveRelHandler = (s, e) => { MoveRelative(e); _screen.WriteLine($"Move Relative {e}"); };
             EventHandler<ProcessingMode> setModeHandler = (s, e) => { State = e; };
-            EventHandler<PanTiltSetting> moveAbsHandler = (s, e) => { MoveAbsolute(e); _screen.WriteLine($"Move Absolute {e}"); };
-            EventHandler<PanTiltSetting> moveRelHandler = (s, e) => { MoveRelative(e); _screen.WriteLine($"Move Relative {e}"); };
             EventHandler<Rectangle> setRoiHandler = (s, e) => { _regionOfInterest = e; _screen.WriteLine("ROI set"); };
 
             _serverToCameraBus.SetMode += setModeHandler;
-            _serverToCameraBus.MoveAbsolute += moveAbsHandler;
-            _serverToCameraBus.MoveRelative += moveRelHandler;
+            _serverToCameraBus.MoveAbsolute += _moveAbsHandler;
+            _serverToCameraBus.MoveRelative += _moveRelHandler;
             _serverToCameraBus.SetRegionOfInterest += setRoiHandler;
 
             _unsubscribeBus = () =>
             {
                 _serverToCameraBus.SetMode -= setModeHandler;
-                _serverToCameraBus.MoveAbsolute -= moveAbsHandler;
-                _serverToCameraBus.MoveRelative -= moveRelHandler;
+                _serverToCameraBus.MoveAbsolute -= _moveAbsHandler;
+                _serverToCameraBus.MoveRelative -= _moveRelHandler;
                 _serverToCameraBus.SetRegionOfInterest -= setRoiHandler;
             };
         }
@@ -155,7 +157,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
                     if (camshiftOutput.Target == Point.Empty)
                     {
-                        StateToFaceDetect();
+                        SetMode(ProcessingMode.Autonomous);
                     }
 
                     output = camshiftOutput;
@@ -209,12 +211,6 @@ namespace PiCamCV.Common.PanTilt.Controllers
                 outputPipeline.Process(output);
             }
         }
-
-        private void StateToFaceDetect()
-        {
-            _screen.WriteLine("Switching to Face Detection");
-            State = ProcessingMode.FaceDetection;
-        }
         
         protected override void DisposeObject()
         {
@@ -227,6 +223,24 @@ namespace PiCamCV.Common.PanTilt.Controllers
         public void Unsubscribe()
         {
             _unsubscribeBus();
+        }
+        
+        public bool HandleKeyPress(char key)
+        {
+            var handled = true;
+            switch (key)
+            {
+                case 'a':
+                    SetMode(ProcessingMode.Autonomous);
+                    break;
+                case 'r':
+                    _moveAbsHandler(this, new PanTiltSetting(50, 50));
+                    break;
+                default:
+                    handled = false;
+                    break;
+            }
+            return handled;
         }
     }
 }

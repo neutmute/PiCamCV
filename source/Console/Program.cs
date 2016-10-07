@@ -19,7 +19,14 @@ using Web.Client;
 namespace PiCamCV.ConsoleApp
 {
     /// <summary>
+    /// WINDOWS
+    /// picamcv.con.exe -m=pantiltmultimode
+    /// 
+    /// LINUX
+    /// 
     /// mono picamcv.con.exe -m=simple
+    /// 
+    /// 
     /// </summary>
     class Program
     {

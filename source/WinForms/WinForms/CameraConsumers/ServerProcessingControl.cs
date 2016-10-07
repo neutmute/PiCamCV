@@ -20,7 +20,6 @@ namespace PiCamCV.WinForms.CameraConsumers
 {
     public partial class ServerProcessingControl : PanTiltBaseUserControl
     {
-        private MultimodePanTiltController _multimodePanTiltController;
         private IImageTransmitter _bsonPoster;
         private Task _transmitTask;
         public ServerProcessingControl()

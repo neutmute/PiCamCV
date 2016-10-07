@@ -20,7 +20,6 @@ using PiCamCV.Interfaces;
 using PiCamCV.WinForms.CameraConsumers.Base;
 using RPi.Pwm;
 using Web.Client;
-//using CommandType = PiCamCV.Common.PanTilt.Controllers.CommandType;
 
 namespace PiCamCV.WinForms.CameraConsumers
 {
@@ -360,15 +359,7 @@ namespace PiCamCV.WinForms.CameraConsumers
 
         private void btnMultimodeCommand_KeyPress(object sender, KeyPressEventArgs e)
         {
-            switch (e.KeyChar)
-            {
-                case 'a':
-                    _multimodePanTiltController.SetMode(ProcessingMode.Autonomous);
-                    break;
-                case 'r':
-                    CameraHubProxy.InvokeMoveAbsolute(new PanTiltSetting(50, 50));
-                    break;
-            }
+            _multimodePanTiltController.HandleKeyPress(e.KeyChar);
             e.Handled = true;
         }
     }

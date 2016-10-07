@@ -82,6 +82,7 @@
     <Compile Include="ExtensionMethods\RectangleExtensions.cs" />
     <Compile Include="Interfaces\ICameraServerBus.cs" />
     <Compile Include="Interfaces\IImageTransmitter.cs" />
+    <Compile Include="Interfaces\IKeyHandler.cs" />
     <Compile Include="Interfaces\IStopWatch.cs" />
     <Compile Include="MotionDetector.cs" />
     <Compile Include="PanTilt\Controllers\MultimodePanTiltController.cs" />

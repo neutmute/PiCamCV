@@ -33,7 +33,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
     {
         TOutput Process(CameraProcessInput input);
 
-        TimeSpan ServoSettleTime{get;set;}
+        TimeSpan ServoSettleTime { get; set; }
     }
 
     public abstract class CameraBasedPanTiltController<TOutput> : 

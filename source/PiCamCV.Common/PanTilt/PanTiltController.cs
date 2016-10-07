@@ -72,6 +72,9 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             return moved;
         }
 
+        /// <summary>
+        /// abstract - must be implemented
+        /// </summary>
         protected override void DisposeObject()
         {
             

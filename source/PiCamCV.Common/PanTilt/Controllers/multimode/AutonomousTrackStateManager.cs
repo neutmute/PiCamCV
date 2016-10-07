@@ -8,17 +8,16 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
 {
     public class AutonomousTrackStateManager : StateManager
     {
-        private Stopwatch _timeSinceLastPursuit;
         private Stopwatch _timeSinceLastFaceSample;
         private Stopwatch _timeSinceLastColourSample;
         private Stopwatch _timeSinceLastSmoothPursuit;
 
-        private TimeSpan _sampleFaceEvery = TimeSpan.FromMilliseconds(1000);
-        private TimeSpan _sampleColourEvery = TimeSpan.FromMilliseconds(2000);
+        private readonly TimeSpan _sampleFaceEvery = TimeSpan.FromMilliseconds(1000);
+        private readonly TimeSpan _sampleColourEvery = TimeSpan.FromMilliseconds(2000);
 
         private TimeSpan _nextSmoothPursuit;
         private TimeTarget _timeTarget;
-        private IScreen _screen;
+        private readonly IScreen _screen;
 
         private Random _random;
 
@@ -26,11 +25,8 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
 
         public Func<CameraProcessInput, bool> IsFaceFound { get; set; }
 
-        private IPanTiltController _panTiltController;
-
-        //public Func<PanTiltSetting> GetCurrentPosition { get; set; }
-
-        //public Func<A> 
+        private readonly IPanTiltController _panTiltController;
+        
 
         enum AutonomousState
         {
@@ -106,9 +102,9 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
                 var nextPosition = _timeTarget.GetNextPosition();
                 _panTiltController.MoveAbsolute(nextPosition);
 
-                if (_timeTarget.Ticks % 10 == 0)
+                if (_timeTarget.Ticks % 25 == 0)
                 {
-                    _screen.WriteLine($"Abs=>{nextPosition}");
+                    _screen.WriteLine($"{nextPosition}");
                 }
 
                 if (_timeTarget.TimeTargetReached)

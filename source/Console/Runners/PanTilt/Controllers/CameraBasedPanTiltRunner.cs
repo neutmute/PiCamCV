@@ -18,6 +18,8 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
         IScreen Screen { get; set; }
         protected CaptureConfig CaptureConfig { get; private set; }
+
+        private readonly IKeyHandler _keyHandler;
         
         public CameraBasedPanTiltRunner(
             IPanTiltMechanism panTiltMech
@@ -38,6 +40,8 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             CameraCapture.ImageGrabbed += InternalImageGrabbedHandler;
 
             CaptureConfig = captureGrabber.GetCaptureProperties();
+
+            _keyHandler = controller as IKeyHandler;
         }
 
         private void InternalImageGrabbedHandler(object sender, EventArgs e)
@@ -54,7 +58,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
                 Screen.BeginRepaint();
                 Screen.WriteLine("Processing time: {0:N0}ms", output.Elapsed.TotalMilliseconds);
-                Screen.WriteLine("Servo Wait Time: {0:N0}ms", _controller.ServoSettleTime.TotalMilliseconds);
+                Screen.WriteLine("Servo Settle Time: {0:N0}ms (Key 1=up, 2=down)", _controller.ServoSettleTime.TotalMilliseconds);
                 Screen.WriteLine("Pan Tilt Before: {0}", output.PanTiltPrior);
                 Screen.WriteLine("Pan Tilt After : {0}", output.PanTiltNow);
                 Screen.WriteLine("Target: {0}", output.Target);
@@ -64,19 +68,19 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         public virtual void HandleKey(ConsoleKeyInfo keyInfo)
         {
             var servoIncrement = TimeSpan.FromMilliseconds(10);
-            switch (keyInfo.Key)
+            switch (keyInfo.KeyChar)
             {
-                case ConsoleKey.A:
+                case '1':
                     _controller.ServoSettleTime = _controller.ServoSettleTime.Add(servoIncrement);
                     break;
-                case ConsoleKey.Z:
+                case '2':
                     if (_controller.ServoSettleTime > servoIncrement)
                     {
                         _controller.ServoSettleTime = _controller.ServoSettleTime.Add(-servoIncrement);
                     }
                     break;
                 default:
-                    Log.Info(m => m("Ignoring key {0}", keyInfo.Key));
+                    _keyHandler?.HandleKeyPress(keyInfo.KeyChar);
                     break;
             }
         }
