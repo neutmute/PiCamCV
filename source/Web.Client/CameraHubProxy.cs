@@ -36,7 +36,7 @@ namespace Web.Client
 
         public void InvokeMoveAbsolute(PanTiltSetting setting)
         {
-            MoveAbsolute?.Invoke(this, setting);
+            
         }
         
         public void Connect()
@@ -63,11 +63,11 @@ namespace Web.Client
 
             _proxy.On<ProcessingMode>("setMode", param =>{SetMode?.Invoke(this, param);});
 
-            _proxy.On<PanTiltSetting>("moveAbsolute", InvokeMoveAbsolute);
-
-            _proxy.On<string>("writeLine", (s) => Console.WriteLine(s));
-
+            _proxy.On<PanTiltSetting>("moveAbsolute", s => MoveAbsolute?.Invoke(this, s));
+            
             _proxy.On<PanTiltSetting>("moveRelative", param =>{MoveRelative?.Invoke(this, param);});
+
+            _proxy.On<string>("writeLine", Console.WriteLine);
 
             _proxy.On<TimeSpan>("setImageTransmitPeriod", ts => SetImageTransmitPeriod?.Invoke(this, ts));
 

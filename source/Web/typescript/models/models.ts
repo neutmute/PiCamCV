@@ -23,7 +23,8 @@
 
     export interface IBrowserServer {
         hello(message: string): JQueryPromise<void>;
-        movePanTilt(plane: Direction, units: number): JQueryPromise<void>;
+        moveRelative(plane: Direction, units: number): JQueryPromise<void>;
+        moveAbsolute(setting: IPanTiltSetting): JQueryPromise<void>;
         changeSettings(settings: ISystemSettings): JQueryPromise<void>;
         setMode(mode: ProcessingMode): JQueryPromise<void>;
     }

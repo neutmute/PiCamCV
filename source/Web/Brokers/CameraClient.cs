@@ -20,6 +20,11 @@ namespace Web
             _clients.All.MoveRelative(setting);
         }
 
+        public void MoveAbsolute(PanTiltSetting setting)
+        {
+            _clients.All.MoveAbsolute(setting);
+        }
+
         public void SetImageTransmitPeriod(TimeSpan transmitPeriod)
         {
             _clients.All.SetImageTransmitPeriod(transmitPeriod);

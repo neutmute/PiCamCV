@@ -139,6 +139,11 @@ namespace PiCam.Web.Controllers
             }
         }
 
+        public void CameraMoveAbsolute(PanTiltSetting setting)
+        {
+            Camera.MoveAbsolute(setting);
+        }
+
         public void CameraMoveRelative(PanTiltAxis axis, int units)
         {
             var setting = new PanTiltSetting();

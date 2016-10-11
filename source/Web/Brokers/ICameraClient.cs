@@ -9,6 +9,8 @@ namespace Web
     {
         void MoveRelative(PanTiltSetting setting);
 
+        void MoveAbsolute(PanTiltSetting setting);
+
         void SetImageTransmitPeriod(TimeSpan transmitPeriod);
 
         void SetRegionOfInterest(Rectangle roi);

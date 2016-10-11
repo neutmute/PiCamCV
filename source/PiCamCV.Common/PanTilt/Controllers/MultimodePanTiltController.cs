@@ -102,7 +102,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
         private void InitController()
         {
             _moveAbsHandler = (s, e) => { MoveAbsolute(e); _screen.WriteLine($"Move Absolute {e}"); };
-            _moveRelHandler = (s, e) => { MoveRelative(e); _screen.WriteLine($"Move Relative {e}"); };
+            _moveRelHandler = (s, e) => { MoveRelative(e); _screen.WriteLine($"Move Relative {e} to {CurrentSetting}"); };
             EventHandler<ProcessingMode> setModeHandler = (s, e) => { State = e; };
             EventHandler<Rectangle> setRoiHandler = (s, e) => { _regionOfInterest = e; _screen.WriteLine("ROI set"); };
 

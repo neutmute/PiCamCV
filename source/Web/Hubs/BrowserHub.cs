@@ -5,6 +5,7 @@ using Microsoft.AspNet.SignalR;
 using PiCam.Web.Controllers;
 using PiCam.Web.Models;
 using PiCamCV.Common.PanTilt.Controllers;
+using PiCamCV.ConsoleApp.Runners.PanTilt;
 using MessageBus = Microsoft.AspNet.SignalR.Messaging.MessageBus;
 
 namespace Web
@@ -30,19 +31,14 @@ namespace Web
             return base.OnConnected();
         }
 
-        //public void ImageReady(string message = null)
-        //{
-        //    Clients.All.ImageReady(message);
-        //}
-
-        //public void hello(string message)
-        //{
-        //    Log.Info("Hello!");
-        //}
-
-        public void MovePanTilt(PanTiltAxis axis, int units)
+        public void MoveRelative(PanTiltAxis axis, int units)
         {
             _broker.CameraMoveRelative(axis,units);
+        }
+
+        public void MoveAbsolute(PanTiltSetting setting)
+        {
+            _broker.CameraMoveAbsolute(setting);
         }
 
         public void ChangeSettings(SystemSettings settings)

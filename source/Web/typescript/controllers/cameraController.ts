@@ -14,6 +14,7 @@ module App {
         imageCounter: number;
         consoleScreen: string;
         systemSettings: ISystemSettings;
+        moveAbsoluteSetting: IPanTiltSetting;
 
         constructor(
             private $scope: ICameraControllerScope
@@ -24,6 +25,7 @@ module App {
             this.consoleScreen = '';
             this.moveUnits = 10;
             this.systemSettings = <ISystemSettings>{};
+            this.moveAbsoluteSetting = <IPanTiltSetting>{panPercent:50, tiltPercent :50};
 
             this._browserHub.client.imageReady = (s) => {
                 this.imageCounter++;
@@ -71,27 +73,31 @@ module App {
         }
 
         up(): void {
-            this.movePanTilt(Direction.Tilt, this.moveUnits);
+            this.moveRelative(Direction.Tilt, this.moveUnits);
         }
 
         down(): void {
-            this.movePanTilt(Direction.Tilt, -this.moveUnits);
+            this.moveRelative(Direction.Tilt, -this.moveUnits);
         }
 
         left(): void {
-            this.movePanTilt(Direction.Pan, this.moveUnits);
+            this.moveRelative(Direction.Pan, this.moveUnits);
         }
 
         right(): void {
-            this.movePanTilt(Direction.Pan, -this.moveUnits);
+            this.moveRelative(Direction.Pan, -this.moveUnits);
         }
 
         changeSettings(): void {
             this._browserHub.server.changeSettings(this.systemSettings);
         }
 
-        private movePanTilt(plane: Direction, units: number): JQueryPromise<void> {
-            return this._browserHub.server.movePanTilt(plane, units);
+        private moveRelative(plane: Direction, units: number): JQueryPromise<void> {
+            return this._browserHub.server.moveRelative(plane, units);
+        }
+
+        public moveAbsolute(): JQueryPromise<void> {
+            return this._browserHub.server.moveAbsolute(this.moveAbsoluteSetting);
         }
 
         private startColourTrack(): JQueryPromise<void> {
