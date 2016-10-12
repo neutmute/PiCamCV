@@ -11,6 +11,10 @@ namespace Web
 
         void MoveAbsolute(PanTiltSetting setting);
 
+        void SetPursuitBoundaryLower(PanTiltSetting setting);
+
+        void SetPursuitBoundaryUpper(PanTiltSetting setting);
+
         void SetImageTransmitPeriod(TimeSpan transmitPeriod);
 
         void SetRegionOfInterest(Rectangle roi);

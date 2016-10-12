@@ -25,6 +25,16 @@ namespace Web
             _clients.All.MoveAbsolute(setting);
         }
 
+        public void SetPursuitBoundaryLower(PanTiltSetting setting)
+        {
+            _clients.All.SetPursuitBoundaryLower(setting);
+        }
+
+        public void SetPursuitBoundaryUpper(PanTiltSetting setting)
+        {
+            _clients.All.SetPursuitBoundaryUpper(setting);
+        }
+
         public void SetImageTransmitPeriod(TimeSpan transmitPeriod)
         {
             _clients.All.SetImageTransmitPeriod(transmitPeriod);

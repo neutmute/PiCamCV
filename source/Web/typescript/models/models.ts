@@ -47,6 +47,7 @@
 
         showRegionOfInterest: boolean;
 
+        // How much the ROI should consume of the viewport
         regionOfInterestPercent:boolean;
     }
 
