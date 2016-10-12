@@ -21,6 +21,9 @@ namespace PiCamCV.Common.PanTilt.Controllers
         ,ColourObjectTrack
         ,CamshiftSelect
         ,ColourObjectSelect
+
+        //Manual input only
+        ,Static
         ,Autonomous
     }
     
@@ -101,8 +104,8 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
         private void InitController()
         {
-            _moveAbsHandler = (s, e) => { MoveAbsolute(e); _screen.WriteLine($"Move Absolute {e}"); };
-            _moveRelHandler = (s, e) => { MoveRelative(e); _screen.WriteLine($"Move Relative {e} to {CurrentSetting}"); };
+            _moveAbsHandler = (s, e) => { MoveAbsolute(e); SetMode(ProcessingMode.Static); _screen.WriteLine($"Move Absolute {e}"); };
+            _moveRelHandler = (s, e) => { MoveRelative(e); SetMode(ProcessingMode.Static); _screen.WriteLine($"Move Relative {e} to {CurrentSetting}"); };
             EventHandler<ProcessingMode> setModeHandler = (s, e) => { State = e; };
             EventHandler<Rectangle> setRoiHandler = (s, e) => { _regionOfInterest = e; _screen.WriteLine("ROI set"); };
 
@@ -182,6 +185,11 @@ namespace PiCamCV.Common.PanTilt.Controllers
                     throw new NotImplementedException();
             }
 
+            if (output.CapturedImage == null)
+            {
+                output.CapturedImage = input.Captured.ToImage<Bgr, byte>();
+            }
+
             ProcessOutputPipeline(output);
 
             if (nextState != State)
@@ -200,8 +208,11 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
         public void SetMode(ProcessingMode mode)
         {
-            State = mode;
-            _screen.WriteLine($"Mode changed to {mode}");
+            if (State != mode)
+            {
+                State = mode;
+                _screen.WriteLine($"Mode changed to {mode}");
+            }
         }
 
         private void ProcessOutputPipeline(CameraProcessOutput output)

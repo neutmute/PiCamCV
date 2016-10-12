@@ -108,6 +108,10 @@ module App {
             return this._browserHub.server.setMode(ProcessingMode.FaceDetection);
         }
 
+        private startStatic(): JQueryPromise<void> {
+            return this._browserHub.server.setMode(ProcessingMode.Static);
+        }
+
         private startAutonomousTrack(): JQueryPromise<void> {
             return this._browserHub.server.setMode(ProcessingMode.Autonomous);
         }

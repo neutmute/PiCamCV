@@ -18,6 +18,7 @@
         , ColourObjectTrack
         , CamshiftSelect
         , ColourObjectSelect
+        , Static
         , Autonomous
     }
 
