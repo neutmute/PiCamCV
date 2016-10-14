@@ -238,7 +238,6 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="typescript\controllers\cameraController.ts" />
-    <TypeScriptCompile Include="typescript\home.ts" />
     <TypeScriptCompile Include="typescript\models\models.ts" />
     <TypeScriptCompile Include="typescript\services\IErrorHttpInterceptorService.ts" />
     <TypeScriptCompile Include="typescript\services\NotifierService.ts" />

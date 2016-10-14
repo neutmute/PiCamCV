@@ -6,9 +6,24 @@
         Tilt
     }
 
+    export enum PanTiltSettingCommandType {
+        Unknown = 0,
+        MoveAbsolute,
+        MoveRelative,
+        MoveSmooth,
+        SetRangeMotionUpper,
+        SetRangeMotionLower,
+        SetRangePursuitUpper,
+        SetRangePursuitLower
+    }
+
     export interface IPanTiltSetting {
         panPercent?: number;
         tiltPercent?: number;
+    }
+
+    export interface IPanTiltSettingCommand extends IPanTiltSetting {
+        type: PanTiltSettingCommandType;
     }
 
     export enum ProcessingMode {
@@ -24,8 +39,7 @@
 
     export interface IBrowserServer {
         hello(message: string): JQueryPromise<void>;
-        moveRelative(plane: Direction, units: number): JQueryPromise<void>;
-        moveAbsolute(setting: IPanTiltSetting): JQueryPromise<void>;
+        sendCommand(command: IPanTiltSettingCommand): JQueryPromise<void>;
         changeSettings(settings: ISystemSettings): JQueryPromise<void>;
         setMode(mode: ProcessingMode): JQueryPromise<void>;
     }

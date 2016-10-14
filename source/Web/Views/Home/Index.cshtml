@@ -133,7 +133,17 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-1 col-xs-offset-5">
-                                <button type="button" class="btn btn-primary" ng-click="vm.down()"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></button>                                
+                                <button type="button" class="btn btn-primary" ng-click="vm.down()"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Scale</label>
+                                <div class="col-sm-4">
+                                    <input id="modelValue" type="range" ng-model="vm.moveRelativeScale" min="1" step="1"
+                                           max="20">
+                                    <span>{{vm.moveRelativeScale}}%</span>
+                                </div>
                             </div>
                         </div>
                     </fieldset>

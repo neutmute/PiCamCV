@@ -31,16 +31,6 @@ namespace Web
             return base.OnConnected();
         }
 
-        //public void MoveRelative(PanTiltAxis axis, int units)
-        //{
-        //    _broker.CameraMoveRelative(axis,units);
-        //}
-
-        //public void MoveAbsolute(PanTiltSetting setting)
-        //{
-        //    _broker.CameraMoveAbsolute(setting);
-        //}
-
         public void ChangeSettings(SystemSettings settings)
         {
             _broker.ChangeSettings(settings);
@@ -51,14 +41,9 @@ namespace Web
             _broker.SetMode(mode);
         }
 
-        public void SetPursuitBoundary(PanTiltSetting setting)
+        public void SendCommand(PanTiltSettingCommand command)
         {
-            _broker.SetPursuitUpper(setting);
-        }
-
-        public void SetPursuitLower(PanTiltSetting setting)
-        {
-            _broker.SetPursuitLower(setting);
+            _broker.CameraSendCommand(command);
         }
     }
 }

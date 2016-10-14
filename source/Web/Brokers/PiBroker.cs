@@ -58,7 +58,6 @@ namespace PiCam.Web.Controllers
             Browsers.InformSettings(SystemSettings);
         }
         
-
         public void CameraConnected(string ip)
         {
             _cameraExternalIp = ip;
@@ -114,17 +113,7 @@ namespace PiCam.Web.Controllers
             }
             Browsers.ImageReady(signalRContent);
         }
-
-        public void SetPursuitUpper(PanTiltSetting setting)
-        {
-            
-        }
-
-        public void SetPursuitLower(PanTiltSetting setting)
-        {
-
-        }
-
+        
         public void ChangeSettings(SystemSettings settings)
         {
             var roiPercentChanged = settings.RegionOfInterestPercent != SystemSettings.RegionOfInterestPercent;
@@ -153,23 +142,7 @@ namespace PiCam.Web.Controllers
         {
             Camera.SendCommand(command);
         }
-
-        //public void CameraMoveRelative(PanTiltAxis axis, int units)
-        //{
-        //    var setting = new PanTiltSetting();
-        //    switch (axis)
-        //    {
-        //        case PanTiltAxis.Horizontal:
-        //            setting.PanPercent = units;
-        //            break;
-        //        case PanTiltAxis.Vertical:
-        //            setting.TiltPercent = units;
-        //            break;
-        //    }
-
-        //    Camera.MoveRelative(setting);
-        //}
-
+        
         public void SetMode(ProcessingMode mode)
         {
             Camera.SetMode(mode);

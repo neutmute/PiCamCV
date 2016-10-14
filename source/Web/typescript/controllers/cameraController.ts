@@ -9,12 +9,12 @@ module App {
     export class CameraController {
 
         private _browserHub: IBrowserHubProxy;
-        moveUnits: number;
         imageUrl: string;
         imageCounter: number;
         consoleScreen: string;
         systemSettings: ISystemSettings;
         moveAbsoluteSetting: IPanTiltSetting;
+        moveRelativeScale:number;
 
         constructor(
             private $scope: ICameraControllerScope
@@ -23,7 +23,7 @@ module App {
             this._browserHub = (<any>$.connection).browserHub;
             this.imageCounter = 0;
             this.consoleScreen = '';
-            this.moveUnits = 10;
+            this.moveRelativeScale = 3;
             this.systemSettings = <ISystemSettings>{};
             this.moveAbsoluteSetting = <IPanTiltSetting>{panPercent:50, tiltPercent :50};
 
@@ -73,31 +73,48 @@ module App {
         }
 
         up(): void {
-            this.moveRelative(Direction.Tilt, this.moveUnits);
+            var command = this.commandFactory(PanTiltSettingCommandType.MoveRelative, 0, this.moveRelativeScale);
+            this.sendCommand(command);
         }
 
         down(): void {
-            this.moveRelative(Direction.Tilt, -this.moveUnits);
+            var command = this.commandFactory(PanTiltSettingCommandType.MoveRelative, 0, -this.moveRelativeScale);
+            this.sendCommand(command);
         }
 
         left(): void {
-            this.moveRelative(Direction.Pan, this.moveUnits);
+            var command = this.commandFactory(PanTiltSettingCommandType.MoveRelative, -this.moveRelativeScale, 0);
+            this.sendCommand(command);
         }
 
         right(): void {
-            this.moveRelative(Direction.Pan, -this.moveUnits);
+            var command = this.commandFactory(PanTiltSettingCommandType.MoveRelative, this.moveRelativeScale, 0);
+            this.sendCommand(command);
+        }
+        
+        moveAbsolute(): void {
+            var command = this.commandFactory(
+                PanTiltSettingCommandType.MoveAbsolute
+                , this.moveAbsoluteSetting.panPercent
+                , this.moveAbsoluteSetting.tiltPercent);
+
+            this.sendCommand(command);
         }
 
         changeSettings(): void {
             this._browserHub.server.changeSettings(this.systemSettings);
         }
-
-        private moveRelative(plane: Direction, units: number): JQueryPromise<void> {
-            return this._browserHub.server.moveRelative(plane, units);
+        
+        private commandFactory(type: PanTiltSettingCommandType, pan: number, tilt:number): IPanTiltSettingCommand {
+            var command = <IPanTiltSettingCommand>{};
+            command.type = type;
+            command.panPercent = pan;
+            command.tiltPercent = tilt;
+            return command;
         }
 
-        public moveAbsolute(): JQueryPromise<void> {
-            return this._browserHub.server.moveAbsolute(this.moveAbsoluteSetting);
+        public sendCommand(command: IPanTiltSettingCommand): JQueryPromise<void> {
+            return this._browserHub.server.sendCommand(command);
         }
 
         private startColourTrack(): JQueryPromise<void> {
