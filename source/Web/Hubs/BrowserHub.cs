@@ -31,15 +31,15 @@ namespace Web
             return base.OnConnected();
         }
 
-        public void MoveRelative(PanTiltAxis axis, int units)
-        {
-            _broker.CameraMoveRelative(axis,units);
-        }
+        //public void MoveRelative(PanTiltAxis axis, int units)
+        //{
+        //    _broker.CameraMoveRelative(axis,units);
+        //}
 
-        public void MoveAbsolute(PanTiltSetting setting)
-        {
-            _broker.CameraMoveAbsolute(setting);
-        }
+        //public void MoveAbsolute(PanTiltSetting setting)
+        //{
+        //    _broker.CameraMoveAbsolute(setting);
+        //}
 
         public void ChangeSettings(SystemSettings settings)
         {

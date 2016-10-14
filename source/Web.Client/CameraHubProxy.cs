@@ -24,20 +24,14 @@ namespace Web.Client
         private bool _connected;
         
         public event EventHandler<ProcessingMode> SetMode;
-
-        public event EventHandler<PanTiltSetting> MoveAbsolute;
-
-        public event EventHandler<PanTiltSetting> MoveRelative;
-
-        public event EventHandler<PanTiltSetting> SetPursuitBoundaryUpper;
-
-        public event EventHandler<PanTiltSetting> SetPursuitBoundaryLower;
-
+        
         public event EventHandler<TimeSpan> SetImageTransmitPeriod;
 
         public event EventHandler<Rectangle> SetRegionOfInterest;
 
-        
+        public event EventHandler<PanTiltSettingCommand> PanTiltCommand;
+
+
         public void InvokeMoveAbsolute(PanTiltSetting setting)
         {
             
@@ -67,14 +61,8 @@ namespace Web.Client
 
             _proxy.On<ProcessingMode>("setMode", param =>{SetMode?.Invoke(this, param);});
 
-            _proxy.On<PanTiltSetting>("moveAbsolute", s => MoveAbsolute?.Invoke(this, s));
+            _proxy.On<PanTiltSettingCommand>("panTiltCommand", s => PanTiltCommand?.Invoke(this, s));
             
-            _proxy.On<PanTiltSetting>("setPursuitBoundaryUpper", param =>{ SetPursuitBoundaryUpper?.Invoke(this, param);});
-
-            _proxy.On<PanTiltSetting>("setPursuitBoundaryLower", param => { SetPursuitBoundaryLower?.Invoke(this, param); });
-
-            _proxy.On<string>("writeLine", Console.WriteLine);
-
             _proxy.On<TimeSpan>("setImageTransmitPeriod", ts => SetImageTransmitPeriod?.Invoke(this, ts));
 
             _proxy.On<Rectangle>("setRegionOfInterest", r => SetRegionOfInterest?.Invoke(this, r));

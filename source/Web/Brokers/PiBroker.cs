@@ -149,26 +149,26 @@ namespace PiCam.Web.Controllers
             }
         }
 
-        public void CameraMoveAbsolute(PanTiltSetting setting)
+        public void CameraSendCommand(PanTiltSettingCommand command)
         {
-            Camera.MoveAbsolute(setting);
+            Camera.SendCommand(command);
         }
 
-        public void CameraMoveRelative(PanTiltAxis axis, int units)
-        {
-            var setting = new PanTiltSetting();
-            switch (axis)
-            {
-                case PanTiltAxis.Horizontal:
-                    setting.PanPercent = units;
-                    break;
-                case PanTiltAxis.Vertical:
-                    setting.TiltPercent = units;
-                    break;
-            }
+        //public void CameraMoveRelative(PanTiltAxis axis, int units)
+        //{
+        //    var setting = new PanTiltSetting();
+        //    switch (axis)
+        //    {
+        //        case PanTiltAxis.Horizontal:
+        //            setting.PanPercent = units;
+        //            break;
+        //        case PanTiltAxis.Vertical:
+        //            setting.TiltPercent = units;
+        //            break;
+        //    }
 
-            Camera.MoveRelative(setting);
-        }
+        //    Camera.MoveRelative(setting);
+        //}
 
         public void SetMode(ProcessingMode mode)
         {

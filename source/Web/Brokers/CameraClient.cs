@@ -14,30 +14,15 @@ namespace Web
         {
             _clients = clients;
         }
-
-        public void MoveRelative(PanTiltSetting setting)
-        {
-            _clients.All.MoveRelative(setting);
-        }
-
-        public void MoveAbsolute(PanTiltSetting setting)
-        {
-            _clients.All.MoveAbsolute(setting);
-        }
-
-        public void SetPursuitBoundaryLower(PanTiltSetting setting)
-        {
-            _clients.All.SetPursuitBoundaryLower(setting);
-        }
-
-        public void SetPursuitBoundaryUpper(PanTiltSetting setting)
-        {
-            _clients.All.SetPursuitBoundaryUpper(setting);
-        }
-
+        
         public void SetImageTransmitPeriod(TimeSpan transmitPeriod)
         {
             _clients.All.SetImageTransmitPeriod(transmitPeriod);
+        }
+
+        public void SendCommand(PanTiltSettingCommand command)
+        {
+            _clients.All.panTiltCommand(command);
         }
 
         public void SetRegionOfInterest(Rectangle roi)

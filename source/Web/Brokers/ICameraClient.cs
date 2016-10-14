@@ -7,16 +7,10 @@ namespace Web
 {
     public interface ICameraClient
     {
-        void MoveRelative(PanTiltSetting setting);
-
-        void MoveAbsolute(PanTiltSetting setting);
-
-        void SetPursuitBoundaryLower(PanTiltSetting setting);
-
-        void SetPursuitBoundaryUpper(PanTiltSetting setting);
-
         void SetImageTransmitPeriod(TimeSpan transmitPeriod);
 
+        void SendCommand(PanTiltSettingCommand setting);
+        
         void SetRegionOfInterest(Rectangle roi);
 
         void SetMode(ProcessingMode mode);

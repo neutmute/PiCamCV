@@ -16,12 +16,14 @@ namespace PiCamCV.Common.Interfaces
     public interface IServerToCameraBus
     {
         event EventHandler<ProcessingMode> SetMode;
-        event EventHandler<PanTiltSetting> MoveAbsolute;
-        event EventHandler<PanTiltSetting> MoveRelative;
+        //event EventHandler<PanTiltSetting> MoveAbsolute;
+        //event EventHandler<PanTiltSetting> MoveRelative;
         event EventHandler<TimeSpan> SetImageTransmitPeriod;
         event EventHandler<Rectangle> SetRegionOfInterest;
-        event EventHandler<PanTiltSetting> SetPursuitBoundaryUpper;
-        event EventHandler<PanTiltSetting> SetPursuitBoundaryLower;
+        //event EventHandler<PanTiltSetting> SetPursuitBoundaryUpper;
+        //event EventHandler<PanTiltSetting> SetPursuitBoundaryLower;
+
+        event EventHandler<PanTiltSettingCommand> PanTiltCommand;
     }
 
     public interface ICameraToServerBus
