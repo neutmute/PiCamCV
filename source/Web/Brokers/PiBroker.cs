@@ -115,6 +115,16 @@ namespace PiCam.Web.Controllers
             Browsers.ImageReady(signalRContent);
         }
 
+        public void SetPursuitUpper(PanTiltSetting setting)
+        {
+            
+        }
+
+        public void SetPursuitLower(PanTiltSetting setting)
+        {
+
+        }
+
         public void ChangeSettings(SystemSettings settings)
         {
             var roiPercentChanged = settings.RegionOfInterestPercent != SystemSettings.RegionOfInterestPercent;

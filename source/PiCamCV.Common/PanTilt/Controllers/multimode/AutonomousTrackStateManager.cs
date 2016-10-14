@@ -25,6 +25,10 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
 
         public Func<CameraProcessInput, bool> IsFaceFound { get; set; }
 
+        public PanTiltSetting PursuitBoundaryUpper { get; set; }
+
+        public PanTiltSetting PursuitBoundaryLower { get; set; }
+
         private readonly IPanTiltController _panTiltController;
         
 
@@ -41,6 +45,9 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
             _screen = screen;
             _panTiltController = panTiltController;
             Reset();
+
+            PursuitBoundaryUpper = new PanTiltSetting(40, 60);
+            PursuitBoundaryLower = new PanTiltSetting(40, 60);
         }
 
         public void Reset()
@@ -66,8 +73,8 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
             _timeTarget.Original = _panTiltController.CurrentSetting;
             _timeTarget.TimeSpan = TimeSpan.FromSeconds(nextSmoothPursuitSpeedSeconds);
             
-            var nextPan = Convert.ToDecimal(_random.Next(0, 100));
-            var nextTilt = Convert.ToDecimal(_random.Next(0, 100));
+            var nextPan = Convert.ToDecimal(_random.Next((int) PursuitBoundaryLower.PanPercent.Value, (int)PursuitBoundaryUpper.PanPercent.Value));
+            var nextTilt = Convert.ToDecimal(_random.Next((int)PursuitBoundaryLower.TiltPercent.Value, (int)PursuitBoundaryUpper.TiltPercent.Value));
 
             _timeTarget.Target = new PanTiltSetting(nextPan, nextTilt);
 

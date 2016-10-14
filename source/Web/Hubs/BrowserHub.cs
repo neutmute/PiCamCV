@@ -50,5 +50,15 @@ namespace Web
         {
             _broker.SetMode(mode);
         }
+
+        public void SetPursuitBoundary(PanTiltSetting setting)
+        {
+            _broker.SetPursuitUpper(setting);
+        }
+
+        public void SetPursuitLower(PanTiltSetting setting)
+        {
+            _broker.SetPursuitLower(setting);
+        }
     }
 }

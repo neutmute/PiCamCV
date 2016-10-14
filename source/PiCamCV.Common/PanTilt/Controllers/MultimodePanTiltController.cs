@@ -106,13 +106,18 @@ namespace PiCamCV.Common.PanTilt.Controllers
         {
             _moveAbsHandler = (s, e) => { MoveAbsolute(e); SetMode(ProcessingMode.Static); _screen.WriteLine($"Move Absolute {e}"); };
             _moveRelHandler = (s, e) => { MoveRelative(e); SetMode(ProcessingMode.Static); _screen.WriteLine($"Move Relative {e} to {CurrentSetting}"); };
+
             EventHandler<ProcessingMode> setModeHandler = (s, e) => { State = e; };
             EventHandler<Rectangle> setRoiHandler = (s, e) => { _regionOfInterest = e; _screen.WriteLine("ROI set"); };
+            EventHandler<PanTiltSetting> setPursuitUpper = (s, e) => { _autonomousManager.PursuitBoundaryUpper = e; ReportPursuitBoundaries();};
+            EventHandler<PanTiltSetting> setPursuitLower = (s, e) => {_autonomousManager.PursuitBoundaryLower = e ; ReportPursuitBoundaries();};
 
             _serverToCameraBus.SetMode += setModeHandler;
             _serverToCameraBus.MoveAbsolute += _moveAbsHandler;
             _serverToCameraBus.MoveRelative += _moveRelHandler;
             _serverToCameraBus.SetRegionOfInterest += setRoiHandler;
+            _serverToCameraBus.SetPursuitBoundaryLower += setPursuitLower;
+            _serverToCameraBus.SetPursuitBoundaryUpper += setPursuitUpper;
 
             _unsubscribeBus = () =>
             {
@@ -120,7 +125,16 @@ namespace PiCamCV.Common.PanTilt.Controllers
                 _serverToCameraBus.MoveAbsolute -= _moveAbsHandler;
                 _serverToCameraBus.MoveRelative -= _moveRelHandler;
                 _serverToCameraBus.SetRegionOfInterest -= setRoiHandler;
+                _serverToCameraBus.SetPursuitBoundaryLower -= setPursuitLower;
+                _serverToCameraBus.SetPursuitBoundaryUpper -= setPursuitUpper;
             };
+        }
+
+        private void ReportPursuitBoundaries()
+        {
+            var panText = $"Pan={_autonomousManager.PursuitBoundaryLower.PanPercent}-{_autonomousManager.PursuitBoundaryUpper.PanPercent}";
+            var tiltText = $"Tilt={_autonomousManager.PursuitBoundaryLower.TiltPercent}-{_autonomousManager.PursuitBoundaryUpper.TiltPercent}";
+            _screen.WriteLine($"Pursuit boundary: {panText}, {tiltText}");
         }
         
 

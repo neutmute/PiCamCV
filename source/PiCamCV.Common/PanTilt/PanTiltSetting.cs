@@ -1,5 +1,27 @@
 ﻿namespace PiCamCV.ConsoleApp.Runners.PanTilt
 {
+    public enum PanTiltSettingCommandType
+    {
+        Unknown = 0,
+        MoveAbsolute,
+        MoveRelative,
+        MoveSmooth,
+        SetRangeMotionUpper,
+        SetRangeMotionLower,
+        SetRangePursuitUpper,
+        SetRangePursuitLower
+    }
+
+    public class PanTiltSettingCommand: PanTiltSetting
+    {
+        public PanTiltSettingCommandType Type { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Type}: {base.ToString()}";
+        }
+    }
+
     public class PanTiltSetting
     {
         public decimal? PanPercent { get; set; }

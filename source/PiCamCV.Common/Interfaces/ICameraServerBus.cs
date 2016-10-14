@@ -11,6 +11,8 @@ using PiCamCV.ConsoleApp.Runners.PanTilt;
 
 namespace PiCamCV.Common.Interfaces
 {
+
+
     public interface IServerToCameraBus
     {
         event EventHandler<ProcessingMode> SetMode;
@@ -18,6 +20,8 @@ namespace PiCamCV.Common.Interfaces
         event EventHandler<PanTiltSetting> MoveRelative;
         event EventHandler<TimeSpan> SetImageTransmitPeriod;
         event EventHandler<Rectangle> SetRegionOfInterest;
+        event EventHandler<PanTiltSetting> SetPursuitBoundaryUpper;
+        event EventHandler<PanTiltSetting> SetPursuitBoundaryLower;
     }
 
     public interface ICameraToServerBus
