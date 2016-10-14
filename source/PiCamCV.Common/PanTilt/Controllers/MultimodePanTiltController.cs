@@ -104,7 +104,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
         private void InitController()
         {
-            EventHandler<ProcessingMode> setModeHandler = (s, e) => { State = e; };
+            EventHandler<ProcessingMode> setModeHandler = (s, e) => { SetMode(e); };
             EventHandler<Rectangle> setRoiHandler = (s, e) => { _regionOfInterest = e; _screen.WriteLine("ROI set"); };
             
             EventHandler<PanTiltSettingCommand> panTiltCommandHandler = (s, e) =>
