@@ -92,15 +92,6 @@ module App {
             this.sendCommand(command);
         }
         
-        moveAbsolute(): void {
-            var command = this.commandFactory(
-                PanTiltSettingCommandType.MoveAbsolute
-                , this.moveAbsoluteSetting.panPercent
-                , this.moveAbsoluteSetting.tiltPercent);
-
-            this.sendCommand(command);
-        }
-
         changeSettings(): void {
             this._browserHub.server.changeSettings(this.systemSettings);
         }
@@ -111,6 +102,27 @@ module App {
             command.panPercent = pan;
             command.tiltPercent = tilt;
             return command;
+        }
+
+        moveAbsolute(): void {
+            this.sendAbsoluteCommand(PanTiltSettingCommandType.MoveAbsolute);
+        }
+
+        public setPursuitLower() {
+            this.sendAbsoluteCommand(PanTiltSettingCommandType.SetRangePursuitLower);
+        }
+
+        public setPursuitUpper() {
+            this.sendAbsoluteCommand(PanTiltSettingCommandType.SetRangePursuitUpper);
+        }
+
+        private sendAbsoluteCommand(type: PanTiltSettingCommandType) {
+            var command = this.commandFactory(
+                type
+                , this.moveAbsoluteSetting.panPercent
+                , this.moveAbsoluteSetting.tiltPercent);
+
+            this.sendCommand(command);
         }
 
         public sendCommand(command: IPanTiltSettingCommand): JQueryPromise<void> {
