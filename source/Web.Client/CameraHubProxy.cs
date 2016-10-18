@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Net.NetworkInformation;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading.Tasks;
-using Emgu.CV;
-using Emgu.CV.Structure;
 using Microsoft.AspNet.SignalR.Client;
 using PiCamCV.Common.Interfaces;
 using PiCamCV.Common.PanTilt.Controllers;
@@ -39,7 +34,10 @@ namespace Web.Client
         
         public void Connect()
         {
-            _connection = new HubConnection($"http://{Config.ServerHost}:{Config.ServerPort}/");
+            var endpoint = $"http://{Config.ServerHost}:{Config.ServerPort}/";
+            Console.WriteLine($"Connecting to {endpoint}");
+            
+            _connection = new HubConnection(endpoint);
             
             _proxy = _connection.CreateHubProxy("CameraHub");
             
