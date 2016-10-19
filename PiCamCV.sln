@@ -49,8 +49,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{808AEBA7-0DD2-4209-9B21-0C2B3FBD0A2F}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raspberry.IO.Interop", "lib\raspberry-sharp-io\Raspberry.IO.Interop\Raspberry.IO.Interop.csproj", "{689CB6C4-3D23-45DA-8E00-87C28AEA32D0}"
@@ -371,3 +369,4 @@ Global
 		{30D99970-9601-43C0-8DEB-8A4717A8A739} = {96D49710-083F-4E4A-BF44-3A9B6879DE71}
 	EndGlobalSection
 EndGlobal
+
