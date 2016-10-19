@@ -24,8 +24,8 @@ namespace Web.Client
         
         static Config()
         {
-            ServerHost = Environment.GetEnvironmentVariable("PiCamCv__Web__Server", EnvironmentVariableTarget.User);
-            ServerPort = Environment.GetEnvironmentVariable("PiCamCv__Web__Port", EnvironmentVariableTarget.User);
+            ServerHost = Environment.GetEnvironmentVariable("PiCamCv__Web__Server", EnvironmentVariableTarget.Process);
+            ServerPort = Environment.GetEnvironmentVariable("PiCamCv__Web__Port", EnvironmentVariableTarget.Process);
         }
     }
 }
