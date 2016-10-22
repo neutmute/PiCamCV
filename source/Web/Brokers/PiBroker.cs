@@ -69,6 +69,12 @@ namespace PiCam.Web.Controllers
             _firstImageReceived = false;
         }
 
+        public void CameraDisconnected()
+        {
+            _cameraExternalIp = null;
+            Browsers.Toast("Camera has disconnected");
+        }
+
         private Rectangle GetRegionOfInterest()
         {
             var percentSize = SystemSettings.RegionOfInterestPercent / 100m;

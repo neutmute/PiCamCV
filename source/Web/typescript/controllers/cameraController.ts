@@ -14,7 +14,8 @@ module App {
         consoleScreen: string;
         systemSettings: ISystemSettings;
         moveAbsoluteSetting: IPanTiltSetting;
-        moveRelativeScale:number;
+        moveRelativeScale: number;
+        moveAbsoluteImmediately:boolean;
 
         constructor(
             private $scope: ICameraControllerScope
@@ -83,12 +84,12 @@ module App {
         }
 
         left(): void {
-            var command = this.commandFactory(PanTiltSettingCommandType.MoveRelative, -this.moveRelativeScale, 0);
+            var command = this.commandFactory(PanTiltSettingCommandType.MoveRelative, this.moveRelativeScale, 0);
             this.sendCommand(command);
         }
 
         right(): void {
-            var command = this.commandFactory(PanTiltSettingCommandType.MoveRelative, this.moveRelativeScale, 0);
+            var command = this.commandFactory(PanTiltSettingCommandType.MoveRelative, -this.moveRelativeScale, 0);
             this.sendCommand(command);
         }
         
@@ -102,6 +103,12 @@ module App {
             command.panPercent = pan;
             command.tiltPercent = tilt;
             return command;
+        }
+
+        moveAbsoluteChanged(): void {
+            if (this.moveAbsoluteImmediately) {
+                this.moveAbsolute();
+            }
         }
 
         moveAbsolute(): void {

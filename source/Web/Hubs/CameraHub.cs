@@ -27,6 +27,12 @@ namespace Web
             return base.OnConnected();
         }
 
+        public override Task OnDisconnected(bool stopCalled)
+        {
+            _broker.CameraDisconnected();
+            return base.OnDisconnected(stopCalled);
+        }
+
         public void ScreenClear()
         {
             _broker.Browsers.ScreenClear();

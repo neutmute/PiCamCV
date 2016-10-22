@@ -21,14 +21,14 @@
         <div class="col-md-6">
             
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#tabLog" aria-controls="home" role="tab" data-toggle="tab">Log</a></li>
-                <li role="presentation"><a href="#tabSettings" aria-controls="settings" role="tab" data-toggle="tab">Transmission</a></li>
-                <li role="presentation"><a href="#tabTracking" aria-controls="control" role="tab" data-toggle="tab">Tracking</a></li>
-                <li role="presentation"><a href="#tabControl" aria-controls="control" role="tab" data-toggle="tab">Control</a></li>
+                <li role="presentation"><a href="#tabLog" role="tab" data-toggle="tab">Log</a></li>
+                <li role="presentation"><a href="#tabSettings" role="tab" data-toggle="tab">Transmission</a></li>
+                <li role="presentation"><a href="#tabTracking" role="tab" data-toggle="tab">Tracking</a></li>
+                <li role="presentation" class="active"><a href="#tabControl" role="tab" data-toggle="tab">Control</a></li>
             </ul>
 
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="tabLog">
+                <div role="tabpanel" class="tab-pane" id="tabLog">
                     <textarea rows="10" class="form-control" ng-model="vm.consoleScreen"></textarea>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="tabSettings">
@@ -114,26 +114,26 @@
                         </form>
                     </fieldset>
                 </div>
-                <div role="tabpanel" class="tab-pane" id="tabControl">
+                <div role="tabpanel" class="tab-pane active" id="tabControl">
                     <fieldset>
                         <legend>Relative</legend>
 
                         <div class="row">
                             <div class="col-xs-1 col-xs-offset-5">
-                                <button type="button" class="btn btn-primary" ng-click="vm.up()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></button>
+                                <button type="button" class="btn btn-primary" ng-click="vm.up()"><span class="glyphicon glyphicon-arrow-up"></span></button>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-2 col-xs-offset-4">
-                                <button type="button" class="btn btn-primary" ng-click="vm.left()"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></button>
+                                <button type="button" class="btn btn-primary" ng-click="vm.left()"><span class="glyphicon glyphicon-arrow-left"></span></button>
                             </div>
                             <div class="col-xs-2">
-                                <button type="button" class="btn btn-primary" ng-click="vm.right()"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></button>
+                                <button type="button" class="btn btn-primary" ng-click="vm.right()"><span class="glyphicon glyphicon-arrow-right"></span></button>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-1 col-xs-offset-5">
-                                <button type="button" class="btn btn-primary" ng-click="vm.down()"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></button>
+                                <button type="button" class="btn btn-primary" ng-click="vm.down()"><span class="glyphicon glyphicon-arrow-down"></span></button>
                             </div>
                         </div>
                         <div class="row">
@@ -154,7 +154,12 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Pan</label>
                                 <div class="col-sm-4">
-                                    <input id="modelValue" type="range" ng-model="vm.moveAbsoluteSetting.panPercent" min="1" step="1"
+                                    <input id="modelValue"
+                                           type="range"
+                                           ng-model="vm.moveAbsoluteSetting.panPercent"
+                                           min="1"
+                                           step="1"
+                                           ng-change="vm.moveAbsoluteChanged()"
                                            max="100">
                                     <span>{{vm.moveAbsoluteSetting.panPercent}}%</span>
                                 </div>
@@ -163,12 +168,23 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Tilt</label>
                                 <div class="col-sm-4">
-                                    <input id="modelValue" type="range" ng-model="vm.moveAbsoluteSetting.tiltPercent" min="1" step="1"
+                                    <input id="modelValue" 
+                                           type="range"
+                                           ng-model="vm.moveAbsoluteSetting.tiltPercent"
+                                           min="1"
+                                           step="1"
+                                           ng-change="vm.moveAbsoluteChanged()"
                                            max="100">
                                     <span>{{vm.moveAbsoluteSetting.tiltPercent}}%</span>
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Immediate</label>
+                                <div class="col-sm-4">
+                                    <input type="checkbox" ng-model="vm.moveAbsoluteImmediately">
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <div class="col-sm-offset-4 col-sm-4">
                                     <button type="submit" class="btn btn-primary" ng-click="vm.moveAbsolute()">Move</button>
