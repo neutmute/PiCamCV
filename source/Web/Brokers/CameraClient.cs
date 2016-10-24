@@ -16,11 +16,6 @@ namespace Web
             _clients = clients;
         }
         
-        public void SetImageTransmitPeriod(TimeSpan transmitPeriod)
-        {
-            _clients.All.SetImageTransmitPeriod(transmitPeriod);
-        }
-
         public void UpdateSettings(PiSettings settings)
         {
             _clients.All.updateSettings(settings);

@@ -39,6 +39,10 @@ namespace PiCamCV.WinForms.CameraConsumers
         private bool _calibrationInProgress;
         private readonly Timer _timer;
 
+
+        private RemoteTextboxScreen _remoteScreen;
+        private RemoteImageSender _remoteImageSender;
+
         public Point? UserReticle { get; set; }
 
         public PanTiltControl()
@@ -83,10 +87,8 @@ namespace PiCamCV.WinForms.CameraConsumers
             txtReticleY.Text = _centre.Y.ToString();
             
             var screen = new TextboxScreen(txtScreen);
-            var remoteScreen = new RemoteTextboxScreen(CameraHubProxy, txtScreen);
-            var piServerClient = new BsonPostImageTransmitter();
-            var imageTransmitter = new RemoteImageSender(piServerClient, CameraHubProxy);
 
+            var piServerClient = new BsonPostImageTransmitter();
             var colorSettings = _colourSettingsRepo.Read();
             var motionSettings = _motionSettingsRepo.Read();
 
@@ -99,10 +101,15 @@ namespace PiCamCV.WinForms.CameraConsumers
             // if haven't subscribed first time yet
             if (_multimodePanTiltController == null)
             {
+                _remoteScreen = new RemoteTextboxScreen(CameraHubProxy, txtScreen);
+                _remoteImageSender = new RemoteImageSender(piServerClient, CameraHubProxy);
+
                 CameraHubProxy.SettingsChanged += (o, s) =>
                 {
-                    remoteScreen.WriteLine($"Camera received new settings {s}");
-                    imageTransmitter.SendEveryPeriod = s.TransmitImagePeriod;
+                    _remoteScreen.WriteLine($"Camera received new settings: {s}");
+                    _remoteImageSender.SendEveryPeriod = s.TransmitImagePeriod;
+                    _remoteImageSender.Enabled = s.EnableImageTransmit;
+                    _remoteScreen.Enabled = s.EnableConsoleTransmit;
                 };
             }
             else
@@ -114,9 +121,9 @@ namespace PiCamCV.WinForms.CameraConsumers
             _multimodePanTiltController = new MultimodePanTiltController(
                 PanTiltMechanism
                 , _captureConfig
-                , remoteScreen
+                , _remoteScreen
                 , CameraHubProxy
-                , imageTransmitter);
+                , _remoteImageSender);
 
 
             _calibratingPanTiltController = new CalibratingPanTiltController(PanTiltMechanism, new CalibrationReadingsRepository(), screen);
