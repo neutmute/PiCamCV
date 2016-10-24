@@ -27,7 +27,7 @@ namespace PiCamCV.Common
             SendEveryPeriod = TimeSpan.FromMilliseconds(200);
             _sinceLastSend = Stopwatch.StartNew();
 
-            serverToCameraBus.SetImageTransmitPeriod += (s, e) => SendEveryPeriod = e;
+            serverToCameraBus.SettingsChanged += (s, e) => SendEveryPeriod = e.TransmitImagePeriod;
         }
 
         public void Process(CameraProcessOutput output)

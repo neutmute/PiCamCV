@@ -35,7 +35,7 @@ namespace Web
             _clients.All.ImageReady(base64encodedImage);
         }
 
-        public void InformSettings(SystemSettings settings)
+        public void InformSettings(ServerSettings settings)
         {
             _clients.All.informSettings(settings);
         }

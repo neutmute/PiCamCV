@@ -9,11 +9,11 @@ using Web.Client;
 
 namespace PiCamCV.ConsoleApp.Runners
 {
-    public class RemoveConsoleScreen : RemoteScreen
+    public class RemoteConsoleScreen : RemoteScreen
     {
         private readonly ConsoleScreen _console;
 
-        public RemoveConsoleScreen(ICameraToServerBus cameraToServerBus) : base(cameraToServerBus)
+        public RemoteConsoleScreen(ICameraToServerBus cameraToServerBus) : base(cameraToServerBus)
         {
             _console = new ConsoleScreen();
         }

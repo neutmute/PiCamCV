@@ -12,7 +12,8 @@ module App {
         imageUrl: string;
         imageCounter: number;
         consoleScreen: string;
-        systemSettings: ISystemSettings;
+        serverSettings: IServerSettings;
+        piSettings: IPiSettingsModel;
         moveAbsoluteSetting: IPanTiltSetting;
         moveRelativeScale: number;
         moveAbsoluteImmediately:boolean;
@@ -25,7 +26,12 @@ module App {
             this.imageCounter = 0;
             this.consoleScreen = '';
             this.moveRelativeScale = 3;
-            this.systemSettings = <ISystemSettings>{};
+            this.serverSettings = <IServerSettings>{};
+            this.piSettings = <IPiSettingsModel>{
+                transmitImageEveryMilliseconds: 200,
+                enableConsoleTransmit: true,
+                enableImageTransmit: true
+            };
             this.moveAbsoluteSetting = <IPanTiltSetting>{panPercent:50, tiltPercent :50};
 
             this._browserHub.client.imageReady = (s) => {
@@ -63,8 +69,7 @@ module App {
             };
 
             this._browserHub.client.informSettings = (settings) => {
-                this.systemSettings = settings;
-                //this.notifierService("System settings received");
+                this.serverSettings = settings;
                 $scope.$apply();
             };
 
@@ -94,7 +99,8 @@ module App {
         }
         
         changeSettings(): void {
-            this._browserHub.server.changeSettings(this.systemSettings);
+            this._browserHub.server.updateServerSettings(this.serverSettings);
+            this._browserHub.server.updatePiSettings(this.piSettings);
         }
         
         private commandFactory(type: PanTiltSettingCommandType, pan: number, tilt:number): IPanTiltSettingCommand {

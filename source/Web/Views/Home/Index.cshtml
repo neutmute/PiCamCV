@@ -19,12 +19,12 @@
         </div>
 
         <div class="col-md-6">
-            
+
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation"><a href="#tabLog" role="tab" data-toggle="tab">Log</a></li>
-                <li role="presentation"><a href="#tabSettings" role="tab" data-toggle="tab">Transmission</a></li>
-                <li role="presentation"><a href="#tabTracking" role="tab" data-toggle="tab">Tracking</a></li>
                 <li role="presentation" class="active"><a href="#tabControl" role="tab" data-toggle="tab">Control</a></li>
+                <li role="presentation"><a href="#tabLog" role="tab" data-toggle="tab">Remote Console</a></li>
+                <li role="presentation"><a href="#tabSettings" role="tab" data-toggle="tab">Settings</a></li>
+                <li role="presentation"><a href="#tabTracking" role="tab" data-toggle="tab">Tracking</a></li>
             </ul>
 
             <div class="tab-content">
@@ -36,12 +36,27 @@
                     <fieldset>
                         <legend>Camera to Server</legend>
                         <form class="form-horizontal">
+
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Send Image Every</label>
+                                <label class="col-sm-4 control-label">Enable Image Transmit</label>
                                 <div class="col-sm-4">
-                                    <input id="modelValue" type="range" ng-model="vm.systemSettings.transmitImageEveryMilliseconds" min="0" step="5"
+                                    <input type="checkbox" ng-model="vm.piSettings.enableImageTransmit">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Enable Console Transmit</label>
+                                <div class="col-sm-4">
+                                    <input type="checkbox" ng-model="vm.piSettings.enableConsoleTransmit">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Transmit Image Every</label>
+                                <div class="col-sm-4">
+                                    <input id="modelValue" type="range" ng-model="vm.piSettings.transmitImageEveryMilliseconds" min="0" step="5"
                                            max="1000">
-                                    <span>{{vm.systemSettings.transmitImageEveryMilliseconds}}ms</span>
+                                    <span>{{vm.piSettings.transmitImageEveryMilliseconds}}ms</span>
                                 </div>
                             </div>
                         </form>

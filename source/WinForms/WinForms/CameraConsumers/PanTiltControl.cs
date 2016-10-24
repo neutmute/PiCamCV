@@ -98,10 +98,10 @@ namespace PiCamCV.WinForms.CameraConsumers
 
             if (_multimodePanTiltController == null)
             {
-                CameraHubProxy.SetImageTransmitPeriod += (o, ts) =>
+                CameraHubProxy.SettingsChanged += (o, s) =>
                 {
-                    remoteScreen.WriteLine($"Camera received transmission period {ts.ToHumanReadable()}");
-                    imageTransmitter.SendEveryPeriod = ts;
+                    remoteScreen.WriteLine($"Camera received new settings {s}");
+                    imageTransmitter.SendEveryPeriod = s.TransmitImagePeriod;
                 };
             }
             else

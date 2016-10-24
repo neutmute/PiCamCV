@@ -127,7 +127,7 @@ namespace PiCamCV.ConsoleApp
                 case Mode.pantiltmultimode:
                     var cameraHubProxy = new CameraHubProxy();
                     cameraHubProxy.Connect();
-                    var remoteScreen = new RemoveConsoleScreen(cameraHubProxy);
+                    var remoteScreen = new RemoteConsoleScreen(cameraHubProxy);
                     var piServerClient = new BsonPostImageTransmitter();
                     var imageTransmitter = new RemoteImageSender(piServerClient, cameraHubProxy);
                     var controllerMultimode = new MultimodePanTiltController(panTiltMech, captureConfig, remoteScreen, cameraHubProxy, imageTransmitter);

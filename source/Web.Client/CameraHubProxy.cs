@@ -4,12 +4,18 @@ using System.Drawing;
 using System.Linq;
 using System.Net.NetworkInformation;
 using Microsoft.AspNet.SignalR.Client;
+using PiCamCV.Common;
 using PiCamCV.Common.Interfaces;
 using PiCamCV.Common.PanTilt.Controllers;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 
 namespace Web.Client
 {
+
+    /// <summary>
+    /// Pi side settings
+    /// </summary>
+
 
     public class CameraHubProxy : IDisposable, IServerToCameraBus, ICameraToServerBus
     {
@@ -20,7 +26,7 @@ namespace Web.Client
         
         public event EventHandler<ProcessingMode> SetMode;
         
-        public event EventHandler<TimeSpan> SetImageTransmitPeriod;
+        public event EventHandler<PiSettings> SettingsChanged;
 
         public event EventHandler<Rectangle> SetRegionOfInterest;
 
@@ -61,7 +67,7 @@ namespace Web.Client
 
             _proxy.On<PanTiltSettingCommand>("panTiltCommand", s => PanTiltCommand?.Invoke(this, s));
             
-            _proxy.On<TimeSpan>("setImageTransmitPeriod", ts => SetImageTransmitPeriod?.Invoke(this, ts));
+            _proxy.On<PiSettings>("updateSettings", settings => SettingsChanged?.Invoke(this, settings));
 
             _proxy.On<Rectangle>("setRegionOfInterest", r => SetRegionOfInterest?.Invoke(this, r));
 

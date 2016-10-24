@@ -9,6 +9,7 @@ using Emgu.CV.Structure;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using PiCam.Web.Models;
+using PiCamCV.Common;
 using PiCamCV.Common.ExtensionMethods;
 using PiCamCV.Common.PanTilt.Controllers;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
@@ -33,7 +34,9 @@ namespace PiCam.Web.Controllers
 
         public string CameraInteralIpCsv { get; set; }
 
-        public SystemSettings SystemSettings { get; set; }
+        public ServerSettings ServerSettings { get; set; }
+
+        public PiSettings PiSettings { get; set; }
 
         private bool IsCameraConnected => !string.IsNullOrEmpty(_cameraExternalIp);
 
@@ -47,7 +50,8 @@ namespace PiCam.Web.Controllers
         {
             Camera = cameraClient;
             Browsers = browserClients;
-            SystemSettings = new SystemSettings {JpegCompression= 90, TransmitImageEveryMilliseconds = 200};
+            ServerSettings = new ServerSettings {JpegCompression= 90};
+            PiSettings = new PiSettings {TransmitImagePeriod = TimeSpan.FromMilliseconds(200)};
         }
 
         public void BrowserConnected(string connectionId, string ip)
@@ -55,7 +59,7 @@ namespace PiCam.Web.Controllers
             var camMsg = IsCameraConnected ? $"Camera is connected from {_cameraExternalIp}" : "Waiting for a camera to connect";
             var msg = $"Hello {connectionId} from {ip}.\r\n{camMsg}";
             Browsers.Toast(msg);
-            Browsers.InformSettings(SystemSettings);
+            Browsers.InformSettings(ServerSettings);
         }
         
         public void CameraConnected(string ip)
@@ -64,7 +68,7 @@ namespace PiCam.Web.Controllers
             var msg = $"Camera has connected from {ip}";
             Log.Info(msg);
             Browsers.Toast(msg);
-            Camera.SetImageTransmitPeriod(TimeSpan.FromMilliseconds(SystemSettings.TransmitImageEveryMilliseconds));
+            Camera.UpdateSettings(PiSettings);
 
             _firstImageReceived = false;
         }
@@ -77,7 +81,7 @@ namespace PiCam.Web.Controllers
 
         private Rectangle GetRegionOfInterest()
         {
-            var percentSize = SystemSettings.RegionOfInterestPercent / 100m;
+            var percentSize = ServerSettings.RegionOfInterestPercent / 100m;
 
             var squareLength = _imageSize.Width*percentSize;
 
@@ -99,44 +103,45 @@ namespace PiCam.Web.Controllers
             }
 
             var isFullImage = _imageSize == image.Size; // its not a full image while training the color threshold
-            if (isFullImage && SystemSettings.ShowRegionOfInterest)
+            if (isFullImage && ServerSettings.ShowRegionOfInterest)
             {
                 var roiRect = GetRegionOfInterest();
                 image.Draw(roiRect, Color.Blue.ToBgr(), 2);
             }
 
-            var jpeg = image.ToJpegData(SystemSettings.JpegCompression);
+            var jpeg = image.ToJpegData(ServerSettings.JpegCompression);
 
             // left this here as it was a pain to inject into the pibroker
             ImageCache.ImageJpeg = jpeg;
             ImageCache.Counter++;
             
             string signalRContent = null;
-            if (SystemSettings.TransmitImageViaSignalR)
+            if (ServerSettings.TransmitImageViaSignalR)
             {
                 var base64Image = Convert.ToBase64String(jpeg);
                 signalRContent = $"data:image/jpg;base64,{base64Image}";
             }
             Browsers.ImageReady(signalRContent);
         }
-        
-        public void ChangeSettings(SystemSettings settings)
+
+        public void UpdatePi(PiSettings settings)
         {
-            var roiPercentChanged = settings.RegionOfInterestPercent != SystemSettings.RegionOfInterestPercent;
-            var transmitFrequencyChanged = settings.TransmitImageEveryMilliseconds != SystemSettings.TransmitImageEveryMilliseconds;
+            PiSettings = settings;
+            Camera.UpdateSettings(PiSettings);
+        }
 
-            SystemSettings = settings;
+        public void UpdateServer(ServerSettings settings)
+        {
+            var roiPercentChanged = settings.RegionOfInterestPercent != ServerSettings.RegionOfInterestPercent;
+            
+            ServerSettings = settings;
 
-            if (transmitFrequencyChanged)
-            {
-                Camera.SetImageTransmitPeriod(TimeSpan.FromMilliseconds(settings.TransmitImageEveryMilliseconds));
-            }
             if (roiPercentChanged)
             {
                 Camera.SetRegionOfInterest(GetRegionOfInterest());
             }
 
-            Browsers.InformSettings(SystemSettings);
+            Browsers.InformSettings(ServerSettings);
 
             if (!roiPercentChanged) // don't spam
             {

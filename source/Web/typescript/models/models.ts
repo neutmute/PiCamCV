@@ -40,7 +40,8 @@
     export interface IBrowserServer {
         hello(message: string): JQueryPromise<void>;
         sendCommand(command: IPanTiltSettingCommand): JQueryPromise<void>;
-        changeSettings(settings: ISystemSettings): JQueryPromise<void>;
+        updateServerSettings(settings: IServerSettings): JQueryPromise<void>;
+        updatePiSettings(settings: IPiSettingsModel): JQueryPromise<void>;
         setMode(mode: ProcessingMode): JQueryPromise<void>;
     }
 
@@ -49,13 +50,17 @@
         screenWriteLine: (message: string) => void;
         toast: (message: string) => void;
         screenClear: () => void;
-        informSettings: ( settings: ISystemSettings) => void;
+        informSettings: ( settings: IServerSettings) => void;
     }
 
-    export interface ISystemSettings {
-        jpegCompression :number;
-
+    export interface IPiSettingsModel {
         transmitImageEveryMilliseconds: number;
+        enableConsoleTransmit: boolean;
+        enableImageTransmit: boolean;
+    }
+
+    export interface IServerSettings {
+        jpegCompression :number;
 
         transmitImageViaSignalR: boolean;
 

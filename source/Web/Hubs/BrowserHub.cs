@@ -4,6 +4,7 @@ using Common.Logging;
 using Microsoft.AspNet.SignalR;
 using PiCam.Web.Controllers;
 using PiCam.Web.Models;
+using PiCamCV.Common;
 using PiCamCV.Common.PanTilt.Controllers;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 using MessageBus = Microsoft.AspNet.SignalR.Messaging.MessageBus;
@@ -12,7 +13,7 @@ namespace Web
 {
     public class BrowserHub : Hub<IBrowserClient>
     {
-        private PiBroker _broker;
+        private readonly PiBroker _broker;
 
         public BrowserHub() : this(PiBroker.Instance)
         {
@@ -31,9 +32,20 @@ namespace Web
             return base.OnConnected();
         }
 
-        public void ChangeSettings(SystemSettings settings)
+        public void UpdatePiSettings(PiSettingsModel settings)
         {
-            _broker.ChangeSettings(settings);
+            var domainSettings = new PiSettings();
+
+            domainSettings.TransmitImagePeriod = TimeSpan.FromMilliseconds(settings.TransmitImageEveryMilliseconds);
+            domainSettings.EnableConsoleTransmit = settings.EnableConsoleTransmit;
+            domainSettings.EnableImageTransmit = settings.EnableImageTransmit;
+
+            _broker.UpdatePi(domainSettings);
+        }
+
+        public void UpdateServerSettings(ServerSettings settings)
+        {
+            _broker.UpdateServer(settings);
         }
 
         public void SetMode(ProcessingMode mode)

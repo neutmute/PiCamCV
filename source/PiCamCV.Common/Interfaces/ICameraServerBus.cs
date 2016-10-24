@@ -6,8 +6,26 @@ using System.Text;
 using System.Threading.Tasks;
 using Emgu.CV;
 using Emgu.CV.Structure;
+using Kraken.Core;
 using PiCamCV.Common.PanTilt.Controllers;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
+
+namespace PiCamCV.Common
+{
+    public class PiSettings
+    {
+        public TimeSpan TransmitImagePeriod { get; set; }
+
+        public bool EnableImageTransmit { get; set; }
+
+        public bool EnableConsoleTransmit { get; set; }
+
+        public override string ToString()
+        {
+            return $"TransmitImagePeriod={TransmitImagePeriod.ToHumanReadable()}, EnableImageTransmit={EnableImageTransmit}, EnableConsoleTransmit={EnableConsoleTransmit}";
+        }
+    }
+}
 
 namespace PiCamCV.Common.Interfaces
 {
@@ -16,13 +34,8 @@ namespace PiCamCV.Common.Interfaces
     public interface IServerToCameraBus
     {
         event EventHandler<ProcessingMode> SetMode;
-        //event EventHandler<PanTiltSetting> MoveAbsolute;
-        //event EventHandler<PanTiltSetting> MoveRelative;
-        event EventHandler<TimeSpan> SetImageTransmitPeriod;
+        event EventHandler<PiSettings> SettingsChanged;
         event EventHandler<Rectangle> SetRegionOfInterest;
-        //event EventHandler<PanTiltSetting> SetPursuitBoundaryUpper;
-        //event EventHandler<PanTiltSetting> SetPursuitBoundaryLower;
-
         event EventHandler<PanTiltSettingCommand> PanTiltCommand;
     }
 

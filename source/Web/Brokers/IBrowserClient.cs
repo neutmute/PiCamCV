@@ -12,6 +12,6 @@ namespace Web
 
         void ImageReady(string base64encodedImage = null);
 
-        void InformSettings(SystemSettings settings);
+        void InformSettings(ServerSettings settings);
     }
 }

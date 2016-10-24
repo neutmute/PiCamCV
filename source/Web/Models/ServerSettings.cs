@@ -5,12 +5,21 @@ using System.Web;
 
 namespace PiCam.Web.Models
 {
-    public class SystemSettings
+
+    public class PiSettingsModel
+    {
+        public int TransmitImageEveryMilliseconds { get; set; }
+        public bool EnableConsoleTransmit { get; set; }
+        public bool EnableImageTransmit { get; set; }
+    }
+
+    /// <summary>
+    /// Between server and browser
+    /// </summary>
+    public class ServerSettings
     {
         public int JpegCompression { get; set; }
-
-        public int TransmitImageEveryMilliseconds { get; set; }
-
+        
         /// <summary>
         /// SignalR Base64 encodes the image. 
         /// The alternative is to HTTP request the image which will be binary
