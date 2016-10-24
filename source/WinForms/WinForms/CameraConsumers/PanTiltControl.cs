@@ -96,6 +96,7 @@ namespace PiCamCV.WinForms.CameraConsumers
             _colourTrackingController = new ColourTrackingPanTiltController(PanTiltMechanism, _captureConfig);
             _motionTrackingController = new MotionTrackingPanTiltController(PanTiltMechanism, _captureConfig, screen);
 
+            // if haven't subscribed first time yet
             if (_multimodePanTiltController == null)
             {
                 CameraHubProxy.SettingsChanged += (o, s) =>

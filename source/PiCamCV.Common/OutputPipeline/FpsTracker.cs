@@ -13,33 +13,6 @@ namespace PiCamCV.Common
         void Process(CameraProcessOutput output);
     }
 
-    public class RemoteImageSender : IOutputProcessor
-    {
-        private readonly IImageTransmitter _imageTransmitter;
-
-        public TimeSpan SendEveryPeriod { get; set; }
-
-        private Stopwatch _sinceLastSend;
-
-        public RemoteImageSender(IImageTransmitter imageTransmitter, IServerToCameraBus serverToCameraBus)
-        {
-            _imageTransmitter = imageTransmitter;
-            SendEveryPeriod = TimeSpan.FromMilliseconds(200);
-            _sinceLastSend = Stopwatch.StartNew();
-
-            serverToCameraBus.SettingsChanged += (s, e) => SendEveryPeriod = e.TransmitImagePeriod;
-        }
-
-        public void Process(CameraProcessOutput output)
-        {
-            if (_sinceLastSend.ElapsedMilliseconds >= SendEveryPeriod.TotalMilliseconds)
-            {
-                _imageTransmitter.Transmit(output.CapturedImage);
-                _sinceLastSend = Stopwatch.StartNew();
-            }
-        }
-    }
-
     public  class FpsTracker
     {
         private int _frameCount;

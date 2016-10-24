@@ -241,11 +241,8 @@ namespace PiCamCV
                 return false;
             }
 
-            //CvInvokeRaspiCamCV.cvQueryFrame(_ptr);
-            if (ImageGrabbed != null)
-            {
-                ImageGrabbed(this, new EventArgs());
-            }
+            ImageGrabbed?.Invoke(this, new EventArgs());
+
             return true;
         }
 

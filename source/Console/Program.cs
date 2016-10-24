@@ -60,11 +60,11 @@ namespace PiCamCV.ConsoleApp
                     request.Device = CaptureDevice.Pi;
                 }
 
-                request.Config = new CaptureConfig { Resolution = new Resolution(160,120), Framerate = 10, Monochrome = false };
+                request.Config = new CaptureConfig { Resolution = new Resolution(160, 120), Framerate = 25, Monochrome = false };
 
                 capture = CaptureFactory.GetCapture(request);
                 captureConfig = capture.GetCaptureProperties();
-                Log.Info(m => m("Capture properties read: {0}", captureConfig));
+                Log.Info($"Capture properties read: {captureConfig}");
 
                 SafetyCheckRoi(options, captureConfig);
             }
@@ -130,6 +130,13 @@ namespace PiCamCV.ConsoleApp
                     var remoteScreen = new RemoteConsoleScreen(cameraHubProxy);
                     var piServerClient = new BsonPostImageTransmitter();
                     var imageTransmitter = new RemoteImageSender(piServerClient, cameraHubProxy);
+
+                    cameraHubProxy.SettingsChanged += (sender, s) =>
+                    {
+                        remoteScreen.Enabled = s.EnableConsoleTransmit;
+                        imageTransmitter.Enabled = s.EnableImageTransmit;
+                    };
+
                     var controllerMultimode = new MultimodePanTiltController(panTiltMech, captureConfig, remoteScreen, cameraHubProxy, imageTransmitter);
                     runner = new CameraBasedPanTiltRunner(panTiltMech, capture, controllerMultimode, screen);
                     break;
@@ -156,9 +163,7 @@ namespace PiCamCV.ConsoleApp
 
         private static void SafetyCheckRoi(ConsoleOptions options, CaptureConfig captureProperties)
         {
-            if (
-                captureProperties.Resolution.IsValid && options.ColourSettings != null
-                )
+            if (captureProperties.Resolution.IsValid && options.ColourSettings != null)
             {
                 var roiWidthTooBig = options.ColourSettings.Roi.Width >     captureProperties.Resolution.Width;
                 var roiHeightTooBig = options.ColourSettings.Roi.Height >   captureProperties.Resolution.Height;

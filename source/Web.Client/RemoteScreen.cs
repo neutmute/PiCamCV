@@ -10,11 +10,14 @@ namespace Web.Client
 {
     public class RemoteScreen : IScreen
     {
-        private ICameraToServerBus _cameraHubProxy;
+        private readonly ICameraToServerBus _cameraHubProxy;
+
+        public bool Enabled { get; set; }
 
         public RemoteScreen(ICameraToServerBus cameraHubProxy)
         {
             _cameraHubProxy = cameraHubProxy;
+            Enabled = true;
         }
 
         public void Clear()
@@ -29,6 +32,10 @@ namespace Web.Client
 
         public virtual void WriteLine(string format, params object[] args)
         {
+            if (!Enabled)
+            {
+                return;
+            }
             var message = format;
             if (args.Length > 0)
             {
