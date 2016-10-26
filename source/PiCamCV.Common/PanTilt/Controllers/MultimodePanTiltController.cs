@@ -40,7 +40,6 @@ namespace PiCamCV.Common.PanTilt.Controllers
         private readonly IServerToCameraBus _serverToCameraBus;
         private readonly IOutputProcessor[] _outputPipelines;
         private Rectangle _regionOfInterest = Rectangle.Empty;
-        private FaceTrackingPanTiltOutput _lastFaceTrack;
 
         private FaceTrackStateManager _faceTrackManager;
         private AutonomousTrackStateManager _autonomousManager;
@@ -72,18 +71,16 @@ namespace PiCamCV.Common.PanTilt.Controllers
             
             _colourDetectorInput = new ColourDetectorInput();
             _colourDetectorInput.SetCapturedImage = true;
-            _colourDetectorInput.Settings.MomentArea = new RangeF(200, 10000);
+            _colourDetectorInput.Settings.MomentArea = new RangeF(50, 10000);
 
             _faceTrackManager = new FaceTrackStateManager(screen);
             _autonomousManager = new AutonomousTrackStateManager(this, screen);
 
             screen.Clear();
             SetMode(ProcessingMode.Autonomous);
-
-            _lastFaceTrack = new FaceTrackingPanTiltOutput();
-
+            
             _autonomousManager.IsFaceFound = i => _faceTrackingController.Process(i).IsDetected;
-
+            
             InitController();
         }
 
@@ -167,6 +164,11 @@ namespace PiCamCV.Common.PanTilt.Controllers
                     var colourOutput = _colourTrackingController.Process(_colourDetectorInput);
                     colourOutput.CapturedImage = GetBgr(colourOutput.ThresholdImage);
                     output = colourOutput;
+
+                    if (Ticks % 60 == 0) // provide some feedback on moment size but don't spam
+                    {
+                        _screen.WriteLine(colourOutput.ToString());
+                    }
                     break;
 
                 case ProcessingMode.FaceDetection:
@@ -216,10 +218,15 @@ namespace PiCamCV.Common.PanTilt.Controllers
             {
                 _screen.WriteLine($"Changing to {nextState}");
                 State = nextState;
-                if (nextState == ProcessingMode.Autonomous)
+                switch (nextState)
                 {
-                    // Reset the timers
-                    _autonomousManager.Reset();
+                    case ProcessingMode.Autonomous:
+                        // Reset the timers
+                        _autonomousManager.Reset();
+                        break;
+                    case ProcessingMode.ColourObjectTrack:
+                        _screen.WriteLine($"Color detector settings: {_colourDetectorInput.Settings}");
+                        break;
                 }
             }
 

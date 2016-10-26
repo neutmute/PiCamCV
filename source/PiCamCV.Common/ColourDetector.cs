@@ -55,7 +55,7 @@ namespace PiCamCV.Common
     {
 
         /// <summary>
-        /// To trigger a detection this criteria must be met.
+        /// To trigger a detection this criteria must be met - minimum and maximum
         /// Too small: noise
         /// Too much: more than one object/noise
         /// </summary>
@@ -179,13 +179,13 @@ namespace PiCamCV.Common
                 var posY = Convert.ToSingle(moments.M01 / output.MomentArea);
 
                 if (!settings.Roi.IsEmpty)
-                    {
-                        // transpose the detected coordinates to non ROI space
-                        posX += settings.Roi.X;
-                        posY += settings.Roi.Y;
-                    }
+                {
+                    // transpose the detected coordinates to non ROI space
+                    posX += settings.Roi.X;
+                    posY += settings.Roi.Y;
+                }
 
-                    output.CentralPoint = new PointF(posX, posY);
+                output.CentralPoint = new PointF(posX, posY);
             }
             return output;
         }

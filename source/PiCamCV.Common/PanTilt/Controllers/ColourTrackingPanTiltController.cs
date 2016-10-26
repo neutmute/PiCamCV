@@ -15,13 +15,21 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
     public class ColourTrackingPanTiltOutput : CameraPanTiltProcessOutput
     {
         public bool IsDetected { get; set; }
+
         public double MomentArea { get; set; }
+
         public Image<Gray, byte> ThresholdImage { get; set; }
 
+        public override string ToString()
+        {
+            return $"MomentArea={MomentArea}, IsDetected={IsDetected}, {base.ToString()}";
+        }
     }
+
     public class ColourTrackingPanTiltController : CameraBasedPanTiltController<ColourTrackingPanTiltOutput>
     {
         private readonly ColourDetector _colourDetector;
+
         public ColourDetectSettings Settings { get; set; }
 
         public ColourTrackingPanTiltController(IPanTiltMechanism panTiltMech, CaptureConfig captureConfig)

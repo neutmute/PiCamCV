@@ -120,6 +120,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         
         public TOutput Process(CameraProcessInput input)
         {
+            Ticks++;
             if (IsServoInMotion)
             {
                 var output = new TOutput();
