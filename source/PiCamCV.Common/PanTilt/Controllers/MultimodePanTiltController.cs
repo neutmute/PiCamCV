@@ -173,16 +173,6 @@ namespace PiCamCV.Common.PanTilt.Controllers
                     var faceTrackOutput = _faceTrackingController.Process(input);
 
                     nextState =  _faceTrackManager.AcceptScan(faceTrackOutput);
-                    //if (!faceTrackOutput.IsDetected && _lastFaceTrack.IsDetected)
-                    //{
-                    //    _screen.WriteLine("Switching to Camshift");
-                    //    // camshift on last known position
-                    //    State = ProcessingMode.CamshiftTrack;
-                    //    _camshiftTrackingController.TrackConfig = new TrackingConfig();
-                    //    _camshiftTrackingController.TrackConfig.ObjectOfInterest = _lastFaceTrack.Faces.First().Region;
-                    //    _camshiftTrackingController.TrackConfig.StartNewTrack = true;
-                    //}
-                    //_lastFaceTrack = faceTrackOutput;
                     output = faceTrackOutput;
                     break;
 
@@ -200,12 +190,11 @@ namespace PiCamCV.Common.PanTilt.Controllers
                 case ProcessingMode.ColourObjectSelect:
                     _screen.WriteLine($"Threshold training for {_thresholdSelector.RequiredMomentAreaInRoiPercent}% ROI coverage");
                     var thresholdSettings = _thresholdSelector.Select(input.Captured, _regionOfInterest);
-                    _screen.WriteLine($"Threshold settings: {thresholdSettings}");
+                    _screen.WriteLine($"Threshold tuning complete: {thresholdSettings}");
                     _colourDetectorInput.SetCapturedImage = true;
                     _colourDetectorInput.Settings.Accept(thresholdSettings);
-
-                    // Change state
-                    State = ProcessingMode.ColourObjectTrack;
+                    
+                    nextState = ProcessingMode.ColourObjectTrack;
                     break;
                 
                 case ProcessingMode.Autonomous:

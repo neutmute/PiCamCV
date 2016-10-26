@@ -69,15 +69,15 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Image via SignalR</label>
                                 <div class="col-sm-4">
-                                    <input type="checkbox" ng-model="vm.systemSettings.transmitImageViaSignalR">
+                                    <input type="checkbox" ng-model="vm.serverSettings.transmitImageViaSignalR">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">JPEG Compression</label>
                                 <div class="col-sm-4">
-                                    <input id="modelValue" type="range" ng-model="vm.systemSettings.jpegCompression" min="1" step="1"
+                                    <input id="modelValue" type="range" ng-model="vm.serverSettings.jpegCompression" min="1" step="1"
                                            max="100">
-                                    <span>{{vm.systemSettings.jpegCompression}}%</span>
+                                    <span>{{vm.serverSettings.jpegCompression}}%</span>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -95,18 +95,18 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Show Colour Training Target</label>
                                 <div class="col-sm-4">
-                                    <input type="checkbox" ng-change="vm.changeSettings()" ng-model="vm.systemSettings.showRegionOfInterest">
+                                    <input type="checkbox" ng-change="vm.changeSettings()" ng-model="vm.serverSettings.showRegionOfInterest">
                                 </div>
                             </div>
 
-                            <p class="bg-warning" ng-show="vm.systemSettings.showRegionOfInterest">Aim to fill the entire box with the target colour</p>
+                            <p class="bg-warning" ng-show="vm.serverSettings.showRegionOfInterest">Aim to fill the entire box with the target colour</p>
 
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Target Size</label>
                                 <div class="col-sm-4">
-                                    <input id="modelValue" ng-change="vm.changeSettings()" type="range" ng-model="vm.systemSettings.regionOfInterestPercent" min="1" step="1"
+                                    <input id="modelValue" ng-change="vm.changeSettings()" type="range" ng-model="vm.serverSettings.regionOfInterestPercent" min="1" step="1"
                                            max="100">
-                                    <span>{{vm.systemSettings.regionOfInterestPercent}}%</span>
+                                    <span>{{vm.serverSettings.regionOfInterestPercent}}%</span>
                                 </div>
                             </div>
                             <div class="form-group">

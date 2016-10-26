@@ -15,8 +15,6 @@ namespace Web.Client
     /// <summary>
     /// Pi side settings
     /// </summary>
-
-
     public class CameraHubProxy : IDisposable, IServerToCameraBus, ICameraToServerBus
     {
 
