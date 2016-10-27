@@ -2,21 +2,27 @@
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.Util;
+using PiCamCV.Common;
 using PiCamCV.Interfaces;
 
 namespace PiCamCV
 {
     public class CaptureUsb : CaptureEmgu
     {
-        public CaptureUsb() : this(0)
+        public CaptureUsb(CaptureConfig config) : this(0, config)
         {
         }
 
-        public CaptureUsb(int index)
+        public CaptureUsb(int index, CaptureConfig config)
             : base(new VideoCapture(index))
         {
+            RequestedConfig = config;
+            SetCaptureProperty(CapProp.FrameHeight,config.Resolution.Height);
+            SetCaptureProperty(CapProp.FrameWidth, config.Resolution.Width);
+            SetCaptureProperty(CapProp.Monochrome, config.Monochrome ? 1 : 0);
         }
     }
+
     public class CaptureFile : CaptureEmgu
     {
         public CaptureFile(string filename)
@@ -53,6 +59,8 @@ namespace PiCamCV
             return _capture.QuerySmallFrame();
         }
 
+
+        public CaptureConfig RequestedConfig { get; internal set; }
 
         public bool FlipHorizontal
         {

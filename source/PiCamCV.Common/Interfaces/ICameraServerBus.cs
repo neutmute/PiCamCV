@@ -37,6 +37,7 @@ namespace PiCamCV.Common.Interfaces
         event EventHandler<PiSettings> SettingsChanged;
         event EventHandler<Rectangle> SetRegionOfInterest;
         event EventHandler<PanTiltSettingCommand> PanTiltCommand;
+        event EventHandler<CaptureConfig> UpdateCapture;
     }
 
     public interface ICameraToServerBus

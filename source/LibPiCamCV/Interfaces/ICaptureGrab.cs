@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
@@ -12,11 +13,18 @@ namespace PiCamCV.Interfaces
     {
         event EventHandler ImageGrabbed;
 
+        CaptureConfig RequestedConfig { get;  }
+
         bool FlipHorizontal { get; set; }
+
         bool FlipVertical { get; set; }
+
         void Start();
+
         void Stop();
+
         void Pause();
+
         bool Retrieve(IOutputArray image);
 
         /// <summary>
@@ -74,11 +82,11 @@ namespace PiCamCV.Interfaces
             return settings;
         }
 
-        public static void SetCaptureProperties(this ICaptureGrab capture, CaptureConfig properties)
-        {
-            capture.SetCaptureProperty(CapProp.FrameHeight, properties.Resolution.Height);
-            capture.SetCaptureProperty(CapProp.FrameWidth,  properties.Resolution.Width);
-            capture.SetCaptureProperty(CapProp.Monochrome, properties.Monochrome ? 1 : 0);
-        }
+        //public static void SetCaptureProperties(this ICaptureGrab capture, CaptureConfig properties)
+        //{
+        //    capture.SetCaptureProperty(CapProp.FrameHeight, properties.Resolution.Height);
+        //    capture.SetCaptureProperty(CapProp.FrameWidth,  properties.Resolution.Width);
+        //    capture.SetCaptureProperty(CapProp.Monochrome, properties.Monochrome ? 1 : 0);
+        //}
     }
 }

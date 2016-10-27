@@ -70,11 +70,6 @@ namespace PiCamCV
         protected static ILog Log = LogManager.GetLogger< CapturePi>();
 
         /// <summary>
-        /// the type of flipping
-        /// </summary>
-        private FlipType _flipType = FlipType.None;
-
-        /// <summary>
         /// The type of capture source
         /// </summary>
         public enum CaptureModuleType
@@ -89,34 +84,18 @@ namespace PiCamCV
             Highgui,
         }
 
-        private readonly CaptureModuleType _captureModuleType;
-
         #region Properties
         /// <summary>
         /// Get the type of the capture module
         /// </summary>
-        public CaptureModuleType CaptureSource
-        {
-            get
-            {
-                return _captureModuleType;
-            }
-        }
+        public CaptureModuleType CaptureSource { get; }
 
         /// <summary>
         /// Get and set the flip type
         /// </summary>
-        public FlipType FlipType
-        {
-            get
-            {
-                return _flipType;
-            }
-            set
-            {
-                _flipType = value;
-            }
-        }
+        public FlipType FlipType { get; set; } = FlipType.None;
+
+        public CaptureConfig RequestedConfig { get; }
 
         /// <summary>
         /// Get or Set if the captured image should be flipped horizontally
@@ -125,12 +104,12 @@ namespace PiCamCV
         {
             get
             {
-                return (_flipType & Emgu.CV.CvEnum.FlipType.Horizontal) == Emgu.CV.CvEnum.FlipType.Horizontal;
+                return (FlipType & Emgu.CV.CvEnum.FlipType.Horizontal) == Emgu.CV.CvEnum.FlipType.Horizontal;
             }
             set
             {
                 if (value != FlipHorizontal)
-                    _flipType ^= Emgu.CV.CvEnum.FlipType.Horizontal;
+                    FlipType ^= Emgu.CV.CvEnum.FlipType.Horizontal;
             }
         }
 
@@ -141,12 +120,12 @@ namespace PiCamCV
         {
             get
             {
-                return (_flipType & Emgu.CV.CvEnum.FlipType.Vertical) == Emgu.CV.CvEnum.FlipType.Vertical;
+                return (FlipType & Emgu.CV.CvEnum.FlipType.Vertical) == Emgu.CV.CvEnum.FlipType.Vertical;
             }
             set
             {
                 if (value != FlipVertical)
-                    _flipType ^= Emgu.CV.CvEnum.FlipType.Vertical;
+                    FlipType ^= Emgu.CV.CvEnum.FlipType.Vertical;
             }
         }
 
@@ -167,9 +146,10 @@ namespace PiCamCV
         ///<param name="camIndex"> The index of the camera to create capture from, starting from 0</param>
         private CapturePi(int camIndex, CaptureConfig config)
         {
-            _captureModuleType = CaptureModuleType.Camera;
+            CaptureSource = CaptureModuleType.Camera;
             InitOpenCV();
             InitCapture(camIndex, PiCameraConfig.FromConfig(config));
+            RequestedConfig = config;
         }
 
         private void InitCapture(int camIndex, PiCameraConfig config)

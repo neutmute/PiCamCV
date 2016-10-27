@@ -72,8 +72,8 @@ namespace PiCamCV
                 }
                 else
                 {
-                    var usbCapture= new CaptureUsb(request.CameraIndex);
-                    usbCapture.SetCaptureProperties(request.Config);
+                    var usbCapture= new CaptureUsb(request.CameraIndex, request.Config);
+                    //usbCapture.SetCaptureProperties();
                     return usbCapture;
                 }
             }

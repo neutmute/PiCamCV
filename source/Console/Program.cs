@@ -45,28 +45,18 @@ namespace PiCamCV.ConsoleApp
                 return;
             }
 
-            ICaptureGrab capture = null;
+            
             
             CapturePi.DoMatMagic("CreateCapture");
 
             var noCaptureGrabs = new[] { Mode.simple, Mode.pantiltjoy };
             var i2cRequired = new[] { Mode.pantiltface, Mode.pantiltjoy ,Mode.pantiltcolour, Mode.pantiltmultimode };
+
+            ICaptureGrab capture = null;
             CaptureConfig captureConfig = null;
             if (!noCaptureGrabs.Contains(options.Mode))
             {
-                var request = new CaptureRequest { Device = CaptureDevice.Usb };
-                if (EnvironmentService.IsUnix)
-                {
-                    request.Device = CaptureDevice.Pi;
-                }
-
-                request.Config = new CaptureConfig { Resolution = new Resolution(160, 120), Framerate = 25, Monochrome = false };
-
-                capture = CaptureFactory.GetCapture(request);
-                captureConfig = capture.GetCaptureProperties();
-                Log.Info($"Capture properties read: {captureConfig}");
-
-                SafetyCheckRoi(options, captureConfig);
+                capture = CaptureGrab(capture, options, ref captureConfig);
             }
 
             IPanTiltMechanism panTiltMech = null;
@@ -139,6 +129,11 @@ namespace PiCamCV.ConsoleApp
 
                     var controllerMultimode = new MultimodePanTiltController(panTiltMech, captureConfig, remoteScreen, cameraHubProxy, imageTransmitter);
                     runner = new CameraBasedPanTiltRunner(panTiltMech, capture, controllerMultimode, screen);
+
+                    cameraHubProxy.UpdateCapture += (s,e)=>
+                    {
+                    
+                    };
                     break;
 
                 case Mode.pantiltcolour:
@@ -160,6 +155,25 @@ namespace PiCamCV.ConsoleApp
 
             runner.Run();
         }
+
+        private static ICaptureGrab CaptureGrab(ICaptureGrab capture, ConsoleOptions options, ref CaptureConfig captureConfig)
+        {
+            var request = new CaptureRequest {Device = CaptureDevice.Usb};
+            if (EnvironmentService.IsUnix)
+            {
+                request.Device = CaptureDevice.Pi;
+            }
+
+            request.Config = new CaptureConfig {Resolution = new Resolution(160, 120), Framerate = 25, Monochrome = false};
+
+            capture = CaptureFactory.GetCapture(request);
+            captureConfig = capture.GetCaptureProperties();
+            Log.Info($"Capture properties read: {captureConfig}");
+
+            SafetyCheckRoi(options, captureConfig);
+            return capture;
+        }
+
 
         private static void SafetyCheckRoi(ConsoleOptions options, CaptureConfig captureProperties)
         {

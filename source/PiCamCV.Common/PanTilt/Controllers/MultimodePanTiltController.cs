@@ -36,7 +36,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
         private readonly CamshiftPanTiltController _camshiftTrackingController;
         private readonly ColourTrackingPanTiltController _colourTrackingController;
         private readonly ThresholdSelector _thresholdSelector;
-        private ColourDetectorInput _colourDetectorInput;
+        private readonly ColourDetectorInput _colourDetectorInput;
         private readonly IServerToCameraBus _serverToCameraBus;
         private readonly IOutputProcessor[] _outputPipelines;
         private Rectangle _regionOfInterest = Rectangle.Empty;

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using Microsoft.AspNet.SignalR.Client;
 using PiCamCV.Common;
+using PiCamCV.Common.ExtensionMethods;
 using PiCamCV.Common.Interfaces;
 using PiCamCV.Common.PanTilt.Controllers;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
@@ -30,7 +31,7 @@ namespace Web.Client
 
         public event EventHandler<PanTiltSettingCommand> PanTiltCommand;
 
-        //public event EventHandler<CaptureConfig>
+        public event EventHandler<CaptureConfig> UpdateCapture;
 
 
         public void InvokeMoveAbsolute(PanTiltSetting setting)
@@ -70,6 +71,8 @@ namespace Web.Client
             _proxy.On<PiSettings>("updateSettings", settings => SettingsChanged?.Invoke(this, settings));
 
             _proxy.On<Rectangle>("setRegionOfInterest", r => SetRegionOfInterest?.Invoke(this, r));
+
+            _proxy.On<CaptureConfig>("updateCapture", c => UpdateCapture?.Invoke(this, c));
 
         }
 
