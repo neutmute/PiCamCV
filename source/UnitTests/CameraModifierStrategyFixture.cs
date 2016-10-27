@@ -6,6 +6,7 @@ using System.Text;
 using Moq;
 using NUnit.Framework;
 using PiCamCV;
+using PiCamCV.Common;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 using PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies;
 using PiCamCV.UnitTests;

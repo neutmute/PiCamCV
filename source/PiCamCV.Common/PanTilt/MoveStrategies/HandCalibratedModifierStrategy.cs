@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Common.Logging;
+using PiCamCV.Common;
 using PiCamCV.Common.PanTilt.Controllers;
 using PiCamCV.Common.PanTilt.MoveStrategies;
 

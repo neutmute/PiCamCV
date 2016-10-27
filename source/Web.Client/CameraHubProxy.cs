@@ -30,6 +30,8 @@ namespace Web.Client
 
         public event EventHandler<PanTiltSettingCommand> PanTiltCommand;
 
+        //public event EventHandler<CaptureConfig>
+
 
         public void InvokeMoveAbsolute(PanTiltSetting setting)
         {

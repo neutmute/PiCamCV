@@ -5,6 +5,7 @@ using System.Text;
 using Common.Logging;
 using Emgu.CV;
 using Emgu.CV.Structure;
+using PiCamCV.Common;
 
 namespace PiCamCV.ConsoleApp
 {

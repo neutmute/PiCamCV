@@ -41,10 +41,8 @@ namespace PiCamCV.Common.PanTilt.Controllers
         private readonly IOutputProcessor[] _outputPipelines;
         private Rectangle _regionOfInterest = Rectangle.Empty;
 
-        private FaceTrackStateManager _faceTrackManager;
-        private AutonomousTrackStateManager _autonomousManager;
-        private EventHandler<PanTiltSetting> _moveAbsHandler;
-        private EventHandler<PanTiltSetting> _moveRelHandler;
+        private readonly FaceTrackStateManager _faceTrackManager;
+        private readonly AutonomousTrackStateManager _autonomousManager;
 
         private Action _unsubscribeBus;
 
@@ -104,44 +102,44 @@ namespace PiCamCV.Common.PanTilt.Controllers
             EventHandler<ProcessingMode> setModeHandler = (s, e) => { SetMode(e); };
             EventHandler<Rectangle> setRoiHandler = (s, e) => { _regionOfInterest = e; _screen.WriteLine("ROI set"); };
             
-            EventHandler<PanTiltSettingCommand> panTiltCommandHandler = (s, e) =>
-            {
-                switch (e.Type)
-                {
-                    case PanTiltSettingCommandType.MoveAbsolute:
-                        MoveAbsolute(e);
-                        SetMode(ProcessingMode.Static);
-                        _screen.WriteLine($"{e}");
-                        break;
-
-                    case PanTiltSettingCommandType.MoveRelative:
-                        MoveRelative(e);
-                        SetMode(ProcessingMode.Static);
-                        _screen.WriteLine($"{e}");
-                        break;
-
-                    case PanTiltSettingCommandType.SetRangePursuitLower:
-                        _autonomousManager.PursuitBoundaryLower = e;
-                        ReportPursuitBoundaries();
-                        break;
-
-                    case PanTiltSettingCommandType.SetRangePursuitUpper:
-                        _autonomousManager.PursuitBoundaryUpper = e;
-                        ReportPursuitBoundaries();
-                        break;
-                }
-            };
-
             _serverToCameraBus.SetMode += setModeHandler;
-            _serverToCameraBus.PanTiltCommand += panTiltCommandHandler;
+            _serverToCameraBus.PanTiltCommand += HandleCommand;
             _serverToCameraBus.SetRegionOfInterest += setRoiHandler;
 
             _unsubscribeBus = () =>
             {
                 _serverToCameraBus.SetMode -= setModeHandler;
                 _serverToCameraBus.SetRegionOfInterest -= setRoiHandler;
-                _serverToCameraBus.PanTiltCommand -= panTiltCommandHandler;
+                _serverToCameraBus.PanTiltCommand -= HandleCommand;
             };
+        }
+
+        private void HandleCommand(object sender, PanTiltSettingCommand command)
+        {
+            switch (command.Type)
+            {
+                case PanTiltSettingCommandType.MoveAbsolute:
+                    MoveAbsolute(command);
+                    SetMode(ProcessingMode.Static);
+                    _screen.WriteLine($"{command}");
+                    break;
+
+                case PanTiltSettingCommandType.MoveRelative:
+                    MoveRelative(command);
+                    SetMode(ProcessingMode.Static);
+                    _screen.WriteLine($"{command}");
+                    break;
+
+                case PanTiltSettingCommandType.SetRangePursuitLower:
+                    _autonomousManager.PursuitBoundaryLower = command;
+                    ReportPursuitBoundaries();
+                    break;
+
+                case PanTiltSettingCommandType.SetRangePursuitUpper:
+                    _autonomousManager.PursuitBoundaryUpper = command;
+                    ReportPursuitBoundaries();
+                    break;
+            }
         }
 
         private void ReportPursuitBoundaries()
@@ -272,7 +270,11 @@ namespace PiCamCV.Common.PanTilt.Controllers
                     SetMode(ProcessingMode.Autonomous);
                     break;
                 case 'r':
-                    _moveAbsHandler(this, new PanTiltSetting(50, 50));
+                    var command = new PanTiltSettingCommand();
+                    command.Type= PanTiltSettingCommandType.MoveAbsolute;
+                    command.PanPercent = 50;
+                    command.TiltPercent = 50;
+                    HandleCommand(this, command);
                     break;
                 default:
                     handled = false;

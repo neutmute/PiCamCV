@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Common.Logging;
+using PiCamCV.Common;
 using PiCamCV.Interfaces;
 
 namespace PiCamCV

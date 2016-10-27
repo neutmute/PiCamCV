@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using PiCamCV.Common;
 using PiCamCV.Common.PanTilt.Controllers;
 
 namespace PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies

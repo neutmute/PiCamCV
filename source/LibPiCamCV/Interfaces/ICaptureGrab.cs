@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
+using PiCamCV.Common;
 
 namespace PiCamCV.Interfaces
 {
