@@ -23,9 +23,10 @@ namespace PiCamCV.ConsoleApp
     /// 
     /// LINUX
     /// sudo -s
-    /// source [mono env]
-    /// source picamcv- #server vars
-    /// mono picamcv.con.exe -m=simple
+    /// source mono-dev-4.6.1 
+    /// source picam-blackpc #server vars
+    /// cd picamcv
+    /// mono picamcv.con.exe -m=pantiltmultimode
     /// </summary>
     class Program
     {
