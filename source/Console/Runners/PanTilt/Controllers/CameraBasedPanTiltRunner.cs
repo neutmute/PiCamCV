@@ -12,13 +12,16 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
     public class CameraBasedPanTiltRunner : PanTiltController, IRunner
     {
         private readonly IController<CameraPanTiltProcessOutput> _controller;
-        protected bool Stopping { get; set; }
+
+        private bool Started { get; set; }
+        private bool Stopping { get; set; }
+
         protected FpsTracker FpsTracker {get;private set;}
-        public ICaptureGrab CameraCapture { get; set; }
+
+        private ICaptureGrab CameraCapture { get; set; }
 
         IScreen Screen { get; set; }
-        protected CaptureConfig CaptureConfig { get; private set; }
-
+        
         private readonly IKeyHandler _keyHandler;
         
         public CameraBasedPanTiltRunner(
@@ -36,12 +39,29 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             FpsTracker.ReportEveryNthFrame = 2;
             FpsTracker.ReportFrames = s => Screen.WriteLine(s);
 
+            UpdateCaptureGrabber(captureGrabber);
+            
+            _keyHandler = controller as IKeyHandler;
+        }
+        
+        /// <summary>
+        /// So we can replace with a new framerate
+        /// </summary>
+        public void UpdateCaptureGrabber(ICaptureGrab captureGrabber)
+        {
+            if (CameraCapture != null)
+            {
+                CameraCapture.ImageGrabbed -= InternalImageGrabbedHandler;
+                CameraCapture.Stop();
+            }
+
             CameraCapture = captureGrabber;
             CameraCapture.ImageGrabbed += InternalImageGrabbedHandler;
 
-            CaptureConfig = captureGrabber.GetCaptureProperties();
-
-            _keyHandler = controller as IKeyHandler;
+            if (Started)
+            {
+                CameraCapture.Start();
+            }
         }
 
         private void InternalImageGrabbedHandler(object sender, EventArgs e)
@@ -88,7 +108,8 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         public void Run()
         {
             CameraCapture.Start();
-            
+            Started = true;
+
             var keyHandler = new KeyHandler();
             keyHandler.KeyEvent += keyHandler_KeyEvent;
             keyHandler.WaitForExit();

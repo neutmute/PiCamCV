@@ -7,19 +7,6 @@ using Emgu.CV.CvEnum;
 
 namespace PiCamCV.Interfaces
 {
-
-    //public class CaptureProperties
-    //{
-    //    public int FrameHeight { get;set;}
-    //    public int FrameWidth { get; set; }
-    //    public int Fps { get; set; }
-    //    public bool IsMonochrome { get; set; }
-
-    //    public override string ToString()
-    //    {
-    //        return string.Format("Width={0}, Height={1}, IsMonochrome={2}, Fps={3}", FrameWidth, FrameHeight, IsMonochrome, Fps);
-    //    }
-    //}
     public interface ICaptureGrab : ICapture, IDisposable
     {
         event EventHandler ImageGrabbed;

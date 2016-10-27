@@ -5,8 +5,10 @@ namespace PiCamCV
     public class Resolution
     {
         public int Width { get; set; }
+
         public int Height { get; set; }
-        public bool IsValid { get {return Width > 0 && Height > 0; } }
+
+        public bool IsValid => Width > 0 && Height > 0;
 
         public Resolution()
         {
@@ -32,7 +34,7 @@ namespace PiCamCV
 
         public override string ToString()
         {
-            return string.Format("{0}x{1}", Width, Height);
+            return $"{Width}x{Height}";
         }
 
         public Point GetCenter()
@@ -55,13 +57,7 @@ namespace PiCamCV
 
         public override string ToString()
         {
-            return string.Format(
-                "res={0}, bitrate={1}, framerate={2}, monochrome={3}"
-                ,Resolution
-                ,Bitrate
-                ,Framerate
-                ,Monochrome
-                );
+            return $"res={Resolution}, bitrate={Bitrate}, framerate={Framerate}, monochrome={Monochrome}";
         }
     }
 }
