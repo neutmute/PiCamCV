@@ -22,30 +22,29 @@ namespace PiCamCV.ConsoleApp
     /// picamcv.con.exe -m=pantiltmultimode
     /// 
     /// LINUX
-    /// 
+    /// sudo -s
+    /// source [mono env]
+    /// source picamcv- #server vars
     /// mono picamcv.con.exe -m=simple
-    /// 
-    /// 
     /// </summary>
     class Program
     {
         protected static ILog Log = LogManager.GetLogger("Console");
+        private static ConsoleOptions _consoleOptions;
 
         static void Main(string[] args)
         {
             var appData = ExecutionEnvironment.GetApplicationMetadata();
             Log.Info(appData);
 
-            var options = new ConsoleOptions(args);
+            _consoleOptions = new ConsoleOptions(args);
 
-            if (options.ShowHelp)
+            if (_consoleOptions.ShowHelp)
             {
                 Console.WriteLine("Options:");
-                options.OptionSet.WriteOptionDescriptions(Console.Out);
+                _consoleOptions.OptionSet.WriteOptionDescriptions(Console.Out);
                 return;
             }
-
-            
             
             CapturePi.DoMatMagic("CreateCapture");
 
@@ -53,18 +52,17 @@ namespace PiCamCV.ConsoleApp
             var i2cRequired = new[] { Mode.pantiltface, Mode.pantiltjoy ,Mode.pantiltcolour, Mode.pantiltmultimode };
 
             ICaptureGrab capture = null;
-            CaptureConfig captureConfig = null;
-            if (!noCaptureGrabs.Contains(options.Mode))
+            if (!noCaptureGrabs.Contains(_consoleOptions.Mode))
             {
-                capture = CaptureGrab(capture, options, ref captureConfig);
+                capture = BuildCaptureGrabber();
             }
 
             IPanTiltMechanism panTiltMech = null;
             IScreen screen = null;
-            if (i2cRequired.Contains(options.Mode))
+            if (i2cRequired.Contains(_consoleOptions.Mode))
             {
                 var pwmDeviceFactory = new Pca9685DeviceFactory();
-                var pwmDevice = pwmDeviceFactory.GetDevice(options.UseFakeDevice);
+                var pwmDevice = pwmDeviceFactory.GetDevice(_consoleOptions.UseFakeDevice);
                 panTiltMech = new PanTiltMechanism(pwmDevice);
                 screen = new ConsoleScreen();
                 screen.Clear();
@@ -75,8 +73,8 @@ namespace PiCamCV.ConsoleApp
             }
 
             IRunner runner;
-            Log.Info(options);
-            switch (options.Mode)
+            Log.Info(_consoleOptions);
+            switch (_consoleOptions.Mode)
             {
                 case Mode.noop: runner = new NoopRunner(capture);
                     break;
@@ -86,9 +84,9 @@ namespace PiCamCV.ConsoleApp
 
                 case Mode.colourdetect:
                     var colorDetector = new ColorDetectRunner(capture);
-                    if (options.HasColourSettings)
+                    if (_consoleOptions.HasColourSettings)
                     {
-                        colorDetector.Settings = options.ColourSettings;
+                        colorDetector.Settings = _consoleOptions.ColourSettings;
                     }
                     runner = colorDetector;
                     break;
@@ -101,7 +99,7 @@ namespace PiCamCV.ConsoleApp
                     break;
 
                 case Mode.servosort:
-                    runner = new ServoSorter(capture, options);
+                    runner = new ServoSorter(capture, _consoleOptions);
                     break;
 
                 case Mode.pantiltjoy:
@@ -110,7 +108,7 @@ namespace PiCamCV.ConsoleApp
                     break;
 
                 case Mode.pantiltface:
-                    var controllerF = new FaceTrackingPanTiltController(panTiltMech, captureConfig);
+                    var controllerF = new FaceTrackingPanTiltController(panTiltMech, capture.RequestedConfig);
                     runner = new CameraBasedPanTiltRunner(panTiltMech, capture, controllerF, screen);
                     break;
 
@@ -127,20 +125,24 @@ namespace PiCamCV.ConsoleApp
                         imageTransmitter.Enabled = s.EnableImageTransmit;
                     };
 
-                    var controllerMultimode = new MultimodePanTiltController(panTiltMech, captureConfig, remoteScreen, cameraHubProxy, imageTransmitter);
-                    runner = new CameraBasedPanTiltRunner(panTiltMech, capture, controllerMultimode, screen);
+                    var controllerMultimode = new MultimodePanTiltController(panTiltMech, capture.RequestedConfig, remoteScreen, cameraHubProxy, imageTransmitter);
 
-                    cameraHubProxy.UpdateCapture += (s,e)=>
+                    var cameraBasedRunner = new CameraBasedPanTiltRunner(panTiltMech, capture, controllerMultimode, screen);
+                    runner = cameraBasedRunner;
+
+                    cameraHubProxy.UpdateCapture += (s, e) =>
                     {
-                    
+                        remoteScreen.WriteLine($"Changing capture settings to {e}");
+                        var newGrabber = BuildCaptureGrabber(e);
+                        cameraBasedRunner.UpdateCaptureGrabber(newGrabber);
                     };
                     break;
 
                 case Mode.pantiltcolour:
-                    var controllerC = new ColourTrackingPanTiltController(panTiltMech, captureConfig);
-                    if (options.HasColourSettings)
+                    var controllerC = new ColourTrackingPanTiltController(panTiltMech, capture.RequestedConfig);
+                    if (_consoleOptions.HasColourSettings)
                     {
-                        controllerC.Settings = options.ColourSettings;
+                        controllerC.Settings = _consoleOptions.ColourSettings;
                     }
                     else
                     {
@@ -150,13 +152,13 @@ namespace PiCamCV.ConsoleApp
                     break;
 
                 default:
-                    throw KrakenException.Create("Option mode {0} needs wiring up", options.Mode);
+                    throw KrakenException.Create("Option mode {0} needs wiring up", _consoleOptions.Mode);
             }
 
             runner.Run();
         }
 
-        private static ICaptureGrab CaptureGrab(ConsoleOptions options, CaptureConfig config = null)
+        private static ICaptureGrab BuildCaptureGrabber(CaptureConfig config = null)
         {
             var request = new CaptureRequest {Device = CaptureDevice.Usb};
             if (EnvironmentService.IsUnix)
@@ -166,14 +168,15 @@ namespace PiCamCV.ConsoleApp
 
             if (config == null)
             { 
+                // Default capture
                 request.Config = new CaptureConfig {Resolution = new Resolution(160, 120), Framerate = 25, Monochrome = false};
             }
 
-            capture = CaptureFactory.GetCapture(request);
+            var capture = CaptureFactory.GetCapture(request);
             var actualConfig = capture.GetCaptureProperties();
-            Log.Info($"Capture properties read: {actualConfig}");
+            Log.Info($"Created capture: {actualConfig}");
 
-            SafetyCheckRoi(options, actualConfig);
+            SafetyCheckRoi(_consoleOptions, actualConfig);
             return capture;
         }
 

@@ -59,7 +59,10 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
         public TimeSpan ServoSettleTime
         {
-            get { return TimeSpan.FromMilliseconds(_timerUntilServoSettled.Interval); }
+            get
+            {
+                return TimeSpan.FromMilliseconds(_timerUntilServoSettled.Interval);
+            }
             set
             {
                 _timerUntilServoSettled.Interval = value.TotalMilliseconds;
@@ -70,8 +73,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         protected CameraBasedPanTiltController(IPanTiltMechanism panTiltMech, CaptureConfig captureConfig)
             : base(panTiltMech)
         {
-            CaptureConfig = captureConfig;
-            CentrePoint = CaptureConfig.Resolution.GetCenter();
+            NotifyNewCapture(captureConfig);
             
             _panTiltModifier = new AutoCalibratedModifierStrategy(CaptureConfig, CentrePoint);
 
@@ -117,6 +119,12 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             
             return output;
         }
+
+        public void NotifyNewCapture(CaptureConfig config)
+        {
+            CaptureConfig = config;
+            CentrePoint = CaptureConfig.Resolution.GetCenter();
+        }
         
         public TOutput Process(CameraProcessInput input)
         {
@@ -138,6 +146,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             result.Elapsed = stopWatch.Elapsed;
             return result;
         }
+
         protected abstract TOutput DoProcess(CameraProcessInput input);
     }
 }
