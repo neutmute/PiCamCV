@@ -156,7 +156,7 @@ namespace PiCamCV.ConsoleApp
             runner.Run();
         }
 
-        private static ICaptureGrab CaptureGrab(ICaptureGrab capture, ConsoleOptions options, ref CaptureConfig captureConfig)
+        private static ICaptureGrab CaptureGrab(ConsoleOptions options, CaptureConfig config = null)
         {
             var request = new CaptureRequest {Device = CaptureDevice.Usb};
             if (EnvironmentService.IsUnix)
@@ -164,13 +164,16 @@ namespace PiCamCV.ConsoleApp
                 request.Device = CaptureDevice.Pi;
             }
 
-            request.Config = new CaptureConfig {Resolution = new Resolution(160, 120), Framerate = 25, Monochrome = false};
+            if (config == null)
+            { 
+                request.Config = new CaptureConfig {Resolution = new Resolution(160, 120), Framerate = 25, Monochrome = false};
+            }
 
             capture = CaptureFactory.GetCapture(request);
-            captureConfig = capture.GetCaptureProperties();
-            Log.Info($"Capture properties read: {captureConfig}");
+            var actualConfig = capture.GetCaptureProperties();
+            Log.Info($"Capture properties read: {actualConfig}");
 
-            SafetyCheckRoi(options, captureConfig);
+            SafetyCheckRoi(options, actualConfig);
             return capture;
         }
 
