@@ -131,21 +131,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\raspberry-sharp-io\Raspberry.IO.Components\Raspberry.IO.Components.csproj">
+    <ProjectReference Include="..\..\lib\raspberry-sharp-io\Raspberry.IO.Components\Raspberry.IO.Components.csproj">
       <Project>{8388cfca-e3db-43f7-b049-2cb195211ce8}</Project>
       <Name>Raspberry.IO.Components</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\raspberry-sharp-io\Raspberry.IO.GeneralPurpose\Raspberry.IO.GeneralPurpose.csproj">
-      <Project>{281c71ed-c36d-408e-8baa-75c381dc17e7}</Project>
-      <Name>Raspberry.IO.GeneralPurpose</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\raspberry-sharp-io\Raspberry.IO.InterIntegratedCircuit\Raspberry.IO.InterIntegratedCircuit.csproj">
-      <Project>{63b8403e-bc56-43f9-a045-f61ecc3871f3}</Project>
-      <Name>Raspberry.IO.InterIntegratedCircuit</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\raspberry-sharp-io\Raspberry.IO.SerialPeripheralInterface\Raspberry.IO.SerialPeripheralInterface.csproj">
-      <Project>{326342e5-0411-40e8-9f2d-563d6b192568}</Project>
-      <Name>Raspberry.IO.SerialPeripheralInterface</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\lib\RPi.Demo\src\RPi.Comms\RPi.Comms.csproj">
       <Project>{aeecae23-d46e-4f64-91b3-c0b50bc2483e}</Project>
