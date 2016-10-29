@@ -149,7 +149,6 @@ namespace PiCamCV.Common.PanTilt.Controllers
             _screen.WriteLine($"Pursuit boundary: {panText}, {tiltText}");
         }
         
-
         protected override CameraPanTiltProcessOutput DoProcess(CameraProcessInput input)
         {
             var output = new CameraPanTiltProcessOutput();

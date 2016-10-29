@@ -68,11 +68,11 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
         private void DecideNextSmoothPursuit()
         {
             _nextSmoothPursuit = TimeSpan.FromSeconds(_random.Next(8, 20));
-            var nextSmoothPursuitSpeedSeconds = _random.Next(3, 10);
+            var nextSmoothPursuitSpeedMilliseconds = _random.Next(250, 3000);
             _timeSinceLastSmoothPursuit.Restart();
             _timeTarget = new TimeTarget();
             _timeTarget.Original = _panTiltController.CurrentSetting;
-            _timeTarget.TimeSpan = TimeSpan.FromSeconds(nextSmoothPursuitSpeedSeconds);
+            _timeTarget.TimeSpan = TimeSpan.FromMilliseconds(nextSmoothPursuitSpeedMilliseconds);
             
             var nextPan = Convert.ToDecimal(_random.Next((int) PursuitBoundaryLower.PanPercent.Value, (int)PursuitBoundaryUpper.PanPercent.Value));
             var nextTilt = Convert.ToDecimal(_random.Next((int)PursuitBoundaryLower.TiltPercent.Value, (int)PursuitBoundaryUpper.TiltPercent.Value));
