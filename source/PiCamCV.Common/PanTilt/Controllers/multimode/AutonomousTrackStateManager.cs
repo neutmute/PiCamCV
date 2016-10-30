@@ -25,6 +25,8 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
 
         public Func<CameraProcessInput, bool> IsFaceFound { get; set; }
 
+        public Func<CameraProcessInput, bool> IsColourFullFrame { get; set; }
+
         public PanTiltSetting PursuitBoundaryUpper { get; set; }
 
         public PanTiltSetting PursuitBoundaryLower { get; set; }
@@ -94,7 +96,10 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
 
             if (_timeSinceLastColourSample.Elapsed > _sampleColourEvery)
             {
-                //_screen.WriteLine("TODO: colour sample");
+                if (IsColourFullFrame(input))
+                {
+                    return ProcessingMode.ColourObjectTrack;
+                }
                 _timeSinceLastColourSample.Restart();
             }
 

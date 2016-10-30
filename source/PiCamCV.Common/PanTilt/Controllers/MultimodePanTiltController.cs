@@ -40,11 +40,13 @@ namespace PiCamCV.Common.PanTilt.Controllers
         private readonly IServerToCameraBus _serverToCameraBus;
         private readonly IOutputProcessor[] _outputPipelines;
         private Rectangle _regionOfInterest = Rectangle.Empty;
+        
 
         private readonly FaceTrackStateManager _faceTrackManager;
         private readonly AutonomousTrackStateManager _autonomousManager;
 
         private Action _unsubscribeBus;
+        private bool _isColourTrained;
 
         /// <summary>
         /// sudo mono picamcv.con.exe -m=pantiltmultimode
@@ -78,8 +80,27 @@ namespace PiCamCV.Common.PanTilt.Controllers
             SetMode(ProcessingMode.Autonomous);
             
             _autonomousManager.IsFaceFound = i => _faceTrackingController.Process(i).IsDetected;
+            _autonomousManager.IsColourFullFrame =  IsColourFullFrame;
             
             InitController();
+        }
+
+        /// <summary>
+        /// For 
+        /// </summary>
+        private bool IsColourFullFrame(CameraProcessInput input)
+        {
+            if (!_isColourTrained)
+            {
+                return false;
+            }
+
+            var colourOutput = ProcessColour(input);
+            const int fullFrameMinimumPercent = 90;
+            var fullFramePixelCount = colourOutput.CapturedImage.Width*colourOutput.CapturedImage.Height;
+            var mimimumColourPixelCount = fullFramePixelCount*fullFrameMinimumPercent/100;
+            var isFullFrameColour = colourOutput.IsDetected && colourOutput.MomentArea > mimimumColourPixelCount;
+            return isFullFrameColour;
         }
 
         private void thresholdSelector_ColourCheckTick(object sender, AutoThresholdResult e)
@@ -156,10 +177,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
             switch (State)
             {
                 case ProcessingMode.ColourObjectTrack:
-                    _colourDetectorInput.Captured = input.Captured;
-                    _colourTrackingController.Settings = _colourDetectorInput.Settings;
-                    var colourOutput = _colourTrackingController.Process(_colourDetectorInput);
-                    colourOutput.CapturedImage = GetBgr(colourOutput.ThresholdImage);
+                    var colourOutput = ProcessColour(input);
                     output = colourOutput;
 
                     if (Ticks % 60 == 0) // provide some feedback on moment size but don't spam
@@ -192,12 +210,16 @@ namespace PiCamCV.Common.PanTilt.Controllers
                     _screen.WriteLine($"Threshold tuning complete: {thresholdSettings}");
                     _colourDetectorInput.SetCapturedImage = true;
                     _colourDetectorInput.Settings.Accept(thresholdSettings);
-                    
+                    _isColourTrained = true;
                     nextState = ProcessingMode.ColourObjectTrack;
                     break;
                 
                 case ProcessingMode.Autonomous:
                     nextState = _autonomousManager.AcceptInput(input);
+                    if (nextState == ProcessingMode.ColourObjectTrack)
+                    {
+                        
+                    }
                     break;
 
                 case ProcessingMode.CamshiftSelect:
@@ -228,6 +250,15 @@ namespace PiCamCV.Common.PanTilt.Controllers
             }
 
             return output;
+        }
+
+        private ColourTrackingPanTiltOutput ProcessColour(CameraProcessInput input)
+        {
+            _colourDetectorInput.Captured = input.Captured;
+            _colourTrackingController.Settings = _colourDetectorInput.Settings;
+            var colourOutput = _colourTrackingController.Process(_colourDetectorInput);
+            colourOutput.CapturedImage = GetBgr(colourOutput.ThresholdImage);
+            return colourOutput;
         }
 
         public void SetMode(ProcessingMode mode)
