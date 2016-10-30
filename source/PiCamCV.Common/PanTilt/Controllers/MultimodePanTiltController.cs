@@ -263,11 +263,25 @@ namespace PiCamCV.Common.PanTilt.Controllers
         public bool HandleKeyPress(char key)
         {
             var handled = true;
+            var captureConfig = new CaptureConfig();
             switch (key)
             {
+                case '7':
+                    captureConfig.Framerate = 40;
+                    captureConfig.Resolution = new Resolution(128, 96);
+                    _serverToCameraBus.InvokeUpdateCapture(captureConfig);
+                    break;
+
+                case '8':
+                    captureConfig.Framerate = 40;
+                    captureConfig.Resolution = new Resolution(160, 120);
+                    _serverToCameraBus.InvokeUpdateCapture(captureConfig);
+                    break;
+
                 case 'a':
                     SetMode(ProcessingMode.Autonomous);
                     break;
+
                 case 'r':
                     var command = new PanTiltSettingCommand();
                     command.Type= PanTiltSettingCommandType.MoveAbsolute;

@@ -33,6 +33,11 @@ namespace Web.Client
 
         public event EventHandler<CaptureConfig> UpdateCapture;
 
+        public void InvokeUpdateCapture(CaptureConfig captureConfig)
+        {
+            UpdateCapture?.Invoke(this, captureConfig);
+        }
+
 
         public void InvokeMoveAbsolute(PanTiltSetting setting)
         {

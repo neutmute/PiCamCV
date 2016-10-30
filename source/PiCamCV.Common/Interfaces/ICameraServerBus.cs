@@ -38,6 +38,8 @@ namespace PiCamCV.Common.Interfaces
         event EventHandler<Rectangle> SetRegionOfInterest;
         event EventHandler<PanTiltSettingCommand> PanTiltCommand;
         event EventHandler<CaptureConfig> UpdateCapture;
+
+        void InvokeUpdateCapture(CaptureConfig captureConfig);
     }
 
     public interface ICameraToServerBus

@@ -170,7 +170,7 @@ namespace PiCamCV.ConsoleApp
             if (config == null)
             { 
                 // Default capture
-                request.Config = new CaptureConfig {Resolution = new Resolution(160, 120), Framerate = 25, Monochrome = false};
+                request.Config = new CaptureConfig {Resolution = new Resolution(160, 120), Framerate = 50, Monochrome = false};
             }
 
             var capture = CaptureFactory.GetCapture(request);
