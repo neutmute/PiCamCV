@@ -16,14 +16,11 @@ using PiCamCV.Interfaces;
 
 namespace PiCamCV.ConsoleApp.Runners.PanTilt
 {
-    public class FaceTrackingPanTiltOutput : CameraPanTiltProcessOutput
+    public class FaceTrackingPanTiltOutput : TrackingCameraPanTiltProcessOutput
     {
         public List<Face> Faces { get; private set; }
 
-        public bool IsDetected
-        {
-            get { return Faces.Count > 0; }
-        }
+        public override bool IsDetected => Faces.Count > 0;
 
         public FaceTrackingPanTiltOutput()
         {

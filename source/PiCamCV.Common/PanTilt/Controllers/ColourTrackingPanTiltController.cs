@@ -12,17 +12,26 @@ using PiCamCV.Common.Interfaces;
 
 namespace PiCamCV.ConsoleApp.Runners.PanTilt
 {
-    public class ColourTrackingPanTiltOutput : CameraPanTiltProcessOutput
+    public class ColourTrackingPanTiltOutput : TrackingCameraPanTiltProcessOutput
     {
-        public bool IsDetected { get; set; }
+        private bool _isDetected;
 
         public double MomentArea { get; set; }
+
+        public override bool IsDetected => _isDetected;
 
         public Image<Gray, byte> ThresholdImage { get; set; }
 
         public override string ToString()
         {
             return $"MomentArea={MomentArea}, IsDetected={IsDetected}, {base.ToString()}";
+        }
+
+        public void Absorb(ColourDetectorOutput output)
+        {
+            _isDetected = output.IsDetected;
+            MomentArea = output.MomentArea;
+            ThresholdImage = output.ThresholdImage;
         }
     }
 
@@ -53,9 +62,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             }
 
             var output = ReactToTarget(targetPoint);
-            output.IsDetected = colourDetectorOutput.IsDetected;
-            output.MomentArea = colourDetectorOutput.MomentArea;
-            output.ThresholdImage = colourDetectorOutput.ThresholdImage;
+            output.Absorb(colourDetectorOutput);
             return output;
         }
     }

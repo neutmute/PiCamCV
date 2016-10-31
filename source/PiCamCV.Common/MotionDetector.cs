@@ -130,10 +130,7 @@ namespace PiCamCV.Common
 
         public MotionSection BiggestMotion { get; set; }
 
-        public bool IsDetected
-        {
-            get { return MotionSections.Count > 0; }
-        }
+        public bool IsDetected => MotionSections.Count > 0;
 
         public Image<Bgr, byte> ForegroundImage { get; set; }
         public Image<Bgr, byte> MotionImage { get; set; }

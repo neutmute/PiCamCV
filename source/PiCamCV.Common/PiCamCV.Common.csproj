@@ -89,8 +89,11 @@
     <Compile Include="PanTilt\Controllers\MotionTrackingPanTiltController.cs" />
     <Compile Include="PanTilt\Controllers\CamshiftPanTiltController.cs" />
     <Compile Include="PanTilt\Controllers\multimode\AutonomousTrackStateManager.cs" />
+    <Compile Include="PanTilt\Controllers\multimode\ColourTrackStateManager.cs" />
     <Compile Include="PanTilt\Controllers\multimode\FaceTrackStateManager.cs" />
     <Compile Include="PanTilt\Controllers\multimode\StateManager.cs" />
+    <Compile Include="PanTilt\Controllers\multimode\TimeoutStateManager.cs" />
+    <Compile Include="PanTilt\Controllers\TrackingCameraPanTiltProcessOutput.cs" />
     <Compile Include="PanTilt\MoveStrategies\CameraBasedModifierStrategy.cs" />
     <Compile Include="PanTilt\MoveStrategies\AutoCalibratedModifierStrategy.cs" />
     <Compile Include="PanTilt\MoveStrategies\LinearRegressor.cs" />

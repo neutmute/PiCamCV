@@ -56,7 +56,7 @@ namespace PiCam.Web.Controllers
 
         public void BrowserConnected(string connectionId, string ip)
         {
-            var camMsg = IsCameraConnected ? $"Camera is connected from {_cameraExternalIp}" : "Waiting for a camera to connect";
+            var camMsg = IsCameraConnected ? $"Camera is connected from {_cameraExternalIp}. All IPs: {CameraInteralIpCsv}" : "Waiting for a camera to connect";
             var msg = $"Hello {connectionId} from {ip}.\r\n{camMsg}";
             Browsers.Toast(msg);
             Browsers.InformSettings(ServerSettings);

@@ -16,14 +16,15 @@ using PiCamCV.ExtensionMethods;
 
 namespace PiCamCV.Common.PanTilt.Controllers
 {
-    public class MotionTrackingPanTiltOutput : CameraPanTiltProcessOutput
+    public class MotionTrackingPanTiltOutput : TrackingCameraPanTiltProcessOutput
     {
         public List<MotionSection> MotionSections { get; private set; }
 
         public MotionSection TargetedMotion { get;set;}
+
         public Image<Bgr, byte> ForegroundImage { get; set; }
 
-        public bool IsDetected => MotionSections.Count > 0;
+        public override bool IsDetected => MotionSections.Count > 0;
 
         public MotionTrackingPanTiltOutput()
         {

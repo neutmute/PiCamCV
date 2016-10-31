@@ -43,6 +43,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
         
 
         private readonly FaceTrackStateManager _faceTrackManager;
+        private readonly ColourTrackStateManager _colourTrackManager;
         private readonly AutonomousTrackStateManager _autonomousManager;
 
         private Action _unsubscribeBus;
@@ -74,8 +75,9 @@ namespace PiCamCV.Common.PanTilt.Controllers
             _colourDetectorInput.Settings.MomentArea = new RangeF(50, 10000);
 
             _faceTrackManager = new FaceTrackStateManager(screen);
+            _colourTrackManager = new ColourTrackStateManager(screen);
             _autonomousManager = new AutonomousTrackStateManager(this, screen);
-
+            
             screen.Clear();
             SetMode(ProcessingMode.Autonomous);
             
@@ -98,7 +100,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
             var colourOutput = ProcessColour(input);
             const int fullFrameMinimumPercent = 90;
             var fullFramePixelCount = colourOutput.CapturedImage.Width*colourOutput.CapturedImage.Height;
-            var mimimumColourPixelCount = fullFramePixelCount*fullFrameMinimumPercent/100;
+            var mimimumColourPixelCount = fullFramePixelCount * fullFrameMinimumPercent / 100;
             var isFullFrameColour = colourOutput.IsDetected && colourOutput.MomentArea > mimimumColourPixelCount;
             return isFullFrameColour;
         }
