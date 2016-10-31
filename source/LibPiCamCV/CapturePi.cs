@@ -201,7 +201,7 @@ namespace PiCamCV
         /// </summary>
         protected override void DisposeObject()
         {
-            Log.Info("Releasing capture");
+            Log.Info("DisposeObject()");
             Stop();
             CvInvokeRaspiCamCV.cvReleaseCapture(ref _ptr);
         }
@@ -322,6 +322,7 @@ namespace PiCamCV
         /// </summary>
         public void Stop()
         {
+            Log.Info($"Stopping, _grabState={_grabState}");
             if (_grabState != GrabState.Stopped)
             {
                 _grabState = GrabState.Stopping;
@@ -388,7 +389,5 @@ namespace PiCamCV
         {
             return true;
         }
-
-
     }
 }
