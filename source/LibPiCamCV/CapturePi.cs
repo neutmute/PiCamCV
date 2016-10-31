@@ -173,7 +173,7 @@ namespace PiCamCV
             }
             if (_ptr == IntPtr.Zero)
             {
-                throw new NullReferenceException(String.Format("Error: Unable to create capture from camera {0}", camIndex));
+                throw new NullReferenceException($"Error: Unable to create capture from camera {camIndex}");
             }
         }
 
@@ -187,11 +187,7 @@ namespace PiCamCV
             {
                 if (EnvironmentService.IsUnix)
                 {
-                    Log.Fatal(
-                        m =>
-                            m(
-                                "Failed to load OpenCV libraries. Did you copy emguCV binaries from Windows to Linux? You must use Linux compiled emguCV binaries."),
-                        e);
+                    Log.Fatal("Failed to load OpenCV libraries. Did you copy emguCV binaries from Windows to Linux? You must use Linux compiled emguCV binaries.",e);
                 }
                 throw;
             }
@@ -305,7 +301,7 @@ namespace PiCamCV
                 case GrabState.Stopped:
                 case GrabState.Stopping:   
                     _grabState = GrabState.Running;
-                    ThreadPool.QueueUserWorkItem(delegate { Run(); });
+                    ThreadPool.QueueUserWorkItem(state => Run());
                     break;
             }
         }
@@ -328,8 +324,7 @@ namespace PiCamCV
         {
             if (_grabState != GrabState.Stopped)
             {
-                if (_grabState != GrabState.Stopping)
-                    _grabState = GrabState.Stopping;
+                _grabState = GrabState.Stopping;
             }
         }
         #endregion
@@ -357,84 +352,7 @@ namespace PiCamCV
                 }
             }
         }
-
-        ///// <summary> 
-        ///// Retrieve a Gray image frame after Grab()
-        ///// </summary>
-        ///// <param name="streamIndex">Stream index. Use 0 for default.</param>
-        ///// <returns> A Gray image frame</returns>
-        //public virtual Image<Gray, Byte> RetrieveGrayFrame()
-        //{
-        //    IntPtr img = CvInvokeRaspiCamCV.cvQueryFrame(Ptr);
-        //    if (img == IntPtr.Zero)
-        //        return null;
-
-        //   // var mat = new Mat(img, false);
-        //    MIplImage iplImage = (MIplImage)Marshal.PtrToStructure(img, typeof(MIplImage));
-
-        //    Image<Gray, Byte> res;
-        //    if (iplImage.NChannels == 3)
-        //    {  //if the image captured is Bgr, convert it to Grayscale
-        //        res = new Image<Gray, Byte>(iplImage.Width, iplImage.Height);
-
-        //        // Not sure how to give this a Mat
-        //        CvInvoke.CvtColor(null, res, ColorConversion.Bgr2Gray);
-        //    }
-        //    else
-        //    {
-        //        res = new Image<Gray, byte>(iplImage.Width, iplImage.Height, iplImage.WidthStep, iplImage.ImageData);
-        //    }
-
-        //    //inplace flip the image if necessary
-        //    res._Flip(FlipType);
-
-        //    return res;
-        //}
-
-        ///// <summary> 
-        ///// Retrieve a Bgr image frame after Grab()
-        ///// </summary>
-        ///// <param name="streamIndex">Stream index</param>
-        ///// <returns> A Bgr image frame</returns>
-        //public virtual Image<Bgr, Byte> RetrieveBgrFrame()
-        //{
-        //    IntPtr img = CvInvokeRaspiCamCV.cvQueryFrame(_ptr);
-
-        //    if (img == IntPtr.Zero)
-        //    {
-        //        return null;
-        //    }
-
-        //    MIplImage iplImage = (MIplImage)Marshal.PtrToStructure(img, typeof(MIplImage));
-
-        //    Image<Bgr, Byte> res;
-        //    if (iplImage.NChannels == 1)
-        //    {  //if the image captured is Grayscale, convert it to BGR
-        //        throw new NotImplementedException("Not sure how to supply a Mat here");
-        //        res = new Image<Bgr, Byte>(iplImage.Width, iplImage.Height);
-        //        CvInvoke.CvtColor(null, res, Emgu.CV.CvEnum.ColorConversion.Gray2Bgr);
-        //    }
-        //    else
-        //    {
-        //        //res = Image<Bgr, Byte>.FromIplImagePtr(img);
-        //       res = new Image<Bgr, byte>(iplImage.Width, iplImage.Height, iplImage.WidthStep, iplImage.ImageData);
-        //    }
-
-        //    //inplace flip the image if necessary
-        //    res._Flip(FlipType);
-
-        //    return res;
-        //}
-
-        ///// <summary> 
-        ///// Capture a Gray image frame
-        ///// </summary>
-        ///// <returns> A Gray image frame</returns>
-        //public virtual Image<Gray, Byte> QueryGrayFrame()
-        //{
-        //    return Grab() ? RetrieveGrayFrame() : null;
-        //}
-
+        
         #region implement ICapture
         /// <summary> 
         /// Capture a Bgr image frame

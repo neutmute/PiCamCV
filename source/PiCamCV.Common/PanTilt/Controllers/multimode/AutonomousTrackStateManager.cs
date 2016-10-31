@@ -47,8 +47,8 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
             _screen = screen;
             _panTiltController = panTiltController;
 
-            PursuitBoundaryLower = new PanTiltSetting(10, 90);
-            PursuitBoundaryUpper = new PanTiltSetting(45, 80);
+            PursuitBoundaryLower = new PanTiltSetting(10, 40);
+            PursuitBoundaryUpper = new PanTiltSetting(80, 90);
 
             Reset();
         }
