@@ -100,7 +100,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(123, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(666, 724);
+            this.panel1.Size = new System.Drawing.Size(985, 724);
             this.panel1.TabIndex = 1;
             // 
             // groupBoxMain
@@ -109,7 +109,7 @@
             this.groupBoxMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBoxMain.Location = new System.Drawing.Point(0, 0);
             this.groupBoxMain.Name = "groupBoxMain";
-            this.groupBoxMain.Size = new System.Drawing.Size(666, 724);
+            this.groupBoxMain.Size = new System.Drawing.Size(985, 724);
             this.groupBoxMain.TabIndex = 0;
             this.groupBoxMain.TabStop = false;
             // 
@@ -120,7 +120,7 @@
             this.flowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel.Location = new System.Drawing.Point(3, 16);
             this.flowLayoutPanel.Name = "flowLayoutPanel";
-            this.flowLayoutPanel.Size = new System.Drawing.Size(660, 705);
+            this.flowLayoutPanel.Size = new System.Drawing.Size(979, 705);
             this.flowLayoutPanel.TabIndex = 6;
             // 
             // groupBoxOriginal
@@ -128,7 +128,7 @@
             this.groupBoxOriginal.Controls.Add(this.imageBoxTracking);
             this.groupBoxOriginal.Location = new System.Drawing.Point(3, 3);
             this.groupBoxOriginal.Name = "groupBoxOriginal";
-            this.groupBoxOriginal.Size = new System.Drawing.Size(392, 337);
+            this.groupBoxOriginal.Size = new System.Drawing.Size(577, 452);
             this.groupBoxOriginal.TabIndex = 8;
             this.groupBoxOriginal.TabStop = false;
             this.groupBoxOriginal.Text = "Raw";
@@ -138,14 +138,14 @@
             this.imageBoxTracking.Dock = System.Windows.Forms.DockStyle.Fill;
             this.imageBoxTracking.Location = new System.Drawing.Point(3, 16);
             this.imageBoxTracking.Name = "imageBoxTracking";
-            this.imageBoxTracking.Size = new System.Drawing.Size(386, 318);
+            this.imageBoxTracking.Size = new System.Drawing.Size(571, 433);
             this.imageBoxTracking.TabIndex = 7;
             this.imageBoxTracking.TabStop = false;
             // 
             // groupBoxProcessed
             // 
             this.groupBoxProcessed.Controls.Add(this.imageBoxProcessed);
-            this.groupBoxProcessed.Location = new System.Drawing.Point(3, 346);
+            this.groupBoxProcessed.Location = new System.Drawing.Point(3, 461);
             this.groupBoxProcessed.Name = "groupBoxProcessed";
             this.groupBoxProcessed.Size = new System.Drawing.Size(392, 327);
             this.groupBoxProcessed.TabIndex = 9;
@@ -168,7 +168,7 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panelLeft);
             this.Name = "TrackingControl";
-            this.Size = new System.Drawing.Size(789, 724);
+            this.Size = new System.Drawing.Size(1108, 724);
             this.panelLeft.ResumeLayout(false);
             this.groupBoxTrackMethod.ResumeLayout(false);
             this.groupBoxTrackMethod.PerformLayout();
