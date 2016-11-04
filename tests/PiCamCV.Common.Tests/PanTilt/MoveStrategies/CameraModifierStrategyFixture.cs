@@ -13,6 +13,7 @@ using PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies;
 
 namespace UnitTests
 {
+    [TestFixture]
     public class CameraModifierStrategyFixture : Fixture
     {
         [Test]

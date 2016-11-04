@@ -7,8 +7,9 @@ using NUnit.Framework;
 
 namespace PiCamCV.Common.Tests
 {
-    [TestFixture]
+    
     public class Fixture
     {
+
     }
 }

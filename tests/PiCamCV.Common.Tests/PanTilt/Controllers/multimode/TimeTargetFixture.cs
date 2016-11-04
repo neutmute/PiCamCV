@@ -11,6 +11,7 @@ using PiCamCV.ConsoleApp.Runners.PanTilt;
 
 namespace PiCamCV.Common.Tests.PanTilt.Controllers.multimode
 {
+    [TestFixture]
     public class TimeTargetFixture : Fixture
     {
         private MockStopwatch _mockStopwatch;
