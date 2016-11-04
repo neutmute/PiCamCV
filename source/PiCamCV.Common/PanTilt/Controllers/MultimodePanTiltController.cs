@@ -86,10 +86,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
             
             InitController();
         }
-
-        /// <summary>
-        /// For 
-        /// </summary>
+        
         private bool IsColourFullFrame(CameraProcessInput input)
         {
             if (!_isColourTrained)
