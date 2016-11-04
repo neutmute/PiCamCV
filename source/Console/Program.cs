@@ -55,7 +55,9 @@ namespace PiCamCV.ConsoleApp
             ICaptureGrab capture = null;
             if (!noCaptureGrabs.Contains(_consoleOptions.Mode))
             {
-                capture = BuildCaptureGrabber();
+                var config = CaptureConfig.Parse(_consoleOptions.CaptureConfig);
+                capture = BuildCaptureGrabber(config);
+                Log.Info($"Requested capture {capture.RequestedConfig}");
             }
 
             IPanTiltMechanism panTiltMech = null;
