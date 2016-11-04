@@ -186,12 +186,14 @@ namespace PiCamCV.Common.PanTilt.Controllers
                     {
                         _screen.WriteLine(colourOutput.ToString());
                     }
+
+                    nextState = _colourTrackManager.AcceptOutput(colourOutput);
                     break;
 
                 case ProcessingMode.FaceDetection:
                     var faceTrackOutput = _faceTrackingController.Process(input);
 
-                    nextState =  _faceTrackManager.AcceptScan(faceTrackOutput);
+                    nextState =  _faceTrackManager.AcceptOutput(faceTrackOutput);
                     output = faceTrackOutput;
                     break;
 
@@ -242,8 +244,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
                 switch (nextState)
                 {
                     case ProcessingMode.Autonomous:
-                        // Reset the timers
-                        _autonomousManager.Reset();
+                        _autonomousManager.Reset();     // Reset the timers
                         break;
                     case ProcessingMode.ColourObjectTrack:
                         _screen.WriteLine($"Color detector settings: {_colourDetectorInput.Settings}");

@@ -29,7 +29,7 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
             _stopWatch = new Stopwatch();
         }
 
-        public ProcessingMode AcceptScan(TOutput output)
+        public ProcessingMode AcceptOutput(TOutput output)
         {
             if (output.IsDetected)
             {
