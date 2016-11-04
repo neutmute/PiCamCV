@@ -50,7 +50,7 @@ namespace PiCamCV.ConsoleApp
             
             CapturePi.DoMatMagic("CreateCapture");
 
-            var noCaptureGrabs = new[] { Mode.simple, Mode.pantiltjoy };
+            var noCaptureGrabs = new[] { Mode.simple, Mode.pantiltjoy, Mode.ipReport };
             var i2cRequired = new[] { Mode.pantiltface, Mode.pantiltjoy ,Mode.pantiltcolour, Mode.pantiltmultimode };
 
             ICaptureGrab capture = null;
