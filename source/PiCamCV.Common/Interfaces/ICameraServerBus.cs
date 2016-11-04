@@ -46,7 +46,10 @@ namespace PiCamCV.Common.Interfaces
     {
         void ScreenWriteLine(string message);
 
+        void InformIp();
+
         void ScreenClear();
-        
+
+        void Connect();
     }
 }

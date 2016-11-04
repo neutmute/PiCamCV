@@ -20,6 +20,10 @@ namespace PiCamCV.Common
         /// </summary>
         public static CaptureConfig Parse(string config)
         {
+            if (string.IsNullOrWhiteSpace(config))
+            {
+                return null;
+            }
             string strRegex = @"(?<resWidth>\d{1,})x(?<resHeight>\d{1,}),(?<fps>\d{1,})";
             var captureRegex = new Regex(strRegex, RegexOptions.None);
             var match = captureRegex.Match(config);

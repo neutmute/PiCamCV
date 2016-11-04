@@ -122,6 +122,7 @@
     <Compile Include="Properties\AssemblyInfoUnique.cs" />
     <Compile Include="Runners\CameraConsumerRunner.cs" />
     <Compile Include="Runners\CascadeRunner.cs" />
+    <Compile Include="Runners\IpReporter.cs" />
     <Compile Include="Runners\PanTilt\Controllers\CameraBasedPanTiltRunner.cs" />
     <Compile Include="Runners\PanTilt\Controllers\TimerRunner.cs" />
     <Compile Include="Runners\ColorDetectRunner.cs" />

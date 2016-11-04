@@ -111,6 +111,9 @@ namespace Web.Client
             allIps.AddRange(networkService.GetAllLocalIPv4(NetworkInterfaceType.Wireless80211));
             
             var allIpCsv = string.Join(",", allIps);
+
+            Console.Write($"Local Ips are {allIpCsv}");
+
             _proxy.Invoke("InformIp", allIpCsv);
         }
 

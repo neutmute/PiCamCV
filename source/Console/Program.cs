@@ -20,6 +20,7 @@ namespace PiCamCV.ConsoleApp
     /// <summary>
     /// WINDOWS
     /// picamcv.con.exe -m=pantiltmultimode
+    /// picamcv.con.exe -m=ipReport
     /// 
     /// LINUX
     /// sudo -s
@@ -152,6 +153,11 @@ namespace PiCamCV.ConsoleApp
                         throw KrakenException.Create("Colour settings not found");
                     }
                     runner = new CameraBasedPanTiltRunner(panTiltMech, capture, controllerC, screen);
+                    break;
+
+                case Mode.ipReport:
+                    var hub = new CameraHubProxy();
+                    runner = new IpReporter(hub);
                     break;
 
                 default:

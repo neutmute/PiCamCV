@@ -22,7 +22,8 @@ namespace PiCamCV.ConsoleApp
         pantiltface,
         pantiltcolour,
         pantiltmultimode,
-        noop
+        noop,
+        ipReport
     }
 
     public class ConsoleOptions
