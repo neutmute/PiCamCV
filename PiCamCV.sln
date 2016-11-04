@@ -53,8 +53,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{808AEB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raspberry.IO.Interop", "lib\raspberry-sharp-io\Raspberry.IO.Interop\Raspberry.IO.Interop.csproj", "{689CB6C4-3D23-45DA-8E00-87C28AEA32D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "source\UnitTests\UnitTests.csproj", "{01CC7C9B-53E7-4FA9-841C-9B046FA1CDD7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "source\Web\Web.csproj", "{9A25DF8F-7A09-41A6-8168-C0F72B5F2DAD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Client", "source\Web.Client\Web.Client.csproj", "{EB0616D4-7DC9-449C-864B-A477A52419C5}"
@@ -356,27 +354,6 @@ Global
 		{689CB6C4-3D23-45DA-8E00-87C28AEA32D0}.UnixRelease|Mixed Platforms.Build.0 = Release|Any CPU
 		{689CB6C4-3D23-45DA-8E00-87C28AEA32D0}.UnixRelease|x86.ActiveCfg = Release|Any CPU
 		{689CB6C4-3D23-45DA-8E00-87C28AEA32D0}.UnixRelease|x86.Build.0 = Release|Any CPU
-		{01CC7C9B-53E7-4FA9-841C-9B046FA1CDD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{01CC7C9B-53E7-4FA9-841C-9B046FA1CDD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{01CC7C9B-53E7-4FA9-841C-9B046FA1CDD7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{01CC7C9B-53E7-4FA9-841C-9B046FA1CDD7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{01CC7C9B-53E7-4FA9-841C-9B046FA1CDD7}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{01CC7C9B-53E7-4FA9-841C-9B046FA1CDD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{01CC7C9B-53E7-4FA9-841C-9B046FA1CDD7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{01CC7C9B-53E7-4FA9-841C-9B046FA1CDD7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{01CC7C9B-53E7-4FA9-841C-9B046FA1CDD7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{01CC7C9B-53E7-4FA9-841C-9B046FA1CDD7}.Release|x86.ActiveCfg = Release|Any CPU
-		{01CC7C9B-53E7-4FA9-841C-9B046FA1CDD7}.UnixDebug|Any CPU.ActiveCfg = Debug|Any CPU
-		{01CC7C9B-53E7-4FA9-841C-9B046FA1CDD7}.UnixDebug|Any CPU.Build.0 = Debug|Any CPU
-		{01CC7C9B-53E7-4FA9-841C-9B046FA1CDD7}.UnixDebug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{01CC7C9B-53E7-4FA9-841C-9B046FA1CDD7}.UnixDebug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{01CC7C9B-53E7-4FA9-841C-9B046FA1CDD7}.UnixDebug|x86.ActiveCfg = Debug|Any CPU
-		{01CC7C9B-53E7-4FA9-841C-9B046FA1CDD7}.UnixRelease|Any CPU.ActiveCfg = Release|Any CPU
-		{01CC7C9B-53E7-4FA9-841C-9B046FA1CDD7}.UnixRelease|Any CPU.Build.0 = Release|Any CPU
-		{01CC7C9B-53E7-4FA9-841C-9B046FA1CDD7}.UnixRelease|Mixed Platforms.ActiveCfg = UnixRelease|Any CPU
-		{01CC7C9B-53E7-4FA9-841C-9B046FA1CDD7}.UnixRelease|Mixed Platforms.Build.0 = UnixRelease|Any CPU
-		{01CC7C9B-53E7-4FA9-841C-9B046FA1CDD7}.UnixRelease|x86.ActiveCfg = UnixRelease|Any CPU
-		{01CC7C9B-53E7-4FA9-841C-9B046FA1CDD7}.UnixRelease|x86.Build.0 = UnixRelease|Any CPU
 		{9A25DF8F-7A09-41A6-8168-C0F72B5F2DAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9A25DF8F-7A09-41A6-8168-C0F72B5F2DAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A25DF8F-7A09-41A6-8168-C0F72B5F2DAD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

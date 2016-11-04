@@ -7,9 +7,9 @@ using Moq;
 using NUnit.Framework;
 using PiCamCV;
 using PiCamCV.Common;
+using PiCamCV.Common.Tests;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 using PiCamCV.ConsoleApp.Runners.PanTilt.MoveStrategies;
-using PiCamCV.UnitTests;
 
 namespace UnitTests
 {

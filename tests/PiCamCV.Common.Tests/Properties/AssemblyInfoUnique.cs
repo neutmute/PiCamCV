@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-[assembly: AssemblyTitle("PiCamCV Unit Tests")]
+[assembly: AssemblyTitle("PiCamCV.Common Tests")]
 [assembly: AssemblyDescription("Unit tests")]
 [assembly: AssemblyProduct("PiCamCV.Tests")]
 

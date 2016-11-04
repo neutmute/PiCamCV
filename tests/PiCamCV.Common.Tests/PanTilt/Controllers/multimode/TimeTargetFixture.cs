@@ -5,44 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Kraken.Core;
 using NUnit.Framework;
-using PiCamCV.Common.Interfaces;
 using PiCamCV.Common.PanTilt;
 using PiCamCV.Common.PanTilt.Controllers;
 using PiCamCV.ConsoleApp.Runners.PanTilt;
 
 namespace PiCamCV.Common.Tests.PanTilt.Controllers.multimode
 {
-    public class PanTiltTime
-    {
-        public TimeSpan TimeSpan { get; set; }
-
-        public PanTiltSetting Setting { get; set; }
-
-        public string ToCsv(PanTiltAxis axis)
-        {
-            var yValue = axis == PanTiltAxis.Horizontal ? Setting.PanPercent : Setting.TiltPercent;
-            return $"{TimeSpan.TotalMilliseconds},{yValue}";
-        }
-    }
-
-    public class MockStopwatch : IStopwatch
-    {
-        private TimeSpan _elapsed;
-
-        public void Set(TimeSpan elapsed)
-        {
-            _elapsed = elapsed;
-        }
-
-        public long ElapsedMilliseconds => Convert.ToInt64(_elapsed.TotalMilliseconds);
-
-        public TimeSpan Elapsed => _elapsed;
-        public void Restart()
-        {
-            
-        }
-    }
-
     public class TimeTargetFixture : Fixture
     {
         private MockStopwatch _mockStopwatch;
