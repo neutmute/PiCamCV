@@ -88,3 +88,12 @@ else{
 Set-Alias nuget $targetNugetExe -Scope Global
 
 }
+
+
+function checkExitCode{
+    if ($lastExitCode -ne 0)
+    {
+        Write-Host "##myget[buildProblem description='lastExitCode was not zero']"
+        exit $lastExitCode
+    }
+}

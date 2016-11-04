@@ -37,11 +37,29 @@ function buildSolution{
 
 }
 
+function executeTests{
+
+    Write-Host "Execute Tests"
+
+    $testResultformat = ""
+    $nunitConsole = "$rootFolder\packages\NUnit.Runners.2.6.4\tools\nunit-console.exe"
+
+    if(Test-Path Env:\APPVEYOR){
+        $testResultformat = ";format=AppVeyor"
+        $nunitConsole = "nunit3-console"
+    }
+
+    & $nunitConsole .\tests\PiCamCV.Common.Tests\bin\$configuration\PiCamCV.Common.Tests.dll --result=.\tests\PiCamCV.Common.Tests\bin\$configuration\nunit-results.xml$testResultformat
+
+    checkExitCode
+}
 
 init
 
 restorePackages
 
 buildSolution
+
+executeTests
 
 Write-Host "Build $configuration complete"
