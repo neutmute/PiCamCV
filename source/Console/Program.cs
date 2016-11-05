@@ -21,6 +21,7 @@ namespace PiCamCV.ConsoleApp
     /// WINDOWS
     /// picamcv.con.exe -m=pantiltmultimode
     /// picamcv.con.exe -m=ipReport
+    /// picamcv.con.exe -m=noop
     /// 
     /// LINUX
     /// sudo -s
