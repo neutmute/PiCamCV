@@ -1,6 +1,7 @@
 rem @echo off
 @echo on
-SET EmguCV_Bin_Folder=D:\CodeOther\emgucv\bin
+REM Execute the following powershell to set the location of EmguCV Binaries
+REM [Environment]::SetEnvironmentVariable("EmguCV_Bin_Folder", "C:\Code\emgucv\bin", "User") 
 SET SolutionFolder=%1
 SET TargetBinaryFolder=%2
 echo Getting openCV x64 binaries
