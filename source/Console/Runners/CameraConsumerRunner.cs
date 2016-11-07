@@ -22,11 +22,17 @@ namespace PiCamCV.ConsoleApp.Runners
         protected bool Stopping { get; set; }
         private FpsTracker _fpsTracker;
 
+        public bool ReportFramesPerSecond
+        {
+            get { return _fpsTracker.ReportFramesPerSecond; }
+            set { _fpsTracker.ReportFramesPerSecond = value;}
+        }
+
         protected CameraConsumerRunner(ICaptureGrab captureGrabber)
         {
             _fpsTracker = new FpsTracker();
             _fpsTracker.ReportEveryNthFrame = 50;
-            _fpsTracker.ReportFrames= s => Log.Info(s);
+            _fpsTracker.ReportFrames = s => Log.Info(s);
 
             CameraCapture = captureGrabber;
             CameraCapture.ImageGrabbed += ImageGrabbedHandler;

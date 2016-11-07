@@ -21,6 +21,8 @@ namespace PiCamCV.Common
 
         public Action<string> ReportFrames { get; set; }
 
+        public bool ReportFramesPerSecond { get; set; }
+
         public FpsTracker()
         {
             ReportEveryNthFrame = 10;
@@ -30,11 +32,16 @@ namespace PiCamCV.Common
         {
             if (_frameCount == ReportEveryNthFrame)
             {
-                // minimise overhead by not performing division. pi needs all help it can get
-                ReportFrames($"{_stopWatch.Elapsed.ToHumanReadable()}/{ReportEveryNthFrame} frames");
+                var m = $"{_stopWatch.Elapsed.ToHumanReadable()}/{ReportEveryNthFrame} frames";
+                if (ReportFramesPerSecond)
+                {
+                    var fps = ReportEveryNthFrame / _stopWatch.Elapsed.TotalSeconds;
+                    m += $", {fps:0.00} fps";
+                }
+                ReportFrames(m);
                 _frameCount = 0;
             }
-            if (_frameCount == 0)
+            if (_frameCount == 0) // needed for first image grab
             {
                 _stopWatch = Stopwatch.StartNew();
             }

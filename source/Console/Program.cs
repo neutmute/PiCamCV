@@ -81,7 +81,10 @@ namespace PiCamCV.ConsoleApp
             Log.Info(_consoleOptions);
             switch (_consoleOptions.Mode)
             {
-                case Mode.noop: runner = new NoopRunner(capture);
+                case Mode.noop:
+                    var noopRunner = new NoopRunner(capture);
+                    noopRunner.ReportFramesPerSecond = true;
+                    runner = noopRunner;
                     break;
 
                 case Mode.simple:runner = new SimpleCv(); 
