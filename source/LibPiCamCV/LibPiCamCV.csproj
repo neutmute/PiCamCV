@@ -116,6 +116,7 @@
     <Compile Include="EnvironmentService.cs" />
     <Compile Include="ExtensionMethods\MvScalarExtensions.cs" />
     <Compile Include="Interfaces\ICaptureGrab.cs" />
+    <Compile Include="PiCameraConfig.cs" />
     <Compile Include="PInvoke\CvInvokeRaspiCamCV.cs" />
     <Compile Include="Properties\AssemblyInfoUnique.cs" />
     <Compile Include="Resolution.cs" />

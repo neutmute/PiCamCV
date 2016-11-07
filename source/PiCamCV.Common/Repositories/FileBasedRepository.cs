@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using Common.Logging;
 using Kraken.Core;
@@ -19,7 +20,21 @@ namespace PiCamCV.Common
         protected abstract string Filename { get; }
         public bool IsPresent
         {
-            get { return GetFileInfo().Exists; }
+            get
+            {
+                var fileExists = GetFileInfo().Exists;
+                var canRead = true;
+                try
+                {
+                    var text = File.ReadAllText(GetFileInfo().FullName);
+                }
+                catch (UnauthorizedAccessException e)
+                {
+                    Log.Warn($"Access denied: {GetFileInfo().Name}");
+                    canRead = false;
+                }
+                return fileExists && canRead;
+            }
         }
 
         protected FileInfo GetFileInfo()
