@@ -62,7 +62,8 @@ namespace PiCamCV.Common
             T output = default(T);
             if (settingsFile.Exists)
             {
-                output = Kelvin<T>.FromXmlFile(settingsFile.FullName);
+                var text = File.ReadAllText(GetFileInfo().FullName);
+                output = Kelvin<T>.FromXml(text);
             }
             else
             {
