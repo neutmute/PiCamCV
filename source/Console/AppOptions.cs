@@ -65,7 +65,7 @@ namespace PiCamCV.ConsoleApp
                     }
                 }},
                 { "nopwm", "Do not try and connect to a real PWM device", v => UseFakeDevice=true},
-                { "capture|c", "Capture configuration of form [width]x[height],[framerate]", v => CaptureConfig = v},
+                { "c|capture=", "Capture configuration of form [width]x[height],[framerate]", v => CaptureConfig = v},
                 //{ "t|threshold=", "Color thresholds for colour detection [Hl,Sl,Vl+Hh,Sh,Vh]. eg: -t=140,57,25+187,153,82 or -t=155,128,44+182,214,105"
                 //    , v =>
                 //    {

@@ -24,14 +24,17 @@ namespace PiCamCV.Common
             {
                 var fileExists = GetFileInfo().Exists;
                 var canRead = true;
-                try
+                if (fileExists)
                 {
-                    var text = File.ReadAllText(GetFileInfo().FullName);
-                }
-                catch (UnauthorizedAccessException e)
-                {
-                    Log.Warn($"Access denied: {GetFileInfo().Name}");
-                    canRead = false;
+                    try
+                    {
+                        var text = File.ReadAllText(GetFileInfo().FullName);
+                    }
+                    catch (UnauthorizedAccessException e)
+                    {
+                        Log.Warn($"Access denied: {GetFileInfo().Name}");
+                        canRead = false;
+                    }
                 }
                 return fileExists && canRead;
             }

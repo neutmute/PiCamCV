@@ -22,6 +22,7 @@ namespace PiCamCV.ConsoleApp
     /// picamcv.con.exe -m=pantiltmultimode
     /// picamcv.con.exe -m=ipReport
     /// picamcv.con.exe -m=noop
+    /// picamcv.con.exe -m=noop -c=128x96,50
     /// 
     /// LINUX
     /// sudo -s
@@ -183,6 +184,10 @@ namespace PiCamCV.ConsoleApp
             { 
                 // Default capture
                 request.Config = new CaptureConfig {Resolution = new Resolution(160, 120), Framerate = 50, Monochrome = false};
+            }
+            else
+            {
+                request.Config = config;
             }
 
             var capture = CaptureFactory.GetCapture(request);
