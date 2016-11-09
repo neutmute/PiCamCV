@@ -24,12 +24,15 @@ namespace PiCamCV.ConsoleApp
     /// picamcv.con.exe -m=noop
     /// picamcv.con.exe -m=noop -c=128x96,50
     /// 
+    /// picamcv.con.exe -m=colourdetect -c=128x96,50
+    /// 
     /// LINUX
     /// sudo -s
     /// source mono-dev-4.6.1 
     /// source picam-blackpc #server vars
     /// cd picamcv
     /// mono picamcv.con.exe -m=pantiltmultimode
+    /// mono picamcv.con.exe -m=pantiltmultimode -c=128x96,50
     /// </summary>
     class Program
     {

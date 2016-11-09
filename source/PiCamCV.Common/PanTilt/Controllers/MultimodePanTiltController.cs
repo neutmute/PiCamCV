@@ -107,13 +107,17 @@ namespace PiCamCV.Common.PanTilt.Controllers
             // Inform the server of what we are doing
             if (e.DimensionValue % 5 == 0)
             {
-                e.RoiOutput.CapturedImage = GetBgr(e.RoiOutput.ThresholdImage);
+                e.RoiOutput.CapturedImage = GetBgr(e.RoiOutput?.ThresholdImage);
                 ProcessOutputPipeline(e.RoiOutput);
             }
         }
 
         private Image<Bgr, byte> GetBgr(Image<Gray, byte>  input)
         {
+            if (input == null)
+            {
+                return null;
+            }
             return new Image<Bgr, byte>(new Image<Gray, byte>[] {input, input, input});
         }
 
@@ -304,7 +308,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
                     break;
 
                 case '8':
-                    captureConfig.Framerate = 40;
+                    captureConfig.Framerate = 60;
                     captureConfig.Resolution = new Resolution(160, 120);
                     _serverToCameraBus.InvokeUpdateCapture(captureConfig);
                     break;
