@@ -212,6 +212,7 @@
     <Content Include=".typingsrc" />
     <Content Include="package.json" />
     <Content Include="readme.md" />
+    <None Include="Properties\PublishProfiles\picamcv2.pubxml" />
     <None Include="Scripts\jquery-1.6.4-vsdoc.js" />
     <Content Include="Gruntfile.js" />
     <Content Include="Scripts\jquery-1.6.4.js" />
