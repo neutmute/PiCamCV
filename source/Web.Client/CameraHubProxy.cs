@@ -46,6 +46,11 @@ namespace Web.Client
         
         public void Connect()
         {
+            if (!Config.IsValid)
+            {
+                Console.WriteLine("Bad config - environment variables expected- see Web.Client.Config.cs");
+                return;
+            }
             var endpoint = $"http://{Config.ServerHost}:{Config.ServerPort}/";
             Console.WriteLine($"Connecting to {endpoint}");
             

@@ -21,6 +21,8 @@ namespace Web.Client
 
         public static string ServerPort { get; private set; }
 
+        public static bool IsValid => !string.IsNullOrEmpty(ServerHost) && !string.IsNullOrEmpty(ServerPort);
+
         
         static Config()
         {
