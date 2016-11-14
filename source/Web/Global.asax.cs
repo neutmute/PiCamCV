@@ -90,6 +90,10 @@ namespace PiCam.Web
         /// </summary>
         private static void TestEmguCVLoad()
         {
+            if (IntPtr.Size != 8)
+            {
+                throw new Exception("Change VS options to ensure 64bit IIS Express");
+            }
             using (var test = new Mat())
             {
                 var f = test.ToImage<Bgr, byte>();
