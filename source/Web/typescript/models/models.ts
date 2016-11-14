@@ -33,6 +33,7 @@
         , ColourObjectTrack
         , CamshiftSelect
         , ColourObjectSelect
+        , ColourTrackFromFileSettings
         , Static
         , Autonomous
     }

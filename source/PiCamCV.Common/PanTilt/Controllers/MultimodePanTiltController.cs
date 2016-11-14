@@ -21,9 +21,9 @@ namespace PiCamCV.Common.PanTilt.Controllers
         ,ColourObjectTrack
         ,CamshiftSelect
         ,ColourObjectSelect
-
+        ,ColourTrackFromFileSettings
         //Manual input only
-        ,Static
+        , Static
         ,Autonomous
     }
     
@@ -40,7 +40,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
         private readonly IServerToCameraBus _serverToCameraBus;
         private readonly IOutputProcessor[] _outputPipelines;
         private Rectangle _regionOfInterest = Rectangle.Empty;
-        
+        private IColourSettingsRepository _colourSettingsRepository;
 
         private readonly FaceTrackStateManager _faceTrackManager;
         private readonly ColourTrackStateManager _colourTrackManager;
@@ -63,6 +63,8 @@ namespace PiCamCV.Common.PanTilt.Controllers
             _serverToCameraBus = serverToCameraBus;
             _outputPipelines = outputPipelines;
 
+            _colourSettingsRepository = new ColourSettingsRepository();
+
             _faceTrackingController = new FaceTrackingPanTiltController(panTiltMech, captureConfig);
             _camshiftTrackingController = new CamshiftPanTiltController(panTiltMech, captureConfig);
             _colourTrackingController = new ColourTrackingPanTiltController(panTiltMech, captureConfig);
@@ -72,7 +74,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
             
             _colourDetectorInput = new ColourDetectorInput();
             _colourDetectorInput.SetCapturedImage = true;
-            _colourDetectorInput.Settings.MomentArea = new RangeF(50, 10000);
+            _colourDetectorInput.Settings = _colourSettingsRepository.Read();
 
             _faceTrackManager = new FaceTrackStateManager(screen);
             _colourTrackManager = new ColourTrackStateManager(screen);
@@ -89,10 +91,10 @@ namespace PiCamCV.Common.PanTilt.Controllers
         
         private bool IsColourFullFrame(CameraProcessInput input)
         {
-            if (!_isColourTrained)
-            {
-                return false;
-            }
+            //if (!_isColourTrained)
+            //{
+            //    return false;
+            //}
 
             var colourOutput = ProcessColour(input);
             const int fullFrameMinimumPercent = 90;
@@ -179,6 +181,11 @@ namespace PiCamCV.Common.PanTilt.Controllers
             ProcessingMode nextState = State;
             switch (State)
             {
+                case ProcessingMode.ColourTrackFromFileSettings:
+                    _colourDetectorInput.Settings = _colourSettingsRepository.Read();
+                    nextState = ProcessingMode.ColourObjectTrack;
+                    break;
+
                 case ProcessingMode.ColourObjectTrack:
                     var colourOutput = ProcessColour(input);
                     output = colourOutput;
@@ -214,6 +221,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
                     var thresholdSettings = _thresholdSelector.Select(input.Captured, _regionOfInterest);
                     _screen.WriteLine($"Threshold tuning complete: {thresholdSettings}");
                     _colourDetectorInput.SetCapturedImage = true;
+                    _colourDetectorInput.Settings.MomentArea = new RangeF(50, 10000);
                     _colourDetectorInput.Settings.Accept(thresholdSettings);
                     _isColourTrained = true;
                     nextState = ProcessingMode.ColourObjectTrack;

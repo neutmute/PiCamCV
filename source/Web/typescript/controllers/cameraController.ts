@@ -146,6 +146,10 @@ module App {
             return this._browserHub.server.setMode(ProcessingMode.ColourObjectSelect);
         }
 
+        private startColourTrackFromFileSettings(): JQueryPromise<void> {
+            return this._browserHub.server.setMode(ProcessingMode.ColourTrackFromFileSettings);
+        }
+
         private startFaceTrack(): JQueryPromise<void> {
             return this._browserHub.server.setMode(ProcessingMode.FaceDetection);
         }
