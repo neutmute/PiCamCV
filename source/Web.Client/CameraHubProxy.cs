@@ -55,7 +55,11 @@ namespace Web.Client
             Console.WriteLine($"Connecting to {endpoint}");
             
             _connection = new HubConnection(endpoint);
-            
+
+            _connection.Error += _connection_Error;
+            _connection.Closed += _connection_Closed;
+            _connection.StateChanged += _connection_StateChanged;
+
             _proxy = _connection.CreateHubProxy("CameraHub");
             
             _connection.Start().ContinueWith(task => {
@@ -84,6 +88,22 @@ namespace Web.Client
 
             _proxy.On<CaptureConfig>("updateCapture", c => UpdateCapture?.Invoke(this, c));
 
+        }
+
+        private void _connection_StateChanged(StateChange obj)
+        {
+            Console.WriteLine($"Connection state {obj.OldState}=>{obj.NewState}");
+        }
+
+        private void _connection_Closed()
+        {
+            Console.WriteLine("Connection closed");
+            _connected = false;
+        }
+
+        private void _connection_Error(Exception obj)
+        {
+            Console.WriteLine("Connection error:" + obj);
         }
 
         public void ScreenWriteLine(string message)
