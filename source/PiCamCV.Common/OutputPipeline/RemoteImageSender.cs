@@ -17,7 +17,7 @@ namespace PiCamCV.Common
         public RemoteImageSender(IImageTransmitter imageTransmitter, IServerToCameraBus serverToCameraBus)
         {
             _imageTransmitter = imageTransmitter;
-            SendEveryPeriod = TimeSpan.FromMilliseconds(200);
+            SendEveryPeriod = TimeSpan.FromMilliseconds(600);
             _sinceLastSend = Stopwatch.StartNew();
             Enabled = true;
             serverToCameraBus.SettingsChanged += (s, e) => SendEveryPeriod = e.TransmitImagePeriod;

@@ -40,7 +40,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
         private readonly IServerToCameraBus _serverToCameraBus;
         private readonly IOutputProcessor[] _outputPipelines;
         private Rectangle _regionOfInterest = Rectangle.Empty;
-        private IColourSettingsRepository _colourSettingsRepository;
+        private readonly IColourSettingsRepository _colourSettingsRepository;
 
         private readonly FaceTrackStateManager _faceTrackManager;
         private readonly ColourTrackStateManager _colourTrackManager;
@@ -98,7 +98,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
             var colourOutput = ProcessColour(input);
             const int fullFrameMinimumPercent = 90;
-            var fullFramePixelCount = colourOutput.CapturedImage.Width*colourOutput.CapturedImage.Height;
+            var fullFramePixelCount = colourOutput.CapturedImage.Width * colourOutput.CapturedImage.Height;
             var mimimumColourPixelCount = fullFramePixelCount * fullFrameMinimumPercent / 100;
             var isFullFrameColour = colourOutput.IsDetected && colourOutput.MomentArea > mimimumColourPixelCount;
             return isFullFrameColour;

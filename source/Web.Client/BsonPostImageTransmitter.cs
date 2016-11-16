@@ -6,6 +6,7 @@ using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using PiCamCV.Common.Interfaces;
@@ -16,9 +17,13 @@ namespace Web.Client
     {
         public string RootUrl { get; set; }
 
+        private Timer _retryTimer;
+        private bool _enabled;
+
         public BsonPostImageTransmitter()
         {
             RootUrl = $"http://{Config.ServerHost}:{Config.ServerPort}";
+            _enabled = true;
         }
 
         /// <summary>
@@ -26,6 +31,11 @@ namespace Web.Client
         /// </summary>
         public async Task Transmit(Image<Bgr, byte> image)
         {
+            if (!_enabled)
+            {
+                return;
+            }
+
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri(RootUrl);
@@ -40,12 +50,15 @@ namespace Web.Client
                 {
                     var result = await client.PostAsync("api/pi/PostImage", image, bsonFormatter);
                     result.EnsureSuccessStatusCode();
-                    //return result; 
                 }
                 catch (Exception httpEx)
                 {
-                    Console.WriteLine(httpEx.Message);
-                    //return default(HttpResponseMessage);
+                    const int retryMilliseconds = 10000;
+                    Console.WriteLine($"BsonPost: {httpEx.Message}. Retrying in {retryMilliseconds}");
+                    _enabled = false;
+                    _retryTimer = new Timer(retryMilliseconds);
+                    _retryTimer.Elapsed += (sender, args) => _enabled=true;
+                    _retryTimer.Start();
                 }
             }
         }

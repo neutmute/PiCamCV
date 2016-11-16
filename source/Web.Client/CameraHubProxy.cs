@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Timers;
 using Microsoft.AspNet.SignalR.Client;
 using PiCamCV.Common;
 using PiCamCV.Common.ExtensionMethods;
@@ -22,6 +23,8 @@ namespace Web.Client
         private IHubProxy _proxy;
         private HubConnection _connection;
         private bool _connected;
+
+        private Timer _reconnectTimer;
         
         public event EventHandler<ProcessingMode> SetMode;
         
@@ -46,6 +49,11 @@ namespace Web.Client
         
         public void Connect()
         {
+            if (_connection != null)
+            {
+                _connection.Dispose();
+            }
+
             if (!Config.IsValid)
             {
                 Console.WriteLine("Bad config - environment variables expected- see Web.Client.Config.cs");
@@ -59,6 +67,7 @@ namespace Web.Client
             _connection.Error += _connection_Error;
             _connection.Closed += _connection_Closed;
             _connection.StateChanged += _connection_StateChanged;
+            _connection.ConnectionSlow += _connection_ConnectionSlow;
 
             _proxy = _connection.CreateHubProxy("CameraHub");
             
@@ -72,7 +81,6 @@ namespace Web.Client
                     Console.WriteLine("Connected");
                     _connected = true;
                 }
-
             }).Wait();
 
             
@@ -90,6 +98,11 @@ namespace Web.Client
 
         }
 
+        private void _connection_ConnectionSlow()
+        {
+            Console.WriteLine($"Connection slow!");
+        }
+
         private void _connection_StateChanged(StateChange obj)
         {
             Console.WriteLine($"Connection state {obj.OldState}=>{obj.NewState}");
@@ -104,6 +117,7 @@ namespace Web.Client
         private void _connection_Error(Exception obj)
         {
             Console.WriteLine("Connection error:" + obj);
+            _connected = false;
         }
 
         public void ScreenWriteLine(string message)
@@ -112,7 +126,7 @@ namespace Web.Client
             {
                 return;
             }
-            _proxy.Invoke<string>("ScreenWriteLine", message);
+            SafeInvokeRemote("ScreenWriteLine", message);
         }
 
         public void ScreenClear()
@@ -121,7 +135,7 @@ namespace Web.Client
             {
                 return;
             }
-            _proxy.Invoke("ScreenClear");
+            SafeInvokeRemote("ScreenClear");
         }
 
         public void InformIp()
@@ -139,12 +153,43 @@ namespace Web.Client
 
             Console.Write($"Local Ips are {allIpCsv}");
 
-            _proxy.Invoke("InformIp", allIpCsv);
+            SafeInvokeRemote("InformIp", allIpCsv);
         }
 
         public void Dispose()
         {
             _connection?.Stop();
+        }
+
+        private void SafeInvokeRemote(string method, object arg = null)
+        {
+            try
+            {
+                if (arg == null)
+                {
+                    _proxy.Invoke(method);
+                }
+                else
+                {
+                    _proxy.Invoke(method, arg);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                _connected = false;
+                const int retryMilliseconds = 30000;
+                _reconnectTimer = new Timer(retryMilliseconds);
+                _reconnectTimer.Elapsed += ReconnectTimerElapsed;
+                _reconnectTimer.Start();
+                Console.WriteLine($"CameraHub: {e.Message}. Retrying in {retryMilliseconds}");
+            }
+        }
+
+        private void ReconnectTimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            Console.WriteLine("Reconnecting to CameraHub...");
+            Connect();
         }
     }
 }
