@@ -87,7 +87,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         
         public virtual void HandleKey(ConsoleKeyInfo keyInfo)
         {
-            var servoIncrement = TimeSpan.FromMilliseconds(10);
+            var servoIncrement = TimeSpan.FromMilliseconds(5);
             switch (keyInfo.KeyChar)
             {
                 case '1':
