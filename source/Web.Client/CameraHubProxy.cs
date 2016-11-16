@@ -56,11 +56,11 @@ namespace Web.Client
 
             if (!Config.IsValid)
             {
-                Console.WriteLine("Bad config - environment variables expected- see Web.Client.Config.cs");
+                Log("Bad config - environment variables expected- see Web.Client.Config.cs");
                 return;
             }
             var endpoint = $"http://{Config.ServerHost}:{Config.ServerPort}/";
-            Console.WriteLine($"Connecting to {endpoint}");
+            Log($"Connecting to {endpoint}");
             
             _connection = new HubConnection(endpoint);
 
@@ -74,11 +74,11 @@ namespace Web.Client
             _connection.Start().ContinueWith(task => {
                 if (task.IsFaulted)
                 {
-                    Console.WriteLine("There was an error opening the connection:{0}", task.Exception.GetBaseException());
+                    Log($"There was an error opening the connection:{task.Exception.GetBaseException()}");
                 }
                 else
                 {
-                    Console.WriteLine("Connected");
+                    Log("Connected");
                     _connected = true;
                 }
             }).Wait();
@@ -100,23 +100,23 @@ namespace Web.Client
 
         private void _connection_ConnectionSlow()
         {
-            Console.WriteLine($"Connection slow!");
+            Log("Connection slow!");
         }
 
         private void _connection_StateChanged(StateChange obj)
         {
-            Console.WriteLine($"Connection state {obj.OldState}=>{obj.NewState}");
+            Log($"Connection state {obj.OldState}=>{obj.NewState}");
         }
 
         private void _connection_Closed()
         {
-            Console.WriteLine("Connection closed");
+            Log("Connection closed");
             _connected = false;
         }
 
         private void _connection_Error(Exception obj)
         {
-            Console.WriteLine("Connection error:" + obj);
+            Log("Connection error:" + obj);
             _connected = false;
         }
 
@@ -151,7 +151,7 @@ namespace Web.Client
             
             var allIpCsv = string.Join(",", allIps);
 
-            Console.Write($"Local Ips are {allIpCsv}");
+            Log($"Local IPs: {allIpCsv}");
 
             SafeInvokeRemote("InformIp", allIpCsv);
         }
@@ -176,20 +176,24 @@ namespace Web.Client
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
                 _connected = false;
                 const int retryMilliseconds = 30000;
                 _reconnectTimer = new Timer(retryMilliseconds);
                 _reconnectTimer.Elapsed += ReconnectTimerElapsed;
                 _reconnectTimer.Start();
-                Console.WriteLine($"CameraHub: {e.Message}. Retrying in {retryMilliseconds}");
+                Log($"{e.Message}. Retrying in {retryMilliseconds}");
             }
         }
 
         private void ReconnectTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            Console.WriteLine("Reconnecting to CameraHub...");
+            Log("Reconnecting");
             Connect();
+        }
+
+        private void Log(string message)
+        {
+            Console.WriteLine($"CameraHub: {message}");
         }
     }
 }

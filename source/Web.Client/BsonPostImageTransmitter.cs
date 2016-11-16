@@ -19,13 +19,15 @@ namespace Web.Client
 
         private Timer _retryTimer;
         private bool _enabled;
+        private bool _transmitting;
 
         public BsonPostImageTransmitter()
         {
             RootUrl = $"http://{Config.ServerHost}:{Config.ServerPort}";
             _enabled = true;
+            _transmitting = false;
         }
-
+        
         /// <summary>
         /// http://www.asp.net/web-api/overview/formats-and-model-binding/bson-support-in-web-api-21
         /// </summary>
@@ -36,6 +38,12 @@ namespace Web.Client
                 return;
             }
 
+            if (_transmitting)
+            {
+                return;
+            }
+
+            _transmitting = true;
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri(RootUrl);
@@ -53,12 +61,16 @@ namespace Web.Client
                 }
                 catch (Exception httpEx)
                 {
-                    const int retryMilliseconds = 10000;
-                    Console.WriteLine($"BsonPost: {httpEx.Message}. Retrying in {retryMilliseconds}");
+                    const int retryMilliseconds = 20000;
+                    Console.WriteLine($"BsonPost: {httpEx}. Retrying in {retryMilliseconds}");
                     _enabled = false;
                     _retryTimer = new Timer(retryMilliseconds);
-                    _retryTimer.Elapsed += (sender, args) => _enabled=true;
+                    _retryTimer.Elapsed += (sender, args) => _enabled = true;
                     _retryTimer.Start();
+                }
+                finally
+                {
+                    _transmitting = false;
                 }
             }
         }
