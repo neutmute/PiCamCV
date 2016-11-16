@@ -25,11 +25,11 @@ namespace PiCamCV.WinForms.CameraConsumers
         {
             InitializeComponent();
             _motionSettingsRepo = new MotionDetectSettingRepository();
+            _currentSettings = new MotionDetectSettings();
         }
 
         private void MotionDetectionControl_Load(object sender, EventArgs e)
         {
-            _currentSettings = new MotionDetectSettings();
             _motionDetector = new MotionDetector();
             SetUIFromSubtractorConfig();
 
@@ -189,6 +189,8 @@ namespace PiCamCV.WinForms.CameraConsumers
         }
         private void sliderMaximumArea_ValueChanged(object sender, EventArgs e)
         {
+            Guard.NullArgument(nameof(_currentSettings), _currentSettings);
+            Guard.NullArgument(nameof(sliderMaximumArea), sliderMaximumArea);
             _currentSettings.MaximumArea = sliderMaximumArea.Value * sliderMaximumArea.Value;
             sliderMaximumArea.Label = "Maximum Area = " + _currentSettings.MaximumArea;
         }

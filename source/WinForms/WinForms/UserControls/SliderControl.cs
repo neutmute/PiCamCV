@@ -81,17 +81,21 @@ namespace PiCamCV.WinForms.UserControls
 
         public void SetLabel()
         {
-            groupBox.Text = string.Format("{0} ({1})", _label, trackBar.Value);
+            if (groupBox != null && trackBar != null)
+            {
+                groupBox.Text = $"{_label} ({trackBar.Value})";
+            }
         }
 
         private void trackBar_ValueChanged(object sender, EventArgs e)
         {
+            if (trackBar == null)
+            {
+                return;
+            }
             SetLabel();
             _value = trackBar.Value;
-            if (ValueChanged != null)
-            {
-                ValueChanged(this, e);
-            }
+            ValueChanged?.Invoke(this, e);
         }
     }
 }
