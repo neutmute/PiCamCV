@@ -85,7 +85,12 @@ namespace PiCamCV.Common.PanTilt.Controllers
             
             _autonomousManager.IsFaceFound = i => _faceTrackingController.Process(i).IsDetected;
             _autonomousManager.IsColourFullFrame =  IsColourFullFrame;
-            
+
+            _faceTrackingController.ClassifierParams.MinSize = new Size(15,15);
+            _faceTrackingController.ClassifierParams.MaxSize = new Size(40, 40);
+
+            screen.WriteLine(_faceTrackingController.ClassifierParams.ToString());
+
             InitController();
         }
         

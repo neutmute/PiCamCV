@@ -34,6 +34,9 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
     public class FaceTrackingPanTiltController : CameraBasedPanTiltController<FaceTrackingPanTiltOutput>
     {
         private readonly FaceDetector _faceDetector;
+        private ClassifierParameters _classifierParams;
+
+        public ClassifierParameters ClassifierParams => _classifierParams;
 
         public FaceTrackingPanTiltController(IPanTiltMechanism panTiltMech, CaptureConfig captureConfig)
             : base(panTiltMech, captureConfig)
@@ -43,11 +46,13 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
             var haarFaceFile = new FileInfo(environmentService.GetAbsolutePathFromAssemblyRelative("haarcascades/haarcascade_frontalface_default.xml"));
 
             _faceDetector = new FaceDetector(haarFaceFile.FullName, haarEyeFile.FullName);
+            _classifierParams = new ClassifierParameters();
         }
 
         protected override FaceTrackingPanTiltOutput DoProcess(CameraProcessInput baseInput)
         {
             var input = new FaceDetectorInput();
+            input.ClassifierParams = _classifierParams;
             input.Captured = baseInput.Captured;
             input.DetectEyes = false;
 

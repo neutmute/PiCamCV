@@ -26,7 +26,11 @@ namespace PiCamCV.Common
             MinSize = new Size(20, 20);
             MaxSize = new Size();
         }
-        
+
+        public override string ToString()
+        {
+            return $"ScaleFactor={ScaleFactor}, MinNeighbors=3, MinSize={MinSize}, MaxSize={MaxSize}";
+        }
     }
 
     public class FaceDetectorInput : CascadeDetectorInput
@@ -56,17 +60,16 @@ namespace PiCamCV.Common
 
         public override string ToString()
         {
-            return string.Format("Region={0}, Eyes.Count={1}", Region, Eyes.Count);
+            return $"Region={Region}, Eyes.Count={Eyes.Count}";
         }
     }
 
     public class FaceDetectorOutput : CameraProcessOutput
     {
-        public bool IsDetected
-        {
-            get { return Faces.Count > 0; }
-        }
+        public bool IsDetected => Faces.Count > 0;
+
         public List<Face> Faces { get; private set; }
+
         public FaceDetectorOutput()
         {
             Faces = new List<Face>();
@@ -85,11 +88,13 @@ namespace PiCamCV.Common
     {
         private readonly CascadeClassifier _faceClassifier;
         private readonly CascadeClassifier _eyeClassifier;
+
         public FaceDetector(string faceCascadeFilename, string eyeCascadeFilename)
         {
             _faceClassifier = new CascadeClassifier(faceCascadeFilename);
             _eyeClassifier = new CascadeClassifier(eyeCascadeFilename);
         }
+
         protected override FaceDetectorOutput DoProcess(FaceDetectorInput input)
         {
             Guard.NullArgument("input", input);
