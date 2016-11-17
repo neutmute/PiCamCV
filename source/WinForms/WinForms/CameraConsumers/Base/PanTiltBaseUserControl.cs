@@ -9,7 +9,7 @@ using RPi.Pwm;
 
 namespace PiCamCV.WinForms.CameraConsumers.Base
 {
-    public abstract class PanTiltBaseUserControl : CameraConsumerUserControl
+    public class PanTiltBaseUserControl : CameraConsumerUserControl
     {
         protected CameraHubProxy CameraHubProxy { get; private set; }
 

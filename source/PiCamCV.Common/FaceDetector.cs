@@ -13,6 +13,7 @@ namespace PiCamCV.Common
     public class ClassifierParameters
     {
         public double ScaleFactor { get; set; }
+
         public int MinNeighbors { get; set; }
 
         public Size MinSize { get; set; }
@@ -31,6 +32,8 @@ namespace PiCamCV.Common
         {
             return $"ScaleFactor={ScaleFactor}, MinNeighbors=3, MinSize={MinSize}, MaxSize={MaxSize}";
         }
+
+
     }
 
     public class FaceDetectorInput : CascadeDetectorInput

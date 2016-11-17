@@ -51,6 +51,8 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
         public ISoundService SoundService { get; set; }
 
+        public ClassifierParameters ClassifierParams => _faceTrackingController.ClassifierParams;
+
         /// <summary>
         /// sudo mono picamcv.con.exe -m=pantiltmultimode
         /// </summary>

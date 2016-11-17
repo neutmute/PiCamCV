@@ -139,7 +139,7 @@ namespace PiCamCV.WinForms.CameraConsumers
             chkBoxColourTracking.Checked = false;
             chkBoxFaceTracker.Checked = false;
             chkBoxMotionTracking.Checked = false;
-            chkMultimode.Checked = true;
+            chkMultimode.Checked = false;
 
             Log.InfoFormat("MotionSettings: {0}", motionSettings);
         }

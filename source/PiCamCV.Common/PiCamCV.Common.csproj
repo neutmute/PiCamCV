@@ -115,6 +115,7 @@
     <Compile Include="CameraConsumerBase.cs" />
     <Compile Include="CascadeDetector.cs" />
     <Compile Include="DetectColour\ColourDetector.cs" />
+    <Compile Include="Repositories\CascadeClassifierSettingsRepository.cs" />
     <Compile Include="Repositories\ColourSettingsRepository.cs" />
     <Compile Include="ExtensionMethods\CaptureConfigExtensions.cs" />
     <Compile Include="ExtensionMethods\PointFExtensions.cs" />
