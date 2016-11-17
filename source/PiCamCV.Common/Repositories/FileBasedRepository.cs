@@ -30,7 +30,7 @@ namespace PiCamCV.Common
                     {
                         var text = File.ReadAllText(GetFileInfo().FullName);
                     }
-                    catch (UnauthorizedAccessException e)
+                    catch (UnauthorizedAccessException)
                     {
                         Log.Warn($"Access denied: {GetFileInfo().Name}");
                         canRead = false;

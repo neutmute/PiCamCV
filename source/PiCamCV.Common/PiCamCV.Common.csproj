@@ -84,7 +84,11 @@
     <Compile Include="..\..\Solution Items\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Audio\SoundService.cs" />
     <Compile Include="CamshiftDetector.cs" />
+    <Compile Include="DetectColour\ColourDetectorInput.cs" />
+    <Compile Include="DetectColour\ColourDetectorOutput.cs" />
+    <Compile Include="DetectColour\ColourDetectSettings.cs" />
     <Compile Include="ExtensionMethods\ColorExtensions.cs" />
     <Compile Include="ExtensionMethods\MCvScalarExtensions.cs" />
     <Compile Include="ExtensionMethods\RectangleExtensions.cs" />
@@ -110,7 +114,7 @@
     <Compile Include="Repositories\CalibrationReadingsRepository.cs" />
     <Compile Include="CameraConsumerBase.cs" />
     <Compile Include="CascadeDetector.cs" />
-    <Compile Include="ColourDetector.cs" />
+    <Compile Include="DetectColour\ColourDetector.cs" />
     <Compile Include="Repositories\ColourSettingsRepository.cs" />
     <Compile Include="ExtensionMethods\CaptureConfigExtensions.cs" />
     <Compile Include="ExtensionMethods\PointFExtensions.cs" />
@@ -138,6 +142,7 @@
     <Compile Include="SerializableDictionary.cs" />
     <Compile Include="StopwatchWrapper.cs" />
     <Compile Include="ThresholdSelector.cs" />
+    <Compile Include="ThresholdSettings.cs" />
     <Compile Include="TrackingDetector.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +180,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="haarcascades\haarcascade_lego_batman3.xml" />
+    <Content Include="Resources\Audio\cant-see-you.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Audio\color-tracking.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Audio\face-tracking.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="haarcascades\haarcascade_lego_batman2.xml" />
