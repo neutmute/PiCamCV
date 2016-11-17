@@ -114,7 +114,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
                 const int fullFrameMinimumPercent = 90;
                 var fullFramePixelCount = colourOutput.CapturedImage.Width*colourOutput.CapturedImage.Height;
                 var mimimumColourPixelCount = fullFramePixelCount*fullFrameMinimumPercent/100;
-                isFullFrameColour = colourOutput.IsDetected && colourOutput.MomentArea > mimimumColourPixelCount;
+                isFullFrameColour = colourOutput.MomentArea > mimimumColourPixelCount;
             }
             return isFullFrameColour;
         }
