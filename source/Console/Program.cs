@@ -32,7 +32,8 @@ namespace PiCamCV.ConsoleApp
     /// source picam-blackpc #server vars
     /// cd picamcv
     /// mono picamcv.con.exe -m=pantiltmultimode
-    /// mono picamcv.con.exe -m=pantiltmultimode -c=128x96,50
+    /// mono picamcv.con.exe -m=pantiltmultimode -c=128x96,90
+    /// mono picamcv.con.exe -m=pantiltmultimode -c=160x120,90
     /// </summary>
     class Program
     {
