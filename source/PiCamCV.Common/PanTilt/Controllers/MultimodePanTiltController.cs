@@ -349,11 +349,15 @@ namespace PiCamCV.Common.PanTilt.Controllers
                     captureConfig.Resolution = new Resolution(160, 120);
                     _serverToCameraBus.InvokeUpdateCapture(captureConfig);
                     break;
-
                 case 'a':
                     SetMode(ProcessingMode.Autonomous);
                     break;
-
+                case 'f':
+                    SetMode(ProcessingMode.FaceDetection);
+                    break;
+                case 'c':
+                    SetMode(ProcessingMode.ColourTrackFromFileSettings);
+                    break;
                 case 'r':
                     var command = new PanTiltSettingCommand();
                     command.Type= PanTiltSettingCommandType.MoveAbsolute;

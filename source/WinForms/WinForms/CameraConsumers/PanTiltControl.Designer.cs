@@ -41,6 +41,7 @@
             this.btnToCsv = new System.Windows.Forms.Button();
             this.btnCalibrate = new System.Windows.Forms.Button();
             this.groupBoxControllers = new System.Windows.Forms.GroupBox();
+            this.btnMultimodeCommand = new System.Windows.Forms.TextBox();
             this.chkMultimode = new System.Windows.Forms.CheckBox();
             this.labelMotoinSettle = new System.Windows.Forms.Label();
             this.spinEditMotionSettle = new System.Windows.Forms.NumericUpDown();
@@ -67,7 +68,6 @@
             this.imageBoxCaptured = new Emgu.CV.UI.ImageBox();
             this.groupBoxFiltered = new System.Windows.Forms.GroupBox();
             this.imageBoxFiltered = new Emgu.CV.UI.ImageBox();
-            this.btnMultimodeCommand = new System.Windows.Forms.TextBox();
             this.groupBoxControls.SuspendLayout();
             this.panelScreen.SuspendLayout();
             this.groupBoxView.SuspendLayout();
@@ -207,6 +207,14 @@
             this.groupBoxControllers.TabIndex = 6;
             this.groupBoxControllers.TabStop = false;
             this.groupBoxControllers.Text = "Controllers";
+            // 
+            // btnMultimodeCommand
+            // 
+            this.btnMultimodeCommand.Location = new System.Drawing.Point(118, 87);
+            this.btnMultimodeCommand.Name = "btnMultimodeCommand";
+            this.btnMultimodeCommand.Size = new System.Drawing.Size(83, 20);
+            this.btnMultimodeCommand.TabIndex = 15;
+            this.btnMultimodeCommand.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.btnMultimodeCommand_KeyPress);
             // 
             // chkMultimode
             // 
@@ -495,14 +503,6 @@
             this.imageBoxFiltered.Size = new System.Drawing.Size(568, 257);
             this.imageBoxFiltered.TabIndex = 7;
             this.imageBoxFiltered.TabStop = false;
-            // 
-            // btnMultimodeCommand
-            // 
-            this.btnMultimodeCommand.Location = new System.Drawing.Point(118, 87);
-            this.btnMultimodeCommand.Name = "btnMultimodeCommand";
-            this.btnMultimodeCommand.Size = new System.Drawing.Size(83, 20);
-            this.btnMultimodeCommand.TabIndex = 15;
-            this.btnMultimodeCommand.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.btnMultimodeCommand_KeyPress);
             // 
             // PanTiltControl
             // 

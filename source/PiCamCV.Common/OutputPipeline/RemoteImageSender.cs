@@ -31,7 +31,8 @@ namespace PiCamCV.Common
             }
             if (_sinceLastSend.ElapsedMilliseconds >= SendEveryPeriod.TotalMilliseconds)
             {
-                _imageTransmitter.Transmit(output.CapturedImage);
+                var task = _imageTransmitter.Transmit(output.CapturedImage);
+                //task.Start();
                 _sinceLastSend = Stopwatch.StartNew();
             }
         }
