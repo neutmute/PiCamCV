@@ -99,7 +99,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
             _autonomousManager.IsColourFullFrame =  IsColourFullFrame;
 
             _faceTrackingController.ClassifierParams.MinSize = new Size(20, 20);
-            _faceTrackingController.ClassifierParams.MaxSize = new Size(40, 40);
+            _faceTrackingController.ClassifierParams.MaxSize = new Size(50, 50);
 
             screen.WriteLine(_faceTrackingController.ClassifierParams.ToString());
 
@@ -200,6 +200,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
             {
                 case ProcessingMode.ColourTrackFromFileSettings:
                     _colourDetectorInput.Settings = _colourSettingsRepository.Read();
+                    _screen.WriteLine($"Read colour settings {_colourDetectorInput.Settings}");
                     nextState = ProcessingMode.ColourObjectTrack;
                     break;
 
@@ -207,9 +208,9 @@ namespace PiCamCV.Common.PanTilt.Controllers
                     var colourOutput = ProcessColour(input);
                     output = colourOutput;
 
-                    if (Ticks % 60 == 0) // provide some feedback on moment size but don't spam
+                    if (Ticks % (90*3) == 0) // provide some feedback on moment size but don't spam
                     {
-                        _screen.WriteLine(colourOutput.ToString());
+                        _screen.WriteLine("colTrack:" + colourOutput);
                     }
 
                     nextState = _colourTrackManager.AcceptOutput(colourOutput);
@@ -245,7 +246,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
                     break;
                 
                 case ProcessingMode.Autonomous:
-                    nextState = _autonomousManager.AcceptInput(input);
+                    SetMode(_autonomousManager.AcceptInput(input));
                     if (nextState == ProcessingMode.ColourObjectTrack)
                     {
                         
@@ -273,14 +274,18 @@ namespace PiCamCV.Common.PanTilt.Controllers
                         {
                             SoundService.PlayAsync("cant-see-you.wav");
                         }
+                        MoveAbsolute(50, 50);
                         _autonomousManager.Reset();     // Reset the timers
                         break;
                     case ProcessingMode.ColourObjectTrack:
+                        _colourTrackManager.Reset();
                         _screen.WriteLine($"Color detector settings: {_colourDetectorInput.Settings}");
                         SoundService.PlayAsync("color-tracking.wav");
                         break;
                     case ProcessingMode.FaceDetection:
+                        _faceTrackManager.Reset();
                         SoundService.PlayAsync("face-tracking.wav");
+                        _screen.WriteLine(ClassifierParams.ToString());
                         break;
                 }
                 

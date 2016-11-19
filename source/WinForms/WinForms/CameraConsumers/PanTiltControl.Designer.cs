@@ -68,6 +68,7 @@
             this.imageBoxCaptured = new Emgu.CV.UI.ImageBox();
             this.groupBoxFiltered = new System.Windows.Forms.GroupBox();
             this.imageBoxFiltered = new Emgu.CV.UI.ImageBox();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.groupBoxControls.SuspendLayout();
             this.panelScreen.SuspendLayout();
             this.groupBoxView.SuspendLayout();
@@ -191,6 +192,7 @@
             // 
             // groupBoxControllers
             // 
+            this.groupBoxControllers.Controls.Add(this.linkLabel1);
             this.groupBoxControllers.Controls.Add(this.btnMultimodeCommand);
             this.groupBoxControllers.Controls.Add(this.chkMultimode);
             this.groupBoxControllers.Controls.Add(this.labelMotoinSettle);
@@ -504,6 +506,17 @@
             this.imageBoxFiltered.TabIndex = 7;
             this.imageBoxFiltered.TabStop = false;
             // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(6, 126);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(52, 13);
+            this.linkLabel1.TabIndex = 16;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "Clear Log";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
             // PanTiltControl
             // 
             this.Controls.Add(this.panelFlowRhs);
@@ -565,5 +578,6 @@
         private System.Windows.Forms.Label labelMotoinSettle;
         private System.Windows.Forms.CheckBox chkMultimode;
         private System.Windows.Forms.TextBox btnMultimodeCommand;
+        private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }

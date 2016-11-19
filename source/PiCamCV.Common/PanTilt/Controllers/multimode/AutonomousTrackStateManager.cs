@@ -12,8 +12,8 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
         private Stopwatch _timeSinceLastColourSample;
         private Stopwatch _timeSinceLastSmoothPursuit;
 
-        private readonly TimeSpan _sampleFaceEvery = TimeSpan.FromMilliseconds(1000);
-        private readonly TimeSpan _sampleColourEvery = TimeSpan.FromMilliseconds(2000);
+        private readonly TimeSpan _sampleFaceEvery = TimeSpan.FromMilliseconds(1700);
+        private readonly TimeSpan _sampleColourEvery = TimeSpan.FromMilliseconds(1900);
 
         private TimeSpan _nextSmoothPursuit;
         private TimeTarget _timeTarget;
@@ -47,8 +47,8 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
             _screen = screen;
             _panTiltController = panTiltController;
 
-            PursuitBoundaryLower = new PanTiltSetting(10, 40);
-            PursuitBoundaryUpper = new PanTiltSetting(80, 90);
+            PursuitBoundaryLower = new PanTiltSetting(48, 52);
+            PursuitBoundaryUpper = new PanTiltSetting(48, 52);
 
             Reset();
         }
@@ -69,7 +69,7 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
 
         private void DecideNextSmoothPursuit()
         {
-            _nextSmoothPursuit = TimeSpan.FromSeconds(_random.Next(8, 20));
+            _nextSmoothPursuit = TimeSpan.FromMinutes(_random.Next(1, 2));
             var nextSmoothPursuitSpeedMilliseconds = _random.Next(250, 3000);
             _timeSinceLastSmoothPursuit.Restart();
             _timeTarget = new TimeTarget();

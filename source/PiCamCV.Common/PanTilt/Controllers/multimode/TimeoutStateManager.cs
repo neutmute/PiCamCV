@@ -18,9 +18,15 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
 
         public TimeSpan TimeSinceLastDetection => _stopWatch.Elapsed;
 
-        public void RegisterDetection()
+        protected void ResetTimer()
         {
             _stopWatch.Restart();
+        }
+
+        public void Reset()
+        {
+            ResetTimer();
+            LastDetection = Point.Empty;
         }
 
         protected TimeoutStateManager(ProcessingMode trackingMode, IScreen screen) :base(screen)
@@ -34,7 +40,7 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
             if (output.IsDetected)
             {
                 LastDetection = output.Target;
-                RegisterDetection();
+                ResetTimer();
 
                 if (LastDetection == Point.Empty)
                 {

@@ -371,5 +371,10 @@ namespace PiCamCV.WinForms.CameraConsumers
             _multimodePanTiltController.HandleKeyPress(e.KeyChar);
             e.Handled = true;
         }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            txtScreen.Clear();
+        }
     }
 }

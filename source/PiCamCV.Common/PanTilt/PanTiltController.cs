@@ -41,6 +41,11 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         }
 
 
+        public bool MoveAbsolute(decimal pan, decimal tilt)
+        {
+           return MoveAbsolute(new PanTiltSetting(pan, tilt));
+        }
+
         /// <returns>True if moved, false if move not required</returns>
         public bool MoveAbsolute(PanTiltSetting newPosition)
         {

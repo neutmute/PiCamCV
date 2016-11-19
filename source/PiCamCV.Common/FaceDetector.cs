@@ -30,7 +30,7 @@ namespace PiCamCV.Common
 
         public override string ToString()
         {
-            return $"ScaleFactor={ScaleFactor}, MinNeighbors=3, MinSize={MinSize}, MaxSize={MaxSize}";
+            return $"Scale={ScaleFactor}, MinNeighbors={MinNeighbors}, MinSize={MinSize}, MaxSize={MaxSize}";
         }
 
 

@@ -47,6 +47,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
 
             _faceDetector = new FaceDetector(haarFaceFile.FullName, haarEyeFile.FullName);
             _classifierParams = new ClassifierParameters();
+            _classifierParams.MaxSize = new Size(40, 40);
         }
 
         protected override FaceTrackingPanTiltOutput DoProcess(CameraProcessInput baseInput)
