@@ -69,6 +69,8 @@
     <Compile Include="..\..\Solution Items\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="BsonPostJpegTransmitter.cs" />
+    <Compile Include="BsonPostTransmitter.cs" />
     <Compile Include="Properties\AssemblyInfoUnique.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="CameraHubProxy.cs" />

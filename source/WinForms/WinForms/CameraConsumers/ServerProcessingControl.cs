@@ -20,8 +20,12 @@ namespace PiCamCV.WinForms.CameraConsumers
 {
     public partial class ServerProcessingControl : PanTiltBaseUserControl
     {
-        private IImageTransmitter _bsonPoster;
+        private IImageTransmitter _imageTransmitter;
+
+        private IImageTransmitter _jpegTransmitter;
+        
         private Task _transmitTask;
+
         public ServerProcessingControl()
         {
             InitializeComponent();
@@ -30,7 +34,9 @@ namespace PiCamCV.WinForms.CameraConsumers
         protected override void OnSubscribe()
         {
             base.OnSubscribe();
-            _bsonPoster = new BsonPostImageTransmitter();
+            _imageTransmitter = new BsonPostImageTransmitter();
+            _jpegTransmitter = new BsonPostJpegTransmitter();
+            lblHost.Text = $"{Config.ServerHost}:{Config.ServerPort}";
         }
 
         public override void ImageGrabbedHandler(object sender, EventArgs e)
@@ -44,7 +50,22 @@ namespace PiCamCV.WinForms.CameraConsumers
                     WriteText(bgrImage, 30, DateTime.Now.ToString("HH:mm:ss tt"));
                     imageBoxCaptured.Image = bgrImage;
 
-                    _transmitTask = _bsonPoster.Transmit(bgrImage);
+
+                    IImageTransmitter transmitter = null;
+                    if (radBsonImage.Checked)
+                    {
+                        transmitter = _imageTransmitter;
+                    }
+
+                    if (radBsonJpeg.Checked)
+                    {
+                        transmitter = _jpegTransmitter;
+                    }
+
+                    if (transmitter != null)
+                    {
+                        _transmitTask = transmitter.Transmit(bgrImage);
+                    }
                 }
             }
         }

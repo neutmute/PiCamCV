@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Web;
 using Common.Logging;
 using Emgu.CV;
@@ -94,6 +96,25 @@ namespace PiCam.Web.Controllers
             return roiRect;
         }
 
+        public void JpegReceived(byte[] jpeg)
+        {
+            var bitmap = JpegToBitmap(jpeg);
+            var bgrImage = new Image<Bgr, byte>(bitmap);
+            ImageReceived(bgrImage);
+        }
+
+        public Bitmap JpegToBitmap(byte[] jpeg)
+        {
+            Bitmap bitmap;
+            using (Stream bmpStream = new MemoryStream(jpeg))
+            {
+                Image image = Image.FromStream(bmpStream);
+                bitmap = new Bitmap(image);
+
+            }
+            return bitmap;
+        }
+
         public void ImageReceived(Image<Bgr, byte> image)
         {
             if (!_firstImageReceived)
@@ -102,7 +123,7 @@ namespace PiCam.Web.Controllers
                 _firstImageReceived = true;
             }
 
-            var isFullImage = _imageSize == image.Size; // its not a full image while training the color threshold
+            var isFullImage = _imageSize == image.Size; // it's not a full image while training the color threshold
             if (isFullImage && ServerSettings.ShowRegionOfInterest)
             {
                 var roiRect = GetRegionOfInterest();

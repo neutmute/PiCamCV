@@ -30,17 +30,18 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panelRest = new System.Windows.Forms.Panel();
-            this.panelLeft = new System.Windows.Forms.Panel();
-            this.groupBoxTransmission = new System.Windows.Forms.GroupBox();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radBson = new System.Windows.Forms.RadioButton();
             this.groupBoxCaptured = new System.Windows.Forms.GroupBox();
             this.imageBoxCaptured = new Emgu.CV.UI.ImageBox();
+            this.panelLeft = new System.Windows.Forms.Panel();
+            this.groupBoxTransmission = new System.Windows.Forms.GroupBox();
+            this.radBsonJpeg = new System.Windows.Forms.RadioButton();
+            this.radBsonImage = new System.Windows.Forms.RadioButton();
+            this.lblHost = new System.Windows.Forms.Label();
             this.panelRest.SuspendLayout();
-            this.panelLeft.SuspendLayout();
-            this.groupBoxTransmission.SuspendLayout();
             this.groupBoxCaptured.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).BeginInit();
+            this.panelLeft.SuspendLayout();
+            this.groupBoxTransmission.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelRest
@@ -51,49 +52,6 @@
             this.panelRest.Name = "panelRest";
             this.panelRest.Size = new System.Drawing.Size(614, 652);
             this.panelRest.TabIndex = 3;
-            // 
-            // panelLeft
-            // 
-            this.panelLeft.Controls.Add(this.groupBoxTransmission);
-            this.panelLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panelLeft.Location = new System.Drawing.Point(0, 0);
-            this.panelLeft.Name = "panelLeft";
-            this.panelLeft.Size = new System.Drawing.Size(230, 652);
-            this.panelLeft.TabIndex = 2;
-            // 
-            // groupBoxTransmission
-            // 
-            this.groupBoxTransmission.Controls.Add(this.radioButton2);
-            this.groupBoxTransmission.Controls.Add(this.radBson);
-            this.groupBoxTransmission.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBoxTransmission.Location = new System.Drawing.Point(0, 0);
-            this.groupBoxTransmission.Name = "groupBoxTransmission";
-            this.groupBoxTransmission.Size = new System.Drawing.Size(230, 165);
-            this.groupBoxTransmission.TabIndex = 0;
-            this.groupBoxTransmission.TabStop = false;
-            this.groupBoxTransmission.Text = "Transmission Method";
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(26, 64);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(85, 17);
-            this.radioButton2.TabIndex = 1;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "radioButton2";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            // 
-            // radBson
-            // 
-            this.radBson.AutoSize = true;
-            this.radBson.Location = new System.Drawing.Point(26, 41);
-            this.radBson.Name = "radBson";
-            this.radBson.Size = new System.Drawing.Size(79, 17);
-            this.radBson.TabIndex = 0;
-            this.radBson.TabStop = true;
-            this.radBson.Text = "BSON Post";
-            this.radBson.UseVisualStyleBackColor = true;
             // 
             // groupBoxCaptured
             // 
@@ -114,6 +72,59 @@
             this.imageBoxCaptured.TabIndex = 4;
             this.imageBoxCaptured.TabStop = false;
             // 
+            // panelLeft
+            // 
+            this.panelLeft.Controls.Add(this.groupBoxTransmission);
+            this.panelLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panelLeft.Location = new System.Drawing.Point(0, 0);
+            this.panelLeft.Name = "panelLeft";
+            this.panelLeft.Size = new System.Drawing.Size(230, 652);
+            this.panelLeft.TabIndex = 2;
+            // 
+            // groupBoxTransmission
+            // 
+            this.groupBoxTransmission.Controls.Add(this.lblHost);
+            this.groupBoxTransmission.Controls.Add(this.radBsonJpeg);
+            this.groupBoxTransmission.Controls.Add(this.radBsonImage);
+            this.groupBoxTransmission.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBoxTransmission.Location = new System.Drawing.Point(0, 0);
+            this.groupBoxTransmission.Name = "groupBoxTransmission";
+            this.groupBoxTransmission.Size = new System.Drawing.Size(230, 165);
+            this.groupBoxTransmission.TabIndex = 0;
+            this.groupBoxTransmission.TabStop = false;
+            this.groupBoxTransmission.Text = "Transmission Method";
+            // 
+            // radBsonJpeg
+            // 
+            this.radBsonJpeg.AutoSize = true;
+            this.radBsonJpeg.Location = new System.Drawing.Point(8, 77);
+            this.radBsonJpeg.Name = "radBsonJpeg";
+            this.radBsonJpeg.Size = new System.Drawing.Size(85, 17);
+            this.radBsonJpeg.TabIndex = 1;
+            this.radBsonJpeg.TabStop = true;
+            this.radBsonJpeg.Text = "BSON JPEG";
+            this.radBsonJpeg.UseVisualStyleBackColor = true;
+            // 
+            // radBsonImage
+            // 
+            this.radBsonImage.AutoSize = true;
+            this.radBsonImage.Location = new System.Drawing.Point(8, 54);
+            this.radBsonImage.Name = "radBsonImage";
+            this.radBsonImage.Size = new System.Drawing.Size(87, 17);
+            this.radBsonImage.TabIndex = 0;
+            this.radBsonImage.TabStop = true;
+            this.radBsonImage.Text = "BSON Image";
+            this.radBsonImage.UseVisualStyleBackColor = true;
+            // 
+            // lblHost
+            // 
+            this.lblHost.AutoSize = true;
+            this.lblHost.Location = new System.Drawing.Point(8, 28);
+            this.lblHost.Name = "lblHost";
+            this.lblHost.Size = new System.Drawing.Size(39, 13);
+            this.lblHost.TabIndex = 2;
+            this.lblHost.Text = "lblHost";
+            // 
             // ServerProcessingControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -123,11 +134,11 @@
             this.Name = "ServerProcessingControl";
             this.Size = new System.Drawing.Size(844, 652);
             this.panelRest.ResumeLayout(false);
+            this.groupBoxCaptured.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).EndInit();
             this.panelLeft.ResumeLayout(false);
             this.groupBoxTransmission.ResumeLayout(false);
             this.groupBoxTransmission.PerformLayout();
-            this.groupBoxCaptured.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.imageBoxCaptured)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -137,9 +148,10 @@
         private System.Windows.Forms.Panel panelRest;
         private System.Windows.Forms.Panel panelLeft;
         private System.Windows.Forms.GroupBox groupBoxTransmission;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radBson;
+        private System.Windows.Forms.RadioButton radBsonJpeg;
+        private System.Windows.Forms.RadioButton radBsonImage;
         private System.Windows.Forms.GroupBox groupBoxCaptured;
         private Emgu.CV.UI.ImageBox imageBoxCaptured;
+        private System.Windows.Forms.Label lblHost;
     }
 }

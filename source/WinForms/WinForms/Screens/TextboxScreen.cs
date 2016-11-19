@@ -43,7 +43,14 @@ namespace PiCamCV.WinForms
 
         private void SetText(string text)
         {
-            _textBox.Invoke((MethodInvoker)(() => { _textBox.Text = text; }), new object[0]);
+            try
+            {
+                _textBox.Invoke((MethodInvoker) (() => { _textBox.Text = text; }), new object[0]);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
     }
 }

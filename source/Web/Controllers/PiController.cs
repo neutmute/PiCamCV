@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http;
-using System.Web.Mvc;
 using Common.Logging;
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -19,8 +18,19 @@ namespace PiCam.Web.Controllers
     public class PiController : ApiController
     {
         protected static ILog Log = LogManager.GetLogger< PiController>();
-        
-        [System.Web.Mvc.Route("api/pi/postImage")]
+
+        [HttpPost]
+        [Route("api/pi/postJpeg")]
+        public void PostJpeg(byte[] jpeg)
+        {
+            if (jpeg != null) // null sometimes while doing thresholding
+            {
+                PiBroker.Instance.JpegReceived(jpeg);
+            }
+        }
+
+        [HttpPost]
+        [Route("api/pi/postImage")]
         public void PostImage(Image<Bgr, byte> image)
         {
             if (image != null) // null sometimes while doing thresholding
