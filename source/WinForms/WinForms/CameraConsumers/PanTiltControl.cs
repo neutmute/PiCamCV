@@ -88,7 +88,8 @@ namespace PiCamCV.WinForms.CameraConsumers
             
             var screen = new TextboxScreen(txtScreen);
 
-            var piServerClient = new BsonPostImageTransmitter();
+            //var imageTransmitter = new BsonPostImageTransmitter();
+            var imageTransmitter = new BsonPostJpegTransmitter();
             var colorSettings = _colourSettingsRepo.Read();
             var motionSettings = _motionSettingsRepo.Read();
 
@@ -102,7 +103,7 @@ namespace PiCamCV.WinForms.CameraConsumers
             if (_multimodePanTiltController == null)
             {
                 _remoteScreen = new RemoteTextboxScreen(CameraHubProxy, txtScreen);
-                _remoteImageSender = new RemoteImageSender(piServerClient, CameraHubProxy);
+                _remoteImageSender = new RemoteImageSender(imageTransmitter, CameraHubProxy);
 
                 CameraHubProxy.SettingsChanged += (o, s) =>
                 {

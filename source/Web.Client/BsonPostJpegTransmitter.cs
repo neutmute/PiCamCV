@@ -15,10 +15,12 @@ namespace Web.Client
 {
     public class BsonPostJpegTransmitter : BsonPostTransmitter
     {
+        public int Quality { get; set; } = 20;
+
         protected override string UrlRoute => "api/pi/PostJpeg";
         protected override object GetPostBody(Image<Bgr, byte> image)
         {
-            return image.ToJpegData(50);
+            return image.ToJpegData(Quality);
         }
     }
 }

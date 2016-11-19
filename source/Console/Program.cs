@@ -132,16 +132,17 @@ namespace PiCamCV.ConsoleApp
                         cameraHubProxy.Connect();
                     }
                     var remoteScreen = new RemoteConsoleScreen(cameraHubProxy);
-                    var piServerClient = new BsonPostImageTransmitter();
-                    var imageTransmitter = new RemoteImageSender(piServerClient, cameraHubProxy);
+                    //var imageTransmitter = new BsonPostImageTransmitter();
+                    var imageTransmitter = new BsonPostJpegTransmitter();
+                    var periodicImageSender = new RemoteImageSender(imageTransmitter, cameraHubProxy);
                     
                     remoteScreen.Enabled = !_consoleOptions.DisableTransmit;
-                    imageTransmitter.Enabled = !_consoleOptions.DisableTransmit;
+                    periodicImageSender.Enabled = !_consoleOptions.DisableTransmit;
                     
                     cameraHubProxy.SettingsChanged += (sender, s) =>
                     {
                         remoteScreen.Enabled = s.EnableConsoleTransmit;
-                        imageTransmitter.Enabled = s.EnableImageTransmit;
+                        periodicImageSender.Enabled = s.EnableImageTransmit;
                     };
 
                     var controllerMultimode = new MultimodePanTiltController(
@@ -149,7 +150,7 @@ namespace PiCamCV.ConsoleApp
                                                     , capture.RequestedConfig
                                                     , remoteScreen
                                                     , cameraHubProxy
-                                                    , imageTransmitter);
+                                                    , periodicImageSender);
 
                     var cameraBasedRunner = new CameraBasedPanTiltRunner(panTiltMech, capture, controllerMultimode, screen);
                     runner = cameraBasedRunner;
