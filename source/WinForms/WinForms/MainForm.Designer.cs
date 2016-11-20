@@ -141,7 +141,7 @@
             this.txtFramerate.Name = "txtFramerate";
             this.txtFramerate.Size = new System.Drawing.Size(40, 20);
             this.txtFramerate.TabIndex = 22;
-            this.txtFramerate.Text = "25";
+            this.txtFramerate.Text = "90";
             // 
             // lblFrames
             // 

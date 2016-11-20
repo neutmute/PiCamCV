@@ -45,7 +45,7 @@ namespace WinForms
 
             SetupCameraConsumers();
             radCamera.Checked = true;
-            cmbResolution.SelectedIndex = 1;
+            cmbResolution.SelectedIndex = 3;
         }
 
         private CaptureConfig HarvestFormCaptureConfig()

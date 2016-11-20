@@ -48,7 +48,8 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
                 }
             }
 
-            if (LastDetection != Point.Empty && TimeSinceLastDetection > AbandonDetectionAfterMissing)
+
+            if (TimeSinceLastDetection > AbandonDetectionAfterMissing)
             {
                 Screen.WriteLine($"Object deemed lost afer {AbandonDetectionAfterMissing.ToHumanReadable()}");
                 return ProcessingMode.Autonomous;

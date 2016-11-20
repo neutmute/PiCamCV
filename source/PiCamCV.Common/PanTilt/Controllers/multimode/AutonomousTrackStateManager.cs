@@ -47,8 +47,8 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
             _screen = screen;
             _panTiltController = panTiltController;
 
-            PursuitBoundaryLower = new PanTiltSetting(48, 52);
-            PursuitBoundaryUpper = new PanTiltSetting(48, 52);
+            PursuitBoundaryLower = new PanTiltSetting(40, 50);
+            PursuitBoundaryUpper = new PanTiltSetting(60, 60);
 
             Reset();
         }
@@ -57,7 +57,6 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
         {
             _timeSinceLastColourSample = Stopwatch.StartNew();
             _timeSinceLastFaceSample = Stopwatch.StartNew();
-            _timeSinceLastColourSample = Stopwatch.StartNew();
             _timeSinceLastSmoothPursuit = Stopwatch.StartNew();
 
             _internalState = AutonomousState.Waiting;

@@ -31,6 +31,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
     public class MultimodePanTiltController : CameraBasedPanTiltController<CameraPanTiltProcessOutput>, IKeyHandler
     {
         public ProcessingMode State { get; private set; }
+        private ProcessingMode _forcedNextState;
 
         private readonly IScreen _screen;
         private readonly FaceTrackingPanTiltController _faceTrackingController;
@@ -46,8 +47,8 @@ namespace PiCamCV.Common.PanTilt.Controllers
         private readonly FaceTrackStateManager _faceTrackManager;
         private readonly ColourTrackStateManager _colourTrackManager;
         private readonly AutonomousTrackStateManager _autonomousManager;
-
         private Action _unsubscribeBus;
+        ColourDetector _colourDetector;
 
         public ISoundService SoundService { get; set; }
 
@@ -93,7 +94,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
 
             screen.Clear();
-            SetMode(ProcessingMode.Autonomous);
+            ChangeMode(ProcessingMode.Autonomous);
             
             _autonomousManager.IsFaceFound = i => _faceTrackingController.Process(i).IsDetected;
             _autonomousManager.IsColourFullFrame =  IsColourFullFrame;
@@ -104,6 +105,14 @@ namespace PiCamCV.Common.PanTilt.Controllers
             screen.WriteLine(_faceTrackingController.ClassifierParams.ToString());
 
             InitController();
+
+            ServoSettleTimeChanged += (s, e) =>
+            {
+                _faceTrackingController.ServoSettleTime = ServoSettleTime;
+                _colourTrackingController.ServoSettleTime = ServoSettleTime;
+            };
+
+            _colourDetector = new ColourDetector();
         }
         
         private bool IsColourFullFrame(CameraProcessInput input)
@@ -112,8 +121,10 @@ namespace PiCamCV.Common.PanTilt.Controllers
             // detect all black
             using (new TemporaryThresholdSettings(_colourDetectorInput, ThresholdSettings.Get(0, 0, 0, 180, 255, 40)))
             {
-                var colourOutput = ProcessColour(input);
-                const int fullFrameMinimumPercent = 90;
+                _colourDetectorInput.Captured = input.Captured;
+                var colourOutput = _colourDetector.Process(_colourDetectorInput);
+                const int fullFrameMinimumPercent = 70;
+
                 var fullFramePixelCount = colourOutput.CapturedImage.Width*colourOutput.CapturedImage.Height;
                 var mimimumColourPixelCount = fullFramePixelCount*fullFrameMinimumPercent/100;
                 isFullFrameColour = colourOutput.MomentArea > mimimumColourPixelCount;
@@ -142,7 +153,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
         private void InitController()
         {
-            EventHandler<ProcessingMode> setModeHandler = (s, e) => { SetMode(e); };
+            EventHandler<ProcessingMode> setModeHandler = (s, e) => { ForceMode(e); };
             EventHandler<Rectangle> setRoiHandler = (s, e) => { _regionOfInterest = e; _screen.WriteLine("ROI set"); };
             
             _serverToCameraBus.SetMode += setModeHandler;
@@ -163,13 +174,13 @@ namespace PiCamCV.Common.PanTilt.Controllers
             {
                 case PanTiltSettingCommandType.MoveAbsolute:
                     MoveAbsolute(command);
-                    SetMode(ProcessingMode.Static);
+                    ForceMode(ProcessingMode.Static);
                     _screen.WriteLine($"{command}");
                     break;
 
                 case PanTiltSettingCommandType.MoveRelative:
                     MoveRelative(command);
-                    SetMode(ProcessingMode.Static);
+                    ForceMode(ProcessingMode.Static);
                     _screen.WriteLine($"{command}");
                     break;
 
@@ -223,16 +234,16 @@ namespace PiCamCV.Common.PanTilt.Controllers
                     output = faceTrackOutput;
                     break;
 
-                case ProcessingMode.CamshiftTrack:
-                    var camshiftOutput = _camshiftTrackingController.Process(input);
+                //case ProcessingMode.CamshiftTrack:
+                //    var camshiftOutput = _camshiftTrackingController.Process(input);
 
-                    if (camshiftOutput.Target == Point.Empty)
-                    {
-                        SetMode(ProcessingMode.Autonomous);
-                    }
+                //    if (camshiftOutput.Target == Point.Empty)
+                //    {
+                //        SetMode(ProcessingMode.Autonomous);
+                //    }
 
-                    output = camshiftOutput;
-                    break;
+                //    output = camshiftOutput;
+                //    break;
 
                 case ProcessingMode.ColourObjectSelect:
                     _screen.WriteLine($"Threshold training for {_thresholdSelector.RequiredMomentAreaInRoiPercent}% ROI coverage");
@@ -246,7 +257,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
                     break;
                 
                 case ProcessingMode.Autonomous:
-                    SetMode(_autonomousManager.AcceptInput(input));
+                    nextState = _autonomousManager.AcceptInput(input);
                     if (nextState == ProcessingMode.ColourObjectTrack)
                     {
                         
@@ -264,9 +275,15 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
             ProcessOutputPipeline(output);
 
+            if (_forcedNextState != ProcessingMode.Unknown)
+            {
+                nextState = _forcedNextState;
+                _forcedNextState = ProcessingMode.Unknown;
+            }
+
             if (nextState != State)
             {
-                _screen.WriteLine($"Changing to {nextState}");
+                _screen.WriteLine($"Changing {State} to {nextState}");
                 switch (nextState)
                 {
                     case ProcessingMode.Autonomous:
@@ -274,7 +291,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
                         {
                             SoundService.PlayAsync("cant-see-you.wav");
                         }
-                        MoveAbsolute(50, 50);
+                        MoveAbsolute(50, 60);
                         _autonomousManager.Reset();     // Reset the timers
                         break;
                     case ProcessingMode.ColourObjectTrack:
@@ -307,13 +324,19 @@ namespace PiCamCV.Common.PanTilt.Controllers
             return colourOutput;
         }
 
-        public void SetMode(ProcessingMode mode)
+        private void ChangeMode(ProcessingMode mode)
         {
             if (State != mode)
             {
+                _screen.WriteLine($"Mode {State}=>{mode}");
                 State = mode;
-                _screen.WriteLine($"Mode changed to {mode}");
             }
+        }
+
+        public void ForceMode(ProcessingMode mode)
+        {
+            _forcedNextState = mode;
+            _screen.WriteLine($"Forcing {mode} (Currently {State})");
         }
 
         private void ProcessOutputPipeline(CameraProcessOutput output)
@@ -354,15 +377,23 @@ namespace PiCamCV.Common.PanTilt.Controllers
                     captureConfig.Resolution = new Resolution(160, 120);
                     _serverToCameraBus.InvokeUpdateCapture(captureConfig);
                     break;
+
                 case 'a':
-                    SetMode(ProcessingMode.Autonomous);
+                    ForceMode(ProcessingMode.Autonomous);
                     break;
+
                 case 'f':
-                    SetMode(ProcessingMode.FaceDetection);
+                    ForceMode(ProcessingMode.FaceDetection);
                     break;
+
                 case 'c':
-                    SetMode(ProcessingMode.ColourTrackFromFileSettings);
+                    ForceMode(ProcessingMode.ColourTrackFromFileSettings);
                     break;
+
+                case 'q':
+                    _screen.WriteLine($"P/T={CurrentSetting},M={State}");
+                    break;
+
                 case 'r':
                     var command = new PanTiltSettingCommand();
                     command.Type= PanTiltSettingCommandType.MoveAbsolute;

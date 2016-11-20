@@ -46,6 +46,7 @@ namespace PiCamCV.ConsoleApp.Runners.PanTilt
         {
             _colourDetector = new ColourDetector();
         }
+
         protected override ColourTrackingPanTiltOutput DoProcess(CameraProcessInput input)
         {
             var colourDetectorInput = new ColourDetectorInput();
