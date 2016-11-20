@@ -70,18 +70,25 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
 
         private void DecideNextSmoothPursuit()
         {
-            _nextSmoothPursuit = TimeSpan.FromMinutes(_random.Next(1, 2));
+            _nextSmoothPursuit = TimeSpan.FromSeconds(_random.Next(60, 3 * 60));
             var nextSmoothPursuitSpeedMilliseconds = _random.Next(250, 3000);
             _timeSinceLastSmoothPursuit.Restart();
             _timeTarget = new TimeTarget();
             _timeTarget.Original = _panTiltController.CurrentSetting;
             _timeTarget.TimeSpan = TimeSpan.FromMilliseconds(nextSmoothPursuitSpeedMilliseconds);
             
-            var nextPan = Convert.ToDecimal(_random.Next((int) PursuitBoundaryLower.PanPercent.Value, (int)PursuitBoundaryUpper.PanPercent.Value));
-            var nextTilt = Convert.ToDecimal(_random.Next((int)PursuitBoundaryLower.TiltPercent.Value, (int)PursuitBoundaryUpper.TiltPercent.Value));
+            // Handle stupid settings
+            var minPan = Math.Min((int)PursuitBoundaryLower.PanPercent.Value, (int)PursuitBoundaryUpper.PanPercent.Value);
+            var maxPan = Math.Max((int)PursuitBoundaryLower.PanPercent.Value, (int)PursuitBoundaryUpper.PanPercent.Value);
+            var minTilt = Math.Min((int)PursuitBoundaryLower.TiltPercent.Value, (int)PursuitBoundaryUpper.TiltPercent.Value);
+            var maxTilt = Math.Max((int)PursuitBoundaryLower.TiltPercent.Value, (int)PursuitBoundaryUpper.TiltPercent.Value);
+
+            var nextPan = Convert.ToDecimal(_random.Next(minPan, maxPan));
+            var nextTilt = Convert.ToDecimal(_random.Next(minTilt, maxTilt));
 
             _timeTarget.Target = new PanTiltSetting(nextPan, nextTilt);
 
+            _screen.WriteLine($"Next pursuit in {_nextSmoothPursuit}");
         }
 
         public ProcessingMode AcceptInput(CameraProcessInput input)
