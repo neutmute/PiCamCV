@@ -105,6 +105,7 @@
     <Compile Include="PanTilt\Controllers\multimode\ColourTrackStateManager.cs" />
     <Compile Include="PanTilt\Controllers\multimode\FaceTrackStateManager.cs" />
     <Compile Include="PanTilt\Controllers\multimode\StateManager.cs" />
+    <Compile Include="PanTilt\Controllers\multimode\StaticStateManager.cs" />
     <Compile Include="PanTilt\Controllers\multimode\TimeoutStateManager.cs" />
     <Compile Include="PanTilt\Controllers\TrackingCameraPanTiltProcessOutput.cs" />
     <Compile Include="PanTilt\MoveStrategies\CameraBasedModifierStrategy.cs" />

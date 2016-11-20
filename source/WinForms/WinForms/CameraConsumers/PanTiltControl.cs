@@ -342,6 +342,7 @@ namespace PiCamCV.WinForms.CameraConsumers
             _colourTrackingController.ServoSettleTime = settleTime;
             _faceTrackingController.ServoSettleTime = settleTime;
             _motionTrackingController.ServoSettleTime = settleTime;
+            _multimodePanTiltController.ServoSettleTime = settleTime;
 
             NotifyStatus("Servo settle time set to {0}ms", spinEditServoSettle.Value);
         }

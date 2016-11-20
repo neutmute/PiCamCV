@@ -13,7 +13,10 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
         private readonly ProcessingMode _trackingMode;
 
         public Point LastDetection { get; set; }
-        
+
+
+        protected abstract string ObjectName { get; }
+
         public virtual TimeSpan AbandonDetectionAfterMissing => TimeSpan.FromSeconds(5);
 
         public TimeSpan TimeSinceLastDetection => _stopWatch.Elapsed;
@@ -44,14 +47,14 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
 
                 if (LastDetection == Point.Empty)
                 {
-                    Screen.WriteLine("Object detected");
+                    Screen.WriteLine($"{ObjectName} detected");
                 }
             }
 
 
             if (TimeSinceLastDetection > AbandonDetectionAfterMissing)
             {
-                Screen.WriteLine($"Object deemed lost afer {AbandonDetectionAfterMissing.ToHumanReadable()}");
+                Screen.WriteLine($"{ObjectName} deemed lost afer {AbandonDetectionAfterMissing.ToHumanReadable()}");
                 return ProcessingMode.Autonomous;
             }
 

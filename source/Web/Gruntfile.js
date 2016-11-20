@@ -33,6 +33,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.registerTask("default", ["ts"]);
     
-    grunt.registerTask('postBuild', []); // shouldnt need to compile Typescript since watch will do it
+    grunt.registerTask('postBuild', ["ts"]);
     grunt.registerTask('projectOpen', ['typings', 'ts', 'watch']);
 };

@@ -23,8 +23,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
         ,CamshiftSelect
         ,ColourObjectSelect
         ,ColourTrackFromFileSettings
-        //Manual input only
-        , Static
+        ,Static
         ,Autonomous
     }
     
@@ -47,8 +46,10 @@ namespace PiCamCV.Common.PanTilt.Controllers
         private readonly FaceTrackStateManager _faceTrackManager;
         private readonly ColourTrackStateManager _colourTrackManager;
         private readonly AutonomousTrackStateManager _autonomousManager;
+        private readonly StaticStateManager _staticManager;
+        
         private Action _unsubscribeBus;
-        ColourDetector _colourDetector;
+        private readonly ColourDetector _colourDetector;
 
         public ISoundService SoundService { get; set; }
 
@@ -88,6 +89,7 @@ namespace PiCamCV.Common.PanTilt.Controllers
 
             _faceTrackManager = new FaceTrackStateManager(screen);
             _colourTrackManager = new ColourTrackStateManager(screen);
+            _staticManager = new StaticStateManager(screen);
             _autonomousManager = new AutonomousTrackStateManager(this, screen);
 
             SoundService = new SoundService();
@@ -209,6 +211,11 @@ namespace PiCamCV.Common.PanTilt.Controllers
             ProcessingMode nextState = State;
             switch (State)
             {
+                case ProcessingMode.Static:
+                    var staticHackOutput = new StaticTrackingPanTiltOutput();
+                    nextState = _staticManager.AcceptOutput(staticHackOutput);
+                    break;
+
                 case ProcessingMode.ColourTrackFromFileSettings:
                     _colourDetectorInput.Settings = _colourSettingsRepository.Read();
                     _screen.WriteLine($"Read colour settings {_colourDetectorInput.Settings}");
@@ -286,6 +293,9 @@ namespace PiCamCV.Common.PanTilt.Controllers
                 _screen.WriteLine($"Changing {State} to {nextState}");
                 switch (nextState)
                 {
+                    case ProcessingMode.Static:
+                        _staticManager.Reset();
+                        break;
                     case ProcessingMode.Autonomous:
                         if (State == ProcessingMode.FaceDetection) // coming out of face detection
                         {

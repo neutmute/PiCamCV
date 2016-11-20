@@ -12,14 +12,16 @@ namespace PiCamCV.Common.PanTilt.Controllers.multimode
         private Stopwatch _timeSinceLastColourSample;
         private Stopwatch _timeSinceLastSmoothPursuit;
 
-        private readonly TimeSpan _sampleFaceEvery = TimeSpan.FromMilliseconds(1700);
-        private readonly TimeSpan _sampleColourEvery = TimeSpan.FromMilliseconds(1900);
+        private readonly TimeSpan _sampleFaceEvery = TimeSpan.FromMilliseconds(300);
+        private readonly TimeSpan _sampleColourEvery = TimeSpan.FromMilliseconds(700);
 
         private TimeSpan _nextSmoothPursuit;
         private TimeTarget _timeTarget;
         private readonly IScreen _screen;
 
         private Random _random;
+
+        
 
         private AutonomousState _internalState;
 
